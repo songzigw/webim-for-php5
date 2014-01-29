@@ -89,6 +89,7 @@ class WebimAction {
 			'production_name' => WEBIM_PRODUCTION_NAME,
 			'path' => WEBIM_PATH,
 			'is_login' => '1',
+            'is_visitor' => false,
 			'login_options' => '',
 			'user' => $user,
 			'setting' => $this->settingModel->get($this->plugin->uid()),
