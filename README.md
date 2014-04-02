@@ -18,7 +18,11 @@ Usage
 
 6. 项目需要显示Webim的页面，footer嵌入:
 
-    <script type="text/javascript" src="/webim/index.php?action=boot"></script>
+```javascript
+
+<script type="text/javascript" src="/webim/index.php?action=boot"></script>
+
+```
 
 WebimPlugin.class.php
 ================
