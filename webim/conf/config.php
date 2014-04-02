@@ -7,12 +7,12 @@
   'dbname' => "webimphp5",
     
   //Webim Config
-  'version' => '5.2',
+  'version' => '5.3',
   'isopen' => true,
   'debug' => true,
   'domain' => 'localhost',
   'apikey' => 'public',
-  'host' => 'localhost',
+  'host' => 'nextalk.im',
   'port' => '8000',
   'emot' => 'default',
   'theme' => 'base',
