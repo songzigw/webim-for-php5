@@ -2,7 +2,9 @@
 (function(webim) {
 	var path = _IMC.path;
 	webim.extend(webim.setting.defaults.data, _IMC.setting);
-
+    var cookie_key = "_webim_cookie_";
+	if( _IMC.is_visitor ) { cookie_key = "_webim_v_cookie_"; }
+    if( _IMC.user != "" ) { cookie_key = cookie_key + _IMC.user.id; }
 	webim.route( {
 		online: path + "index.php?action=online",
 		offline: path + "index.php?action=offline",
@@ -14,10 +16,15 @@
 		history: path + "index.php?action=history",
 		clear: path + "index.php?action=clear_history",
 		download: path + "index.php?action=download_history",
-		members: path + "index.php?action=members",
+		buddies: path + "index.php?action=buddies",
+        //room actions
+		invite: path + "index.php?action=invite",
 		join: path + "index.php?action=join",
 		leave: path + "index.php?action=leave",
-		buddies: path + "index.php?action=buddies",
+		block: path + "index.php?action=block",
+		unblock: path + "index.php?action=unblock",
+		members: path + "index.php?action=members",
+        //notifications
 		notifications: path + "index.php?action=notifications"
 	} );
 
@@ -40,13 +47,15 @@
 			upload: _IMC.upload
 		}
 	}), im = ui.im;
+    //全局化
+    window.webimUI = ui;
 
 	if( _IMC.user ) im.setUser( _IMC.user );
 	if( _IMC.menu ) ui.addApp("menu", { "data": _IMC.menu } );
 	if( _IMC.enable_shortcut ) ui.layout.addShortcut( _IMC.menu );
 
 	ui.addApp("buddy", {
-		showUnavailable: _IMC.show_unavailable,
+		showUnavailable: _IMC.showUnavailable,
 		is_login: _IMC['is_login'],
 		disable_login: true,
 		collapse: false,
@@ -57,6 +66,7 @@
     if(!_IMC.is_visitor) {
         if(_IMC.enable_room )ui.addApp("room", { discussion: false });
         if(_IMC.enable_noti )ui.addApp("notification");
+        ui.addApp("chatbtn");
         /*
         if( _IMC.enable_chatlink )ui.addApp("chatlink", {
             space_href: [/mod=space&uid=(\d+)/i, /space\-uid\-(\d+)\.html$/i],
