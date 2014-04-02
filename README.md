@@ -14,11 +14,11 @@ Usage
 
 4. 配置webim/index.php的WEBIM_PATH变量
 
-5. 实现webim/WebimPlugin.class.php的项目集成接口，与项目用户、群组、通知集成.
+5. 实现webim/WebimPlugin.class.php的项目集成接口，与项目用户、群组、通知集成
 
-6. 项目需要显示Webim的页面，footer嵌入:
+6. 项目需要显示Webim的页面，footer嵌入
 
-```javascript
+```
 
 <script type="text/javascript" src="/webim/index.php?action=boot"></script>
 
