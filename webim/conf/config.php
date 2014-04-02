@@ -2,9 +2,9 @@
 
   //Database
   'dbhost' => "127.0.0.1",
-  'dbuser' => "root",
+  'dbuser' => "webim",
   'dbpassword' => "public",
-  'dbname' => "webimphp5",
+  'dbname' => "webim5",
     
   //Webim Config
   'version' => '5.3',

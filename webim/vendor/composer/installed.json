@@ -1,0 +1,47 @@
+[
+    {
+        "name": "webim/webim-php",
+        "version": "5.4",
+        "version_normalized": "5.4.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/webim/webim-php-composer.git",
+            "reference": "4ed62cd6b953bd242d22cc3e7617135d3480cc56"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/webim/webim-php-composer/zipball/4ed62cd6b953bd242d22cc3e7617135d3480cc56",
+            "reference": "4ed62cd6b953bd242d22cc3e7617135d3480cc56",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.0"
+        },
+        "time": "2014-02-23 15:19:30",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "WebIM": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Ery Lee",
+                "email": "ery.lee@gmail.com",
+                "homepage": "http://nextalk.im",
+                "role": "Company"
+            }
+        ],
+        "description": "PHP WebIM library for NexTalk",
+        "homepage": "http://github.com/webim/webim-php-composer",
+        "keywords": [
+            "nextalk",
+            "webim"
+        ]
+    }
+]

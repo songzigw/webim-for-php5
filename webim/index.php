@@ -1,12 +1,15 @@
 <?php
 
 /*
- * Webim应用的入口文件
+ * WebIM应用的入口文件
  *
  * @author ery lee <ery.lee at gmail.com>
- * @version 5.2
+ * @version 5.4
  */ 
-define('WEBIM_VERSION', '5.2');
+
+require './vendor/autoload.php';
+
+define('WEBIM_VERSION', '5.4');
 define('WEBIM_PRODUCTION_NAME', 'php5');
 define('WEBIM_DEBUG', false);
 define('WEBIMDB_CHARSET', 'utf8');
