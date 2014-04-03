@@ -7,11 +7,6 @@ namespace WebIM;
  */
 class Plugin {
 
-    /**
-     * Global config
-     */
-    private $config;
-
 	/*
 	 * 当前用户或者访客, WebIM统一定义为端点
 	 */
@@ -25,12 +20,12 @@ class Plugin {
 	/*
 	 * 初始化当前用户信息
 	 */
-    public function __construct($config = array()) {
-        $this->config = array_merge(array(), $config); 
+    public function __construct() {
+        global $IMC;
 		if($this->uid()) {
 			$this->loadUser();
 			$this->logined = true;
-		} else if($this->config['visitor']) {
+		} else if($IMC['visitor']) {
             //支持访客模式
 			$this->loadVisitor();
 			$this->login = true;

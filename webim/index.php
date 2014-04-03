@@ -4,9 +4,6 @@
  * WebIM应用的入口文件
  */ 
 
-/**
- * 环境设置
- */
 require 'env.php'; 
 
 /**
@@ -28,8 +25,6 @@ require './vendor/autoload.php';
  */
 require './src/Model.php';
 
-\WebIM\Model::configure($IMC);
-
 /**
  * 插件Plugin类, 集成站点用户
  */
@@ -50,6 +45,5 @@ $router->model( new \WebIM\Model() );
 $router->plugin( new \WebIM\Plugin() );
 
 $router->route();
-
 
 

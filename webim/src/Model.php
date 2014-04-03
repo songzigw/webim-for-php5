@@ -11,10 +11,11 @@ function T($table) { return ORM::forTable(TName($table)); }
  */
 class Model {
 
-    public function __construct($config) {
-        ORM::configure('mysql:host=' . $config['dbhost']. ';dbname=' . $config['dbname']);
-        ORM::configure('username', $config['dbuser']);
-        ORM::configure('password', $config['dbpassword']);
+    public function __construct() {
+        global $IMC;
+        ORM::configure('mysql:host=' . $IMC['dbhost']. ';dbname=' . $IMC['dbname']);
+        ORM::configure('username', $IMC['dbuser']);
+        ORM::configure('password', $IMC['dbpassword']);
         ORM::configure('logging', true);
         ORM::configure('return_result_sets', true);
         ORM::configure('driver_options', array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'));

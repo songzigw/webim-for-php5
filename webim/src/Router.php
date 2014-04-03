@@ -9,11 +9,6 @@ class Router {
      */
     private endpoint;
 
-    /**
-     * Global Config
-     */
-    private $config;
-
 	/*
 	 * WebIM Ticket
 	 */
@@ -34,9 +29,7 @@ class Router {
 	 */
 	private $model;
 
-	public function __construct() {
-        $this->config = array();
-    }
+	public function __construct() { }
 
     public function route() {
 		//IM Ticket
@@ -46,9 +39,9 @@ class Router {
 		//IM Client
         $this->client = new \WebIM\WebIM(
             $this->plugin->endpoint, 
-            $this->config['domain'], 
-            $this->config['apikey'], 
-            $this->config['server'], 
+            $IMC['domain'], 
+            $IMC['apikey'], 
+            $IMC['server'], 
             $this->ticket,
             );
         $method = $this->input('action');
@@ -58,13 +51,6 @@ class Router {
             header( "HTTP/1.0 400 Bad Request" );
             exit("No 'action' parameter");
         }
-    }
-
-    /**
-     * 全局配置
-     */
-    public function config($config) {
-        array_merge($this->config, $config); 
     }
 
     /**
@@ -128,7 +114,7 @@ class Router {
 		);
 
 		foreach($fields as $f) {
-			$scriptVar[$f] = $this->config[$f];	
+			$scriptVar[$f] = $IMC[$f];	
 		}
 
 		header("Content-type: application/javascript");
