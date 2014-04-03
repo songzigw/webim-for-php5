@@ -1,6 +1,8 @@
 WebIM-for-PHP5
 ==================
 
+DEPRECATED.........
+
 Webim application for PHP5
 
 Require
