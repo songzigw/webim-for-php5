@@ -1,7 +1,12 @@
-webim-for-php5
+WebIM-for-PHP5
 ==================
 
 Webim application for PHP5
+
+Require
+=======
+
+PHP5.3.7+
 
 Usage
 =====

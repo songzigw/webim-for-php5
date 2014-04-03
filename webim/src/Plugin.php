@@ -1,59 +1,49 @@
 <?php
 
+namespace WebIM;
+
 /**
- * Webim应用集成类
+ * Web应用集成类
  */
-class WebimPlugin {
+class Plugin {
+
+    /**
+     * Global config
+     */
+    private $config;
 
 	/*
-	 * 当前用户或者访客
+	 * 当前用户或者访客, WebIM统一定义为端点
 	 */
-	private $user = NULL;
-
-	/*
-	 * 是否访客
-	 */
-	private $is_visitor = false;
+	public $endpoint = NULL;
 
 	/*
 	 * 是否登录
 	 */
-	private $is_login = false;
+	public $logined = false; 
 
 	/*
 	 * 初始化当前用户信息
 	 */
-	function __construct() {
-        global $IMC;
-		if($this->getUid()) {
-			$this->setUser();			
-			$this->is_login = true;
-		} else if($IMC['visitor']) {
-			$this->setVisitor();
-			$this->is_login = true;
-			$this->is_visitor = true;	
+    public function __construct($config = array()) {
+        $this->config = array_merge(array(), $config); 
+		if($this->uid()) {
+			$this->loadUser();
+			$this->logined = true;
+		} else if($this->config['visitor']) {
+            //支持访客模式
+			$this->loadVisitor();
+			$this->login = true;
 		}
-	}
-
-	function uid() {
-		return $this->user->id;
-	}
-
-	function user() {
-		return $this->user;	
-	}
-
-	function isVisitor() {
-		return $this->is_visitor;
-	}
-
-	function logined() {
-		return $this->is_login;	
 	}
 
 	/*
 	 * 接口函数: 读取当前用户的好友在线好友列表
+     *
+     * @param string $uid 当前用户uid
 	 *
+     * @return array buddies
+     *
 	 * Buddy对象属性:
 	 *
 	 * 	uid: 好友uid
@@ -66,24 +56,32 @@ class WebimPlugin {
 	 *  group: 所属组
 	 *
 	 */
-	function buddies() {
+	public function buddies($uid) {
 		//根据当前用户id获取好友列表
 		return array(clone $this->user);
 	}
 
 	/*
-	 * 接口函数: 根据好友id列表、陌生人id列表读取用户, id列表为逗号分隔字符串
+	 * 接口函数: 根据好友id列表读取用户
 	 *
-	 * 用户属性同上
+     * @param array $ids 用户id数组
+     *
+     * @return array buddies
+     *
+	 * Buddy属性同上
 	 */
-	function buddiesByIds($ids = "", $strangers = "") {
+	public function buddiesByIds($ids) {
 		//根据id列表获取好友列表
 		return array();	
 	}
 	
 	/*
 	 * 接口函数：读取当前用户的Room列表
-	 *
+     * 
+     * @param string $uid 
+     *
+     * @return array rooms
+     *
 	 * Room对象属性:
 	 *
 	 *	id:		Room ID,
@@ -95,7 +93,7 @@ class WebimPlugin {
 	 *	all_count: 成员总计
 	 *	blocked: true | false 是否block
 	 */
-	function rooms() {
+	public function rooms($uid) {
 		//根据当前用户id获取群组列表
 		$demoRoom = (object)array(
 			"id" => '1',
@@ -103,19 +101,22 @@ class WebimPlugin {
 			"url" => "#",
 			"pic_url" => WEBIM_PATH . "static/images/chat.png",
 			"status" => "demo room",
-			"count" => 0,
-			"all_count" => 1,
 			"blocked" => false,
 		);
 		return array( $demoRoom );	
 	}
 
 	/*
-	 * 接口函数: 根据id列表读取rooms, id列表为逗号分隔字符串
+	 * 接口函数: 根据id数组读取rooms
+     *
+     * @param array id数组
+     *
+     * @return array rooms
 	 *
 	 * Room对象属性同上
+     *
 	 */
-	function roomsByIds($ids = "") {
+	function roomsByIds($ids) {
 		return array();	
 	}
 
@@ -127,31 +128,30 @@ class WebimPlugin {
 	 * 	text: 文本
 	 * 	link: 链接
 	 */	
-	function notifications() {
-		return array();	
+	function notifications($uid) {
+		return array();
 	}
 
 	/*
 	 * 接口函数: 集成项目的uid
 	 */
-	private function getUid() {
-        global $_SESSION;
+	protected function uid() {
 		return $_SESSION['uid'];
 	}
 
 	/*
 	 * 接口函数: 初始化当前用户对象，与站点用户集成.
 	 */
-	private function newUser() {
+	protected function loadUser() {
 		$uid = $_SESSION['uid'];
 		//NOTICE: This user should be read from database.
-		$this->user = (object)array(
+		$this->endpoint = (object)array(
             'uid' => $uid,
             'id' => $uid,
-            'nick' => "nick".$uid, 
+            'nick' => "user-".$uid, 
             'presence' => 'online',
             'show' => "available",
-            'pic_url' => WEBIM_PATH . "/static/images/chat.png",
+            'pic_url' => WEBIM_PATH . "/static/images/male.png",
             'url' => "#",
             'status' => "",
         );
@@ -160,20 +160,20 @@ class WebimPlugin {
 	/*
 	 * 接口函数: 创建访客对象，可根据实际需求修改.
 	 */
-	private function setVisitor() {
+	private function loadVisitor() {
 		if ( isset($_COOKIE['_webim_visitor_id']) ) {
 			$id = $_COOKIE['_webim_visitor_id'];
 		} else {
 			$id = substr(uniqid(), 6);
 			setcookie('_webim_visitor_id', $id, time() + 3600 * 24 * 30, "/", "");
 		}
-        $this->user = (object)array(
+        $this->endpoint = (object)array(
             'uid' => $id,
             'id' => 'vid:' . $id,
             'nick' => "v".$id,
             'presence' => 'online',
             'show' => "available",
-            'pic_url' => WEBIM_PATH . "/static/images/chat.png",
+            'pic_url' => WEBIM_PATH . "/static/images/male.png",
             'url' => "#",
         );
 	}

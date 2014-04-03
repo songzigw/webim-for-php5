@@ -6,14 +6,12 @@
   'dbpassword' => "public",
   'dbname' => "webim5",
     
-  //Webim Config
-  'version' => '5.3',
+  //WebIM Config
   'isopen' => true,
   'debug' => true,
   'domain' => 'localhost',
   'apikey' => 'public',
-  'host' => 'nextalk.im',
-  'port' => '8000',
+  'server' => 'http://localhost:8000',
   'emot' => 'default',
   'theme' => 'base',
   'opacity' => '80',

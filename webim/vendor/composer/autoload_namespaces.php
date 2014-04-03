@@ -7,4 +7,5 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'WebIM' => array($vendorDir . '/webim/webim-php/src'),
+    'IP' => array($vendorDir . '/webim/geoip-php'),
 );

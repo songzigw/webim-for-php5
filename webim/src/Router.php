@@ -1,78 +1,108 @@
 <?php
 
-class WebimAction {
+namespace WebIM;
+
+class Router {
+
+    /**
+     * WebIM Endpoint
+     */
+    private endpoint;
+
+    /**
+     * Global Config
+     */
+    private $config;
 
 	/*
-	 * Webim Ticket
+	 * WebIM Ticket
 	 */
 	private $ticket;
 
 	/*
-	 * Webim Client
+	 * WebIM Client
 	 */
 	private $client;
 
 	/*
-	 * Webim Plugin
+	 * WebIM Plugin
 	 */
 	private $plugin;
 
-    /**
-     * Webim Db
-     */
-    private $imdb;
-
 	/*
-	 * Setting Model
+	 * WebIM Model
 	 */
-	private $settingModel;
-
-	/*
-	 * History Model
-	 */
-	private $historyModel;
+	private $model;
 
 	public function __construct() {
-		global $IMC;
+        $this->config = array();
+    }
 
+    public function route() {
 		//IM Ticket
-		$imticket = $this->input('ticket');
-		if($imticket) $imticket = stripslashes($imticket);	
-		$this->ticket = $imticket;
-
-		//Initialize Plugin
-		$this->plugin = new WebimPlugin();
-
+		$ticket = $this->input('ticket');
+		if($ticket) $ticket = stripslashes($ticket);	
+		$this->ticket = $ticket;
 		//IM Client
-		$this->client = new WebimClient($this->plugin->user(), 
-			$this->ticket, $IMC['domain'], $IMC['apikey'], $IMC['host'], $IMC['port']);
+        $this->client = new \WebIM\WebIM(
+            $this->plugin->endpoint, 
+            $this->config['domain'], 
+            $this->config['apikey'], 
+            $this->config['server'], 
+            $this->ticket,
+            );
+        $method = $this->input('action');
+        if($method) {
+            call_user_func(array($this, $method));
+        } else {
+            header( "HTTP/1.0 400 Bad Request" );
+            exit("No 'action' parameter");
+        }
+    }
 
-        //IM Db
-        $this->imdb = new WebimDB( $IMC['dbuser'], $IMC['dbpassword'], $IMC['dbname'], $IMC['dbhost'] );
+    /**
+     * 全局配置
+     */
+    public function config($config) {
+        array_merge($this->config, $config); 
+    }
 
-		//IM Models
-		$this->settingModel = new SettingModel($this->imdb);
-		$this->historyModel = new HistoryModel($this->imdb);
-	}
+    /**
+     * 设置Plugin
+     */
+    public function plugin($plugin = null) {
+        if (func_num_args() === 0) {
+            return $this->plugin;
+        }
+        $this->plugin = $plugin; 
+    }
 
+    /**
+     * 设置Model
+     */
+    public function model($model = null) {
+        if (func_num_args() === 0) {
+            return $model;
+        }
+        $this->model = $model;
+    }
+
+    /**
+     * Boot Javascript
+     */
 	public function boot() {
 
-		global $IMC;
+        /**
+         * 用户是否登录
+         */
+		if( !$this->plugin->logined() ) exit();
 
-		//插件关闭
-		if(!$IMC['isopen']) exit();
-
-		//用户未登录
-		if(!$this->plugin->logined()) exit();
-
-
-        $user = $this->plugin->user();
+        $this->endpoint = $this->plugin->endpoint();
 
         //FIX offline bug
-        $user->show = "unavailable";
+        $endpoint->show = "unavailable";
 
 		$fields = array(
-			'version',
 			'theme', 
 			'local', 
 			'emot',
@@ -86,44 +116,44 @@ class WebimAction {
 			'upload');
 
 		$scriptVar = array(
-			'production_name' => WEBIM_PRODUCTION_NAME,
+            'version' => WEBIM_VERSION,
+			'product_name' => WEBIM_PRODUCT,
 			'path' => WEBIM_PATH,
 			'is_login' => '1',
-            'is_visitor' => false,
+            'is_visitor' => $this->endpoint->role === 'visitor',
 			'login_options' => '',
-			'user' => $user,
-			'setting' => $this->settingModel->get($this->plugin->uid()),
-			'min' => $IMC['debug'] ? "" : ".min"
+			'user' => $this->endpoint,
+			'setting' => $this->model->setting($this->endpoint->uid),
+			'min' => WEBIM_DEBUG ? "" : ".min"
 		);
 
 		foreach($fields as $f) {
-			$scriptVar[$f] = $IMC[$f];	
+			$scriptVar[$f] = $this->config[$f];	
 		}
 
 		header("Content-type: application/javascript");
 		header("Cache-Control: no-cache");
-
 		echo "var _IMC = " . json_encode($scriptVar) . ";" . PHP_EOL;
 
 		$script = <<<EOF
 _IMC.script = window.webim ? '' : ('<link href="' + _IMC.path + '/static/webim' + _IMC.min + '.css?' + _IMC.version + '" media="all" type="text/css" rel="stylesheet"/><link href="' + _IMC.path + '/static/themes/' + _IMC.theme + '/jquery.ui.theme.css?' + _IMC.version + '" media="all" type="text/css" rel="stylesheet"/><script src="' + _IMC.path + '/static/webim' + _IMC.min + '.js?' + _IMC.version + '" type="text/javascript"></script><script src="' + _IMC.path + '/static/i18n/webim-' + _IMC.local + '.js?' + _IMC.version + '" type="text/javascript"></script>');
-_IMC.script += '<script src="' + _IMC.path + '/webim.' + _IMC.production_name + '.js?vsn=' + _IMC.version + '" type="text/javascript"></script>';
+_IMC.script += '<script src="' + _IMC.path + '/webim.' + _IMC.product_name + '.js?vsn=' + _IMC.version + '" type="text/javascript"></script>';
 document.write( _IMC.script );
 
 EOF;
 		exit($script);
 	}
 
+    /**
+     * Endpoint Online
+     */
 	public function online() {
-        global $IMC;
-
-		$uid = $this->plugin->uid();
-		$domain = $this->input("domain");
 		if ( !$this->plugin->logined() ) {
 			$this->jsonReturn(array( 
 				"success" => false, 
 				"error_msg" => "Forbidden" ));
 		}
+		$uid = $this->endpoint->uid;
 		$im_buddies = array(); //For online.
 		$im_rooms = array(); //For online.
 		$strangers = $this->idsArray( $this->input('stranger_ids') );
@@ -133,8 +163,8 @@ EOF;
 		$active_buddies = $this->idsArray( $this->input('buddy_ids') );
 		$active_rooms = $this->idsArray( $this->input('room_ids') );
 
-		$new_messages = $this->historyModel->getOffline($this->plugin->uid());
-		$online_buddies = $this->plugin->buddies();
+		$new_messages = $this->model->offlineHistories($uid);
+		$online_buddies = $this->plugin->buddies($uid);
 		
 		$buddies_with_info = array();
 		//Active buddy who send a new message.
@@ -175,8 +205,8 @@ EOF;
 			}
 		}
 		if(!$IMC['enable_room']){
-			$rooms = $this->plugin->rooms();
-			$setting = $this->settingModel->get($this->plugin->uid());
+			$rooms = $this->plugin->rooms($uid);
+			$setting = $this->model->setting($uid);
 			$blocked_rooms = $setting && is_array($setting->blocked_rooms) ? $setting->blocked_rooms : array();
 			//Find im_rooms 
 			//Except blocked.
@@ -254,18 +284,18 @@ EOF;
 			//Provide history for active buddies and rooms
 			foreach($active_buddies as $id){
 				if(isset($cache_buddies[$id])){
-					$cache_buddies[$id]->history = $this->historyModel->get($uid, $id, "chat" );
+					$cache_buddies[$id]->history = $this->model->histories($uid, $id, "chat" );
 				}
 			}
 			foreach($active_rooms as $id){
 				if(isset($cache_rooms[$id])){
-					$cache_rooms[$id]->history = $this->historyModel->get($uid, $id, "grpchat" );
+					$cache_rooms[$id]->history = $this->model->histories($uid, $id, "grpchat" );
 				}
 			}
 
 			$show_buddies = $o;
 			$data->buddies = $show_buddies;
-			$this->historyModel->offlineReaded($this->plugin->uid());
+			$this->model->offlineReaded($this->endpoint->uid);
 			$this->jsonReturn($data);
 		} else {
 			$this->jsonReturn(array( 
@@ -275,11 +305,33 @@ EOF;
 		}
 	}
 
+    /**
+     * Offline API
+     */
 	public function offline() {
 		$this->client->offline();
 		$this->okReturn();
 	}
 
+    /**
+     * Browser Refresh, may be called
+     */
+	public function refresh() {
+		$this->client->offline();
+		$this->okReturn();
+	}
+
+    /**
+     * Buddies by ids
+     */
+	public function buddies() {
+		$ids = $this->input('ids');
+		$this->jsonReturn($this->plugin->buddiesByIds($ids));
+	}
+
+    /**
+     * Send Message
+     */
 	public function message() {
 		$type = $this->input("type");
 		$offline = $this->input("offline");
@@ -289,21 +341,26 @@ EOF;
 		$send = $offline == "true" || $offline == "1" ? 0 : 1;
 		$timestamp = $this->microtimeFloat() * 1000;
 		if( strpos($body, "webim-event:") !== 0 ) {
-			$this->historyModel->insert($this->plugin->user(), array(
+            $this->model->insertHistory(array(
 				"send" => $send,
 				"type" => $type,
 				"to" => $to,
+                'from' => $this->endpoint->id,
+                'nick' => $this->endpoint->nick,
 				"body" => $body,
 				"style" => $style,
 				"timestamp" => $timestamp,
 			));
 		}
 		if($send == 1){
-			$this->client->message($type, $to, $body, $style, $timestamp);
+			$this->client->message(null, $to, $body, $type, $style, $timestamp);
 		}
 		$this->okReturn();
 	}
 
+    /**
+     * Update Presence
+     */
 	public function presence() {
 		$show = $this->input('show');
 		$status = $this->input('status');
@@ -311,14 +368,9 @@ EOF;
 		$this->okReturn();
 	}
 
-	public function history() {
-		$uid = $this->plugin->uid();
-		$with = $this->input('id');
-		$type = $this->input('type');
-		$histories = $this->historyModel->get($uid, $with, $type);
-		$this->jsonReturn($histories);
-	}
-
+    /**
+     * Send Status
+     */
 	public function status() {
 		$to = $this->input("to");
 		$show = $this->input("show");
@@ -326,19 +378,78 @@ EOF;
 		$this->okReturn();
 	}
 
-	public function members() {
-		$id = $this->input('id');
-		$re = $this->client->members( $id );
-		if($re) {
-			$this->jsonReturn($re);
-		} else {
-			$this->jsonReturn("Not Found");
-		}
+    /**
+     * Read History
+     */
+	public function history() {
+		$uid = $this->endpoint->uid;
+		$with = $this->input('id');
+		$type = $this->input('type');
+		$histories = $this->model->histories($uid, $with, $type);
+		$this->jsonReturn($histories);
 	}
 
+    /**
+     * Clear History
+     */
+	public function clear_history() {
+		$id = $this->input('id');
+		$this->model->clearHistories($this->endpoint->uid, $id);
+		$this->okReturn();
+	}
+
+    /**
+     * Download History
+     */
+	public function download_history() {
+		$uid = $this->endpoint->uid;
+		$id = $this->input('id');
+		$type = $this->input('type');
+		$histories = $this->model->histories($uid, $id, $type, 1000 );
+		$date = date( 'Y-m-d' );
+		if($this->input('date')) {
+			$date = $this->input('date');
+		}
+		header('Content-Type',	'text/html; charset=utf-8');
+		header('Content-Disposition: attachment; filename="histories-'.$date.'.html"');
+		echo "<html><head>";
+		echo "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />";
+		echo "</head><body>";
+		echo "<h1>Histories($date)</h1>".PHP_EOL;
+		echo "<table><thead><tr><td>用户</td><td>消息</td><td>时间</td></tr></thead><tbody>";
+		foreach($histories as $history) {
+			$nick = $history['nick'];
+			$body = $history['body'];
+			$style = $history['style'];
+			$time = date( 'm-d H:i', (float)$history['timestamp']/1000 ); 
+			echo "<tr><td>{$nick}</td><td style=\"{$style}\">{$body}</td><td>{$time}</td></tr>";
+		}
+		echo "</tbody></table>";
+		echo "</body></html>";
+	}
+
+    /**
+     * Get Rooms
+     */
+	public function rooms() {
+		$ids = $this->input("ids");
+        $ids = explode(',', $ids);
+		$this->jsonReturn($this->plugin->roomsByIds($ids));	
+	}
+
+    /**
+     * Invite Room
+     */
+    public function invite() {
+    
+    }
+
+    /**
+     * Join Room
+     */
 	public function join() {
 		$id = $this->input('id');
-		$room = $this->plugin->roomsByIds( $id );
+		$room = $this->plugin->roomsByIds( array($id) );
 		if( $room && count($room) ) {
 			$room = $room[0];
 		} else {
@@ -365,97 +476,65 @@ EOF;
 		}
 	}
 
+    /**
+     * Leave Room
+     */
 	public function leave() {
 		$id = $this->input('id');
 		$this->client->leave( $id );
 		$this->okReturn();
 	}
 
-	public function buddies() {
-		$ids = $this->input('ids');
-		$this->jsonReturn($this->plugin->buddiesByIds($ids));
-	}
-
-	public function rooms() {
-		$ids = $this->input("ids");
-		$this->jsonReturn($this->plugin->roomsByIds($ids));	
-	}
-
-	public function refresh() {
-		$this->client->offline();
-		$this->okReturn();
-	}
-
-	public function clear_history() {
-		$id = $this->input('id'); //$with
-		$this->historyModel->clear($this->plugin->uid(), $id);
-		$this->okReturn();
-	}
-
-	public function download_history() {
-		$uid = $this->plugin->uid();
+    /**
+     * Get room members
+     */
+	public function members() {
 		$id = $this->input('id');
-		$type = $this->input('type');
-		$histories = $this->historyModel->get($uid, $id, $type, 1000 );
-		$date = date( 'Y-m-d' );
-		if($this->input('date')) {
-			$date = $this->input('date');
+		$re = $this->client->members( $id );
+		if($re) {
+			$this->jsonReturn($re);
+		} else {
+			$this->jsonReturn("Not Found");
 		}
-		//FIXME Later
-		//$client_time = (int)$this->input('time');
-		//$server_time = webim_microtime_float() * 1000;
-		//$timedelta = $client_time - $server_time;
-		header('Content-Type',	'text/html; charset=utf-8');
-		header('Content-Disposition: attachment; filename="histories-'.$date.'.html"');
-		echo "<html><head>";
-		echo "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />";
-		echo "</head><body>";
-		echo "<h1>Histories($date)</h1>".PHP_EOL;
-		echo "<table><thead><tr><td>用户</td><td>消息</td><td>时间</td></tr></thead><tbody>";
-		foreach($histories as $history) {
-			$nick = $history['nick'];
-			$body = $history['body'];
-			$style = $history['style'];
-			$time = date( 'm-d H:i', (float)$history['timestamp']/1000 ); 
-			echo "<tr><td>{$nick}</td><td style=\"{$style}\">{$body}</td><td>{$time}</td></tr>";
-		}
-		echo "</tbody></table>";
-		echo "</body></html>";
-		exit();
 	}
 
-	public function setting() {
-		if(isset($_GET['data'])) {
-			$data = $_GET['data'];
-		} 
-		if(isset($_POST['data'])) {
-			$data = $_POST['data'];
-		}
-		$uid = $this->plugin->uid();
-		$this->settingModel->set($uid, $data);
-		$this->okReturn();
-	}
+    /**
+     * Block Room
+     */
+    public function block() {
 
+    
+    }
+
+    /**
+     * Unblock Room
+     */
+    public function unblock() {
+
+    
+    }
+    
+    /**
+     * Read Notifications
+     */
 	public function notifications() {
 		$notifications = $this->plugin->notifications();
 		$this->jsonReturn($notifications);
 	}
 
-	public function openchat() {
-		$grpid = $this->input('group_id');
-		$nick = $this->input('nick');
-		$this->jsonReturn($this->client->openchat($grpid, $nick));	
-	}
+    /**
+     * Setting
+     */
+    public function setting() {
+        $data = $this->input('data');
+		$uid = $this->endpoint->uid;
+		$this->model->setting($uid, $data);
+		$this->okReturn();
+    }
 
-	public function closechat() {
-		$grpid = $this->input('group_id');
-		$buddy_id = $this->input('buddy_id');
-		$this->jsonReturn($this->client->closechat($grpid, $buddy_id));
-	}
-
-	public function input($name, $default=NULL) {
-		if( isset( $_GET[$name] ) ) return $_GET[$name]; 
+	private function input($name, $default = null) {
 		if( isset( $_POST[$name] ) ) return $_POST[$name];
+		if( isset( $_GET[$name] ) ) return $_GET[$name]; 
 		return $default;
 	}
 
@@ -469,7 +548,7 @@ EOF;
 	}
 
 	private function idsArray( $ids ){
-		return ($ids===NULL || $ids==="") ? array() : (is_array($ids) ? array_unique($ids) : array_unique(explode(",", $ids)));
+		return ($ids===null || $ids==="") ? array() : (is_array($ids) ? array_unique($ids) : array_unique(explode(",", $ids)));
 	}
 
 	private function microtimeFloat() {
@@ -478,3 +557,4 @@ EOF;
 	}
 
 }
+
