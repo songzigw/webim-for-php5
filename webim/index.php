@@ -6,6 +6,14 @@
 
 require 'env.php'; 
 
+if( WEBIM_DEBUG ) {
+    session_start();
+	error_reporting( -1 );
+} else {
+	error_reporting( E_ALL & ~E_NOTICE & ~E_STRICT );
+}
+
+
 /**
  * 全局配置
  */

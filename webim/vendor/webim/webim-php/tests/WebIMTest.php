@@ -4,7 +4,7 @@
  * Some simple unit tests to help test this library.
  */
 
-require_once dirname(__FILE__).'/../WebIM/WebIM.php';
+require_once dirname(__FILE__).'/../src/WebIM/WebIM.php';
 //require_once 'PHPUnit/Framework.php';
 
 class WebIMTest extends PHPUnit_Framework_TestCase {
@@ -16,7 +16,7 @@ class WebIMTest extends PHPUnit_Framework_TestCase {
         $apikey   = 'public';
         $server   = 'http://localhost:8000';
         $buddies  = ['uid2', 'uid3'];
-        $groups   = ['gid1', 'gid2'];
+        $rooms    = ['room1', 'room2'];
         $endpoint = array(
             'id' => 'uid1',
             'nick' => 'User1',
@@ -24,16 +24,13 @@ class WebIMTest extends PHPUnit_Framework_TestCase {
             'status' => 'online',
         );
         $this->webim = new \WebIM\WebIM($endpoint, $domain, $apikey, $server);
-        $this->webim->online($buddies, $groups);
+        $this->webim->online($buddies, $rooms);
     }
 
     public function testOnline() {
-        $this->dump('Online', $this->webim->online(['uid4', 'uid5'], ['gid6', 'gid7']));
+        $this->dump('Online', $this->webim->online(['uid4', 'uid5'], ['room6', 'room7']));
     }
 
-    public function testShow() {
-        $this->dump('Show', $this->webim->show('away', 'Away'));
-    }
 
     public function testOffline() {
         $this->dump('Offline', $this->webim->offline()); 
@@ -41,6 +38,10 @@ class WebIMTest extends PHPUnit_Framework_TestCase {
 
     public function testPresences() {
         $this->dump('Presences', $this->webim->presences(['uid1', 'uid2', 'uid3']));
+    }
+
+    public function testPresence() {
+        $this->dump('Presence', $this->webim->presence('away', 'Away'));
     }
 
     public function testStatus() {
@@ -56,16 +57,16 @@ class WebIMTest extends PHPUnit_Framework_TestCase {
     }
 
     public function testMembers() {
-        $this->dump('Members', $this->webim->members('gid1'));
+        $this->dump('Members', $this->webim->members('room1'));
     }
 
     public function testJoin() {
-        $this->dump('Join', $this->webim->join('gid3'));
+        $this->dump('Join', $this->webim->join('room3'));
     }
 
     public function testLeave() {
-        $this->webim->join('gid3');
-        $this->dump('Leave', $this->webim->leave('gid3'));
+        $this->webim->join('room3');
+        $this->dump('Leave', $this->webim->leave('room3'));
     }
 
     private function dump($title, $data) {
@@ -73,3 +74,4 @@ class WebIMTest extends PHPUnit_Framework_TestCase {
     }
 
 }
+

@@ -3,7 +3,7 @@
   //Database
   'dbhost' => "127.0.0.1",
   'dbuser' => "webim",
-  'dbpassword' => "public",
+  'dbpassword' => "webim",
   'dbname' => "webim5",
     
   //WebIM Config
@@ -25,6 +25,6 @@
   'enable_noti' => true,
   'admin_uids' => '0',
   'visitor' => true,
-  'show_unavailable' => false,
+  'show_unavailable' => true,
   'upload' => false,
 );

@@ -33,8 +33,19 @@ class WebIM {
     const ERROR_INTERNAL_SERVER_ERROR = 500;
     const ERROR_SERVICE_UNAVAILABLE = 503;
 
+    /**
+     * WebIM router endpoint
+     */
     private $endpoint;
+
+    /**
+     * Domain 
+     */
     private $domain;
+
+    /**
+     * APIKEY
+     */
     private $apikey;
     private $ticket;
     private $server;
@@ -64,27 +75,25 @@ class WebIM {
 	 * Online
 	 *
 	 * @param string $buddy_ids
-	 * @param string $group_ids
+	 * @param string $room_ids
 	 *
 	 * @return object
 	 * 	-success: true
 	 * 	-connection:
-	 * 	-endpint:
-	 * 	-buddies: [&buddyInfo]
-	 * 	-groupss: [&groupInfo]
-	 * 	-error_msg:
+     *  -presences: {'uid1': 'available', 'uid2': 'away', ...}
 	 *
 	 */
-	public function online($buddy_ids, $group_ids) {
+	public function online($buddy_ids, $room_ids, $show = null) {
         if(is_array($buddy_ids)) $buddy_ids = implode(',', $buddy_ids);
-        if(is_array($group_ids)) $group_ids = implode(',', $group_ids);
+        if(is_array($room_ids)) $room_ids = implode(',', $room_ids);
+        if( !$show ) $show = $this->endpoint->show;
 		$data = array_merge($this->reqdata(), array(
-			'groups'=> $group_ids, 
+			'rooms'=> $room_ids, 
 			'buddies'=> $buddy_ids, 
 			'name'=> $this->endpoint->id, 
 			'nick'=> $this->endpoint->nick, 
 			'status'=> $this->endpoint->status, 
-			'show' => $this->endpoint->show
+			'show' => $show
 		));
 		$response = $this->request('presences/online', $data, 'POST');
         $this->ticket = $response->ticket;
@@ -93,8 +102,6 @@ class WebIM {
             "domain" => $this->domain,
             "server" => $response->jsonpd,
             "jsonpd" => $response->jsonpd,
-            "websocket" => $response->websocket,
-            "mqttd" => $response->mqttd,
         );
         //if websocket 
         if(isset($response->websocket)) $connection['websocket'] = $response->websocket;
@@ -102,29 +109,11 @@ class WebIM {
         if(isset($response->mqttd)) $connection['mqttd'] = $response->mqttd;
         return (object)array(
             "success" => true, 
-            "buddies" => $response->buddies, 
-            "groups" => $response->groups,
-            "connection" => (object)$connection
+            "connection" => (object)$connection,
+            "presences" => $response->presences 
         );
 	}
     
-	/**
-	 * Show
-	 *
-	 * @param string $show
-	 * @param string $status
-	 *
-	 * @return ok
-	 *
-	 */
-	function show($show, $status = null){
-        $data = $this->reqdata();
-        $data['nick'] = $this->endpoint->nick;
-        $data['show'] = $show;
-        if($status) $data['status'] = $status;
-		return $this->request('presences/show', $data, 'POST');
-	}
-
 	/**
 	 * Offline
 	 *
@@ -140,7 +129,7 @@ class WebIM {
      *
      * @param $ids
      *
-     * @return object
+     * @return {'uid1': 'available', 'uid2': 'away', ...}
      */
     public function presences($ids) {
         if(is_array($ids)) $ids =  implode(",", $ids);
@@ -148,6 +137,25 @@ class WebIM {
         $data['ids'] = $ids;
         return $this->request('presences', $data);
     }
+
+	/**
+	 * Send presence.
+	 *
+     * @param string 
+     *      $show: 'available' | 'away' | 'chat' | 'dnd' | 'invisible' | 'unavailable'
+	 * @param string $status
+	 *
+	 * @return ok
+	 *
+	 */
+	function presence($show, $status = null){
+        $data = $this->reqdata();
+        $data['nick'] = $this->endpoint->nick;
+        $data['show'] = $show;
+        if($status) $data['status'] = $status;
+		return $this->request('presences/show', $data, 'POST');
+	}
+
 
 	/**
 	 * Send endpoint chat status to other.
@@ -176,7 +184,7 @@ class WebIM {
 	 * @param string $body message
 	 * @param string $style css
 	 *
-	 * @return ok
+	 * @return 'ok'
 	 *
 	 */
 	public function message($from, $to, $body, $type = 'chat', $style='', $timestamp = null) {
@@ -195,37 +203,41 @@ class WebIM {
 
     
 	/**
-	 * Get group members.
+	 * Get room members.
 	 *
-	 * @param string $gid
+	 * @param string $roomId
 	 *
-	 * @return array $members
+     * @return {'uid1': 'available', 'uid2': 'away', ...}
 	 *
 	 */
-    public function members($gid) {
-		return $this->request("groups/{$gid}/members", $this->reqdata());
+    public function members($roomId) {
+		return $this->request("rooms/{$roomId}/members", $this->reqdata());
     }
 
     /**
-     * Join group
+     * Join Room
      * 
-     * @return 
+	 * @param string $roomId
+     *
+     * @return 'ok'
      */
-	public function join($gid){
+	public function join($roomId){
 		$data = $this->reqdata();
         $data['nick'] = $this->endpoint->nick; 
-		return $this->request("groups/{$gid}/join", $data, 'POST');
+		return $this->request("rooms/{$roomId}/join", $data, 'POST');
 	}
 
     /**
-     * Leave Group
+     * Leave Room
      *
-     * @return TODO:
+	 * @param string $roomId
+     *
+     * @return 'ok'
      */
-    public function leave($gid) {
+    public function leave($roomId) {
 		$data = $this->reqdata();
         $data['nick'] = $this->endpoint->nick; 
-		return $this->request("groups/{$gid}/leave", $data,'POST');
+		return $this->request("rooms/{$roomId}/leave", $data,'POST');
     }
 
     /**
@@ -236,13 +248,12 @@ class WebIM {
         if($method == 'GET') {
             $url .= '?'.http_build_query($data);
         }
-
         //curl request
         $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_USERPWD, "{$this->domain}:{$this->apikey}");
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_TIMEOUT, $this->timeout);
-        //curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, $this->verify_ssl);
         if($method == 'POST') {
             //$data = array_map(array($this, "sanitize_curl_parameter"), $data);
             curl_setopt($ch, CURLOPT_POST, 1);
@@ -259,7 +270,7 @@ class WebIM {
 
         $code = (int)curl_getinfo($ch, CURLINFO_HTTP_CODE);
         if ($code != self::STATUS_OK) {
-          throw new WebIMException($code, $url, "HTTP status code: $code, response=$response");
+            throw new WebIMException($code, $url, "HTTP status code: $code, response=$response");
         }
 
         curl_close($ch);
@@ -279,7 +290,8 @@ class WebIM {
     protected function reqdata() {
         $data = array(
 			'domain' => $this->domain, 
-			'apikey' => $this->apikey, 
+            //basic authentication
+			//'apikey' => $this->apikey, 
 			'version' => $this->version,
         );
         if($this->ticket) $data['ticket'] = $this->ticket;

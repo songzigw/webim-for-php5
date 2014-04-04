@@ -4,7 +4,7 @@ namespace WebIM;
 
 function TName($table) { return 'webim_' . $table; }
 
-function T($table) { return ORM::forTable(TName($table)); }
+function T($table) { return \ORM::forTable(TName($table)); }
 
 /**
  * 数据模型类
@@ -13,12 +13,12 @@ class Model {
 
     public function __construct() {
         global $IMC;
-        ORM::configure('mysql:host=' . $IMC['dbhost']. ';dbname=' . $IMC['dbname']);
-        ORM::configure('username', $IMC['dbuser']);
-        ORM::configure('password', $IMC['dbpassword']);
-        ORM::configure('logging', true);
-        ORM::configure('return_result_sets', true);
-        ORM::configure('driver_options', array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'));
+        \ORM::configure('mysql:host=' . $IMC['dbhost']. ';dbname=' . $IMC['dbname']);
+        \ORM::configure('username', $IMC['dbuser']);
+        \ORM::configure('password', $IMC['dbpassword']);
+        \ORM::configure('logging', true);
+        \ORM::configure('return_result_sets', true);
+        \ORM::configure('driver_options', array(\PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'));
     }
     
     /**
@@ -27,8 +27,8 @@ class Model {
     public function histories($uid, $with, $type = 'chat',  $limit = 30) {
         if( $type === 'chat') {
             $query = T('histories')->where('type', 'chat')
-                ->whereRaw("(`to`=%s AND `from`=%s AND `fromdel` != 1) OR (`send` = 1 AND `from`=%s AND `to`=%s AND `todel` != 1)", array($with, $uid, $with, $uid, $limit))
-                ->orderByDesc('timestamp')->limt($limit);
+                ->whereRaw("(`to`= ? AND `from`= ? AND `fromdel` != 1) OR (`send` = 1 AND `from`= ? AND `to`= ? AND `todel` != 1)", array($with, $uid, $with, $uid))
+                ->orderByDesc('timestamp')->limit($limit);
         } else {
             $query = T('histories')->where('type', 'grpchat')
                 ->where('to', $with)

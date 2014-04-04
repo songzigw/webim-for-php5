@@ -28,7 +28,7 @@ class Plugin {
 		} else if($IMC['visitor']) {
             //支持访客模式
 			$this->loadVisitor();
-			$this->login = true;
+			$this->logined = true;
 		}
 	}
 
@@ -45,6 +45,7 @@ class Plugin {
 	 * 	id:  同uid
 	 *	nick: 好友昵称
 	 *	pic_url: 头像图片
+     *	presence: online | offline
 	 *	show: available | unavailable
 	 *  url: 好友主页URL
 	 *  status: 状态信息 
@@ -53,7 +54,23 @@ class Plugin {
 	 */
 	public function buddies($uid) {
 		//根据当前用户id获取好友列表
-		return array(clone $this->user);
+        $buddies = array();
+        $ids = range(1, 10);
+        foreach ($ids  as $id) {
+            if('uid'.$id !== $uid) {
+                $buddies[] = array(
+                    'id' => 'uid' . $id,
+                    'uid' => 'uid' . $id,
+                    'group' => 'friend',
+                    'nick' => 'user'.$id,
+                    'presence' => 'offline',
+                    'show' => 'unavailable',
+                    'status' => '#',
+                    'pic_url' => WEBIM_PATH . '/static/images/male.png',
+                ); 
+            }
+        }
+        return $buddies;
 	}
 
 	/*
@@ -67,6 +84,7 @@ class Plugin {
 	 */
 	public function buddiesByIds($ids) {
 		//根据id列表获取好友列表
+        if( empty($ids) ) return array();
 		return array();	
 	}
 	
@@ -90,7 +108,7 @@ class Plugin {
 	 */
 	public function rooms($uid) {
 		//根据当前用户id获取群组列表
-		$demoRoom = (object)array(
+		$demoRoom = array(
 			"id" => '1',
 			"nick" => 'demoroom',
 			"url" => "#",
@@ -131,6 +149,7 @@ class Plugin {
 	 * 接口函数: 集成项目的uid
 	 */
 	protected function uid() {
+        global $_SESSION;
 		return $_SESSION['uid'];
 	}
 
@@ -140,14 +159,15 @@ class Plugin {
 	protected function loadUser() {
 		$uid = $_SESSION['uid'];
 		//NOTICE: This user should be read from database.
-		$this->endpoint = (object)array(
-            'uid' => $uid,
-            'id' => $uid,
-            'nick' => "user-".$uid, 
+		$this->endpoint = array(
+            'uid' => 'uid'.$uid,
+            'id' => 'uid'.$uid,
+            'nick' => "user".$uid, 
             'presence' => 'online',
             'show' => "available",
             'pic_url' => WEBIM_PATH . "/static/images/male.png",
             'url' => "#",
+            'role' => 'user',
             'status' => "",
         );
 	}
@@ -162,14 +182,16 @@ class Plugin {
 			$id = substr(uniqid(), 6);
 			setcookie('_webim_visitor_id', $id, time() + 3600 * 24 * 30, "/", "");
 		}
-        $this->endpoint = (object)array(
-            'uid' => $id,
+        $this->endpoint = array(
+            'uid' => 'vid:' . $id,
             'id' => 'vid:' . $id,
             'nick' => "v".$id,
             'presence' => 'online',
             'show' => "available",
             'pic_url' => WEBIM_PATH . "/static/images/male.png",
+            'role' => 'visitor',
             'url' => "#",
+            'status' => "",
         );
 	}
 
