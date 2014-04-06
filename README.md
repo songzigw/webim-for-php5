@@ -12,13 +12,13 @@ PHP > 5.3.10
 Usage
 =====
 
-1. webim目录上传到PHP5项目目录;
+1. webim目录上传到站点;
 
 2. 创建数据库, 导入webim/install.sql表;
 
 3. 配置webim/config.php; 
 
-4. 编码webim/src/Plugin.php，与项目用户、群组、通知集成;
+4. 编码webim/src/Plugin.php，集成站点用户、群组、通知等;
 
 5. 需要显示webim的页面，footer嵌入:
 
