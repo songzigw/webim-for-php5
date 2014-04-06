@@ -4,15 +4,28 @@
  * WebIM应用的入口文件
  */ 
 
-require 'env.php'; 
+define('WEBIM_DEBUG', true);
 
-if( WEBIM_DEBUG ) {
+if(WEBIM_DEBUG) {
     session_start();
-	error_reporting( -1 );
+	error_reporting( E_ALL );
 } else {
 	error_reporting( E_ALL & ~E_NOTICE & ~E_STRICT );
 }
 
+define('WEBIM_VERSION', '5.4');
+
+define('WEBIM_PRODUCT', 'php5');
+
+function WEBIM_PATH() {
+	global $_SERVER;
+    $name = htmlspecialchars($_SERVER['SCRIPT_NAME'] ? $_SERVER['SCRIPT_NAME'] : $_SERVER['PHP_SELF']); 
+    return substr( $name, 0, strrpos( $name, '/' ) ) . "/";
+}
+
+function WEBIM_IMAGE($img) {
+    return WEBIM_PATH() . "static/images/{$img}";
+}
 
 /**
  * 全局配置

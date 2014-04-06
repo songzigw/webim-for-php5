@@ -25,6 +25,7 @@
 		unblock: path + "/index.php?action=unblock",
 		members: path + "/index.php?action=members",
         //notifications
+		upload: path + "/static/images/upload.php",
 		notifications: path + "/index.php?action=notifications"
 	} );
 
@@ -64,7 +65,7 @@
 		loginOptions: _IMC['login_options']
 	} );
     if(!_IMC.is_visitor) {
-        if(_IMC.enable_room )ui.addApp("room", { discussion: false });
+        if(_IMC.enable_room )ui.addApp("room", { discussion: true });
         if(_IMC.enable_noti )ui.addApp("notification");
         /*
         if( _IMC.enable_chatlink )ui.addApp("chatlink", {
@@ -75,7 +76,7 @@
         });
         */
     }
-    ui.addApp("chatbtn");
+    if(_IMC.enable_chatlink) ui.addApp("chatbtn");
     ui.addApp("setting", {"data": webim.setting.defaults.data});
 	ui.render();
 	_IMC['is_login'] && im.autoOnline() && im.online();

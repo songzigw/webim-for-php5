@@ -117,7 +117,7 @@ class Router {
 		$scriptVar = array(
             'version' => WEBIM_VERSION,
 			'product_name' => WEBIM_PRODUCT,
-			'path' => WEBIM_PATH,
+			'path' => WEBIM_PATH(),
 			'is_login' => '1',
             'is_visitor' => $endpoint['role'] === 'visitor',
 			'login_options' => '',
@@ -150,6 +150,7 @@ EOF;
         global $IMC;
 		$uid = $this->currentUID();
         $show = $this->input('show');
+
         //buddy, room, chatlink ids
 		$chatlinkIds= $this->idsArray($this->input('chatlink_ids') );
 		$activeRoomIds = $this->idsArray( $this->input('room_ids') );
@@ -197,17 +198,15 @@ EOF;
                 $rtBuddies[$id] = $buddy;
             }
 			//histories for active buddies and rooms
-            /*
 			foreach($activeBuddyIds as $id) {
                 if( isset($rtBuddies[$id]) ) {
-                    $rtBuddies[$id]->history = $this->model->histories($uid, $id, "chat" );
+                    $rtBuddies[$id]['history'] = $this->model->histories($uid, $id, "chat" );
                 }
 			}
             if( !$IMC['show_unavailable'] ) {
                 $rtBuddies = array_filter($rtBuddies, 
                     function($buddy) { return $buddy['presence'] === 'online'; });        
             }
-            */
             $rtRooms = array();
             if( $IMC['enable_room'] ) {
                 foreach($rooms as $room) {
@@ -215,17 +214,20 @@ EOF;
                 }
                 foreach($activeRoomIds as $id){
                     if( isset($rtRooms[$id]) ) {
-                        $rtRooms[$id]->history = $this->model->histories($uid, $id, "grpchat" );
+                        $rtRooms[$id]['history'] = $this->model->histories($uid, $id, "grpchat" );
                     }
                 }
             }
 
 			$this->model->offlineReaded($this->currentUID());
 
+            $endpoint = $this->currentEndpoint();
+            if($show) $endpoint['show'] = $show;
+
             $this->jsonReply(array(
                 'success' => true,
                 'connection' => $data->connection,
-                'user' => $this->currentEndpoint(),
+                'user' => $endpoint,
                 'buddies' => array_values($rtBuddies),
                 'rooms' => array_values($rtRooms),
                 'new_messages' => $offlineMessages,
@@ -376,77 +378,138 @@ EOF;
      * Invite Room
      */
     public function invite() {
-    
+        $uid = $this->currentUID();
+        $endpoint = $this->currentEndpoint();
+        $roomId = $this->input('id');
+        $nick = $this->input('nick');
+        if(strlen($nick) === 0) {
+			header("HTTP/1.0 400 Bad Request");
+			exit("Nick is Null");
+        }
+        //find persist room 
+        $room = $this->plugin->room($roomId);
+        if(!$room) {
+            //create temporary room
+            $room = $this->model->createRoom(array(
+                'owner' => $uid,
+                'name' => $roomId, 
+                'nick' => $nick
+            ));
+        }
+        //join the room
+        $this->model->joinRoom($roomId, $uid, $endpoint['nick']);
+        //invite members
+        $members = explode(",", $this->input('members'));
+        $members = $this->plugin->buddiesByIds($members);
+        $this->model->inviteRoom($roomId, $members);
+        //send invite message to members
+        foreach($members as $m) {
+            $body = "webim-event:invite|,|{$roomId}|,|{$nick}";
+            $this->client->message(null, $m['id'], $body); 
+        }
+        //tell server that I joined
+        $this->client->join($roomId);
+        $this->jsonReply(array(
+            'id' => $room['name'],
+            'nick' => $room['nick'],
+            'temporary' => true,
+            'pic_url' => WEBIM_IMAGE('room.png')
+        ));
     }
 
     /**
      * Join Room
      */
 	public function join() {
-		$id = $this->input('id');
-		$room = $this->plugin->roomsByIds( array($id) );
-		if( $room && count($room) ) {
-			$room = $room[0];
-		} else {
-			$room = (object)array(
-				"id" => $id,
-				"nick" => $this->input('nick'),
-				"temporary" => true,
-				"pic_url" => (WEBIM_PATH . "static/images/chat.png"),
-			);
-		}
-		if($room){
-			$re = $this->client->join($id);
-			if($re){
-                //5.2 fix
-				$room->count = $re->{$id};
-				$this->jsonReply($room);
-			}else{
-				header("HTTP/1.0 404 Not Found");
-				exit("Can't join this room right now");
-			}
-		}else{
+        $uid = $this->currentUID();
+        $endpoint = $this->currentEndpoint();
+        $roomId = $this->input('id');
+        $nick = $this->input('nick');
+        $room = $this->plugin->room($roomId);
+        if(!$room) {
+            $room = $this->model->room($roomId);
+        }
+        if($room) {
+            $this->model->joinRoom($roomId, $uid, $endpoint['nick']);
+            $data = $this->client->join($roomId);
+            $this->jsonReply(array(
+                'id' => $roomId,
+                'nick' => $nick,
+                'temporary' => true,
+                'pic_url' => WEBIM_IMAGE('room.png')
+            ));
+        } else {
 			header("HTTP/1.0 404 Not Found");
-			exit("Can't found this room");
-		}
+			exit("Can't found room: {$roomId}");
+        }
 	}
 
     /**
      * Leave Room
      */
 	public function leave() {
-		$id = $this->input('id');
-		$this->client->leave( $id );
+        $uid = $this->currentUID();
+		$room = $this->input('id');
+		$this->client->leave( $room );
+        $this->model->leaveRoom($room, $uid);
 		$this->okReply();
 	}
 
     /**
-     * Get room members
+     * Room members
      */
 	public function members() {
-		$id = $this->input('id');
-		$re = $this->client->members( $id );
-		if($re) {
-			$this->jsonReply($re);
-		} else {
-			$this->jsonReply("Not Found");
-		}
+        $endpoint = $this->currentEndpoint();
+        $roomId = $this->input('id');
+        $room = $this->plugin->room($roomId);
+        $members = array();
+        if($room) {
+            $members = $this->plugin->members($roomId);
+        } else {
+            $room = $this->model->room($roomId);
+            if($room) {
+                $members = $this->model->members($roomId);
+            }
+        }
+        if(!$room) {
+			header("HTTP/1.0 404 Not Found");
+			exit("Can't found room: {$roomId}");
+            return;
+        }
+        $presences = (array)$this->client->members($roomId);
+        $rtMembers = array();
+        foreach($members as $m) {
+            $id = $m['id'];
+            if(isset($presences[$id])) {
+                $m['presence'] = 'online';
+                $m['show'] = $presences[$id];
+            } else {
+                $m['presence'] = 'offline';
+                $m['show'] = 'unavailable';
+            }
+            $rtMembers[] = $m;
+        }
+        $this->jsonReply($rtMembers);
 	}
 
     /**
      * Block Room
      */
     public function block() {
-
-    
+        $uid = $this->currentUID();
+        $room = $this->input('id');
+        $this->model->blockRoom($room, $uid);
+        $this->okReply();
     }
 
     /**
      * Unblock Room
      */
     public function unblock() {
-
-    
+        $uid = $this->currentUID();
+        $room = $this->input('id');
+        $this->model->unblockRoom($room, $uid);
+        $this->okReply();
     }
     
     /**

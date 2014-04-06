@@ -57,18 +57,16 @@ class Plugin {
         $buddies = array();
         $ids = range(1, 10);
         foreach ($ids  as $id) {
-            if('uid'.$id !== $uid) {
-                $buddies[] = array(
-                    'id' => 'uid' . $id,
-                    'uid' => 'uid' . $id,
-                    'group' => 'friend',
-                    'nick' => 'user'.$id,
-                    'presence' => 'offline',
-                    'show' => 'unavailable',
-                    'status' => '#',
-                    'pic_url' => WEBIM_PATH . '/static/images/male.png',
-                ); 
-            }
+            $buddies[] = array(
+                'id' => 'uid' . $id,
+                'uid' => 'uid' . $id,
+                'group' => 'friend',
+                'nick' => 'user'.$id,
+                'presence' => 'offline',
+                'show' => 'unavailable',
+                'status' => '#',
+                'pic_url' => WEBIM_IMAGE('male.png'),
+            ); 
         }
         return $buddies;
 	}
@@ -85,7 +83,19 @@ class Plugin {
 	public function buddiesByIds($ids) {
 		//根据id列表获取好友列表
         if( empty($ids) ) return array();
-		return array();	
+        foreach($ids as $id) {
+            $buddies[] = array(
+                'id' => $id,
+                'uid' => $id,
+                'group' => 'friend',
+                'nick' => preg_replace('/uid/', 'user', $id),
+                'presence' => 'offline',
+                'show' => 'unavailable',
+                'status' => '#',
+                'pic_url' => WEBIM_IMAGE('male.png'),
+            ); 
+        }
+		return $buddies;	
 	}
 	
 	/*
@@ -109,12 +119,14 @@ class Plugin {
 	public function rooms($uid) {
 		//根据当前用户id获取群组列表
 		$demoRoom = array(
-			"id" => '1',
-			"nick" => 'demoroom',
-			"url" => "#",
-			"pic_url" => WEBIM_PATH . "static/images/chat.png",
-			"status" => "demo room",
-			"blocked" => false,
+			'id' => '1',
+            'name' => 'room1',
+			'nick' => 'Persist Room',
+			'url' => "#",
+			'pic_url' => WEBIM_IMAGE('room.png'),
+			'status' => "Persist Room",
+			'blocked' => false,
+            'temporary' => false
 		);
 		return array( $demoRoom );	
 	}
@@ -133,6 +145,40 @@ class Plugin {
 		return array();	
 	}
 
+    /**
+     * 读取persist群组成员
+     */
+    function members($room) {
+        $members = array();
+        foreach (range(1, 10)  as $id) {
+            $members[] = array(
+                'id' => 'uid' . $id,
+                'uid' => 'uid' . $id,
+                'nick' => 'user'.$id
+            ); 
+        }
+        return $members;
+    }
+
+    /**
+     * Persist Room
+     */
+    function room($id) {
+        if($id == '1') {
+            return array(
+                'id' => '1',
+                'name' => 'room1',
+                'nick' => 'Persist Room',
+                'url' => "#",
+                'pic_url' => WEBIM_IMAGE('room.png'),
+                'status' => "Demo Room",
+                'blocked' => false,
+                'temporary' => false
+            );
+        }
+        return null;
+    }
+
 	/*
 	 * 接口函数: 当前用户通知列表
 	 *
@@ -142,7 +188,8 @@ class Plugin {
 	 * 	link: 链接
 	 */	
 	function notifications($uid) {
-		return array();
+        $demo = array('text' => '通知演示', 'link' => '#');
+		return array($demo);
 	}
 
 	/*
@@ -165,7 +212,7 @@ class Plugin {
             'nick' => "user".$uid, 
             'presence' => 'online',
             'show' => "available",
-            'pic_url' => WEBIM_PATH . "/static/images/male.png",
+            'pic_url' => WEBIM_IMAGE('male.png'),
             'url' => "#",
             'role' => 'user',
             'status' => "",
@@ -188,7 +235,7 @@ class Plugin {
             'nick' => "v".$id,
             'presence' => 'online',
             'show' => "available",
-            'pic_url' => WEBIM_PATH . "/static/images/male.png",
+            'pic_url' => WEBIM_IMAGE('male.png'),
             'role' => 'visitor',
             'url' => "#",
             'status' => "",

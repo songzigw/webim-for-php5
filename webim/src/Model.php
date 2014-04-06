@@ -107,13 +107,14 @@ class Model {
      * 根据ID读取讨论组
      */
     public function room($id) {
-        $room = T('rooms')->where('name', 'id')->findOne();
+        $room = T('rooms')->where('name', $id)->findOne();
         if($room) {
             return array(
                 'id' => $room->name,
+                'name' => $room->name,
                 'nick' => $room->nick,
                 "url" => "#",
-                "pic_url" => WEBIM_PATH . "static/images/room.png",
+                "pic_url" => WEBIM_IMAGE("room.png"),
                 "status" => "",
                 "temporary" => true,
                 "blocked" => false
@@ -138,7 +139,7 @@ class Model {
                 'id' => $room->name,
                 'nick' => $room->nick,
                 "url" => "#",
-                "pic_url" => WEBIM_PATH . "/static/images/room.png",
+                "pic_url" => WEBIM_IMAGE("room.png"),
                 "status" => "",
                 "temporary" => true,
                 "blocked" => $this->isRoomBlocked($room->name, $uid)
@@ -167,13 +168,14 @@ class Model {
         $room = T('rooms')->create();
         $room->set($data)->set_expr('created', 'NOW()')->set_expr('updated', 'NOW()');
         $room->save();
-        return $room;
+        return $room->asArray();
     }
 
     /**
      * 邀请成员加入讨论组
      */
     public function inviteRoom($room, $members) {
+        var_dump($members);
         foreach($members as $member) {
             $this->joinRoom($room, $member['uid'], $member['nick']);
         }

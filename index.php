@@ -15,10 +15,12 @@
         session_start(); 
         $uid = $_GET['uid'];
         $_SESSION['uid'] = $uid;
-        $p = <<<EOL
-<p>登录UID: <a class="webim-chatbtn" href="/chat/uid{$uid}">uid$uid</a></p>
-EOL;
-        echo $p;
+        echo "<ul style=\"list-style: none outside none;\">";
+        echo "<li>登录: <a class=\"webim-chatbtn\" href=\"/chat/uid{$uid}\">user$uid</a></li>";
+        foreach(range(1, 10) as $id) {
+            echo "<li>好友: <a class=\"webim-chatbtn\" href=\"/chat/uid{$id}\">user{$id}</a></li>";
+        }
+        echo "</ul>";
     } else {
 $form = <<<EOL
 <form method="GET" action="index.php" >

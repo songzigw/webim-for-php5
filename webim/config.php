@@ -17,8 +17,8 @@
   'opacity' => '80',
   'local' => 'zh-CN',
   'show_realname' => false,
-  'enable_room' => false,
-  'enable_chatlink' => false,
+  'enable_room' => true,
+  'enable_chatlink' => true,
   'enable_shortcut' => true,
   'enable_menu' => false,
   'enable_login' => false,
@@ -26,5 +26,5 @@
   'admin_uids' => '0',
   'visitor' => true,
   'show_unavailable' => true,
-  'upload' => false,
+  'upload' => true,
 );
