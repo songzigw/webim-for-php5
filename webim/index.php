@@ -1,8 +1,16 @@
 <?php
 
-/*
- * WebIM应用的入口文件
+/**
+ * WebIM 入口
+ *
+ * @copyright   (C) 2014 NexTalk.IM
+ * @license     http://nextalk.im/license
+ * @lastmodify  2014-04-06
  */ 
+
+if(phpversion() < '5.3.10') {
+    exit('PHP version should be > 5.3.10');
+}
 
 define('WEBIM_DEBUG', true);
 
@@ -28,43 +36,44 @@ function WEBIM_IMAGE($img) {
 }
 
 /**
- * 全局配置
+ * Configuration
  */
 $IMC = require('config.php');
 
 if( !$IMC['isopen'] ) exit();
 
+define('WEBIM_ROOT', dirname(__FILE__));
+
+define('WEBIM_SRC', WEBIM_ROOT . '/src');
+
 /**
- * WebIM客户库，消息服务器通信
  *
- * 详见: https://github.com/webim/webim-php
+ * WebIM Libraries
+ *
+ * https://github.com/webim/webim-php
+ *
  */
-require './vendor/autoload.php';
+require WEBIM_ROOT.'/vendor/autoload.php';
 
 /**
- * 数据库模型
+ * Model
  */
-require './src/Model.php';
+require WEBIM_SRC . '/Model.php';
 
 /**
- * 插件Plugin类, 集成站点用户
+ * Plugin
  */
-require './src/Plugin.php';
+require WEBIM_SRC . '/Plugin.php';
 
 /**
- * 路由类，处理WebIM请求
+ * Router
  */
-require './src/Router.php';
+require WEBIM_SRC . '/Router.php';
 
 /**
- * 路由分发
+ * WebIM APP
  */
-$router = new \WebIM\Router();
+require WEBIM_SRC . '/App.php';
 
-$router->model( new \WebIM\Model() );
-
-$router->plugin( new \WebIM\Plugin() );
-
-$router->route();
-
+\WebIM\App::run();
 

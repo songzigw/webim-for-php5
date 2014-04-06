@@ -4,11 +4,11 @@
 <meta charset="utf-8">
 <title>WebIM for PHP5</title>
 </head>
-<body style="background:#E6E6E6">
-<div style="background:#FFF;height:100%;width:640px;margin:auto;padding:60px;"><center>
+<body style="background:#E6E6E6;height:100%;">
+<div style="background:#FFF;width:640px;margin:auto;padding:60px;"><center>
 <h1>WebIM for PHP5</h1>
 <a href="https://github.com/webim/webim-for-php5">https://github.com/webim/webim-for-php5</a>
-<h2>5.4.1</h2>
+<h2>最新版本: 5.4.1</h2>
 <hr>
 <?php 
     if(isset($_GET['uid'])) {
@@ -32,6 +32,16 @@ EOL;
     echo $form;
     }
 ?>
+
+<h1>开发指南</h1>
+<hr>
+</center>
+<div>
+<?php 
+    $readme = file_get_contents("README.md");
+    echo "<pre> $readme </pre>";
+?>
+</div>
 </center></div>
 <script type="text/javascript" src="webim/index.php?action=boot"></script>
 </body>
