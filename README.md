@@ -1,58 +1,115 @@
+
 WebIM-for-PHP5
 ==================
 
-DEPRECATED.........
-
-Webim application for PHP5
+WebIM Application for PHP5
 
 Require
 =======
 
-PHP5.3.7+
+PHP > 5.3.10
 
 Usage
 =====
 
 1. webim目录上传到PHP5项目目录;
 
-2. 数据库创建install.sql中的两张表;
+2. 创建数据库, 导入webim/install.sql表;
 
-3. 配置webim/conf/config.php; 
+3. 配置webim/config.php; 
 
-4. 配置webim/index.php的WEBIM_PATH变量
+4. 编码webim/src/Plugin.php，与项目用户、群组、通知集成;
 
-5. 实现webim/WebimPlugin.class.php的项目集成接口，与项目用户、群组、通知集成
+5. 需要显示webim的页面，footer嵌入:
 
-6. 项目需要显示Webim的页面，footer嵌入
+    
+```javascript
+
+<script type="text/javascript" src="webim/index.php?action=boot"></script>
+
+```
 
 
-WebimPlugin.class.php
+Plugin.php
 ================
 
-项目集成接口类, 用户参考示例代码，实现下述接口:
+插件类, 参考示例代码，实现下述接口:
 
 1. uid() 获取当前登录用户UID, 一般从SESSION读取
 
-2. setUser() 初始化Webim当前的用户对象,一般从SESSION和数据库读取
+2. LoadUser() 初始化Webim当前的用户对象,一般从SESSION和数据库读取
 
-3. setVisitor() 如支持访客模式，初始化访客(Visitor)对象
+3. LoadVisitor() 如支持访客模式，初始化访客(Visitor)对象
 
-4. buddies() 读取当前用户的在线好友列表
+4. buddies($uid) 读取当前用户的在线好友列表
 
-5. buddiesByIds($ids , $strangers) 根据ids列表读取好友列表
+5. buddiesByIds($ids) 根据ids列表读取好友列表
 
-6. rooms() 读取当前用户所属的群组，以支持群聊
+6. rooms($uid) 读取当前用户所属的群组，以支持群聊
 
-7. roomsByIds() 根据id列表读取群组列表
+7. roomsByIds($ids) 根据id列表读取群组列表
 
-8. notifications() 读取当前用户的通知信息
+8. room($id) 根据Id读取一个群组(persist)
 
-WebimAction.class.php
+9. members($room) 根据群组Id，读取群组成员信息
+
+8. notifications($uid) 读取当前用户的通知信息
+
+
+Router.php
 ==============================
 
-Webim应用AJAX请求处理类
+WebIM应用AJAX请求分发处理
+
+
+Model.php
+==============================
+
+WebIM数据模型类
+
+
+App.php
+==============================
+
+WebIM 应用入口类
+
+
+Install.sql
+==============================
+
+
+webim_settings
+--------------
+
+用户设置表，保存用户界面个性化设置
+
+
+webim_histories
+----------------
+
+历史消息表，保存聊天历史消息
+
+
+webim_rooms
+----------------
+
+临时讨论组表
+
+
+webim_members
+----------------
+
+临时讨论组成员表
+
 
 Author
 ======
 
 http://nextalk.im
+
+ery.lee at gmail.com
+
+nextalk at qq.com
+
+
+

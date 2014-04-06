@@ -38,7 +38,7 @@ EOL;
 </center>
 <div>
 <?php 
-    $readme = file_get_contents("README.md");
+    $readme = htmlspecialchars(file_get_contents("README.md"));
     echo "<pre> $readme </pre>";
 ?>
 </div>
