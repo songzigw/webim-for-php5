@@ -197,7 +197,7 @@ class Plugin {
 	 */
 	protected function uid() {
         global $_SESSION;
-		return $_SESSION['uid'];
+		return isset($_SESSION['uid']) ? $_SESSION['uid'] : null;
 	}
 
 	/*
