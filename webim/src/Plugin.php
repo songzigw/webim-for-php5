@@ -3,57 +3,123 @@
 namespace WebIM;
 
 /**
- * Web应用集成类
+ * WebIM Plugin
  */
 class Plugin {
 
 	/*
-	 * 当前用户或者访客, WebIM统一定义为端点
+	 * Current User of Visitor 
 	 */
-	public $endpoint = NULL;
+	protected $user = null;
 
 	/*
-	 * 是否登录
-	 */
-	public $logined = false; 
-
-	/*
-	 * 初始化当前用户信息
+	 * Init User
 	 */
     public function __construct() {
         global $IMC;
-		if($this->uid()) {
-			$this->loadUser();
-			$this->logined = true;
-		} else if($IMC['visitor']) {
-            //支持访客模式
-			$this->loadVisitor();
-			$this->logined = true;
-		}
+        $uid = $this->uid();
+		if($uid) {
+            $this->user = $this->user($uid);
+		} else if($IMC['visitor']) {//visitor 
+			$this->user = $this->visitor();
+        } else {//no user or visitor
+
+        }
 	}
 
 	/*
-	 * 接口函数: 读取当前用户的好友在线好友列表
+	 * API: uid of logined user
+	 */
+	protected function uid() {
+        global $_SESSION;
+		return isset($_SESSION['uid']) ? $_SESSION['uid'] : null;
+	}
+
+	/*
+	 * API: load user
+	 */
+	protected function user($uid) {
+		//NOTICE: demo user
+		return array(
+            'uid' => $uid,
+            'id' => $uid,
+            'nick' => preg_replace('/uid/', 'user', $id),
+            'presence' => 'online',
+            'show' => "available",
+            'pic_url' => WEBIM_IMAGE('male.png'),
+            'url' => "#",
+            'role' => 'user',
+            'status' => "",
+        );
+	}
+	
+	/*
+	 * API: load visitor
+	 */
+	protected function visitor() {
+		if ( isset($_COOKIE['_webim_visitor_id']) ) {
+			$id = $_COOKIE['_webim_visitor_id'];
+		} else {
+			$id = substr(uniqid(), 6);
+			setcookie('_webim_visitor_id', $id, time() + 3600 * 24 * 30, "/", "");
+		}
+        return array(
+            'uid' => 'vid:' . $id,
+            'id' => 'vid:' . $id,
+            'nick' => "v".$id,
+            'presence' => 'online',
+            'show' => "available",
+            'pic_url' => WEBIM_IMAGE('male.png'),
+            'role' => 'visitor',
+            'url' => "#",
+            'status' => "",
+        );
+	}
+
+    /**
+     * visitor id?
+     */
+    protected function isvid($uid) {
+        return strpos($uid, 'vid:') === 0;
+    }
+
+    /**
+     * Current user of the site
      *
-     * @param string $uid 当前用户uid
+     * @return user array 
+     */
+    public function currentUser() {
+        return $this->user;
+    }
+
+    /**
+     * logined?
+     */
+    public function logined() {
+        return ($this->user != null);
+    }
+
+	/*
+	 * API: Buddies of current user.
+     *
+     * @param string $uid current uid
 	 *
      * @return array buddies
      *
-	 * Buddy对象属性:
+	 * Buddy:
 	 *
-	 * 	uid: 好友uid
-	 * 	id:  同uid
-	 *	nick: 好友昵称
-	 *	pic_url: 头像图片
-     *	presence: online | offline
-	 *	show: available | unavailable
-	 *  url: 好友主页URL
-	 *  status: 状态信息 
-	 *  group: 所属组
+	 * 	id:         uid
+	 * 	uid:        uid
+	 *	nick:       nick
+	 *	pic_url:    url of photo
+     *	presence:   online | offline
+	 *	show:       available | unavailable | away | busy | hidden
+	 *  url:        url of home page of buddy 
+	 *  status:     buddy status information
+	 *  group:      group of buddy
 	 *
 	 */
 	public function buddies($uid) {
-		//根据当前用户id获取好友列表
         $buddies = array();
         $ids = range(1, 10);
         foreach ($ids  as $id) {
@@ -72,18 +138,16 @@ class Plugin {
 	}
 
 	/*
-	 * 接口函数: 根据好友id列表读取用户
+	 * API: buddies by ids
 	 *
-     * @param array $ids 用户id数组
+     * @param array $ids buddy id array
      *
      * @return array buddies
      *
-	 * Buddy属性同上
+	 * Buddy
 	 */
 	public function buddiesByIds($ids) {
-		//根据id列表获取好友列表
-        if( empty($ids) ) return array();
-        foreach($ids as $id) {
+        if( empty($ids) ) return array(); foreach($ids as $id) {
             $buddies[] = array(
                 'id' => $id,
                 'uid' => $id,
@@ -99,25 +163,24 @@ class Plugin {
 	}
 	
 	/*
-	 * 接口函数：读取当前用户的Room列表
+	 * API：rooms of current user
      * 
      * @param string $uid 
      *
      * @return array rooms
      *
-	 * Room对象属性:
+	 * Room:
 	 *
-	 *	id:		Room ID,
-	 *	nick:	显示名称
-	 *	url:	Room主页地址
-	 *	pic_url: Room图片
-	 *	status: Room状态信息
-	 *	count:  0
-	 *	all_count: 成员总计
-	 *	blocked: true | false 是否block
+	 *	id:		    Room ID,
+	 *	nick:	    Room Nick
+	 *	url:	    Home page of room
+	 *	pic_url:    Pic of Room
+	 *	status:     Room status 
+	 *	count:      count of online members
+	 *	all_count:  count of all members
+	 *	blocked:    true | false
 	 */
 	public function rooms($uid) {
-		//根据当前用户id获取群组列表
 		$demoRoom = array(
 			'id' => '1',
             'name' => 'room1',
@@ -132,13 +195,13 @@ class Plugin {
 	}
 
 	/*
-	 * 接口函数: 根据id数组读取rooms
+	 * API: rooms by ids
      *
-     * @param array id数组
+     * @param array id array
      *
      * @return array rooms
 	 *
-	 * Room对象属性同上
+	 * Room
      *
 	 */
 	function roomsByIds($ids) {
@@ -146,7 +209,10 @@ class Plugin {
 	}
 
     /**
-     * 读取persist群组成员
+     * API: members of room
+     *
+     * $param $room string roomid
+     * 
      */
     function members($room) {
         $members = array();
@@ -161,7 +227,10 @@ class Plugin {
     }
 
     /**
-     * Persist Room
+     * room by id
+     *
+     * $param $id string roomid
+     *
      */
     function room($id) {
         if($id == '1') {
@@ -180,67 +249,20 @@ class Plugin {
     }
 
 	/*
-	 * 接口函数: 当前用户通知列表
+	 * API: notifications of current user
 	 *
-	 * Notification对象属性:
+     * @return notifications array 
+     *
+	 * Notification:
 	 *
-	 * 	text: 文本
-	 * 	link: 链接
+	 * 	text: text
+	 * 	link: link
 	 */	
 	function notifications($uid) {
-        $demo = array('text' => '通知演示', 'link' => '#');
+        $demo = array('text' => 'Notification', 'link' => '#');
 		return array($demo);
 	}
 
-	/*
-	 * 接口函数: 集成项目的uid
-	 */
-	protected function uid() {
-        global $_SESSION;
-		return isset($_SESSION['uid']) ? $_SESSION['uid'] : null;
-	}
-
-	/*
-	 * 接口函数: 初始化当前用户对象，与站点用户集成.
-	 */
-	protected function loadUser() {
-		$uid = $_SESSION['uid'];
-		//NOTICE: This user should be read from database.
-		$this->endpoint = array(
-            'uid' => 'uid'.$uid,
-            'id' => 'uid'.$uid,
-            'nick' => "user".$uid, 
-            'presence' => 'online',
-            'show' => "available",
-            'pic_url' => WEBIM_IMAGE('male.png'),
-            'url' => "#",
-            'role' => 'user',
-            'status' => "",
-        );
-	}
-	
-	/*
-	 * 接口函数: 创建访客对象，可根据实际需求修改.
-	 */
-	private function loadVisitor() {
-		if ( isset($_COOKIE['_webim_visitor_id']) ) {
-			$id = $_COOKIE['_webim_visitor_id'];
-		} else {
-			$id = substr(uniqid(), 6);
-			setcookie('_webim_visitor_id', $id, time() + 3600 * 24 * 30, "/", "");
-		}
-        $this->endpoint = array(
-            'uid' => 'vid:' . $id,
-            'id' => 'vid:' . $id,
-            'nick' => "v".$id,
-            'presence' => 'online',
-            'show' => "available",
-            'pic_url' => WEBIM_IMAGE('male.png'),
-            'role' => 'visitor',
-            'url' => "#",
-            'status' => "",
-        );
-	}
 
 }
 

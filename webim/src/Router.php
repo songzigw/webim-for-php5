@@ -30,7 +30,7 @@ class Router {
 
         global $IMC;
 
-		if( !$this->plugin->logined ) exit();
+        if( !$this->plugin->logined() ) exit("Login Required");
 
 		//IM Ticket
 		$ticket = $this->input('ticket');
@@ -46,16 +46,16 @@ class Router {
             $this->ticket
         );
         $method = $this->input('action');
-        if($method) {
+        if($method && method_exists($this, $method)) {
             call_user_func(array($this, $method));
         } else {
             header( "HTTP/1.0 400 Bad Request" );
-            exit("No 'action' parameter");
+            exit("No Action Found.");
         }
     }
 
     /**
-     * 设置Plugin
+     * Plugin Get/Set
      */
     public function plugin($plugin = null) {
         if (func_num_args() === 0) {
@@ -65,7 +65,7 @@ class Router {
     }
 
     /**
-     * 设置Model
+     * Model Get/Set
      */
     public function model($model = null) {
         if (func_num_args() === 0) {
@@ -79,7 +79,7 @@ class Router {
      * Current Ednpoint
      */
     private function currentEndpoint() {
-        return $this->plugin->endpoint;
+        return $this->plugin->currentUser();
     }
     
     /**
@@ -135,8 +135,8 @@ class Router {
 		echo "var _IMC = " . json_encode($scriptVar) . ";" . PHP_EOL;
 
 		$script = <<<EOF
-_IMC.script = window.webim ? '' : ('<link href="' + _IMC.path + '/static/webim' + _IMC.min + '.css?' + _IMC.version + '" media="all" type="text/css" rel="stylesheet"/><link href="' + _IMC.path + '/static/themes/' + _IMC.theme + '/jquery.ui.theme.css?' + _IMC.version + '" media="all" type="text/css" rel="stylesheet"/><script src="' + _IMC.path + '/static/webim' + _IMC.min + '.js?' + _IMC.version + '" type="text/javascript"></script><script src="' + _IMC.path + '/static/i18n/webim-' + _IMC.local + '.js?' + _IMC.version + '" type="text/javascript"></script>');
-_IMC.script += '<script src="' + _IMC.path + '/static/webim.' + _IMC.product_name + '.js?vsn=' + _IMC.version + '" type="text/javascript"></script>';
+_IMC.script = window.webim ? '' : ('<link href="' + _IMC.path + 'static/webim' + _IMC.min + '.css?' + _IMC.version + '" media="all" type="text/css" rel="stylesheet"/><link href="' + _IMC.path + 'static/themes/' + _IMC.theme + '/jquery.ui.theme.css?' + _IMC.version + '" media="all" type="text/css" rel="stylesheet"/><script src="' + _IMC.path + 'static/webim' + _IMC.min + '.js?' + _IMC.version + '" type="text/javascript"></script><script src="' + _IMC.path + 'static/i18n/webim-' + _IMC.local + '.js?' + _IMC.version + '" type="text/javascript"></script>');
+_IMC.script += '<script src="' + _IMC.path + 'static/webim.' + _IMC.product_name + '.js?vsn=' + _IMC.version + '" type="text/javascript"></script>';
 document.write( _IMC.script );
 
 EOF;
@@ -185,12 +185,12 @@ EOF;
 		$data = $this->client->online($buddyIds, $roomIds, $show);
 		if( $data->success ) {
             $rtBuddies = array();
-            $presences = (array)$data->presences;
+            $presences = $data->presences;
             foreach($buddies as $buddy) {
                 $id = $buddy['id'];
-                if( isset($presences[$id]) ) {
+                if( isset($presences->$id) ) {
                     $buddy['presence'] = 'online';
-                    $buddy['show'] = $presences[$id];
+                    $buddy['show'] = $presences->$id;
                 } else {
                     $buddy['presence'] = 'offline';
                     $buddy['show'] = 'unavailable';

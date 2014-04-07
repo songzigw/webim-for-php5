@@ -175,7 +175,6 @@ class Model {
      * 邀请成员加入讨论组
      */
     public function inviteRoom($room, $members) {
-        var_dump($members);
         foreach($members as $member) {
             $this->joinRoom($room, $member['uid'], $member['nick']);
         }

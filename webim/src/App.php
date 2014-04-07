@@ -7,13 +7,15 @@ namespace WebIM;
  */
 class App {
 
-    public static function run() {
+    public static function run($plugin = null) {
+
+        if($plugin == null) $plugin = new \WebIM\Plugin();
 
         $router = new \WebIM\Router();
 
         $router->model( new \WebIM\Model() );
 
-        $router->plugin( new \WebIM\Plugin() );
+        $router->plugin( $plugin );
 
         $router->route();
     

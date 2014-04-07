@@ -61,7 +61,7 @@ require WEBIM_ROOT.'/vendor/autoload.php';
 require WEBIM_SRC . '/Model.php';
 
 /**
- * Plugin
+ * Base Plugin
  */
 require WEBIM_SRC . '/Plugin.php';
 
