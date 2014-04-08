@@ -37,9 +37,9 @@ Plugin.php
 
 1. uid() 获取当前登录用户UID, 一般从SESSION读取
 
-2. LoadUser() 初始化Webim当前的用户对象,一般从SESSION和数据库读取
+2. user($uid) 初始化Webim当前的用户对象,一般从SESSION和数据库读取
 
-3. LoadVisitor() 如支持访客模式，初始化访客(Visitor)对象
+3. visitor() 如支持访客模式，初始化访客(Visitor)对象
 
 4. buddies($uid) 读取当前用户的在线好友列表
 
@@ -53,7 +53,7 @@ Plugin.php
 
 9. members($room) 根据群组Id，读取群组成员信息
 
-8. notifications($uid) 读取当前用户的通知信息
+10. notifications($uid) 读取当前用户的通知信息
 
 
 Router.php
