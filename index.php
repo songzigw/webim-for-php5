@@ -14,7 +14,7 @@
     if(isset($_GET['uid'])) {
         session_start(); 
         $uid = $_GET['uid'];
-        $_SESSION['uid'] = $uid;
+        $_SESSION['uid'] = 'uid'.$uid;
         echo "<ul style=\"list-style: none outside none;\">";
         echo "<li>登录: <a class=\"webim-chatbtn\" href=\"/chat/uid{$uid}\">user$uid</a></li>";
         foreach(range(1, 10) as $id) {
