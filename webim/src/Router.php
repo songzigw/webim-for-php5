@@ -5,11 +5,6 @@ namespace WebIM;
 class Router {
 
 	/*
-	 * WebIM Ticket
-	 */
-	private $ticket;
-
-	/*
 	 * WebIM Client
 	 */
 	private $client;
@@ -35,7 +30,6 @@ class Router {
 		//IM Ticket
 		$ticket = $this->input('ticket');
 		if($ticket) $ticket = stripslashes($ticket);	
-		$this->ticket = $ticket;
 
 		//IM Client
         $this->client = new \WebIM\WebIM(
@@ -43,7 +37,7 @@ class Router {
             $IMC['domain'], 
             $IMC['apikey'], 
             $IMC['server'], 
-            $this->ticket
+            $ticket
         );
         $method = $this->input('action');
         if($method && method_exists($this, $method)) {
@@ -152,7 +146,7 @@ EOF;
         $show = $this->input('show');
 
         //buddy, room, chatlink ids
-		$chatlinkIds= $this->idsArray($this->input('chatlink_ids') );
+		$chatlinkIds= $this->idsArray($this->input('chatlink_ids', '') );
 		$activeRoomIds = $this->idsArray( $this->input('room_ids') );
 		$activeBuddyIds = $this->idsArray( $this->input('buddy_ids') );
 		//active buddy who send a offline message.
@@ -276,7 +270,7 @@ EOF;
 		$body = $this->input("body");
 		$style = $this->input("style");
 		$send = $offline == "true" || $offline == "1" ? 0 : 1;
-		$timestamp = $this->microtimeFloat() * 1000;
+		$timestamp = microtime(true) * 1000;
 		if( strpos($body, "webim-event:") !== 0 ) {
             $this->model->insertHistory(array(
 				"send" => $send,
@@ -476,11 +470,11 @@ EOF;
 			exit("Can't found room: {$roomId}");
             return;
         }
-        $presences = (array)$this->client->members($roomId);
+        $presences = $this->client->members($roomId);
         $rtMembers = array();
         foreach($members as $m) {
             $id = $m['id'];
-            if(isset($presences[$id])) {
+            if(isset($presences->$id)) {
                 $m['presence'] = 'online';
                 $m['show'] = $presences[$id];
             } else {
@@ -547,11 +541,6 @@ EOF;
 
 	private function idsArray( $ids ){
 		return ($ids===null || $ids==="") ? array() : (is_array($ids) ? array_unique($ids) : array_unique(explode(",", $ids)));
-	}
-
-	private function microtimeFloat() {
-		list($usec, $sec) = explode(" ", microtime());
-		return ((float)$usec + (float)$sec);
 	}
 
 }

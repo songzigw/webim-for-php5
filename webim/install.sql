@@ -1,7 +1,7 @@
 
 DROP TABLE IF EXISTS `webim_settings`;
 CREATE TABLE `webim_settings` (
-	  `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
+	  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 	  `uid` varchar(40) NOT NULL DEFAULT '',
 	  `data` text,
 	  `created` datetime DEFAULT NULL,
