@@ -2,7 +2,7 @@
 WebIM-for-PHP5
 ==================
 
-WebIM Application for PHP5
+WebIM Application for PHP5 project
 
 Require
 =======
@@ -49,11 +49,9 @@ Plugin.php
 
 7. roomsByIds($ids) 根据id列表读取群组列表
 
-8. room($id) 根据Id读取一个群组(persist)
+8. members($room) 根据群组Id，读取群组成员信息
 
-9. members($room) 根据群组Id，读取群组成员信息
-
-10. notifications($uid) 读取当前用户的通知信息
+9. notifications($uid) 读取当前用户的通知信息
 
 
 Router.php
@@ -110,6 +108,4 @@ http://nextalk.im
 ery.lee at gmail.com
 
 nextalk at qq.com
-
-
 

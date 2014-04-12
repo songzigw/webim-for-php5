@@ -5,6 +5,7 @@
   'dbuser' => "webim",
   'dbpassword' => "webim",
   'dbname' => "webim5",
+  'dbprefix' => "dbprefix",
     
   //WebIM Config
   'isopen' => true,
