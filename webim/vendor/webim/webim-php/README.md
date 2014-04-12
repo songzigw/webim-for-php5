@@ -29,7 +29,7 @@ $endpoint = array(
 $domain = 'www.example.com';
 $apikey = 'akakakakakdka';
 $server = 'http://nextalk.im:8000';
-$webim = new WebIM\WebIM($endpoint, $domain, $apikey, $server);
+$webim = new WebIM\Client($endpoint, $domain, $apikey, $server);
 
 $buddy_ids = ['uid2', 'uid3'];
 $room_ids = ['room1', 'room2'];

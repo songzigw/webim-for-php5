@@ -65,11 +65,11 @@ class Model {
      */
     public function histories($uid, $with, $type = 'chat',  $limit = 30) {
         if( $type === 'chat') {
-            $query = T('histories')->where('type', 'chat')
+            $query = $this->T('histories')->where('type', 'chat')
                 ->whereRaw("(`to`= ? AND `from`= ? AND `fromdel` != 1) OR (`send` = 1 AND `from`= ? AND `to`= ? AND `todel` != 1)", array($with, $uid, $with, $uid))
                 ->orderByDesc('timestamp')->limit($limit);
         } else {
-            $query = T('histories')->where('type', 'grpchat')
+            $query = $this->T('histories')->where('type', 'grpchat')
                 ->where('to', $with)
                 ->where('send', 1)
                 ->orderByDesc('timestamp')->limit($limit);
@@ -84,7 +84,7 @@ class Model {
      * @params integer $limit result limit
      */
 	public function offlineHistories($uid, $limit = 50) {
-        $query = T('histories')->where('to', $uid)->whereNotEqual('send', 1)
+        $query = $this->T('histories')->where('to', $uid)->whereNotEqual('send', 1)
             ->orderByDesc('timestamp')->limit($limit);
         return array_reverse( $query->findArray() );
 	}
@@ -95,7 +95,7 @@ class Model {
      * @params array $message message object
      */
     public function insertHistory($message) {
-        $history = T('histories')->create(); 
+        $history = $this->T('histories')->create(); 
         $history->set($message)->setExpr('created', 'NOW()');
         $history->save();
     }
@@ -107,15 +107,15 @@ class Model {
      * @params string $with user that talked with
      */
     public function clearHistories($uid, $with) {
-        T('histories')->where('from', $uid)->where('to', $with)
+        $this->T('histories')->where('from', $uid)->where('to', $with)
             ->findResultSet()
             ->set(array( "fromdel" => 1, "type" => "chat" ))
             ->save();
-        T('histories')->where('to', $uid)->where('from', $with)
+        $this->T('histories')->where('to', $uid)->where('from', $with)
             ->findResultSet()
             ->set(array( "todel" => 1, "type" => "chat" ))
             ->save();
-        T('histories')->where('todel', 1)->where('fromdel', 1)
+        $this->T('histories')->where('todel', 1)->where('fromdel', 1)
             ->deleteMany();
     }
 
@@ -125,7 +125,7 @@ class Model {
      * @param string $uid user id
      */
 	public function offlineReaded($uid) {
-        T('histories')->where('to', $uid)->where('send', 0)->findResultSet()->set('send', 1)->save();
+        $this->T('histories')->where('to', $uid)->where('send', 0)->findResultSet()->set('send', 1)->save();
 	}
 
     /**
@@ -137,7 +137,7 @@ class Model {
      * @return object|null
      */
     public function setting($uid, $data = null) {
-        $setting = T('settings')->where('uid', $uid)->findOne();
+        $setting = $this->T('settings')->where('uid', $uid)->findOne();
         if (func_num_args() === 1) { //get setting
            if($setting) return json_decode($setting->data); 
            return null;
@@ -148,7 +148,7 @@ class Model {
             $setting->data = $data;
             $setting->save();
         } else {
-            $setting = T('settings')->create();
+            $setting = $this->T('settings')->create();
             $setting->set(array(
                 'uid' => $uid,
                 'data' => $data
@@ -164,18 +164,18 @@ class Model {
      * @return array rooms array
      */
     public function rooms($uid) {
-        $rooms = T('members')
+        $rooms = $this->T('members')
             ->tableAlias('t1')
             ->select('t1.room', 'name')
             ->select('t2.nick', 'nick')
             ->select('t2.url', 'url')
             ->join($this->prefix('rooms'), array('t1.room', '=', 't2.name'), 't2')
-            ->where('t1.uid', $uid)->findMany();
+            ->where('t1.uid', $uid)->findArray();
         return array_map(function($room) {
             return array(
-                'id' => $room->name,
-                'nick' => $room->nick,
-                "url" => $room->url,
+                'id' => $room['name'],
+                'nick' => $room['nick'],
+                "url" => $room['url'],
                 "pic_url" => WEBIM_IMAGE("room.png"),
                 "status" => "",
                 "temporary" => true,
@@ -191,13 +191,13 @@ class Model {
      */
     public function roomsByIds($ids) {
         if(empty($ids)) return array();
-        $rooms = T('rooms')->whereIn('name', $ids)->findMany();
+        $rooms = $this->T('rooms')->whereIn('name', $ids)->findArray();
         return array_map(function($room) {
             return array(
-                'id' => $room->name,
-                'name' => $room->name,
-                'nick' => $room->nick,
-                "url" => $room->url,
+                'id' => $room['name'],
+                'name' => $room['name'],
+                'nick' => $room['nick'],
+                "url" => $room['url'],
                 "pic_url" => WEBIM_IMAGE("room.png"),
                 "status" => "",
                 "temporary" => true,
@@ -212,7 +212,7 @@ class Model {
      * @return array members array
      */
     public function members($room) {
-        return T('members')
+        return $this->T('members')
             ->select('uid', 'id')
             ->select('nick')
             ->where('room', $room)->findArray();
@@ -226,9 +226,9 @@ class Model {
      */
     public function createRoom($data) {
         $name = $data['name'];
-        $room = T('rooms')->where('name', $name)->findOne();
+        $room = $this->T('rooms')->where('name', $name)->findOne();
         if($room) return $room;
-        $room = T('rooms')->create();
+        $room = $this->T('rooms')->create();
         $room->set($data)->set_expr('created', 'NOW()')->set_expr('updated', 'NOW()');
         $room->save();
         return $room->asArray();
@@ -254,12 +254,12 @@ class Model {
      * $param string $nick user nick
      */
     public function joinRoom($room, $uid, $nick) {
-        $member = T('members')
+        $member = $this->T('members')
             ->where('room', $room)
             ->where('uid', $uid)
             ->findOne();
         if($member == null) {
-            $member = T('members')->create();
+            $member = $this->T('members')->create();
             $member->set(array(
                 'uid' => $uid,
                 'nick' => $nick,
@@ -276,11 +276,11 @@ class Model {
      * $param string $uid user id
      */
     public function leaveRoom($room, $uid) {
-        T('members')->where('room', $room)->where('uid', $uid)->deleteMany();
+        $this->T('members')->where('room', $room)->where('uid', $uid)->deleteMany();
         //if no members, room deleted...
-        $data = T("members")->selectExpr('count(id)', 'total')->where('room', $room)->findOne();
+        $data = $this->T("members")->selectExpr('count(id)', 'total')->where('room', $room)->findOne();
         if($data && $data->total === 0) {
-            T('rooms')->where('name', $room)->deleteMany();
+            $this->T('rooms')->where('name', $room)->deleteMany();
         }
     }
 
@@ -291,11 +291,11 @@ class Model {
      * $param string $uid user id
      */
     public function blockRoom($room, $uid) {
-        $block = T('blocked')->select('id')
+        $block = $this->T('blocked')->select('id')
             ->where('room', $room)
             ->where('uid', $uid)->findOne();
         if($block == null) {
-            T('blocked')->create()
+            $this->T('blocked')->create()
                 ->set('room', $room)
                 ->set('uid', $uid)
                 ->setExpr('blocked', 'NOW()')
@@ -312,7 +312,7 @@ class Model {
      * @return true|false
      */
     public function isRoomBlocked($room, $uid) {
-        $block = T('blocked')->select('id')->where('uid', $uid)->where('room', $room)->findOne();
+        $block = $this->T('blocked')->select('id')->where('uid', $uid)->where('room', $room)->findOne();
         return !(null == $block);
     }
 
@@ -323,7 +323,7 @@ class Model {
      * @param string $uid user id
      */
     public function unblockRoom($room, $uid) {
-        T('blocked')->where('uid', $uid)->where('room', $room)->deleteMany();
+        $this->T('blocked')->where('uid', $uid)->where('room', $room)->deleteMany();
     }
 
     /**

@@ -74,8 +74,8 @@ class Router {
 		if($ticket) $ticket = stripslashes($ticket);	
 
 		//IM Client
-        $this->client = new \WebIM\WebIM(
-            $this->currentEndpoint(), 
+        $this->client = new \WebIM\Client(
+            $this->endpoint(), 
             $IMC['domain'], 
             $IMC['apikey'], 
             $IMC['server'], 
@@ -508,18 +508,19 @@ EOF;
 			exit("Can't found room: {$roomId}");
         }
         $presences = $this->client->members($roomId);
-        $members = array_map(function($m) {
+        $rtMembers = array();
+        foreach($members as $m) {
             $id = $m['id'];
             if(isset($presences->$id)) {
                 $m['presence'] = 'online';
-                $m['show'] = $presences[$id];
+                $m['show'] = $presences->$id;
             } else {
                 $m['presence'] = 'offline';
                 $m['show'] = 'unavailable';
             }
-            return $m;
-        }, $members);
-        $this->jsonReply($members);
+            $rtMembers[] = $m;
+        }
+        $this->jsonReply($rtMembers);
 	}
 
     /**

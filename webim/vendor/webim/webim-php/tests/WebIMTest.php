@@ -4,7 +4,7 @@
  * Some simple unit tests to help test this library.
  */
 
-require_once dirname(__FILE__).'/../src/WebIM/WebIM.php';
+require_once dirname(__FILE__).'/../src/WebIM/Client.php';
 //require_once 'PHPUnit/Framework.php';
 
 class WebIMTest extends PHPUnit_Framework_TestCase {
@@ -23,7 +23,7 @@ class WebIMTest extends PHPUnit_Framework_TestCase {
             'show' => 'available',
             'status' => 'online',
         );
-        $this->webim = new \WebIM\WebIM($endpoint, $domain, $apikey, $server);
+        $this->webim = new \WebIM\Client($endpoint, $domain, $apikey, $server);
         $this->webim->online($buddies, $rooms);
     }
 
