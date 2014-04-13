@@ -18,7 +18,7 @@ Usage
 
 3. 配置webim/config.php; 
 
-4. 编码webim/src/Plugin.php，集成站点用户、群组、通知等;
+4. 编码或继承webim/src/Plugin.php，集成站点用户、群组、通知等;
 
 5. 需要显示webim的页面，footer嵌入:
 
