@@ -45,6 +45,7 @@
 			upload: _IMC.upload && !_IMC.is_visitor
 		},
 		roomChatOptions: {
+            downloadHistory: !_IMC.is_visitor,
 			upload: _IMC.upload
 		}
 	}), im = ui.im;

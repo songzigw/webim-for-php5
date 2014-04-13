@@ -389,7 +389,7 @@ EOF;
 			$body = $history['body'];
 			$style = $history['style'];
 			$time = date( 'm-d H:i', (float)$history['timestamp']/1000 ); 
-			echo "<tr><td>{$nick}</td><td style=\"{$style}\">{$body}</td><td>{$time}</td></tr>";
+			echo "<tr><td>{$nick}:</td><td style=\"{$style}\">{$body}</td><td>{$time}</td></tr>";
 		}
 		echo "</tbody></table>";
 		echo "</body></html>";
