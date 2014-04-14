@@ -140,7 +140,7 @@ class Model {
         $setting = $this->T('settings')->where('uid', $uid)->findOne();
         if (func_num_args() === 1) { //get setting
            if($setting) return json_decode($setting->data); 
-            return new stdClass();
+            return new \stdClass();
         } 
         //save setting
         if($setting) {
