@@ -25,8 +25,9 @@
 		unblock: path + "/index.php?action=unblock",
 		members: path + "/index.php?action=members",
         //notifications
-		upload: path + "/static/images/upload.php",
 		notifications: path + "/index.php?action=notifications"
+        //upload files
+		upload: path + "/static/images/upload.php",
 	} );
 
 	webim.ui.emot.init({"dir": path + "/static/images/emot/default"});
