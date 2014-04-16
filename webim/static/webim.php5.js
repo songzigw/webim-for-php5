@@ -25,9 +25,9 @@
 		unblock: path + "/index.php?action=unblock",
 		members: path + "/index.php?action=members",
         //notifications
-		notifications: path + "/index.php?action=notifications"
+		notifications: path + "/index.php?action=notifications",
         //upload files
-		upload: path + "/static/images/upload.php",
+		upload: path + "/static/images/upload.php"
 	} );
 
 	webim.ui.emot.init({"dir": path + "/static/images/emot/default"});
@@ -65,7 +65,7 @@
 		//disable_user: _IMC.is_visitor,
         //simple: _IMC.is_visitor,
 		loginOptions: _IMC['login_options']
-	} );
+	});
     if(!_IMC.is_visitor) {
         if(_IMC.enable_room )ui.addApp("room", { discussion: true });
         if(_IMC.enable_noti )ui.addApp("notification");
