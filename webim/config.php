@@ -12,7 +12,7 @@
   'debug' => true,
   'domain' => 'localhost',
   'apikey' => 'public',
-  'server' => 'http://t.nextalk.im:8000',
+  'server' => 't.nextalk.im:8000',
   'emot' => 'default',
   'theme' => 'base',
   'opacity' => '80',
