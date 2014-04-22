@@ -4,7 +4,7 @@
   'dbhost' => "127.0.0.1",
   'dbuser' => "webim",
   'dbpassword' => "webim",
-  'dbname' => "webim5",
+  'dbname' => "webim",
   'dbprefix' => "webim_",
     
   //WebIM Config
@@ -18,6 +18,7 @@
   'opacity' => '80',
   'local' => 'zh-CN',
   'show_realname' => false,
+  'discussion' => false,
   'enable_room' => true,
   'enable_chatlink' => true,
   'enable_shortcut' => true,

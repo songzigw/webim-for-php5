@@ -136,6 +136,7 @@ class Router {
 			'emot',
 			'opacity',
 			'enable_room', 
+            'discussion',
 			'enable_chatlink', 
 			'enable_shortcut',
 			'enable_noti',
@@ -153,7 +154,6 @@ class Router {
 			'path' => $webim_path,
 			'is_login' => '1',
             'is_visitor' => $this->isvid($uid),
-,
 			'login_options' => '',
 			'user' => $this->user,
 			'setting' => $this->model->setting($uid),
@@ -597,7 +597,7 @@ EOF;
 	}
 
     private function isvid($id) {
-        return strpos($uid, 'vid:') === 0;
+        return strpos($id, 'vid:') === 0;
     }
 
 }

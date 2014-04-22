@@ -51,7 +51,7 @@ class Model {
         \ORM::configure('username', $IMC['dbuser']);
         \ORM::configure('password', $IMC['dbpassword']);
         \ORM::configure('logging', true);
-        \ORM::configure('return_result_sets', false);
+        \ORM::configure('return_result_sets', true);
         \ORM::configure('driver_options', array(\PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'));
     }
     
@@ -74,7 +74,7 @@ class Model {
                 ->where('send', 1)
                 ->orderByDesc('timestamp')->limit($limit);
         }
-        return array_reverse($query->findMany());
+        return array_reverse( $this->map2obj($query->findArray()) );
     }
 
     /**
@@ -86,7 +86,7 @@ class Model {
 	public function offlineHistories($uid, $limit = 50) {
         $query = $this->T('histories')->where('to', $uid)->whereNotEqual('send', 1)
             ->orderByDesc('timestamp')->limit($limit);
-        return array_reverse( $query->findMany() );
+        return array_reverse( $this->map2obj($query->findArray()) );
 	}
 
     /**
@@ -172,7 +172,7 @@ class Model {
             ->join($this->prefix('rooms'), array('t1.room', '=', 't2.name'), 't2')
             ->where('t1.uid', $uid)->findArray();
         return array_map(function($room) {
-            return array(
+            return (object)array(
                 'id' => $room['name'],
                 'nick' => $room['nick'],
                 "url" => $room['url'],
@@ -212,10 +212,11 @@ class Model {
      * @return array members array
      */
     public function members($room) {
-        return $this->T('members')
+        $members = $this->T('members')
             ->select('uid', 'id')
             ->select('nick')
-            ->where('room', $room)->findMany();
+            ->where('room', $room)->findArray();
+        return $this->map2obj($members);
     }
 
     /**
@@ -242,7 +243,7 @@ class Model {
      */
     public function inviteRoom($room, $members) {
         foreach($members as $member) {
-            $this->joinRoom($room, $member->uid, $member->nick);
+            $this->joinRoom($room, $member->id, $member->nick);
         }
     }
 
@@ -341,7 +342,8 @@ class Model {
         $visitor = $this->T('visitors')->where('name', $vid)->findOne();
         if( !$visitor ) {
             $ipaddr = isset($_SERVER['X-Forwarded-For']) ? $_SERVER['X-Forwarded-For'] : $_SERVER["REMOTE_ADDR"];
-            $loc = IP::find($ipaddr);
+            require_once dirname(__FILE__) . '/../vendor/webim/geoip-php/IP.class.php';
+            $loc = \IP::find($ipaddr);
             if(is_array($loc)) $loc = implode('',  $loc);
             $referer = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '';
             $visitor = $this->T('visitors')->create();
@@ -414,6 +416,13 @@ class Model {
     private function prefix($table) { 
         global $IMC;
         return $IMC['dbprefix'] . $table;
+    }
+
+    /**
+     * Mapping array to object
+     */
+    private function map2obj($rows) {
+        return array_map(function($r) { return (object)$r; }, $rows);
     }
 
 }
