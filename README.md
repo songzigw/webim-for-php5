@@ -75,7 +75,7 @@ Plugin.php
 WebIM 应用插件类
 
 
-Install.sql
+install.sql
 ==============================
 
 
