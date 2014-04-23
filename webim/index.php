@@ -12,19 +12,6 @@ if(phpversion() < '5.3.10') {
     exit('PHP version should be > 5.3.10');
 }
 
-define('WEBIM_DEBUG', true);
-
-if(WEBIM_DEBUG) {
-    session_start();
-	error_reporting( E_ALL );
-} else {
-	error_reporting( E_ALL & ~E_NOTICE & ~E_STRICT );
-}
-
-define('WEBIM_VERSION', '5.4');
-
-define('WEBIM_PRODUCT', 'php5');
-
 function WEBIM_PATH() {
 	global $_SERVER;
     $name = htmlspecialchars($_SERVER['SCRIPT_NAME'] ? $_SERVER['SCRIPT_NAME'] : $_SERVER['PHP_SELF']); 
@@ -35,12 +22,24 @@ function WEBIM_IMAGE($img) {
     return WEBIM_PATH() . "static/images/{$img}";
 }
 
+require('env.php');
+
 /**
  * Configuration
  */
 $IMC = require('config.php');
 
 if( !$IMC['isopen'] ) exit();
+
+if( $IMC['debug'] ) define('WEBIM_DEBUG', true);
+
+if( defined(WEBIM_DEBUG) ) {
+    //TODO???
+    session_start();
+	error_reporting( E_ALL );
+} else {
+	error_reporting( E_ALL & ~E_NOTICE & ~E_STRICT );
+}
 
 define('WEBIM_ROOT', dirname(__FILE__));
 
