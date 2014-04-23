@@ -33,8 +33,7 @@ if( !$IMC['isopen'] ) exit();
 
 if( $IMC['debug'] ) define('WEBIM_DEBUG', true);
 
-if( defined(WEBIM_DEBUG) ) {
-    //TODO???
+if( defined('WEBIM_DEBUG') ) {
     session_start();
 	error_reporting( E_ALL );
 } else {
