@@ -83,6 +83,7 @@
         });
         */
     }
+    if(_IMC.enable_chatlink) ui.addApp("chatbtn");
     ui.addApp("setting", {"data": webim.setting.defaults.data, "copyright": true});
 	ui.render();
 	_IMC['is_login'] && im.autoOnline() && im.online();
