@@ -144,7 +144,11 @@ class Model {
         } 
         //save setting
         if($setting) {
-            if(!is_string($data)) { $data = json_decode($data); }
+            if(is_string( $data )) {
+                $data = stripcslashes( $data );
+            } else {
+                $data = json_encode( $data );
+            }
             $setting->data = $data;
             $setting->save();
         } else {
