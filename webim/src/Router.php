@@ -43,7 +43,7 @@ namespace WebIM;
 class Router {
 
     /**
-     * current user
+     * Current user
      */
     private $user = null;
 
