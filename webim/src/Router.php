@@ -322,7 +322,7 @@ EOF;
 		$type = $this->input("type");
 		$offline = $this->input("offline");
 		$to = $this->input("to");
-		$body = $this->input("body");
+		$body = stripslashes( $this->input("body") );
 		$style = $this->input("style");
 		$send = $offline == "true" || $offline == "1" ? 0 : 1;
 		$timestamp = microtime(true) * 1000;
@@ -341,6 +341,8 @@ EOF;
 		if($send == 1){
 			$this->client->message(null, $to, $body, $type, $style, $timestamp);
 		}
+        //Error Reply
+        //$this->jsonReply(array('status' => 'error', 'message' => $body));
 		$this->okReply();
 	}
 
