@@ -7,6 +7,7 @@ CHANGELOG
 * merge webim-for-php4 api
 * endpoint to user
 * fix array_map, array_filter
+* WEBIM_MESSAGE_DECODE
 
 5.4.1 (2014-04-12)
 ------------------

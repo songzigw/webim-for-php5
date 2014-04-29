@@ -323,6 +323,9 @@ EOF;
 		$offline = $this->input("offline");
 		$to = $this->input("to");
 		$body = stripslashes( $this->input("body") );
+        if( defined('WEBIM_MESSAGE_DECODE') ) {
+            $body = html_entity_decode($body);
+        }
 		$style = $this->input("style");
 		$send = $offline == "true" || $offline == "1" ? 0 : 1;
 		$timestamp = microtime(true) * 1000;
