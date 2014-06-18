@@ -254,7 +254,7 @@ class Client {
      * HTTP Request
      */
     protected function request($path, $data, $method='GET') {
-        $url = "{$this->server}/{$this->version}/{$path}";
+        $url = $this->apiurl($path);
         if($method == 'GET') {
             $url .= '?'.http_build_query($data);
         }
@@ -306,6 +306,19 @@ class Client {
         );
         if($this->ticket) $data['ticket'] = $this->ticket;
         return $data;
+    }
+
+    private function apiurl($path) {
+        if(is_array($this->server)) {
+            $uid = $this->endpoint->id;
+            $hash = intval(substr(md5($uid), 0, 8), 16);
+            $idx = $hash % count($this->server);
+            $srv = $this->server[$idx];
+        } else {
+            $srv = $this->server;
+        }
+        $url = "{$srv}/{$this->version}/{$path}";
+        return $url;
     }
 
 }

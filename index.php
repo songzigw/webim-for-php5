@@ -1,10 +1,13 @@
-
+<!DOCTYPE html>
 <html>
+
 <head> 
-<meta charset="utf-8">
-<title>WebIM for PHP5</title>
+    <meta charset="utf-8">
+    <title>WebIM for PHP5</title>
 </head>
+
 <body style="background:#E6E6E6;height:100%;">
+
 <div style="background:#FFF;width:640px;margin:auto;padding:60px;"><center>
 <h1>WebIM for PHP5</h1>
 <a href="https://github.com/webim/webim-for-php5">https://github.com/webim/webim-for-php5</a>
@@ -12,13 +15,13 @@
 <hr>
 <?php 
     if(isset($_GET['uid'])) {
-        session_start(); 
+        session_start();
         $uid = $_GET['uid'];
-        $_SESSION['uid'] = 'uid'.$uid;
+        $_SESSION['uid'] = $uid;
         echo "<ul style=\"list-style: none outside none;\">";
-        echo "<li>登录: <a class=\"webim-chatbtn\" href=\"/chat/uid{$uid}\">user$uid</a></li>";
+        echo "<li>登录: <a class=\"webim-chatbtn\" href=\"/chat/{$uid}\">user$uid</a></li>";
         foreach(range(1, 10) as $id) {
-            echo "<li>好友: <a class=\"webim-chatbtn\" href=\"/chat/uid{$id}\">user{$id}</a></li>";
+            echo "<li>好友: <a class=\"webim-chatbtn\" href=\"/chat/{$id}\">user{$id}</a></li>";
         }
         echo "</ul>";
     } else {
@@ -44,7 +47,7 @@ EOL;
 </div>
 </center></div>
 <script type="text/javascript" src="webim/index.php?action=boot"></script>
+
 </body>
 
 </html>
-

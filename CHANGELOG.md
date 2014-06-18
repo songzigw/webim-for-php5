@@ -6,6 +6,7 @@ CHANGELOG
 
 * Router.php: return presences to browser used by 'chatbtn'
 * upgrade static file to 5.5 and support detach window
+* webim server cluster support
 
 5.4.2 (2014-04-21)
 ------------------
