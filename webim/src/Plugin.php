@@ -62,10 +62,10 @@ class Plugin {
 
 		return (object)array(
             'id' => $uid,
-            'nick' => preg_replace('/uid/', 'user', $uid),
+            'nick' => 'user' . $uid,
             'presence' => 'online',
             'show' => "available",
-            'pic_url' => WEBIM_IMAGE('male.png'),
+            'avatar' => WEBIM_IMAGE('male.png'),
             'url' => "#",
             'role' => 'user',
             'status' => "",
@@ -82,9 +82,8 @@ class Plugin {
 	 * Buddy:
 	 *
 	 * 	id:         uid
-	 * 	uid:        uid
 	 *	nick:       nick
-	 *	pic_url:    url of photo
+	 *	avatar:     url of photo
      *	presence:   online | offline
 	 *	show:       available | unavailable | away | busy | hidden
 	 *  url:        url of home page of buddy 
@@ -115,13 +114,13 @@ class Plugin {
      */
     private function _buddy($id) {
         return (object) array(
-            'id' => 'uid' . $id,
-            'group' => 'friend',
+            'id' => $id,
             'nick' => 'user'.$id,
+            'group' => 'friend',
             'presence' => 'offline',
             'show' => 'unavailable',
             'status' => '#',
-            'pic_url' => WEBIM_IMAGE('male.png')
+            'avatar' => WEBIM_IMAGE('male.png')
         );
     }
 
@@ -137,7 +136,6 @@ class Plugin {
 	 *	id:		    Room ID,
 	 *	nick:	    Room Nick
 	 *	url:	    Home page of room
-	 *	pic_url:    Pic of Room
 	 *	status:     Room status 
 	 *	count:      count of online members
 	 *	all_count:  count of all members
@@ -146,11 +144,11 @@ class Plugin {
 	public function rooms($uid) {
         //TODO: DEMO CODE
 		$room = (object)array(
-			'id' => 'room1',
-            'name' => 'room1',
+			'id' => 'room',
+            'name' => 'room',
 			'nick' => 'Room',
 			'url' => "#",
-			'pic_url' => WEBIM_IMAGE('room.png'),
+			'avatar' => WEBIM_IMAGE('room.png'),
 			'status' => "Room",
 			'blocked' => false,
             'temporary' => false
@@ -171,13 +169,13 @@ class Plugin {
 	public function roomsByIds($uid, $ids) {
         $rooms = array();
         foreach($ids as $id) {
-            if($id === 'room1') { 
+            if($id === 'room') { 
                 $rooms[] = (object)array(
                     'id' => $id,
                     'name' => $id,
                     'nick' => 'room'.$id,
                     'url' => "#",
-                    'pic_url' => WEBIM_IMAGE('room.png')
+                    'avatar' => WEBIM_IMAGE('room.png')
                 );
             }
         }
@@ -200,7 +198,7 @@ class Plugin {
      */
     private function _member($id) {
         return (object)array(
-            'id' => 'uid' . $id,
+            'id' => $id,
             'nick' => 'user'.$id
         ); 
     }

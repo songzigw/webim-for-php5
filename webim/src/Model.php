@@ -199,7 +199,7 @@ class Model {
             'name' => $room['name'],
             'nick' => $room['nick'],
             "url" => $room['url'],
-            "pic_url" => WEBIM_IMAGE("room.png"),
+            "avatar" => WEBIM_IMAGE("room.png"),
             "status" => "",
             "temporary" => true,
             "blocked" => false);
@@ -362,7 +362,7 @@ class Model {
             'group' => "visitor",
             'presence' => 'online',
             'show' => "available",
-            'pic_url' => WEBIM_IMAGE('male.png'),
+            'avatar' => WEBIM_IMAGE('male.png'),
             'role' => 'visitor',
             'url' => "#",
             'status' => "",
@@ -390,7 +390,7 @@ class Model {
                 "nick" => "v".substr($v->name, 4), //remove vid:
                 "group" => "visitor",
                 "url" => "#",
-                "pic_url" => WEBIM_IMAGE('male.png'),
+                "avatar" => WEBIM_IMAGE('male.png'),
                 "status" => $status, 
             );
         }

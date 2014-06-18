@@ -5,7 +5,7 @@ namespace WebIM;
 /**
  * PHP WebIM Library for interacting with NexTalk server.
  *
- * @see http://nextalk.im/docs/api
+ * @see https://github.com/webim/webim-php
  */
 class Client {
 
@@ -198,7 +198,7 @@ class Client {
 	 *
 	 */
 	public function message($from, $to, $body, $type = 'chat', $style='', $timestamp = null) {
-        if(!$timestamp) $timestamp = $this->microtimeFloat() * 1000;
+        if(!$timestamp) $timestamp = microtime(true) * 1000;
 		$data = array_merge($this->reqdata(), array(
 			'nick' => $this->endpoint->nick,
 			'to' => $to,
@@ -306,11 +306,6 @@ class Client {
         );
         if($this->ticket) $data['ticket'] = $this->ticket;
         return $data;
-    }
-
-    private function microtimeFloat() {
-        list($usec, $sec) = explode(" ", microtime());
-        return ((float)$usec + (float)$sec);
     }
 
 }

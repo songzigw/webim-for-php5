@@ -13,7 +13,10 @@
   'debug' => true,
   'domain' => 'localhost',
   'apikey' => 'public',
-  'server' => 't.nextalk.im:8000',
+  //Single Node
+  'server' => 't.nextalk.im:8080',
+  //Cluster Nodes
+  //'server' => array('t1.nextalk.im:8080', 't2.nextalk.im:8080'),
   'emot' => 'default',
   'theme' => 'base',
   'opacity' => '80',

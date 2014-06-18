@@ -43,7 +43,8 @@
 		soundUrls: soundUrls,
 		//layout: "layout.popup",
         layoutOptions: {
-            unscalable: _IMC.is_visitor
+            unscalable: _IMC.is_visitor,
+            detachable: true //true
         },
 		buddyChatOptions: {
             downloadHistory: !_IMC.is_visitor,
@@ -85,6 +86,8 @@
     }
     if(_IMC.enable_chatlink) ui.addApp("chatbtn");
     ui.addApp("setting", {"data": webim.setting.defaults.data, "copyright": true});
+    //render
 	ui.render();
+	//online
 	_IMC['is_login'] && im.autoOnline() && im.online();
 })(webim);
