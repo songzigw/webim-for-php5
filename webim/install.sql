@@ -80,3 +80,28 @@ CREATE TABLE `webim_visitors` (
       UNIQUE KEY `webim_visitor_name` (`name`)
 )ENGINE=MyISAM AUTO_INCREMENT=10000 DEFAULT CHARSET=utf8;
 
+
+DROP TABLE IF EXISTS `webim_buddies`;
+CREATE TABLE `webim_buddies` (
+      `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+      `uid` varchar(40) DEFAULT NULL,
+      `fid` varchar(40) DEFAULT NULL,
+      `created` datetime DEFAULT NULL,
+      UNIQUE KEY `webim_buddy_key` (`uid`, `fid`)
+      PRIMARY KEY (`id`)
+)ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `webim_asks`;
+CREATE TABLE `webim_asks` (
+      `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+      `from_id` varchar(60) NOT NULL DEFAULT '',
+      `from_nick` varchar(100) DEFAULT NULL,
+      `to_id` varchar(60) NOT NULL DEFAULT '',
+      `to_nick` varchar(100) DEFAULT NULL,
+      `answer` int(11) NOT NULL DEFAULT '0',
+      `initiated` datetime DEFAULT NULL,
+      `answered` datetime DEFAULT NULL,
+      PRIMARY KEY (`id`),
+      UNIQUE KEY `ask_from_to` (`from_id`,`to_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+

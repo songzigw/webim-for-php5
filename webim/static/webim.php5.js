@@ -27,6 +27,10 @@
 		members: path + "/index.php?action=members",
         //notifications
 		notifications: path + "/index.php?action=notifications",
+        //asks
+        asks: path + "/index.php?action=asks",
+        accept: path + "/index.php?action=accept_ask",
+        reject: path + "/index.php?action=reject_ask",
         //upload files
 		upload: path + "/static/images/upload.php"
 	} );
@@ -85,6 +89,7 @@
         */
     }
     if(_IMC.enable_chatlink) ui.addApp("chatbtn");
+    if(_IMC.enable_ask) ui.addApp("ask");
     ui.addApp("setting", {"data": webim.setting.defaults.data, "copyright": true});
     //render
 	ui.render();

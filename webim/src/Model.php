@@ -398,6 +398,63 @@ class Model {
     }
 
     /**
+     * Asks
+     */
+    public function asks($uid) {
+        $rows = $this->T('asks')->whereRaw("(to_id = ? and answer = 0) or (from_id = ? and answer >0)", array($uid, $uid))->orderByDesc('id')->limit(10)->select();
+        $asks = array();
+        foreach($rows as $v) { 
+            
+            if($v->answer == 0) {
+                $ask = array(
+                    'from' => $v->from_id,
+                    'nick' => $v->from_nick,
+                    'to' => $v->to_id,
+                    'time' => $this->_format($v->initiated)
+                );
+            } else {
+                $ask = array(
+                    'from' => $v->to_id,
+                    'nick' => $v->to_nick,
+                    'to' => $v->from_id,
+                    'time' => $this->_format($v->answered)
+                );
+            }
+            $ask['id'] = $v->id;
+            $ask['answer'] = $v->answer;
+            $asks[] = (object)$ask; 
+        }
+        return array_reverse($asks);
+    }
+
+    public function accept($uid, $askid) {
+        /* select * from webim_asks where id = $askid and to_id = '$uid' */
+        $ask = $this->T('asks')->where('id', $askid)->where('to_id', $uid)->findOne();
+        if( $ask ) {
+            /* update webim_asks set answer = 2, answered = NOW() where id = $askid; */
+            $ask->set(array('answer' => 1, 'answered' => date( 'Y-m-d H:i:s' )));
+            $ask->save();
+        }
+    }
+
+    public function reject($uid, $askid) {
+        /* select * from webim_asks where id = $askid and to_id = '$uid' */
+        $ask = $this->T('asks')->where('id', $askid)->where('to_id', $uid)->findOne();
+        if( $ask ) {
+            /* update webim_asks set answer = 1, updated = NOW() where id = $askid; */
+            /* update webim_asks set answer = 2, answered = NOW() where id = $askid; */
+            $ask->set(array('answer' => 2, 'answered' => date( 'Y-m-d H:i:s' )));
+            $ask->save();
+        }
+    }
+
+    private function _format($time) {
+        $date = new DateTime($time);
+        return $date->format('m-d');
+    }
+
+
+    /**
      * Table query
      *
      * @param string $table table name

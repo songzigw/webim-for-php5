@@ -138,6 +138,7 @@ class Router {
 			'opacity',
             'discussion',
 			'enable_room', 
+			'enable_ask', 
 			'enable_chatlink', 
 			'enable_shortcut',
 			'enable_noti',
@@ -235,7 +236,8 @@ EOF;
             $presences = $data->presences;
             foreach($buddies as $buddy) {
                 $id = $buddy->id;
-                if( isset($presences->$id) ) {
+                //fix invisible problem
+                if( isset($presences->$id) && $presences->$id != "invisible") {
                     $buddy->presence = 'online';
                     $buddy->show = $presences->$id;
                 } else {
@@ -613,6 +615,38 @@ EOF;
         $data = $this->input('data');
 		$this->model->setting($uid, $data);
 		$this->okReply();
+    }
+
+    /**
+     * Asks
+     */
+    public function asks() {
+        $uid = $this->user->id;
+		$asks = $this->model->asks($uid);
+		$this->jsonReply($asks);
+    }
+
+    /**
+     * Accept Ask
+     */
+    public function accept_ask() {
+        $uid = $this->user->id;
+        $askid = $this->input('askid');
+        //TODO: insert into buddies
+        //TODO: should send presence
+		$this->model->accept_ask($uid, $askid);
+        $this->okReply();
+    }
+
+    /**
+     * Reject Ask
+     */
+    public function reject_ask() {
+        $uid = $this->user->id;
+        $askid = $this->input('askid');
+        //TODO: should send presence
+		$this->model->reject_ask($uid, $askid);
+        $this->okReply();
     }
 
 	private function input($name, $default = null) {

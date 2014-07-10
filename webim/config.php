@@ -28,6 +28,7 @@
   'enable_shortcut' => true,
   'enable_menu' => false,
   'enable_login' => false,
+  'enable_ask' => false,
   'enable_noti' => true,
   'admin_uids' => '0',
   'visitor' => true,
