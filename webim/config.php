@@ -4,7 +4,7 @@
   'dbhost' => "127.0.0.1",
   'dbuser' => "webim",
   'dbpassword' => "webim",
-  'dbname' => "webim",
+  'dbname' => "webim5",
   'dbprefix' => "webim_",
     
   //WebIM Config
@@ -14,7 +14,7 @@
   'domain' => 'localhost',
   'apikey' => 'public',
   //Single Node
-  'server' => 't.nextalk.im:8080',
+  'server' => 'localhost:8080',
   //Cluster Nodes
   //'server' => array('t1.nextalk.im:8080', 't2.nextalk.im:8080'),
   'emot' => 'default',
