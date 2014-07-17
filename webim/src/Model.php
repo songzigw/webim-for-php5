@@ -401,7 +401,8 @@ class Model {
      * Asks
      */
     public function asks($uid) {
-        $rows = $this->T('asks')->whereRaw("(to_id = ? and answer = 0) or (from_id = ? and answer >0)", array($uid, $uid))->orderByDesc('id')->limit(10)->select();
+        $rows = $this->T('asks')->whereRaw("(to_id = ? and answer = 0) or (from_id = ? and answer >0)", array($uid, $uid))
+            ->orderByDesc('id')->limit(10)->findMany();
         $asks = array();
         foreach($rows as $v) { 
             
@@ -427,7 +428,7 @@ class Model {
         return array_reverse($asks);
     }
 
-    public function accept($uid, $askid) {
+    public function accept_ask($uid, $askid) {
         /* select * from webim_asks where id = $askid and to_id = '$uid' */
         $ask = $this->T('asks')->where('id', $askid)->where('to_id', $uid)->findOne();
         if( $ask ) {
@@ -437,7 +438,7 @@ class Model {
         }
     }
 
-    public function reject($uid, $askid) {
+    public function reject_ask($uid, $askid) {
         /* select * from webim_asks where id = $askid and to_id = '$uid' */
         $ask = $this->T('asks')->where('id', $askid)->where('to_id', $uid)->findOne();
         if( $ask ) {
@@ -449,7 +450,7 @@ class Model {
     }
 
     private function _format($time) {
-        $date = new DateTime($time);
+        $date = new \DateTime($time);
         return $date->format('m-d');
     }
 
