@@ -4,7 +4,7 @@
   'dbhost' => "127.0.0.1",
   'dbuser' => "webim",
   'dbpassword' => "webim",
-  'dbname' => "webim",
+  'dbname' => "webim5",
   'dbprefix' => "webim_",
     
   //WebIM Config
