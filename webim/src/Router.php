@@ -448,6 +448,50 @@ EOF;
 		echo "</body></html>";
 	}
 
+    public function chatbox() {
+        $webim_path = WEBIM_PATH();
+        $uid = $this->input('uid');
+        $buddies = $this->plugin->buddiesByIds($this->user->id, array($uid));
+        if($buddies && isset($buddies[0])) {
+            $buddy = $buddies[0];
+        }
+        if(!$buddy) {
+			header("HTTP/1.0 404 Not Found");
+			exit("User Not Found");
+        }
+		header('Content-Type',	'text/html; charset=utf-8');
+		echo '<html><head>';
+		echo '<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />';
+        echo '<meta content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0" name="viewport">'; 
+        echo '<title>Webim ChatBox</title>';
+        echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"{$webim_path}/static/chatbox.css\"/>";
+        echo "<script type=\"text/javascript\" src=\"{$webim_path}/static/chatbox.js\"></script>";
+        echo '</head><body>';
+        echo '<body id="chatbox">';
+        echo '<div id="header">';
+        echo "<img id=\"avatar\" class=\"avatar\" src=\"{$buddy->avatar}\"></img>";
+        echo "<h4 id=\"user\">{$buddy->nick}</h4>";
+        echo "</div>";
+        echo '<div id="notice" class="chatbox-notice ui-state-highlight" style="display: none;">';
+        echo '</div>';
+        echo '<div id="content"><div id="histories"></div></div>';
+        echo '<div id="footer">';
+        echo '<form action="javascript:;">';
+        echo "<input type=\"hidden\" id=\"to\" value=\"{$buddy->id}\">";
+        echo '<table style="width:100%">';
+        echo '<tbody><tr>';
+        echo '<td width="auto"><input type="text" data-inline="true" placeholder="" name="" id="inputbox"></td><td width="50"><input id="sendbtn" type="submit" value="Send"></td>';
+        echo '<tr><tbody>';
+        echo '</table>';
+        echo '</form>';
+        echo '</div>';
+        echo '<script>';
+        echo "(function(){ window.webim.chatbox.open( { touid: '{$buddy->id}', path: '{$webim_path}', params: { } } ); })();";
+        echo '</script>';
+        echo '</body>';
+        echo '</html>';
+    }
+
     /**
      * Get rooms
      */
