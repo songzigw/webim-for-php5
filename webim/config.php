@@ -14,7 +14,7 @@
   'domain' => 'localhost',
   'apikey' => 'public',
   //Single Node
-  'server' => 't.nextalk.im:8080',
+  'server' => 't.nextalk.im:8000',
   //Cluster Nodes
   //'server' => array('t1.nextalk.im:8080', 't2.nextalk.im:8080'),
   'emot' => 'default',
