@@ -5,8 +5,8 @@
  * Copyright (c) 2014 Arron
  * Released under the MIT, BSD, and GPL Licenses.
  *
- * Date: Thu Jul 3 11:36:31 2014 +0800
- * Commit: 5a42251772f4a58f6a03b76864e18bf47acbe16a
+ * Date: Fri Jul 11 11:40:50 2014 +0800
+ * Commit: d4ca621cc222183abececea056397b561944979b
  */
 (function(window, document, undefined){
 
@@ -1443,7 +1443,10 @@ extend(webim.prototype, {
 		});
 
 		self.bind("presence", function( e, data ) {
-			buddy.presence( map( grep( data, grepPresence ), mapFrom ) );
+            var pl = grep( data, grepPresence );
+			buddy.presence( map( pl, mapFrom ) );
+            //fix issue #35
+            presence.update(pl);
 			data = grep( data, grepRoomPresence );
 			for (var i = data.length - 1; i >= 0; i--) {
                 /*
@@ -1959,6 +1962,15 @@ model( "presence", {
         }
     },
 
+    update: function(list) {
+        var self = this, data = {};
+        for(var i = 0; i < list.length; i++) {
+            var p = list[i];
+            data[p.from] = p.show;
+        }
+        self.set(data);
+    },
+
     clear: function() {
         var self = this;
         self.data = [];      
@@ -2287,8 +2299,8 @@ model("history", {
  * Copyright (c) 2013 Arron
  * Released under the MIT, BSD, and GPL Licenses.
  *
- * Date: Wed Jul 9 22:32:46 2014 +0800
- * Commit: 3aa125eaee3dc10bcb9a6d6cda0e41b6a59e5506
+ * Date: Fri Jul 18 11:03:56 2014 +0800
+ * Commit: 0b20cb1bd0a889b343c46259a69f53f7d652dbc9
  */
 (function(window,document,undefined){
 
@@ -4231,7 +4243,14 @@ widget("history", {
 			markup.push(self._renderMsg(val));
 		}
 		//self.$.content.innerHTML += markup.join('');
-		self.$.content.appendChild( createElement( "<div>"+markup.join('')+"</div>" ) );
+		var el = createElement( "<div>"+markup.join('')+"</div>" );
+		var imgs = el.getElementsByTagName("img");
+		for (var i = 0, l = imgs.length; i < l; i++) {
+			addEvent(imgs[i], "load", function(){
+				self.trigger("update");
+			});
+		};
+		self.$.content.appendChild( el );
 		self.trigger("update");
 	},
 	notice: function( type, msg ) {
@@ -5560,7 +5579,7 @@ widget("buddy",{
 						</div>\
 							</div>',
 	tpl_group: '<li><h4><em class="ui-icon ui-icon-triangle-1-s"></em><span><%=title%>(<%=count%>)</span></h4><hr class="webim-line ui-state-default" /><ul></ul></li>',
-	tpl_li: '<li title="" class="webim-buddy-<%=show%>"><a href="<%=url%>" rel="<%=id%>" class="ui-helper-clearfix"><div id=":tabCount" class="webim-window-tab-count">0</div><em class="webim-icon ui-icon ui-icon-trash" style="display:inline;cursor:pointer;"></em><em class="webim-icon webim-icon-<%=show%>" title="<%=human_show%>"><%=show%></em><img width="25" src="<%=avatar%>" defaultsrc="<%=default_avatar%>" onerror="var d=this.getAttribute(\'defaultsrc\');if(d && this.src!=d)this.src=d;" /><strong><%=nick%></strong><span><%=status%></span></a></li>'
+	tpl_li: '<li title="" class="webim-buddy-<%=show%>"><a href="<%=url%>" rel="<%=id%>" class="ui-helper-clearfix"><div id=":tabCount" class="webim-window-tab-count">0</div><em class="webim-icon ui-icon ui-icon-trash" style="display:none;cursor:pointer;"></em><em class="webim-icon webim-icon-<%=show%>" title="<%=human_show%>"><%=show%></em><img width="25" src="<%=avatar%>" defaultsrc="<%=default_avatar%>" onerror="var d=this.getAttribute(\'defaultsrc\');if(d && this.src!=d)this.src=d;" /><strong><%=nick%></strong><span><%=status%></span></a></li>'
 },{
 	_init: function(){
 		var self = this, options = self.options;
@@ -6788,192 +6807,5 @@ widget("notification",{
 	},
 	destroy: function(){
 	}
-});
-/**/
-/*
- ask //
- attributes：
- data []所有信息 readonly 
- methods:
- handle(data) //handle data and distribute events
- events:
- data
- */
-/*
- * {"from":"","text":"","link":""}
- */
-
-model("ask",{
-	url: "webim/asks"
-},{
-	_init: function(){
-	},
-
-	grep: function(val, n){
-		return val && val.text;
-	},
-
-	handle: function(data){
-        isArray(data) && this.trigger("data", [data]);
-	},
-	load: function(){
-		var self = this, options = self.options;
-		ajax({
-			url: route( "asks" ),
-			cache: false,
-			context: self,
-			success: self.handle
-		});
-	},
-    accept: function(askid) {
-		var self = this, options = self.options;
-		ajax({
-			url: route( "accept" ),
-			cache: false,
-            data: {
-                ticket: options.ticket,
-                askid: askid,
-                csrf_token: webim.csrf_token
-            },
-			context: self,
-			success: self.load
-		});
-            
-    },
-    reject: function(askid) {
-		var self = this, options = self.options;
-		ajax({
-			url: route( "reject" ),
-			cache: false,
-            data: {
-                ticket: options.ticket,
-                askid: askid,
-                csrf_token: webim.csrf_token
-            },
-			context: self,
-			success: self.load
-		});
-    }
-});
-
-//
-/* ui.ask
- *
- options:
- data [{}]
- attributes：
-
- methods:
-
- destroy()
- events: 
-
- */
-app("ask", function(options) {
-		var ui = this, im = ui.im, layout = ui.layout;
-		var ask = im.ask = new webim.ask(null, {
-			jsonp: im.options.jsonp
-		});
-		var askUI = ui.ask = new webimUI.ask(null, options);
-        askUI.bind("accept", function(e, id) {
-            ask.accept(id);
-        }).bind("reject", function(e, id) {
-            ask.reject(id);
-        });
-		layout.addWidget(askUI, {
-			title: i18n("ask app"),
-			icon: "ask",
-			sticky: false,
-			onlyIcon: true,
-			isMinimize: true
-		});
-		///asks
-		ask.bind("data",function(e, data){
-			data.length && askUI.window.notifyUser("information", "+" + data.length);
-			askUI.addAll(data);
-		});
-		setTimeout(function() {
-			ask.load();
-		}, 1000);
-});
-
-
-widget("ask",{
-	template: '<div id="webim-ask" class="webim-ask">\
-	<ul id=":ul"></ul>\
-	<div id=":empty" class="webim-ask-empty"><%=empty ask%></div>\
-	</div>',
-	tpl_btn_li: '<li title=""><input class="webim-button ui-state-default ui-corner-all" type="button" value="<%=reject%>" /><input class="webim-button ui-state-default ui-corner-all" type="button" value="<%=accept%>" /><%=text%></li>',
-	tpl_li: '<li><%=text%></li>'
-},{
-	_init: function(){
-		var self = this, element = self.element, options = self.options;
-		var win = options.window;
-		options.data && options.data.length && hide(self.$.empty);
-		self._initEvents();
-	},
-
-    _initEvents: function() {
-        var self = this, $ = self.$;   
-
-    },
-
-    addAll: function(data) {
-        var self = this, $ = self.$;
-		if(isArray(data)) {
-            //remove all children
-            hide($.empty);
-            $.ul.innerHTML = "";
-			each(data, function(i,val){
-				self.addOne(val);
-			});
-        }
-    },
-
-	addOne: function(v) {
-		var self = this, $ = self.$;
-		$.ul.appendChild(self._li(v));
-	},
-
-	_li: function(data) {
-        var self = this, text, answer = data.answer, li;
-        if(answer == 0) {
-            text = i18n("Ask Initiate", {name: data.nick, time: data.time});
-        } else if(answer == 1) {
-            text = i18n("Ask Accepted", {name: data.nick, time: data.time});
-        } else if(answer == 2) {
-            text = i18n("Ask Rejected", {name: data.nick, time: data.time});
-        }
-        if(answer > 0) {
-            li = createElement(tpl(this.options.tpl_li, { text: text }));
-        } else {
-            li = createElement(tpl(this.options.tpl_btn_li, { 
-                    text: text, 
-                    accept: i18n("accept"), 
-                    reject: i18n("reject")
-                }));
-            var rejectBtn = li.firstChild;
-            var accetpBtn = rejectBtn.nextSibling;
-            addEvent(accetpBtn, "click", function(e) {
-                preventDefault(e);
-                self.trigger( "accept", [data.id] );
-            });
-            addEvent(rejectBtn, "click", function(e) {
-                preventDefault(e);
-                self.trigger( "reject", [data.id] );
-            });
-        }
-        return li;
-	},
-
-	_fitUI:function(){
-		var el = this.element;
-		if(el.clientHeight > 300)
-			el.style.height = 300 + "px";
-	},
-
-	destroy: function(){
-	}
-
 });
 })(window, document);

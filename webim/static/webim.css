@@ -5,8 +5,8 @@
  * Copyright (c) 2013 Arron
  * Released under the MIT, BSD, and GPL Licenses.
  *
- * Date: Wed Jul 9 22:32:46 2014 +0800
- * Commit: 3aa125eaee3dc10bcb9a6d6cda0e41b6a59e5506
+ * Date: Fri Jul 18 11:03:56 2014 +0800
+ * Commit: 0b20cb1bd0a889b343c46259a69f53f7d652dbc9
  */
 
 body {
@@ -1346,34 +1346,4 @@ a .webim-icon, a .ui-icon{
 .webim-notification ul li{
         overflow: hidden;
         padding:.1em 0;
-}
-.webim-ask {
-        padding:1em .5em;
-        overflow-x: hidden;
-        overflow-y: auto;
-	max-height: 300px;
-}
-* html .webim-menu{
-	height: expression(this.offsetHeight > 300 ? 300+'px' : 'auto');
-}
-.webim-ask .webim-ask-empty{
-
-}
-.webim-ask ul {
-        list-style: none;
-}
-.webim-ask ul li {
-        overflow: hidden;
-        padding:.1em 0;
-}
-
-#webim-ask ul li .webim-button {
-    float: right;
-    margin-left: 3px;
-    position: relative;
-    z-index: 2;
-}
-
-.webim-icon-ask {
-	background-image:url(images/asknoti.png);
 }
