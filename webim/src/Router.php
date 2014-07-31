@@ -605,7 +605,7 @@ EOF;
         $rtMembers = array();
         foreach($members as $m) {
             $id = $m->id;
-            if(isset($presences->$id)) {
+            if( isset($presences->$id) && $presences->$id != "invisible") {
                 $m->presence = 'online';
                 $m->show = $presences->$id;
             } else {
