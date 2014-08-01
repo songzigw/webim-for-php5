@@ -47,7 +47,7 @@ class Model {
      */
     public function __construct() {
         global $IMC;
-        \ORM::configure('mysql:host=' . $IMC['dbhost']. ';dbname=' . $IMC['dbname']);
+        \ORM::configure('mysql:host=' . $IMC['dbhost']. ';port=' . $IMC['dbport'] . ';dbname=' . $IMC['dbname']);
         \ORM::configure('username', $IMC['dbuser']);
         \ORM::configure('password', $IMC['dbpassword']);
         \ORM::configure('logging', true);
