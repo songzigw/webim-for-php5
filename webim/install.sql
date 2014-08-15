@@ -87,7 +87,7 @@ CREATE TABLE `webim_buddies` (
       `uid` varchar(40) DEFAULT NULL,
       `fid` varchar(40) DEFAULT NULL,
       `created` datetime DEFAULT NULL,
-      UNIQUE KEY `webim_buddy_key` (`uid`, `fid`)
+      UNIQUE KEY `webim_buddy_key` (`uid`, `fid`),
       PRIMARY KEY (`id`)
 )ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 

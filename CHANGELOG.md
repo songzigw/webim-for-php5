@@ -1,6 +1,12 @@
 CHANGELOG
 ==================
 
+v5.7 (2014/08/20)
+-------------------
+* src/Router.php: fix invisible bug
+* config.php: add 'dbport' config
+* src/Model.java: support 'dbport' config
+
 v5.6 (2014/07/18)
 -------------------
 * 升级lib, static到5.6版本
