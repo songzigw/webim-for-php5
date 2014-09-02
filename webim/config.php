@@ -9,7 +9,7 @@
   'dbprefix' => "webim_",
     
   //WebIM Config
-  'version' => '5.5',
+  'version' => '5.7',
   'isopen' => true,
   'debug' => true,
   'domain' => 'localhost',
