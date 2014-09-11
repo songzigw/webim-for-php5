@@ -242,7 +242,7 @@ class Plugin {
         $file = dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . 'censor.txt';
         $words = explode("\r\n", file_get_contents($file));
         foreach ($words as $word) {
-            if( !empty( $word ) && stripos($msg, $word) >=0  ) return false;
+            if( !empty( $word ) && stripos($msg, $word) !== false  ) return false;
         }
         return true;
     }
