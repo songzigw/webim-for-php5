@@ -347,6 +347,8 @@ EOF;
      * Send Message
      */
 	public function message() {
+
+        global $IMC;
 		$type = $this->input("type");
 		$offline = $this->input("offline");
 		$to = $this->input("to");
@@ -354,6 +356,11 @@ EOF;
         if( defined('WEBIM_MESSAGE_DECODE') ) {
             $body = html_entity_decode($body);
         }
+        if($IMC['censor'] && !$this->plugin->censor($body)) { //censor
+            $this->jsonReply(array('status' => 'error', 'message' => '消息含有敏感词不能发送'));
+            return;
+        }
+        
 		$style = $this->input("style");
 		$send = $offline == "true" || $offline == "1" ? 0 : 1;
 		$timestamp = microtime(true) * 1000;

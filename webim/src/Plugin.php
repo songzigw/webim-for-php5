@@ -233,5 +233,20 @@ class Plugin {
         return array();
     }
 
+    /**
+     * API: 敏感词检查
+     *
+     * @return true if pass
+     */
+    public function censor($msg) {
+        $file = dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . 'censor.txt';
+        $words = explode("\r\n", file_get_contents($file));
+        foreach ($words as $word) {
+            if( !empty( $word ) && stripos($msg, $word) >=0  ) return false;
+        }
+        return true;
+    }
+
 }
+
 
