@@ -35,4 +35,5 @@
   'visitor' => true,
   'show_unavailable' => true,
   'upload' => true,
+  'censor' => false,
 );
