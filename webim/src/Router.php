@@ -557,7 +557,7 @@ EOF;
      * Join room
      */
 	public function join() {
-        $uid = $this->user->uid;
+        $uid = $this->user->id;
         $roomId = $this->input('id');
         $nick = $this->input('nick');
         $room = $this->findRoom($this->plugin, $roomId);
