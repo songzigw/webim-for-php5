@@ -14,7 +14,7 @@
 <div style="background:#FFF;width:640px;margin:auto;padding:60px;"><center>
 <h1>WebIM for PHP5</h1>
 <a href="https://github.com/webim/webim-for-php5">https://github.com/webim/webim-for-php5</a>
-<h2>最新版本: 5.4.1</h2>
+<h2>最新版本: 5.7.2</h2>
 <hr>
 <?php 
     if(isset($_GET['uid'])) {
