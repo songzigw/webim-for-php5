@@ -11,7 +11,7 @@
   //WebIM Config
   'version' => '5.7',
   'isopen' => true,
-  'debug' => false,
+  'debug' => true,
   'domain' => 'localhost',
   'apikey' => 'public',
   //Single Node
