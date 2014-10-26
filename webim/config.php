@@ -11,7 +11,7 @@
   //WebIM Config
   'version' => '5.7',
   'isopen' => true,
-  'debug' => true,
+  'debug' => false,
   'domain' => 'localhost',
   'apikey' => 'public',
   //Single Node
@@ -19,7 +19,7 @@
   //Cluster Nodes
   //'server' => array('t1.nextalk.im:8080', 't2.nextalk.im:8080'),
   'emot' => 'default',
-  'theme' => 'base',
+  'theme' => 'blitzer',
   'opacity' => '80',
   'local' => 'zh-CN',
   'show_realname' => false,
@@ -36,4 +36,5 @@
   'show_unavailable' => true,
   'upload' => true,
   'censor' => false,
+  'robot' => false,
 );
