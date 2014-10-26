@@ -1,9 +1,11 @@
 CHANGELOG
 ==================
 
-v5.7.2 (2014/10/15)
+v5.7.2 (2014/10/25)
 -------------------
 * fix Router.php invite
+* rewrite index.php
+* rewrite README.md
 
 v5.7.1 (2014/09/02)
 -------------------
