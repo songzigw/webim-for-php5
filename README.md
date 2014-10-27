@@ -3,7 +3,7 @@
 
 WebIM Application for PHP5 project
 
-## 简介
+## 概述
 
 [NexTalk](http://nextalk.im)为PHP5开发项目提供的快速WebIM集成包。WebIM集成包以代码接口方式，与站点的用户体系、好友关系、数据库集成。
 
