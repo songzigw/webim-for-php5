@@ -2,6 +2,9 @@ body {
     clear: none;
     margin: 0px;
     padding: 0px;
+	overflow:hidden;
+	width:100%;
+	height:100%;
 }
 
 img {
@@ -15,31 +18,31 @@ img {
     color: gray;
 }
 
+
 #header {
-    background-color: #333333;
+    background-color: #333;
     border-bottom: 1px solid #000000;
     color: #FFFFFF;
-    font-size: 20px;
-    height: 45px;
-    line-height: 45px;
+    font-size: 1.3em;
+    height: 50px;
+    line-height: 50px;
     padding: 0;
-    position: fixed;
-    left: 0;
-    top: 0;
     width: 100%;
-    z-index: 2;
     box-shadow: 0 10px 18px #CCCCCC;
-    height: 45px;
-    text-align: center;
+	overflow:hidden;
 }
 
-#avatar {
+#avatar {  
     cursor: pointer;
     height: 50px;
-    margin: 10px 8px 0 10px;
+    margin: 0px;
     width: 50px;
     border-radius: 6px;
     float: left;
+}
+
+#header h4 {
+    margin-left:50px;
 }
 
 #user {
@@ -47,23 +50,24 @@ img {
 }
 
 .chatbox-notice {
+	position:absolute;
     padding: 0 .5em;
     border: 1px solid #f9dd34;
     background: #ffef8f;
     color: #363636;
-}
-
-#container {
-    display: block;
-    height: 100%;
-    /*width:100%;*/
+	width: 100%;
 }
 
 #content {
-    padding: 0px 10px 40px;
-    margin: 20px 0px 50px 0px;
-    height: 100%;
+	position:absolute;
+	margin: 24px 0 0 0;
+	top:50px;
+	bottom: 50px;
+	height: auto;
+	width: 100%;
+	overflow-y:auto; 
 }
+
 
 #histories .message {
     clear: both;
@@ -72,11 +76,11 @@ img {
 #histories .message h4 {
    font-weight: normal;
    margin: 0px;
-   padding: 0px
-   font-size: 1em;
+   padding: 0px;
 }
 
 #histories .message.me h4 {
+	font-size: 1em;
     text-align: right;
 }
 
@@ -104,23 +108,31 @@ img {
 #footer {
     border-top: 1px solid #CCCCCC;
     background: #fff;
-    position: fixed;
+    position: absolute;
     left: 0;
     bottom: 0;
     width: 100%;
-    z-index: 2;
+	height: 50px;
+	z-index: 2;
 }
 
 #inputbox {
-    font-size: 16px;
-    height: 22px;
-    line-height: 22px;
+    font-size: 1em;
+	border:0px;
+	height:40px;
+    line-height: 18px;
     margin-bottom: 0;
-    width: 98.5%;
+    width: 100%;
 }
 
 #sendbtn {
-    height: 30px;
+	cursor: pointer;
+	position:absolute;
+	font-size: 1em;
+	width:80px;
+    height:24px;
+	bottom:1px;
+	right:1px;
 }
 
 .speech-bubble { 
