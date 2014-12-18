@@ -140,6 +140,7 @@ class Router {
 			'enable_room', 
 			'enable_ask', 
 			'enable_chatlink', 
+			'enable_chatbtn', 
 			'enable_shortcut',
 			'enable_noti',
 			'enable_menu',
@@ -471,8 +472,8 @@ EOF;
 		echo '<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />';
         echo '<meta content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0" name="viewport">'; 
         echo '<title>Webim ChatBox</title>';
-        echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"{$webim_path}/static/chatbox.css\"/>";
-        echo "<script type=\"text/javascript\" src=\"{$webim_path}/static/chatbox.js\"></script>";
+        echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"{$webim_path}/static/webim-chatbox.css\"/>";
+        echo "<script type=\"text/javascript\" src=\"{$webim_path}/static/webim-chatbox.js\"></script>";
         echo '</head><body>';
         echo '<body id="chatbox">';
         echo '<div id="header">';
@@ -483,17 +484,30 @@ EOF;
         echo '</div>';
         echo '<div id="content"><div id="histories"></div></div>';
         echo '<div id="footer">';
-        echo '<form action="javascript:;">';
+        echo '<table style="width:100%"><tbody><tr><td width="100%">';
         echo "<input type=\"hidden\" id=\"to\" value=\"{$buddy->id}\">";
-        echo '<table style="width:100%">';
-        echo '<tbody><tr>';
-        echo '<td width="auto"><input type="text" data-inline="true" placeholder="" name="" id="inputbox"></td><td width="50"><input id="sendbtn" type="submit" value="Send"></td>';
-        echo '<tr><tbody>';
-        echo '</table>';
-        echo '</form>';
+        echo '<input type="text" data-inline="true" placeholder="请这里输入消息..." name="" id="inputbox">';
+        echo '</td><tr><tbody></table>';
         echo '</div>';
         echo '<script>';
-        echo "(function(){ window.webim.chatbox.open( { touid: '{$buddy->id}', path: '{$webim_path}', params: { } } ); })();";
+        echo '(function(webim, options) { ';
+        echo '  var path = options.path || "";';
+        echo '  function url(api) { return path + api; }';
+        echo '  webim.route({';
+        echo '    online: url("/index.php?action=online"),';
+        echo '    offline: url("/index.php?action=offline"),';
+        echo '    deactivate: url("/index.php?action=refresh"),';
+        echo '    message: url("/index.php?action=message"),';
+        echo '    presence: url("/index.php?action=presence"),';
+        echo '    status: url("/index.php?action=status"),';
+        echo '    setting: url("/index.php?action=setting"),';
+        echo '    history: url("/index.php?action=history"),';
+        echo '    buddies: url("/index.php?action=buddies")';
+        echo '  });';
+        echo '  var im = new webim(null, options);';
+        echo '  var chatbox = new webim.chatbox(im, options);';
+        echo '  im.online();';
+        echo "})(webim, {touid: '${$buddy->id}', path:'${$webim_path}/'})";
         echo '</script>';
         echo '</body>';
         echo '</html>';

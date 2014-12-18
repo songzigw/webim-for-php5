@@ -88,7 +88,9 @@
         });
         */
     }
-    if(_IMC.enable_chatlink) ui.addApp("chatbtn");
+    if(_IMC.enable_chatbtn) {
+        ui.addApp("chatbtn");
+    }
     if(_IMC.enable_ask) ui.addApp("ask");
     ui.addApp("setting", {"data": webim.setting.defaults.data, "copyright": true});
     //render

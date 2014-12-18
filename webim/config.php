@@ -9,7 +9,7 @@
   'dbprefix' => "webim_",
     
   //WebIM Config
-  'version' => '5.7',
+  'version' => '5.8',
   'isopen' => true,
   'debug' => true,
   'domain' => 'localhost',
@@ -26,6 +26,8 @@
   'discussion' => false,
   'enable_room' => true,
   'enable_chatlink' => true,
+  //5.8 add
+  'enable_chatbtn' => true,
   'enable_shortcut' => true,
   'enable_menu' => false,
   'enable_login' => false,
