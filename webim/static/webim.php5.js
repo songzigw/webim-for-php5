@@ -48,7 +48,8 @@
 		//layout: "layout.popup",
         layoutOptions: {
             unscalable: _IMC.is_visitor,
-            detachable: true //true
+            //detachable: true, //true
+	    maximizable: true
         },
 		buddyChatOptions: {
             downloadHistory: !_IMC.is_visitor,
@@ -89,6 +90,12 @@
         */
     }
     if(_IMC.enable_chatbtn) {
+	ui.addApp("chatbtn", {
+            elmentId: null,
+            chatbox: true,
+            classRe: /webim-chatbtn/,
+            hrefRe: [/action=chatbox&uid=(\d+)$/i]
+        });
         ui.addApp("chatbtn");
     }
     if(_IMC.enable_ask) ui.addApp("ask");

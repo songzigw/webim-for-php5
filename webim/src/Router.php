@@ -3,7 +3,7 @@
 /**
  * WebIM-for-PHP5 
  *
- * @author      Ery Lee <ery.lee@gmail.com>
+ * @author      Feng Lee <feng@nextalk.im>
  * @copyright   2014 NexTalk.IM
  * @link        http://github.com/webim/webim-for-php5
  * @license     MIT LICENSE
@@ -507,7 +507,7 @@ EOF;
         echo '  var im = new webim(null, options);';
         echo '  var chatbox = new webim.chatbox(im, options);';
         echo '  im.online();';
-        echo "})(webim, {touid: '${$buddy->id}', path:'${$webim_path}/'})";
+        echo "})(webim, {touid: '{$buddy->id}', path:'{$webim_path}/'})";
         echo '</script>';
         echo '</body>';
         echo '</html>';
