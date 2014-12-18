@@ -57,7 +57,7 @@
 	<div class="wrapper">
 		<div class="header">
 			<h1>WebIM for PHP5</h1>
-			<p>版本: 5.7.2 (2014/10/25)</p>
+			<p>版本: 5.8 (2014/12/20)</p>
 		</div>
 		<div class="content">
 			<h2>简介</h2>
@@ -72,9 +72,9 @@
         $uid = $_GET['uid'];
         $_SESSION['uid'] = $uid;
         echo "<ul>";
-        echo "<li>当前用户: <a class=\"webim-chatbtn\" href=\"/chat/{$uid}\">user$uid</a></li>";
+        echo "<li>当前用户: <a class=\"webim-chatbtn\" href=\"webim/index.php?action=chatbox&uid={$uid}\">user$uid</a></li>";
         foreach(range(1, 10) as $id) {
-            echo "<li><a class=\"webim-chatbtn\" href=\"/chat/{$id}\">聊天按钮{$id}</a> <a href=\"webim/index.php?action=chatbox&uid={$id}\">聊天窗口{$id}</a> </li>";
+            echo "<li><a class=\"webim-chatbtn\" href=\"webim/index.php?action=chatbox&uid={$id}\">聊天按钮{$id}</a></li>";
         }
         echo "</ul>";
     } else {
