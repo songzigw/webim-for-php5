@@ -3,8 +3,8 @@
   //Database
   'dbhost' => "127.0.0.1",
   'dbport' => "3306",
-  'dbuser' => "webim",
-  'dbpassword' => "webim",
+  'dbuser' => "root",
+  'dbpassword' => "123456",
   'dbname' => "webim5",
   'dbprefix' => "webim_",
     

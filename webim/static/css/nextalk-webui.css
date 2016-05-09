@@ -1,0 +1,481 @@
+@charset "UTF-8";
+
+html, body {
+    height: 100%;
+    width: 100%;
+    font-size: 14px;
+    /*background-image: url("../imgs/fullbody.png");*/
+}
+
+.mzen-content-padded {
+	margin: 10px 10px;
+}
+
+.mzen-bar-nav {
+    height: 45px;
+    border-bottom: 0px solid #c8c7cc;
+    -wekbit-box-shadow: 0 1px 10px #cfcfcf;
+    box-shadow: 0 1px 10px #cfcfcf;
+}
+
+.mzen-btn-block {
+    display: block;
+    width: 100%;
+    padding: 12px 0;
+    margin-bottom: 0;
+    font-size: 16px;
+}
+
+.mzen-list-view .mzen-img-object {
+    width: 49px;
+    height: 49px;
+    border-radius: 3px;
+}
+
+.mzen-img-body {
+    position: relative;
+}
+
+.mzen-switch {
+    margin: 0 0;
+}
+
+.mzen-nav .mzen-bar-tab .active .mzen-iconfont,
+.mzen-nav .mzen-bar-tab .active p {
+    color: #0099CC;
+}
+
+.mzen-arrow-right {
+    position: relative;
+}
+.mzen-arrow-right:after {
+    right: 0px;
+}
+.mzen-user-view-cell .mzen-img-body.mzen-arrow-right:after {
+    right: 0px;
+}
+
+.mzen-btn-default {
+  color: #333333;
+  background-color: #FFFFFF;
+  border: 1px solid #bdc3c7;
+}
+
+.mzen-content-title {
+  padding: 10px 0px 25px;
+}
+
+.mzen-content:last-child {
+  margin-bottom: 0;
+}
+
+.mzen-list-view i.mzen-iconfont {
+    padding: 0px;
+    margin-right: 5px;
+    border-radius: 4px;
+    font-size: 20px;
+}
+
+.mzen-list-view-cell > a {
+  margin: 0px 0px;
+  padding: 0;
+}
+
+.mzen-user-view:last-child {
+  margin-bottom: 0;
+}
+
+.mzen-chat-receiver:after {
+	display: block;
+	clear: both;
+	content: "";
+}
+
+.mzen-nav {
+    position: absolute;
+    right: auto;
+    left: auto;
+    bottom: auto;
+}
+
+/*------------------------------------*/
+
+.nextalk.mzen-input-row {
+    width: 100%;
+}
+
+.nextalk.mzen-input-row .mzen-input {
+    height: 55px;
+    border-bottom: 0;
+}
+
+.nextalk-show {
+  display: inline-block;
+  background: #b7b7b7;
+  margin-right: 5px;
+  width: 8px;
+  height: 8px;
+  -webkit-border-radius: 8px;
+  -webkit-background-clip: padding-box;
+  -moz-border-radius: 8px;
+  -moz-background-clip: padding;
+  border-radius: 8px;
+  background-clip: padding-box;
+  -webkit-transition: all 220ms ease-in-out;
+  -moz-transition: all 220ms ease-in-out;
+  -o-transition: all 220ms ease-in-out;
+  transition: all 220ms ease-in-out;
+  position: absolute;
+  top: 50%;
+  right: 18px;
+  -webkit-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+.nextalk-show.available {
+  background-color: #5cb85c;
+}
+.nextalk-show.dnd {
+  background-color: #d9534f;
+}
+.nextalk-show.away {
+  background-color: rgb(15, 146, 237);
+}
+.nextalk-show.invisible {
+  background-color: #f0ad4e;
+}
+.nextalk-show.chat {
+  background-color: #d9534f;
+}
+.nextalk-show.unavailable {
+  background-color: #b7b7b7;
+}
+
+.nextalk-msg-box {
+	z-index: 6;
+	position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+.nextalk-msg-tips {
+    z-index: 6;
+    position: absolute;
+    /*top: 0;*/
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.nextalk-page {
+	background-color: #f8f8f8;
+	position: relative;
+}
+
+.mzen-searchbar-wrap {
+    background-color: #f8f8f8;
+}
+
+.nextalk-page.nextalk-page-login {
+	background-color: white; 
+}
+
+.nextalk-page-login .mzen-content {
+	padding-top: 120px;
+}
+
+.nextalk-page-login .mzen-content p {
+    padding-top: 0px;
+    display:inline-block;
+}
+
+.nextalk-page-login .mzen-content .mzen-btn {
+    margin-top: 10px;
+}
+
+.nextalk-page.nextalk-screen-full,
+.nextalk-page.nextalk-screen-right {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    z-index: 5;
+}
+.nextalk-page.nextalk-screen-full {
+    left: 0;
+    z-index: 12;
+}
+
+.nextalk-scroll {
+    overflow: hidden;
+    /*margin-top: 1px;*/
+    position: relative;
+}
+
+.mzen-bar-nav .nextalk-logo,
+.mzen-bar-nav .nextalk-user {
+    height: 45px;
+    line-height: 45px !important;
+    position: relative;
+}
+.mzen-bar-nav .nextalk-logo img {
+    height: 38px !important;
+    width: 38px !important;
+    margin-top: 3px;
+}
+
+.mzen-bar-nav .nextalk-user:after {
+    clear: both;
+}
+
+.nextalk-user .dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  right: 3px;
+  z-index: 2;
+  float: left;
+  min-width: 110px;
+  padding: 0 0;
+  margin: 0 0;
+  font-size: 14px;
+  text-align: left;
+  list-style: none;
+  background-color: #fff;
+  -webkit-background-clip: padding-box;
+  background-clip: padding-box;
+  border: 1px solid rgba(0,0,0,.15);
+  border-radius: 3px;
+  -webkit-box-shadow: 0 3px 9px rgba(0,0,0,.175);
+  box-shadow: 0 3px 9px rgba(0,0,0,.175);
+}
+.nextalk-user .dropdown-menu li {
+	position: relative;
+	padding-left: 28px;
+	height: 35px;
+	line-height: 35px;
+	cursor: pointer;
+}
+.nextalk-user .dropdown-menu i.mzen-icon-check {
+    line-height: 30px;
+    color: red;
+    font-size: 14px;
+    margin-right: 8px;
+    float: right;
+}
+.nextalk-user .dropdown-menu .nextalk-show {
+	right: auto;
+	left: 9px;
+}
+.nextalk-user .dropdown-menu li:hover {
+    background-color: #ddd;
+}
+.nextalk-user .dropdown-menu li:active {
+    background-color: #ddd;
+}
+
+.mzen-bar-nav .nextalk-user a {
+	display: block;
+	height: 32px !important;
+    width: 32px !important;
+    border-radius: 3px;
+	border: 1px solid #f9f9f9;
+	position: absolute;
+    right: 10px;
+	top: 50%;
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
+    text-align: center;
+    vertical-align: middle;
+}
+.mzen-bar-nav .nextalk-user img {
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+    background-color: white;
+    margin-left: auto;
+    margin-right: auto;
+}
+.mzen-bar-nav .nextalk-user a.available {
+  border: 1px solid #5cb85c;
+  background-color: #5cb85c;
+}
+.mzen-bar-nav .nextalk-user a.dnd {
+  border: 1px solid #d9534f;
+  background-color: #d9534f;
+}
+.mzen-bar-nav .nextalk-user a.away {
+  border: 1px solid rgb(15, 146, 237);
+  background-color: rgb(15, 146, 237);
+}
+.mzen-bar-nav .nextalk-user a.invisible {
+  border: 1px solid #f0ad4e;
+  background-color: #f0ad4e;
+}
+.mzen-bar-nav .nextalk-user a.chat {
+  border: 1px solid #d9534f;
+  background-color: #d9534f;
+}
+.mzen-bar-nav .nextalk-user a.unavailable {
+  border: 1px solid #b7b7b7;
+  background-color: #b7b7b7;
+}
+
+#nextalk_page_main>footer:before {
+    border-top: 1px solid #c8c7cc;
+    display: block;
+    -webkit-transform-origin: 0 0;
+    transform-origin: 0.0;
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    pointer-events: none;
+    content: "";
+}
+#nextalk_page_main>footer span.mzen-iconfont {
+    display: block;
+    font-size: 28px;
+    height: 35px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+}
+
+.nextalk-wrap {
+    padding: 0.313em 0;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-flex-flow: column;
+    flex-flow: column;
+    margin-bottom: 0;
+}
+
+.nextalk-content-empty {
+    padding: 0;
+    background: url(../imgs/no_content_grey.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 90%;
+    height: 100%;
+}
+
+.mzen-float-box {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    -webkit-transform: translate(-50%,-50%);
+    transform: translate(-50%,-50%);
+    background-color: #FFFFFF;
+    box-shadow: 0 0 6px #D6D6D6;
+    z-index: 6;
+    margin-bottom: 0;
+}
+
+.buddies .mzen-user-view-cell .mzen-img-object {
+	width: 40px !important;
+	height: 40px !important;
+	min-height: 40px !important;
+	min-width: 40px !important;
+	line-height: 40px;
+}
+
+.buddies .mzen-user-view-cell .mzen-img-body span {
+	line-height: 38px;
+}
+
+.gender {
+    font-size: 0.6em;
+    color: #FFFFFF;
+    display: inline-block;
+    border-radius: 3px;
+    line-height: normal;
+    padding: 0 2px 0 1px;
+}
+
+.gender .icon-gender {
+    display: inline-block;
+    height: 1.2em;
+    width: 1.2em;
+    vertical-align: text-bottom;
+}
+
+.gender.male {
+    background-color: #B9DCFF;
+}
+
+.gender.female {
+    background-color: #FEBDD6;
+}
+
+.gender.male .icon-gender {
+    background: url(../res/one_profile_male_left.png) center center no-repeat;
+    background-size: 100%;
+}
+
+.gender.female .icon-gender {
+    background: url(../res/one_profile_female_left.png) center center no-repeat;
+    background-size: 100%;
+}
+
+.message .font-line-height {
+    line-height: 49px;
+}
+
+.message .mzen-list-view-cell > a {
+    padding: 0;
+    margin: 0;
+}
+
+.message .mzen-img-body {
+    height: 49px;
+}
+
+.message .msg-time {
+    font-size: 9px;
+    line-height: normal;
+    color: #8f8f94;
+    padding-right: 3px;
+}
+
+.message .mzen-list-view-cell {
+    padding: 7px 7px;
+}
+
+.message .mzen-list-view-cell > a.mzen-arrow-right > .mzen-badge,
+.message .mzen-list-view-cell > div.mzen-arrow-right > .mzen-badge {
+    right: 18px;
+}
+
+footer.mzen-nav >ul.mzen-bar-tab > li > .mzen-badge {
+    position: absolute;
+    top: 25%;
+    right: 28%;
+    z-index: 1;
+    -webkit-transform: translateY(-50%);
+          transform: translateY(-50%);
+}
+
+.chatbox .mzen-list-view .mzen-img-object {
+    width: 38px;
+    height: 38px;
+    border-radius: 3px;
+    background-color: #cfcfcf;
+}
+.chatbox .mzen-list-view-cell {
+	padding: 6px 10px;
+	line-height: 38px;
+	vertical-align: middle;
+	cursor: pointer;
+}
+.chatbox .mzen-list-view-cell:after {
+	/*border-bottom: 0px;
+	border-top: 0px;*/
+}
+.chatbox .mzen-list-view-cell:before {
+    /*border-bottom: 0px;
+    border-top: 0px;*/
+}
+.chatbox .mzen-list-view:after {
+	/*border-bottom: 0px;
+	border-top: 0px;*/
+}

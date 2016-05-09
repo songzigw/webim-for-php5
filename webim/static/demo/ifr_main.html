@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+    content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+<title>完整的聊天（右下角）</title>
+</head>
+<body>
+    <div>完整的聊天（右下角）</div>
+    <script type="text/javascript" src="demo.js"></script>
+    <script type="text/javascript" src="../script/nextalk-main.js"></script>
+    <script type="text/javascript">
+        nextalkMain.setConfig({
+            // 引入资源文件的根路径
+            resPath : demo.resPath,
+            // API根路径
+            apiPath : demo.apiPath,
+            // 嵌入窗口右下角
+            iframe : true,
+            // API路由
+            route : demo.route
+        });
+        nextalkMain.go();
+    </script>
+</body>
+</html>

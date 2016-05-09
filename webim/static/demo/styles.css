@@ -1,0 +1,92 @@
+* {
+    margin: 0px;
+    padding: 0px;
+}
+
+html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p,
+    blockquote, pre, abbr, address, cite, code, del, dfn, em, img, ins, kbd,
+    q, samp, small, strong, sub, sup, var, b, i, dl, dt, dd, ol, ul, li,
+    fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr,
+    th, td, article, aside, canvas, details, figcaption, figure, footer,
+    header, hgroup, menu, nav, section, summary, time, mark, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    font-size: 100%;
+    vertical-align: baseline;
+    background: transparent;
+    list-style: none;
+    font-weight: normal;
+}
+
+body {
+    line-height: 1.5;
+    font-size: 16px;
+    color: #555555;
+    font-family: arial, Helvetica, sans-serif;
+    background-color: #F2F2F2;
+}
+
+a {
+    color: #329ECC;
+    text-decoration: none;
+}
+
+a:hover {
+    color: red;
+    text-decoration: none;
+}
+
+h1 {
+    display: block;
+    font-size: 2em;
+    -webkit-margin-before: 0.67em;
+    -webkit-margin-after: 0.67em;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
+    font-weight: bold;
+}
+
+h2 {
+    display: block;
+    font-size: 1.5em;
+    -webkit-margin-before: 0.83em;
+    -webkit-margin-after: 0.83em;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
+    font-weight: bold;
+}
+
+p {
+    display: block;
+    -webkit-margin-before: 1em;
+    -webkit-margin-after: 1em;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
+}
+
+.wrapper {
+    background: #FFF;
+    box-shadow: #D0D0D0 0 0 60px;
+    margin: 0 auto;
+    width: 540px;
+}
+
+.header {
+    padding: 20px;
+    border-bottom: 1px solid #e5e5e5;
+    text-align: center;
+}
+
+.footer {
+    padding: 0px 0px 20px;
+    margin-top: 40px;
+    color: #777;
+    border-top: 1px solid #e5e5e5;
+    text-align: center;
+}
+
+.content {
+    padding: 18px 20px;
+}

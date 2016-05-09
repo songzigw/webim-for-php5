@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+    content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+<title>Chat</title>
+</head>
+<body>
+    <script type="text/javascript">
+        function getParam(name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+            var r = window.location.search.substr(1).match(reg);
+            if (r != null) return decodeURI(r[2]); return null;
+        }
+        var _IMC = {};
+        _IMC.chatObj = {
+            id : getParam('id'),
+            name : getParam('name'),
+            avatar : getParam('avatar')
+        };
+    </script>
+    <script type="text/javascript" src="/webim/index.php?action=boot&simple=true"></script>
+</body>
+</html>

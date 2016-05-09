@@ -166,18 +166,61 @@ class Router {
             'jsonp' => false,
 			'min' => WEBIM_DEBUG ? "" : ".min"
 		);
+		$scriptVar['apiPath'] = $webim_path;
+		$scriptVar['resPath'] = $webim_path . 'static/';
+		if ($this->input('window', 'true') == 'true') {
+		    $scriptVar['window'] = true;
+		} else {
+		    $scriptVar['window'] = false;
+		}
+		if ($this->input('iframe', 'true') == 'true') {
+		    $scriptVar['iframe'] = true;
+		} else {
+		    $scriptVar['iframe'] = false;
+		}
+	    if ($this->input('simple', 'false') == 'false') {
+		    $scriptVar['simple'] = false;
+		} else {
+		    $scriptVar['simple'] = true;
+		}
+		if ($this->input('hidden', 'false') == 'false') {
+		    $scriptVar['hidden'] = false;
+		} else {
+		    $scriptVar['hidden'] = true;
+		}
+		if ($this->input('simple', 'false') == 'false') {
+		    $scriptVar['simple'] = false;
+		} else {
+		    $scriptVar['simple'] = true;
+		}
+		if ($this->input('mobile', 'false') == 'false') {
+		    $scriptVar['mobile'] = false;
+		} else {
+		    $scriptVar['mobile'] = true;
+		}
+		$scriptVar['chatlinkIds'] = $this->input('chatlinkIds');
+		// channelType[XHR_POLLING,WEBSOCKET]
+		$scriptVar['channelType'] = 'WEBSOCKET';
 
 		foreach($fields as $f) { $scriptVar[$f] = $IMC[$f];	}
 
 		header("Content-type: application/javascript");
 		header("Cache-Control: no-cache");
-		echo "var _IMC = " . json_encode($scriptVar) . ";" . PHP_EOL;
+		echo 'if (!window._IMC) { window._IMC = {} }';
+		echo "var _TEMP = " . json_encode($scriptVar) . ";";
+		echo 'for (var key in _TEMP) { _IMC[key] = _TEMP[key] }' . PHP_EOL;
 
-		$script = <<<EOF
-_IMC.script = window.webim ? '' : ('<link href="' + _IMC.path + 'static/webim' + _IMC.min + '.css?' + _IMC.version + '" media="all" type="text/css" rel="stylesheet"/><link href="' + _IMC.path + 'static/themes/' + _IMC.theme + '/jquery.ui.theme.css?' + _IMC.version + '" media="all" type="text/css" rel="stylesheet"/><script src="' + _IMC.path + 'static/webim' + _IMC.min + '.js?' + _IMC.version + '" type="text/javascript"></script><script src="' + _IMC.path + 'static/i18n/webim-' + _IMC.local + '.js?' + _IMC.version + '" type="text/javascript"></script>');
-_IMC.script += '<script src="' + _IMC.path + 'static/webim.' + _IMC.product + '.js?vsn=' + _IMC.version + '" type="text/javascript"></script>';
+//		$script = <<<EOF
+//_IMC.script = window.webim ? '' : ('<link href="' + _IMC.path + 'static/webim' + _IMC.min + '.css?' + _IMC.version + '" media="all" type="text/css" rel="stylesheet"/><link href="' + _IMC.path + 'static/themes/' + _IMC.theme + '/jquery.ui.theme.css?' + _IMC.version + '" media="all" type="text/css" rel="stylesheet"/><script src="' + _IMC.path + 'static/webim' + _IMC.min + '.js?' + _IMC.version + '" type="text/javascript"></script><script src="' + _IMC.path + 'static/i18n/webim-' + _IMC.local + '.js?' + _IMC.version + '" type="text/javascript"></script>');
+//_IMC.script += '<script src="' + _IMC.path + 'static/webim.' + _IMC.product + '.js?vsn=' + _IMC.version + '" type="text/javascript"></script>';
+//document.write( _IMC.script );
+//EOF;
+
+        $script =
+<<<EOF
+_IMC.script = '<script src="' + _IMC.resPath + 'script/nextalk-main.js?vsn=' + _IMC.version + '" type="text/javascript"></script>';
+_IMC.script += '<script src="' + _IMC.resPath + 'script/nextalk-boot.js?vsn=' + _IMC.version + '" type="text/javascript"></script>';
 document.write( _IMC.script );
-
 EOF;
 		exit($script);
 	}
@@ -358,7 +401,7 @@ EOF;
             $body = html_entity_decode($body);
         }
         if($IMC['censor'] && !$this->plugin->censor($body)) { //censor
-            $this->jsonReply(array('status' => 'error', 'message' => '消息含有敏感词不能发送'));
+            $this->jsonReply(array('status' => 'error', 'message' => '娑堟伅鍚湁鏁忔劅璇嶄笉鑳藉彂閫�'));
             return;
         }
         
@@ -444,7 +487,7 @@ EOF;
 		echo "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />";
 		echo "</head><body>";
 		echo "<h1>Histories($date)</h1>".PHP_EOL;
-		echo "<table><thead><tr><td>用户</td><td>消息</td><td>时间</td></tr></thead><tbody>";
+		echo "<table><thead><tr><td>鐢ㄦ埛</td><td>娑堟伅</td><td>鏃堕棿</td></tr></thead><tbody>";
 		foreach($histories as $history) {
 			$nick = $history->nick;
 			$body = $history->body;
@@ -468,47 +511,68 @@ EOF;
 			exit("User Not Found");
         }
 		header('Content-Type',	'text/html; charset=utf-8');
-		echo '<html><head>';
-		echo '<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />';
-        echo '<meta content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0" name="viewport">'; 
-        echo '<title>Webim ChatBox</title>';
-        echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"{$webim_path}/static/webim-chatbox.css\"/>";
-        echo "<script type=\"text/javascript\" src=\"{$webim_path}/static/webim-chatbox.js\"></script>";
-        echo '</head><body>';
-        echo '<body id="chatbox">';
-        echo '<div id="header">';
-        echo "<img id=\"avatar\" class=\"avatar\" src=\"{$buddy->avatar}\"></img>";
-        echo "<h4 id=\"user\">{$buddy->nick}</h4>";
-        echo "</div>";
-        echo '<div id="notice" class="chatbox-notice ui-state-highlight" style="display: none;">';
-        echo '</div>';
-        echo '<div id="content"><div id="histories"></div></div>';
-        echo '<div id="footer">';
-        echo '<table style="width:100%"><tbody><tr><td width="100%">';
-        echo "<input type=\"hidden\" id=\"to\" value=\"{$buddy->id}\">";
-        echo '<input type="text" data-inline="true" placeholder="请这里输入消息..." name="" id="inputbox">';
-        echo '</td><tr><tbody></table>';
-        echo '</div>';
-        echo '<script>';
-        echo '(function(webim, options) { ';
-        echo '  var path = options.path || "";';
-        echo '  function url(api) { return path + api; }';
-        echo '  webim.route({';
-        echo '    online: url("/index.php?action=online"),';
-        echo '    offline: url("/index.php?action=offline"),';
-        echo '    deactivate: url("/index.php?action=refresh"),';
-        echo '    message: url("/index.php?action=message"),';
-        echo '    presence: url("/index.php?action=presence"),';
-        echo '    status: url("/index.php?action=status"),';
-        echo '    setting: url("/index.php?action=setting"),';
-        echo '    history: url("/index.php?action=history"),';
-        echo '    buddies: url("/index.php?action=buddies")';
-        echo '  });';
-        echo '  var im = new webim(null, options);';
-        echo '  var chatbox = new webim.chatbox(im, options);';
-        echo '  im.online();';
-        echo "})(webim, {touid: '{$buddy->id}', path:'{$webim_path}/'})";
-        echo '</script>';
+// 		echo '<html><head>';
+// 		echo '<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />';
+//         echo '<meta content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0" name="viewport">'; 
+//         echo '<title>Webim ChatBox</title>';
+//         echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"{$webim_path}/static/webim-chatbox.css\"/>";
+//         echo "<script type=\"text/javascript\" src=\"{$webim_path}/static/webim-chatbox.js\"></script>";
+//         echo '</head><body>';
+//         echo '<body id="chatbox">';
+//         echo '<div id="header">';
+//         echo "<img id=\"avatar\" class=\"avatar\" src=\"{$buddy->avatar}\"></img>";
+//         echo "<h4 id=\"user\">{$buddy->nick}</h4>";
+//         echo "</div>";
+//         echo '<div id="notice" class="chatbox-notice ui-state-highlight" style="display: none;">';
+//         echo '</div>';
+//         echo '<div id="content"><div id="histories"></div></div>';
+//         echo '<div id="footer">';
+//         echo '<table style="width:100%"><tbody><tr><td width="100%">';
+//         echo "<input type=\"hidden\" id=\"to\" value=\"{$buddy->id}\">";
+//         echo '<input type="text" data-inline="true" placeholder="璇疯繖閲岃緭鍏ユ秷鎭�..." name="" id="inputbox">';
+//         echo '</td><tr><tbody></table>';
+//         echo '</div>';
+//         echo '<script>';
+//         echo '(function(webim, options) { ';
+//         echo '  var path = options.path || "";';
+//         echo '  function url(api) { return path + api; }';
+//         echo '  webim.route({';
+//         echo '    online: url("/index.php?action=online"),';
+//         echo '    offline: url("/index.php?action=offline"),';
+//         echo '    deactivate: url("/index.php?action=refresh"),';
+//         echo '    message: url("/index.php?action=message"),';
+//         echo '    presence: url("/index.php?action=presence"),';
+//         echo '    status: url("/index.php?action=status"),';
+//         echo '    setting: url("/index.php?action=setting"),';
+//         echo '    history: url("/index.php?action=history"),';
+//         echo '    buddies: url("/index.php?action=buddies")';
+//         echo '  });';
+//         echo '  var im = new webim(null, options);';
+//         echo '  var chatbox = new webim.chatbox(im, options);';
+//         echo '  im.online();';
+//         echo "})(webim, {touid: '{$buddy->id}', path:'{$webim_path}/'})";
+//         echo '</script>';
+//         echo '</body>';
+//         echo '</html>';
+        
+        echo '<!DOCTYPE html>';
+        echo '<html>';
+        echo '<head>';
+        echo '<meta charset="UTF-8">';
+        echo '<meta name="viewport"';
+        echo '    content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />';
+        echo '<title>Chat</title>';
+        echo '</head>';
+        echo '<body>';
+        echo '        <script type="text/javascript">';
+        echo '        var _IMC = {};';
+        echo '        _IMC.chatObj = {';
+        echo '            id : "'. $buddy->id .'",';
+        echo '            name : "'. $buddy->nick .'",';
+        echo '            avatar : "'. $buddy->avatar .'"';
+        echo '        };';
+        echo '        </script>';
+        echo '        <script type="text/javascript" src="'.$webim_path.'index.php?action=boot&simple=true&iframe=false"></script>';
         echo '</body>';
         echo '</html>';
     }

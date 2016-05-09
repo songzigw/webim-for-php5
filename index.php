@@ -143,7 +143,7 @@ EOL;
 
 	</div>
 
-	<script type="text/javascript" src="webim/index.php?action=boot"></script>
+	<script type="text/javascript" src="webim/index.php?action=boot&chatlinkIds=1,2,3,4,5,6,7,8,9"></script>
 
 </body>
 
