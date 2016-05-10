@@ -1106,7 +1106,7 @@
             var _this = this;
             if (_this._pollTimer)
                 clearTimeout(_this._pollTimer);
-            _this._setting();
+            _this._onClose();
             return _this;
         },
         _onConnect : function() {
@@ -1410,7 +1410,7 @@
         NOTIFICATION : 'notification'
     };
 
-    /** 消息放向 */
+    /** 消息方向 */
     IM.msgDirection = {
         SEND : 'send',
         RECEIVE : 'receive'
@@ -1642,8 +1642,10 @@
                 other = IM.msgType.NOTIFICATION;
                 break;
             default:
-                throw new Error('NexTalkWebIM.msgType out of Bounds.');
-                break;
+                return;
+        }
+        if (msgDirection == IM.msgDirection.RECEIVE) {
+            sound.play('msg');
         }
         // 获取对话消息
         var dInfo = _this._msgData.get(msgType, other);
@@ -1793,6 +1795,16 @@
         msg.direction = msgDirection;
         _this.timestamp = msg.timestamp;
         _this.record[_this.record.length] = msg;
+        // 保存到数据库
+        var api = IM.WebAPI.getInstance();
+        api.conv_new({
+            oid : _this.other,
+            name : _this.name,
+            avatar : _this.avatar,
+            body : msg.body,
+            type : _this.msgType,
+            direction : msgDirection
+        });
     };
     /**
      * 获取所有的往来通话，将未读标识去掉，未读数清零
@@ -2066,7 +2078,6 @@
                 _this._saveMsg(msg.type, direction, msg);
             }
             _this.receiveMsgListener.onMessage(ev, data);
-            sound.play('msg');
         });
         // 输入状态
         _this.bind("status", function(ev, data) {
@@ -2324,6 +2335,16 @@
                         ticket : _this.getConnection().ticket
                     }, msg);
                     api.message(params, callback);
+                },
+                
+                conversations : function(callback) {
+                    var _this = this;
+
+                    var api = IM.WebAPI.getInstance();
+                    var params = {
+                        ticket : _this.getConnection().ticket
+                    };
+                    api.conversations(params, callback);
                 },
 
                 sendStatus : function(msg, callback) {
@@ -2974,29 +2995,34 @@
         };
 
         API.ROUTE = {
-            online : "online.do",
-            offline : "offline.do",
-            buddies : "buddies.do",
-            remove_buddy : "remove_buddy.do",
-            deactivate : "refresh.do",
-            message : "message.do",
-            presence : "presence.do",
-            status : "status.do",
-            setting : "setting.do",
-            history : "history.do",
-            clear : "clear_history.do",
-            download : "download_history.do",
-            // room actions
-            invite : "invite.do",
-            join : "join.do",
-            leave : "leave.do",
-            block : "block.do",
-            unblock : "unblock.do",
-            members : "members.do",
-            // notifications
-            notifications : "notifications.do",
-            // upload files
-            upload : "upload.do"
+                online : "index.php?action=online",
+                offline : "index.php?action=offline",
+                deactivate : "index.php?action=refresh",
+                message : "index.php?action=message",
+                presence : "index.php?action=presence",
+                status : "index.php?action=status",
+                setting : "index.php?action=setting",
+                history : "index.php?action=history",
+                clear : "index.php?action=clear_history",
+                download : "index.php?action=download_history",
+                buddies : "index.php?action=buddies",
+                // room actions
+                invite : "index.php?action=invite",
+                join : "index.php?action=join",
+                leave : "index.php?action=leave",
+                block : "index.php?action=block",
+                unblock : "index.php?action=unblock",
+                members : "index.php?action=members",
+                // notifications
+                notifications : "index.php?action=notifications",
+                // asks
+                asks : "index.php?action=asks",
+                accept : "index.php?action=accept_ask",
+                reject : "index.php?action=reject_ask",
+                // upload files
+                upload : "static/images/upload.php",
+                conversations : "index.php?action=conversations",
+                conv_new : "index.php?action=conv_new"
         };
         API.route = function(ob) {
             var options = ob;
@@ -3048,7 +3074,9 @@
                         }
                     },
                     error : function(err) {
-                        callback(undefined, err);
+                        if (typeof callback == "function") {
+                            callback(undefined, err);
+                        }
                     }
                 };
                 extend(info, ajaxInfo || {});
@@ -3069,6 +3097,14 @@
             
             presence : function(params, callback) {
                 this._ajax("presence", params, callback);
+            },
+            
+            conversations : function(params, callback) {
+                this._ajax("conversations", params, callback);
+            },
+            
+            conv_new : function(params, callback) {
+                this._ajax("conv_new", params, callback);
             }
         };
         extend(API.prototype, methods);

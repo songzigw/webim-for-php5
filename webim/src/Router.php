@@ -777,6 +777,27 @@ EOF;
 		$this->model->reject_ask($uid, $askid);
         $this->okReply();
     }
+    
+    public function conversations() {
+        $uid = $this->user->id;
+        $convs = $this->model->queryConversations($uid);
+        $this->jsonReply($convs);
+    }
+    
+    public function conv_new() {
+        $uid = $this->user->id;
+        $conv = array(
+                'uid' => $uid,
+                'oid' => $this->input('oid'),
+                'body' => $this->input('body'),
+                'type' => $this->input('type'),
+                'direction' => $this->input('direction'),
+                'name' => $this->input('name'),
+                'avatar' => $this->input('avatar')
+        );
+        $this->model->insertConversations($conv);
+        $this->okReply();
+    }
 
 	private function input($name, $default = null) {
 		if( isset( $_POST[$name] ) ) return $_POST[$name];
@@ -813,6 +834,24 @@ EOF;
 
     private function buddyId($buddy) {
         return $buddy->id;
+    }
+    
+    public function test() {
+        $conversations = array(
+                'uid' => '1',
+                'oid' => '2',
+                'body' => 'abcde',
+                'type' => 'chat',
+                'direction' => 'send'
+        );
+        $convArray = $this->model->queryConversations(1);
+        
+        echo count($convArray) . PHP_EOL;
+        foreach ($convArray as $conv) {
+            echo $conv . PHP_EOL;
+        }
+        
+        
     }
 
 }

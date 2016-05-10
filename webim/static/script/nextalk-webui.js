@@ -399,7 +399,11 @@
             mainUI.setCurrName();
             mainUI.avatar();
             // 加载最近会话列表
-            mainUI.loadRecently();
+            IM.getInstance().conversations(function(ret, err) {
+                if (ret) {
+                    mainUI.loadRecently(ret);
+                }
+            });
             // 加载联系人列表
             mainUI.loadBuddies();
             // 触发状态事件
@@ -693,15 +697,15 @@
     MainUI.prototype.itemHTML = function() {
         var $item = UI.$(MainUI.CONVERSATION);
         if (arguments.length == 1) {
-            var user = arguments[0];
-            $item.attr('data-toggle', ChatBoxUI.CHAT);
-            $item.attr('data-id', user.id);
-            $item.attr('data-name', user.nick);
-            $('img', $item).attr('src', user.avatar);
-            $('[data-toggle=name]', $item).text(user.nick);
-            $('[data-toggle=timestamp]', $item).text(IM.nowStamp());
+            var conv = arguments[0];
+            $item.attr('data-toggle', conv.type);
+            $item.attr('data-id', conv.oid);
+            $item.attr('data-name', conv.name);
+            $('img', $item).attr('src', conv.avatar);
+            $('[data-toggle=name]', $item).text(conv.name);
+            $('[data-toggle=timestamp]', $item).text(conv.updated);
             $('[data-toggle=notCount]', $item).remove();
-            $('[data-toggle=body]', $item).text('开始聊天');
+            $('[data-toggle=body]', $item).text(conv.body);
         } else if (arguments.length == 2) {
             var dInfo = arguments[0];
             var body = arguments[1];
@@ -808,16 +812,15 @@
         _this.showUnreadTotal();
         _this.itemsClick();
     };
-    MainUI.prototype.loadRecently = function() {
+    MainUI.prototype.loadRecently = function(conversations) {
         var _this = this, webim = IM.getInstance();
         var webui = UI.getInstance();
         var ops = webui.options;
         var $items = _this.$items.empty();
 
-        var buddies = webim.getBuddies();
-        if (buddies && buddies.length > 0) {
-            for (var i = 0; i < buddies.length; i++) {
-                $items.append(_this.itemHTML(buddies[i]));
+        if (conversations && conversations.length > 0) {
+            for (var i = 0; i < conversations.length; i++) {
+                $items.append(_this.itemHTML(conversations[i]));
             }
         }
         if (webim.connectedTimes == 1 && ops.chatObj) {
@@ -836,8 +839,8 @@
                 avatar = IM.imgs.HEAD;
             }
             _this.itemHTML({
-                id : ops.chatObj.id,
-                nick : ops.chatObj.name,
+                oid : ops.chatObj.id,
+                name : ops.chatObj.name,
                 avatar : avatar
             }).prependTo($items);
             webui.openChatBoxUI(ChatBoxUI.CHAT, ops.chatObj.id,
@@ -1043,12 +1046,12 @@
     SimpleUI.prototype.itemHTML = function() {
         var $item = UI.$(SimpleUI.CONVERSATION);
         if (arguments.length == 1) {
-            var user = arguments[0];
-            $item.attr('data-toggle', ChatBoxUI.CHAT);
-            $item.attr('data-id', user.id);
-            $item.attr('data-name', user.nick);
-            $('img', $item).attr('src', user.avatar);
-            $('p', $item).text(user.nick);
+            var conv = arguments[0];
+            $item.attr('data-toggle', conv.type);
+            $item.attr('data-id', conv.oid);
+            $item.attr('data-name', conv.name);
+            $('img', $item).attr('src', conv.avatar);
+            $('p', $item).text(conv.name);
             $('span', $item).remove();
         } else if (arguments.length == 2) {
             var dInfo = arguments[0];
@@ -1149,16 +1152,15 @@
         _this.showUnreadTotal();
         _this.itemsClick();
     };
-    SimpleUI.prototype.loadRecently = function() {
+    SimpleUI.prototype.loadRecently = function(conversations) {
         var _this = this, webim = IM.getInstance();
         var webui = UI.getInstance();
         var ops = webui.options;
         var $items = _this.$items.empty();
         
-        var buddies = webim.getBuddies();
-        if (buddies && buddies.length > 0) {
-            for (var i = 0; i < buddies.length; i++) {
-                $items.append(_this.itemHTML(buddies[i]));
+        if (conversations && conversations.length > 0) {
+            for (var i = 0; i < conversations.length; i++) {
+                $items.append(_this.itemHTML(conversations[i]));
             }
         }
         if (webim.connectedTimes == 1 && ops.chatObj) {
@@ -1176,8 +1178,8 @@
                 avatar = IM.imgs.HEAD;
             }
             _this.itemHTML({
-                id : ops.chatObj.id,
-                nick : ops.chatObj.name,
+                oid : ops.chatObj.id,
+                name : ops.chatObj.name,
                 avatar : avatar}).prependTo($items);
             webui.openChatBoxUI(ChatBoxUI.CHAT, ops.chatObj.id,
                     ops.chatObj.name, avatar);

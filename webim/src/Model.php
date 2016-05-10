@@ -55,6 +55,33 @@ class Model {
         \ORM::configure('driver_options', array(\PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'));
     }
     
+    public function insertConversations($conversation) {
+        $tConvs = $this->T('conversations');
+        $conv = $tConvs->where('uid', $conversation['uid'])
+                        ->where('oid', $conversation['oid'])
+                        ->findOne();
+        if ($conv) {
+            // UPDATE
+            return $conv;
+        }
+        
+        // ADD
+        $row = $tConvs->create();
+        $row->set($conversation)
+            ->setExpr('created', 'NOW()')
+            ->setExpr('updated', 'NOW()');
+        $row->save();
+    }
+    
+    public function queryConversations($uid) {
+        $query = $this->T('conversations')
+                    ->where('uid', $uid)
+                    ->orderByDesc('updated');
+        $convArray = $query->findArray();
+        $convObjArr = array_map(array($this, '_toObj'), $convArray);
+        return array_reverse($convObjArr);
+    }
+    
     /**
      * Get histories 
      *
@@ -368,7 +395,7 @@ class Model {
             'status' => "",
         );
     }
-
+    
     /**
      * visitors by vids
      */
