@@ -302,7 +302,7 @@
         var _this = this;
         window.setTimeout(function() {
             _this._connectServer();
-        }, 1500);
+        }, 0);
     };
 
     UI.prototype._connectServer = function() {

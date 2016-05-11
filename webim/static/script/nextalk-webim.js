@@ -1798,6 +1798,7 @@
         // 保存到数据库
         var api = IM.WebAPI.getInstance();
         api.conv_new({
+            uid : _this.webim.getCurrUser().id,
             oid : _this.other,
             name : _this.name,
             avatar : _this.avatar,
@@ -2300,8 +2301,8 @@
                                 // 触发登入失败事件
                                 // 可能是网络不可用，或者其他原因???
                                 _this.trigger("login.fail", [ err ]);
-                            } 
-                        }, 1100);
+                            }
+                        }, 300);
                     });
                 },
 

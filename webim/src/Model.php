@@ -62,7 +62,15 @@ class Model {
                         ->findOne();
         if ($conv) {
             // UPDATE
-            return $conv;
+            $conv->set(array(
+                    'body' => $conversation['body'],
+                    'direction' => $conversation['direction'],
+                    'name' => $conversation['name'],
+                    'avatar' => $conversation['avatar']
+                   ))
+                 ->setExpr('updated', 'NOW()');
+            $conv->save();
+            return;
         }
         
         // ADD
@@ -79,7 +87,7 @@ class Model {
                     ->orderByDesc('updated');
         $convArray = $query->findArray();
         $convObjArr = array_map(array($this, '_toObj'), $convArray);
-        return array_reverse($convObjArr);
+        return $convObjArr;
     }
     
     /**

@@ -35,7 +35,7 @@
         var btnHTML = '<div class="nextalk-main" id="nextalk_main">'
                 + '<a class="nextalk-btn">' + '<img class="nextalk-ico" src="'
                 + this.config.resPath + 'imgs/chat.png" />' + '<span>聊天</span></a>'
-                + '<span class="nextalk-alert" id="nextalk_unread">5</span></div>';
+                + '<span class="nextalk-alert" id="nextalk_unread">0</span></div>';
         return btnHTML;
     };
 
@@ -66,6 +66,7 @@
         }, 5);
     }
     function toggleHTML() {
+        iframe.$('#nextalk_unread', document).hide();
         var nkMain = iframe.$('#nextalk_main', document);
         var nkIframe = iframe.$('#nextalk_iframe', document);
 
@@ -86,7 +87,11 @@
     iframe.go = function() {
         var _this = this;
         _this.config.onUnread = function(total) {
-            document.getElementById('nextalk_unread').innerText = total;
+            if (total > 0) {
+                _this.$('#nextalk_unread', document).show().text(total);
+            } else {
+                _this.$('#nextalk_unread', document).hide().text(total);
+            }
         };
         
         var div = document.createElement('div');

@@ -577,6 +577,23 @@ EOF;
         echo '</html>';
     }
 
+    public function mobile() {
+        $webim_path = WEBIM_PATH();
+        header('Content-Type',	'text/html; charset=utf-8');
+        echo '<!DOCTYPE html>';
+        echo '<html>';
+        echo '<head>';
+        echo '<meta charset="UTF-8">';
+        echo '<meta name="viewport"';
+        echo '    content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />';
+        echo '<title>Chat</title>';
+        echo '</head>';
+        echo '<body>';
+        echo '<script type="text/javascript" src="'.$webim_path.'index.php?action=boot&simple=true&iframe=false&mobile=true"></script>';
+        echo '</body>';
+        echo '</html>';
+    }
+    
     /**
      * Get rooms
      */
@@ -785,9 +802,9 @@ EOF;
     }
     
     public function conv_new() {
-        $uid = $this->user->id;
+        // $uid = $this->user->id;
         $conv = array(
-                'uid' => $uid,
+                'uid' => $this->input('uid'),
                 'oid' => $this->input('oid'),
                 'body' => $this->input('body'),
                 'type' => $this->input('type'),

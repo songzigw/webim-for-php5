@@ -2,9 +2,10 @@
     position: absolute; margin : 0;
     padding: 0;
     position: absolute;
-    font-size: 14px;;
+    font-size: 14px;
     right: -10px;
     margin: 0;
+    display: none;
 }
 
 .nextalk-main {

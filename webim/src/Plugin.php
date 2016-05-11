@@ -49,6 +49,17 @@ class Plugin {
     public function __construct() { 
     }
 
+    public function getUserById($uid) {
+        return (object) array(
+                'id' => $uid,
+                'nick' => 'user'.$uid,
+                'group' => 'friend',
+                'presence' => 'offline',
+                'show' => 'unavailable',
+                'status' => '#',
+                'avatar' => WEBIM_IMAGE('male.png')
+        );
+    }
 
     /**
      * API: current user
