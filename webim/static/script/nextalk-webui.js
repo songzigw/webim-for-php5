@@ -737,7 +737,7 @@
             if (ww <= 320) {
                 $html.css('width', '100%');
             } else {
-                $html.width(270);
+                $html.width(240);
             }
         } else {
             $html.css('width', '100%');
@@ -1183,7 +1183,7 @@
                 type : ChatBoxUI.CHAT,
                 oid : ops.chatObj.id,
                 name : ops.chatObj.name,
-                avatar : avata,
+                avatar : avatar,
                 body : '开始聊天'
             }).prependTo($items);
             webui.openChatBoxUI(ChatBoxUI.CHAT, ops.chatObj.id,
@@ -1354,7 +1354,7 @@
                 $html.css('width', '100%');
             } else {
                 if (!simple) {
-                    $html.width(ww - 270 - 2);
+                    $html.width(ww - 240 - 2);
                 } else {
                     $html.width(ww - 220 - 2);
                 }

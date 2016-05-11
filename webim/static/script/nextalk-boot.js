@@ -1,7 +1,7 @@
 var openChatBoxWin = function(id, name, avatar) {
     this.openWindow(
             _IMC.apiPath + "index.php?action=chatbox"
-            + "&id=" + id
+            + "&uid=" + id
             + "&name=" + name
             + "&avatar=" + avatar,
             "window_chat", 790, 500);

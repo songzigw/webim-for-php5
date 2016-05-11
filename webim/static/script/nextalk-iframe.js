@@ -25,8 +25,8 @@
         },
         // Iframe 宽高
         panel : {
-            width : 790,
-            height : 530
+            width : 690,
+            height : 430
         },
         $ : undefined
     };
