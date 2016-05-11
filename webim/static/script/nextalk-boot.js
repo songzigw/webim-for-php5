@@ -25,11 +25,12 @@ var openWindow = function(url, name, iWidth, iHeight) {
                         + iLeft
                         + ',toolbar=no,menubar=no,scrollbars=no,resizeable=no,location=no,status=no');
 };
-var getElementsByClass = function(className) {
+var getElementsByToggle = function(toggle) {
     var eles = document.getElementsByTagName('*');
     var targets = [];
     for (var i in eles) {
-        if (eles[i].className == className) {
+        if (eles[i].nodeType == 1
+                && eles[i].getAttribute('data-toggle') == toggle) {
             targets.push(eles[i]);
         }
     }
@@ -87,7 +88,7 @@ if (_IMC.chatObj) {
 
 // 给聊天按钮设置单击事件
 // 注意传递参数 uid nick avatar
-var chatBtns = getElementsByClass('webim-chatbtn');
+var chatBtns = getElementsByToggle('webim-chatbtn');
 if (chatBtns && chatBtns.length > 0) {
     var count = 0;
     for (var i = 0; i < chatBtns.length; i++) {

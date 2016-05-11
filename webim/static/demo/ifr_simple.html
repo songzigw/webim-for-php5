@@ -11,50 +11,43 @@
         <div class="content">
             <p>页面任意位置，可以添加聊天按钮...</p>
             <ul>
-                <li><a class="webim-chatbtn" href="#"
-                    id="webim-chatid-1" data-id="1" data-name="user1" data-avatar="">聊天按钮1</a>
-                    <em id="webim-chatid-state-1">下线</em>
-                    </li>
-                <li><a class="webim-chatbtn" href="#"
-                    id="webim-chatid-2" data-id="2" data-name="user2" data-avatar="">聊天按钮2</a>
-                    <em id="webim-chatid-state-2">下线</em>
-                    </li>
-                <li><a class="webim-chatbtn" href="#"
-                    id="webim-chatid-3" data-id="3" data-name="user3" data-avatar="">聊天按钮3</a>
-                    <em id="webim-chatid-state-3">下线</em>
-                    </li>
-                <li><a class="webim-chatbtn" href="#"
-                    id="webim-chatid-4" data-id="4" data-name="user4" data-avatar="">聊天按钮4</a>
-                    <em id="webim-chatid-state-4">下线</em>
-                    </li>
-                <li><a class="webim-chatbtn" href="#"
-                    id="webim-chatid-5" data-id="5" data-name="user5" data-avatar="">聊天按钮5</a>
-                    <em id="webim-chatid-state-5">下线</em>
-                    </li>
-                <li><a class="webim-chatbtn" href="#"
-                    id="webim-chatid-6" data-id="6" data-name="user6" data-avatar="">聊天按钮6</a>
-                    <em id="webim-chatid-state-6">下线</em>
-                    </li>
-                <li><a class="webim-chatbtn" href="#"
-                    id="webim-chatid-7" data-id="7" data-name="user7" data-avatar="">聊天按钮7</a>
-                    <em id="webim-chatid-state-7">下线</em>
-                    </li>
-                <li><a class="webim-chatbtn" href="#"
-                    id="webim-chatid-8" data-id="8" data-name="user8" data-avatar="">聊天按钮8</a>
-                    <em id="webim-chatid-state-8">下线</em>
-                    </li>
-                <li><a class="webim-chatbtn" href="#"
-                    id="webim-chatid-9" data-id="9" data-name="user9" data-avatar="">聊天按钮9</a>
-                    <em id="webim-chatid-state-9">下线</em>
-                    </li>
+                <li><a data-toggle="webim-chatbtn" href="#" data-id="1" data-win=""
+                    data-name="user1" data-avatar="">聊天按钮1</a> <em>下线</em></li>
+                <li><a data-toggle="webim-chatbtn" href="#" data-id="2" data-win=""
+                    data-name="user2" data-avatar="">聊天按钮2</a> <em>下线</em></li>
+                <li><a data-toggle="webim-chatbtn" href="#" data-id="3" data-win=""
+                    data-name="user3" data-avatar="">聊天按钮3</a> <em>下线</em></li>
+                <li><a data-toggle="webim-chatbtn" href="#" data-id="4" data-win=""
+                    data-name="user4" data-avatar="">聊天按钮4</a> <em>下线</em></li>
+                <li><a data-toggle="webim-chatbtn" href="#" data-id="5" data-win=""
+                    data-name="user5" data-avatar="">聊天按钮5</a> <em>下线</em></li>
+                <li><a data-toggle="webim-chatbtn" href="#" data-id="6" data-win=""
+                    data-name="user6" data-avatar="">聊天按钮6</a> <em>下线</em></li>
+                <li><a data-toggle="webim-chatbtn" href="#" data-id="7" data-win=""
+                    data-name="user7" data-avatar="">聊天按钮7</a> <em>下线</em></li>
+                <li><a data-toggle="webim-chatbtn" href="#" data-id="8" data-win=""
+                    data-name="user8" data-avatar="">聊天按钮8</a> <em>下线</em></li>
+                <li><a data-toggle="webim-chatbtn" href="#" data-id="9" data-win=""
+                    data-name="user9" data-avatar="">聊天按钮9</a> <em>下线</em></li>
             </ul>
         </div>
 
     </div>
     
-	<script type="text/javascript" src="demo.js"></script>
-	<script type="text/javascript" src="../script/nextalk-main.js"></script>
-	<script type="text/javascript">
+    <script type="text/javascript" src="demo.js"></script>
+    <script type="text/javascript" src="../script/nextalk-main.js"></script>
+    <script type="text/javascript">
+        var getElementsByToggle = function(toggle) {
+            var eles = document.getElementsByTagName('*');
+            var targets = [];
+            for (var i in eles) {
+                if (eles[i].nodeType == 1
+                        && eles[i].getAttribute('data-toggle') == toggle) {
+                    targets.push(eles[i]);
+                }
+            }
+            return targets;
+        };
         nextalkMain.setConfig({
             // 引入资源文件的根路径
             resPath : demo.resPath,
@@ -64,52 +57,60 @@
             iframe : true,
             // 简易版本
             simple : true,
-            chatlinkIds : '1,2,3,4,5,6,7,8,9',
-            onChatlinks : function(data) {
-                if (data) {
-                    for (var key in data) {
-                        if (data[key] != 'unavailable') {
-                            document.getElementById('webim-chatid-state-'+key).innerText = '在线';
-                        } else {
-                            document.getElementById('webim-chatid-state-'+key).innerText = '下线';
-                        }
-                    }
-                }
-            },
             // API路由
             route : demo.route
         });
-        nextalkMain.go();
-
-        // 给聊天按钮设置单击事件
-        // 注意传递参数 uid nick avatar
-        document.getElementById('webim-chatid-1').onclick = function() {
-            nextalkMain.openChatBoxUI(1, 'user1', '');
-        };
-        document.getElementById('webim-chatid-2').onclick = function() {
-            nextalkMain.openChatBoxUI(2, 'user2', '');
-        };
-        document.getElementById('webim-chatid-3').onclick = function() {
-            nextalkMain.openChatBoxUI(3, 'user3', '');
-        };
-        document.getElementById('webim-chatid-4').onclick = function() {
-            nextalkMain.openChatBoxUI(4, 'user4', '');
-        };
-        document.getElementById('webim-chatid-5').onclick = function() {
-            nextalkMain.openChatBoxUI(5, 'user5', '');
-        };
-        document.getElementById('webim-chatid-6').onclick = function() {
-            nextalkMain.openChatBoxUI(6, 'user6', '');
-        };
-        document.getElementById('webim-chatid-7').onclick = function() {
-            nextalkMain.openChatBoxUI(7, 'user7', '');
-        };
-        document.getElementById('webim-chatid-8').onclick = function() {
-            nextalkMain.openChatBoxUI(8, 'user8', '');
-        };
-        document.getElementById('webim-chatid-9').onclick = function() {
-            nextalkMain.openChatBoxUI(9, 'user9', '');
-        };
+        var chatBtns = getElementsByToggle('webim-chatbtn');
+        if (chatBtns && chatBtns.length > 0) {
+            var count = 0;
+            for (var i = 0; i < chatBtns.length; i++) {
+                var btn = chatBtns[i];
+                btn.onclick = function() {
+                    var uid = this.getAttribute('data-id');
+                    if (!uid) {
+                        return;
+                    }
+                    if (count == 0) {
+                        nextalkMain.chatlinkIds = uid;
+                    } else {
+                        nextalkMain.chatlinkIds += ',' + uid;
+                    }
+                    count++;
+                    var nick = this.getAttribute('data-name');
+                    var avatar = this.getAttribute('data-avatar');
+                    var win = this.getAttribute('data-win');
+                    if (win) {
+                        openChatBox(uid, nick, avatar);
+                    } else {
+                        nextalkMain.openChatBoxUI(uid, nick, avatar);
+                    }
+                };
+            }
+            nextalkMain.onChatlinks = function(data) {
+                if (data) {
+                    for (var i = 0; i < chatBtns.length; i++) {
+                        var btn = chatBtns[i];
+                        for (var key in data) {
+                            if (btn.getAttribute('data-id') == key) {
+                                if (data[key] != 'unavailable') {
+                                    // 在线
+                                    if (btn.nextElementSibling) {
+                                        btn.nextElementSibling.innerText = '在线';
+                                    }
+                                } else {
+                                    // 下线
+                                    if (btn.nextElementSibling) {
+                                        btn.nextElementSibling.innerText = '下线';
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            };
+        }
+        
+        nextalkMain.go();        
     </script>
 
 </body>
