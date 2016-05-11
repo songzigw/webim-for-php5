@@ -544,21 +544,9 @@
                             </li>\
                             <li class="mzen-list-view-cell mzen-switch-body mzen-tap-active">\
                                 <div class="mzen-switch-title">\
-                                    <label>保持聊天窗口始终打开</label>\
-                                </div>\
-                                <input type="checkbox" class="mzen-switch mzen-pull-right" checked />\
-                            </li>\
-                            <li class="mzen-list-view-cell mzen-switch-body mzen-tap-active">\
-                                <div class="mzen-switch-title">\
-                                    <label>收缩工具条</label>\
-                                </div>\
-                                <input type="checkbox" class="mzen-switch mzen-pull-right" checked>\
-                            </li>\
-                            <li class="mzen-list-view-cell mzen-switch-body mzen-tap-active">\
-                                <div class="mzen-switch-title">\
                                     <label>新消息时自动弹出聊天窗口</label>\
                                 </div>\
-                                <input type="checkbox" class="mzen-switch mzen-pull-right">\
+                                <input type="checkbox" class="mzen-switch mzen-pull-right" checked>\
                             </li>\
                         </ul>\
                         <ul class="mzen-list-view">\

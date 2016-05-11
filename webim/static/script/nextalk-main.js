@@ -44,7 +44,7 @@
     main._loadDep = function() {
         var _this = this;
 
-		if (typeof _this.hidden == 'boolean'
+	if (typeof _this.hidden == 'boolean'
             && _this.hidden == true) {
             _this._loadDepHidden();
             return;
@@ -156,7 +156,8 @@
             resPath : _this.resPath,
             apiPath : _this.apiPath,
             chatlinkIds : _this.chatlinkIds,
-            channelType : _this.channelType
+            channelType : _this.channelType,
+            playSound : false
         });
         //webim.setLoginStatusListener({});
         webim.setConnStatusListener({

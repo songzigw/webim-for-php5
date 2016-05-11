@@ -1464,7 +1464,9 @@
         // API接口根路径
         apiPath : "/",
         // 聊天热线，多个ID逗号","分割
-        chatlinkIds : null
+        chatlinkIds : null,
+        // 消息提示音
+        playSound : true
     };
 
     // 实例化NexTalkWebIM类对象----------------
@@ -1645,7 +1647,9 @@
                 return;
         }
         if (msgDirection == IM.msgDirection.RECEIVE) {
-            sound.play('msg');
+            if (_this.options.playSound) {
+                sound.play('msg');
+            }
         }
         // 获取对话消息
         var dInfo = _this._msgData.get(msgType, other);
