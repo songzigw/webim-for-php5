@@ -839,9 +839,11 @@
                 avatar = IM.imgs.HEAD;
             }
             _this.itemHTML({
+                type : ChatBoxUI.CHAT,
                 oid : ops.chatObj.id,
                 name : ops.chatObj.name,
-                avatar : avatar
+                avatar : avatar,
+                body : '开始聊天'
             }).prependTo($items);
             webui.openChatBoxUI(ChatBoxUI.CHAT, ops.chatObj.id,
                     ops.chatObj.name, avatar);
@@ -1178,9 +1180,12 @@
                 avatar = IM.imgs.HEAD;
             }
             _this.itemHTML({
+                type : ChatBoxUI.CHAT,
                 oid : ops.chatObj.id,
                 name : ops.chatObj.name,
-                avatar : avatar}).prependTo($items);
+                avatar : avata,
+                body : '开始聊天'
+            }).prependTo($items);
             webui.openChatBoxUI(ChatBoxUI.CHAT, ops.chatObj.id,
                     ops.chatObj.name, avatar);
         }
