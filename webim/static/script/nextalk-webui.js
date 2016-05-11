@@ -484,7 +484,7 @@
     MainUI.HTML =  '<div class="nextalk-page" id="nextalk_page_main">\
                     <!--头部集合 BEGIN-->\
                     <header class="mzen-bar mzen-bar-nav mzen-bar-white">\
-                        <a class="mzen-pull-left mzen-img nextalk-logo">\
+                        <a class="mzen-pull-left mzen-img nextalk-logo" href="/mobile">\
                         <img class="mzen-img-object" src="" data-toggle="logo"/>\
                         </a>\
                         <div class="mzen-title">消息</div>\
