@@ -72,9 +72,9 @@
         $uid = $_GET['uid'];
         $_SESSION['uid'] = $uid;
         echo "<ul>";
-        echo "<li>当前用户: <a class=\"webim-chatbtn\" href=\"webim/index.php?action=chatbox&uid={$uid}\">user$uid</a></li>";
+        echo "<li>当前用户: <a data-win=\"win\" data-id=\"{$uid}\" data-name=\"user{$uid}\" data-avatar=\"\" class=\"webim-chatbtn\" href=\"#\">user$uid</a></li>";
         foreach(range(1, 10) as $id) {
-            echo "<li><a class=\"webim-chatbtn\" href=\"webim/index.php?action=chatbox&uid={$id}\">聊天按钮{$id}</a></li>";
+            echo "<li><a data-win=\"win\" data-id=\"{$id}\" data-name=\"user{$id}\" data-avatar=\"\" class=\"webim-chatbtn\" href=\"#\">聊天按钮{$id}</a></li>";
         }
         echo "</ul>";
     } else {

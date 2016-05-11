@@ -168,25 +168,15 @@ class Router {
 		);
 		$scriptVar['apiPath'] = $webim_path;
 		$scriptVar['resPath'] = $webim_path . 'static/';
-		if ($this->input('window', 'true') == 'true') {
-		    $scriptVar['window'] = true;
+		if ($this->input('hidden', 'false') == 'false') {
+		    $scriptVar['hidden'] = false;
 		} else {
-		    $scriptVar['window'] = false;
+		    $scriptVar['hidden'] = true;
 		}
 		if ($this->input('iframe', 'true') == 'true') {
 		    $scriptVar['iframe'] = true;
 		} else {
 		    $scriptVar['iframe'] = false;
-		}
-	    if ($this->input('simple', 'false') == 'false') {
-		    $scriptVar['simple'] = false;
-		} else {
-		    $scriptVar['simple'] = true;
-		}
-		if ($this->input('hidden', 'false') == 'false') {
-		    $scriptVar['hidden'] = false;
-		} else {
-		    $scriptVar['hidden'] = true;
 		}
 		if ($this->input('simple', 'false') == 'false') {
 		    $scriptVar['simple'] = false;
@@ -198,7 +188,6 @@ class Router {
 		} else {
 		    $scriptVar['mobile'] = true;
 		}
-		$scriptVar['chatlinkIds'] = $this->input('chatlinkIds');
 		// channelType[XHR_POLLING,WEBSOCKET]
 		$scriptVar['channelType'] = 'WEBSOCKET';
 
@@ -579,7 +568,18 @@ EOF;
 
     public function mobile() {
         $webim_path = WEBIM_PATH();
-        header('Content-Type',	'text/html; charset=utf-8');
+        $uid = $this->input('uid');
+        if ($uid != null) {
+            $buddies = $this->plugin->buddiesByIds($this->user->id, array($uid));
+            if($buddies && isset($buddies[0])) {
+                $buddy = $buddies[0];
+            }
+            if(!$buddy) {
+                header("HTTP/1.0 404 Not Found");
+                exit("User Not Found");
+            }
+        }
+		header('Content-Type',	'text/html; charset=utf-8');
         echo '<!DOCTYPE html>';
         echo '<html>';
         echo '<head>';
@@ -589,7 +589,17 @@ EOF;
         echo '<title>Chat</title>';
         echo '</head>';
         echo '<body>';
-        echo '<script type="text/javascript" src="'.$webim_path.'index.php?action=boot&simple=true&iframe=false&mobile=true"></script>';
+        if ($buddy) {
+            echo '        <script type="text/javascript">';
+            echo '        var _IMC = {};';
+            echo '        _IMC.chatObj = {';
+            echo '            id : "'. $buddy->id .'",';
+            echo '            name : "'. $buddy->nick .'",';
+            echo '            avatar : "'. $buddy->avatar .'"';
+            echo '        };';
+            echo '        </script>';
+        }
+        echo '<script type="text/javascript" src="'.$webim_path.'index.php?action=boot&iframe=false&mobile=true"></script>';
         echo '</body>';
         echo '</html>';
     }
