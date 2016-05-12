@@ -152,7 +152,7 @@
         // -----------------------------------------------------
 
         // 初始化监听器
-        _this._initLisenters();
+        _this._initListeners();
         _this._initTimerTask();
 
         // 初始化NexTalkWebIM
@@ -284,7 +284,7 @@
         _this.showTask.start();
     };
 
-    UI.prototype._initLisenters = function() {
+    UI.prototype._initListeners = function() {
         var _this = this;
 
         _this.onChatlinks = function(data) {};
@@ -691,9 +691,18 @@
             $item.attr('data-name', conv.name);
             $('img', $item).attr('src', conv.avatar);
             $('[data-toggle=name]', $item).text(conv.name);
-            $('[data-toggle=timestamp]', $item).text(conv.updated);
-            $('[data-toggle=notCount]', $item).remove();
             $('[data-toggle=body]', $item).text(conv.body);
+            if (conv.updated) {
+                var time = new IM.Date(conv.updated);
+                var tStr = null;
+                if (time.getDate() != (new IM.Date()).getDate()) {
+                    tStr = time.format('yyyy-MM-dd');
+                } else {
+                    tStr = time.format('hh:mm:ss');
+                }
+                $('[data-toggle=timestamp]', $item).text(tStr);
+            }
+            $('[data-toggle=notCount]', $item).remove();
         } else if (arguments.length == 2) {
             var dInfo = arguments[0];
             var body = arguments[1];
@@ -702,8 +711,11 @@
             $item.attr('data-name', dInfo.name);
             $('img', $item).attr('src', dInfo.avatar);
             $('[data-toggle=name]', $item).text(dInfo.name);
-            $('[data-toggle=timestamp]', $item).text(dInfo.timestamp);
             $('[data-toggle=body]', $item).text(body);
+            var time = new Date();
+            time.setTime(dInfo.timestamp);
+            var tStr = time.format('hh:mm:ss');
+            $('[data-toggle=timestamp]', $item).text(tStr);
             if (dInfo.notCount != 0) {
                 $('[data-toggle=notCount]', $item).text(dInfo.notCount);
             } else {
@@ -1419,7 +1431,15 @@
     ChatBoxUI.prototype.receiveHTML = function(msg) {
         var _this = this;
         var $receive = UI.$(ChatBoxUI.RECEIVE);
-        $receive.find('.time').text(msg.timestamp);
+        var time = new IM.Date();
+        time.setTime(msg.timestamp);
+        var tStr = null;
+        if (time.getDate() != (new IM.Date()).getDate()) {
+            tStr = time.format('yyyy-MM-dd');
+        } else {
+            tStr = time.format('hh:mm:ss');
+        }
+        $receive.find('.time').text(tStr);
         $receive.find('.nick').text(msg.nick);
         $receive.find('img').attr('src', msg.avatar);
         $receive.find('.body').text(msg.body);
@@ -1429,7 +1449,15 @@
     ChatBoxUI.prototype.sendHTML = function(msg) {
         var _this = this;
         var $send = UI.$(ChatBoxUI.SEND);
-        $send.find('.time').text(msg.timestamp);
+        var time = new IM.Date();
+        time.setTime(msg.timestamp);
+        var tStr = null;
+        if (time.getDate() != (new IM.Date()).getDate()) {
+            tStr = time.format('yyyy-MM-dd');
+        } else {
+            tStr = time.format('hh:mm:ss');
+        }
+        $send.find('.time').text(tStr);
         $send.find('.nick').text(msg.nick);
         $send.find('img').attr('src', msg.avatar);
         $send.find('.body').text(msg.body);

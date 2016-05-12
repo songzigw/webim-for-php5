@@ -9,6 +9,32 @@
 (function(window, undefined) {
 
     // "use strict";
+
+    var Date = window.Date;
+    Date.prototype.format = function(format) {
+        var o = {
+            "M+" : this.getMonth() + 1, // month
+            "d+" : this.getDate(), // day
+            "h+" : this.getHours(), // hour
+            "m+" : this.getMinutes(), // minute
+            "s+" : this.getSeconds(), // second
+            "q+" : Math.floor((this.getMonth() + 3) / 3), // quarter
+            "S" : this.getMilliseconds() // millisecond
+        }
+
+        if (/(y+)/.test(format)) {
+            format = format.replace(RegExp.$1, (this.getFullYear() + "")
+                    .substr(4 - RegExp.$1.length));
+        }
+
+        for ( var k in o) {
+            if (new RegExp("(" + k + ")").test(format)) {
+                format = format.replace(RegExp.$1, RegExp.$1.length == 1 ? o[k]
+                        : ("00" + o[k]).substr(("" + o[k]).length));
+            }
+        }
+        return format;
+    };
     
     var JSON = window.JSON
             || (function() {
@@ -1379,7 +1405,8 @@
         ajax : ajax,
         Channel : Channel,
         ClassEvent : ClassEvent,
-        isMobile : isMobile
+        isMobile : isMobile,
+        Date : Date
     });
 
     // 全局性的定义-----------------
@@ -1872,7 +1899,7 @@
         _this.room = new IM.Room();
         _this.history = new IM.History();
         
-        _this._initListener();
+        _this._initListeners();
         _this._initTimerTask();
         _this._initResource();
         return _this;
@@ -1958,7 +1985,7 @@
     }
 
     /** 绑定WebIM客户端存在的各种事件监听 */
-    IM.prototype._initListener = function() {
+    IM.prototype._initListeners = function() {
         var _this = this;
         // 登入状态监听器
         _this.loginStatusListener = {
