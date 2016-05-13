@@ -390,7 +390,7 @@ EOF;
             $body = html_entity_decode($body);
         }
         if($IMC['censor'] && !$this->plugin->censor($body)) { //censor
-            $this->jsonReply(array('status' => 'error', 'message' => '娑堟伅鍚湁鏁忔劅璇嶄笉鑳藉彂閫�'));
+            $this->jsonReply(array('status' => 'error', 'message' => '消息含有敏感词不能发送'));
             return;
         }
         
@@ -404,13 +404,14 @@ EOF;
 				"to" => $to,
                 'from' => $this->user->id,
                 'nick' => $this->user->nick,
+                'avatar' => $this->user->avatar,
 				"body" => $body,
 				"style" => $style,
 				"timestamp" => $timestamp,
 			));
 		}
 		if($send == 1){
-			$this->client->message(null, $to, $body, $type, $style, $timestamp);
+			$this->client->message(null, $to, $body, $type, $style, $timestamp, $this->user->avatar);
 		}
         //Error Reply
         //$this->jsonReply(array('status' => 'error', 'message' => $body));
@@ -491,10 +492,7 @@ EOF;
     public function chatbox() {
         $webim_path = WEBIM_PATH();
         $uid = $this->input('uid');
-        $buddies = $this->plugin->buddiesByIds($this->user->id, array($uid));
-        if($buddies && isset($buddies[0])) {
-            $buddy = $buddies[0];
-        }
+        $buddy = $this->plugin->getUserById($uid, true);
         if(!$buddy) {
 			header("HTTP/1.0 404 Not Found");
 			exit("User Not Found");
@@ -570,10 +568,7 @@ EOF;
         $webim_path = WEBIM_PATH();
         $uid = $this->input('uid');
         if ($uid != null) {
-            $buddies = $this->plugin->buddiesByIds($this->user->id, array($uid));
-            if($buddies && isset($buddies[0])) {
-                $buddy = $buddies[0];
-            }
+            $buddy = $this->plugin->getUserById($uid, true);
             if(!$buddy) {
                 header("HTTP/1.0 404 Not Found");
                 exit("User Not Found");
@@ -864,20 +859,6 @@ EOF;
     }
     
     public function test() {
-        $conversations = array(
-                'uid' => '1',
-                'oid' => '2',
-                'body' => 'abcde',
-                'type' => 'chat',
-                'direction' => 'send'
-        );
-        $convArray = $this->model->queryConversations(1);
-        
-        echo count($convArray) . PHP_EOL;
-        foreach ($convArray as $conv) {
-            echo $conv . PHP_EOL;
-        }
-        
         
     }
 

@@ -1453,26 +1453,26 @@
     IM.errCode = {};
     (function(errCode) {
         /** 未知原因失败 */
-        errCode[errCode["UNKNOWN"] = -1] = "UNKNOWN";
+        errCode["UNKNOWN"] = -1;
         /** 请求超时 */
-        errCode[errCode["TIMEOUT"] = 0] = "TIMEOUT";
+        errCode["TIMEOUT"] = 0;
     })(IM.errCode);
 
     /** 现场状态 */
     IM.show = {};
     (function(show) {
         /** 在线 */
-        show[show["AVAILABLE"] = "available"] = "AVAILABLE";
+        show["AVAILABLE"] = "available";
         /** 忙碌 */
-        show[show["DND"] = "dnd"] = "DND";
+        show["DND"] = "dnd";
         /** 离开 */
-        show[show["AWAY"] = "away"] = "AWAY";
+        show["AWAY"] = "away";
         /** 隐身 */
-        show[show["INVISIBLE"] = "invisible"] = "INVISIBLE";
+        show["INVISIBLE"] = "invisible";
         /** 聊天中 */
-        show[show["CHAT"] = "chat"] = "CHAT";
+        show["CHAT"] = "chat";
         /** 离线 */
-        show[show["UNAVAILABLE"] = "unavailable"] = "UNAVAILABLE";
+        show["UNAVAILABLE"] = "unavailable";
     })(IM.show);
 
     /** 默认配置信息 */
@@ -1671,7 +1671,8 @@
                 other = IM.msgType.NOTIFICATION;
                 break;
             default:
-                return;
+                throw new Error('NexTalkWebIM.msgType out of Bounds.');
+                break;
         }
         if (msgDirection == IM.msgDirection.RECEIVE) {
             if (_this.options.playSound) {
@@ -2987,7 +2988,7 @@
                         self._triggerMsg(type, id, data);
                     }
                 },
-                load : function(type, id) {
+                load : function(type, id, callback) {
                     var self = this;
                     self.data[type][id] = [];
 
@@ -2998,8 +2999,9 @@
                         id : id
                     };
                     api.history(params, function(ret, err) {
+                        callback(ret, err);
                         if (ret) {
-                            self.init(type, id, ret);
+                            //self.init(type, id, ret);
                         }
                     });
                 }
@@ -3137,6 +3139,10 @@
             
             conv_new : function(params, callback) {
                 this._ajax("conv_new", params, callback);
+            },
+            
+            history : function(params, callback) {
+                this._ajax("history", params, callback);
             }
         };
         extend(API.prototype, methods);

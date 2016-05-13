@@ -48,10 +48,13 @@ class App {
     public static function run($plugin = null) {
 
         if($plugin === null) $plugin = new \WebIM\Plugin();
+        
+        $model = new \WebIM\Model();
+        $plugin->model( $model );
 
         $router = new \WebIM\Router();
 
-        $router->model( new \WebIM\Model() );
+        $router->model( $model );
 
         $router->plugin( $plugin );
 

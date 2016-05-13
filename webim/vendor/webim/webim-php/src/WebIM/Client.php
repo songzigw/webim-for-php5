@@ -197,10 +197,11 @@ class Client {
 	 * @return 'ok'
 	 *
 	 */
-	public function message($from, $to, $body, $type = 'chat', $style='', $timestamp = null) {
+	public function message($from, $to, $body, $type = 'chat', $style='', $timestamp = null, $avatar) {
         if(!$timestamp) $timestamp = microtime(true) * 1000;
 		$data = array_merge($this->reqdata(), array(
 			'nick' => $this->endpoint->nick,
+		    'avatar' => $avatar,
 			'to' => $to,
 			'type' => $type,
 			'body' => $body,

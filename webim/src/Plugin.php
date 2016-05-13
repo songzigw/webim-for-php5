@@ -43,22 +43,27 @@ namespace WebIM;
  */
 class Plugin {
 
+    private $model;
+    
+    public function model($model = null) {
+        if (func_num_args() === 0) {
+            return $model;
+        }
+        $this->model = $model;
+    }
+    
 	/*
 	 * Init User
 	 */
     public function __construct() { 
     }
 
-    public function getUserById($uid) {
-        return (object) array(
-                'id' => $uid,
-                'nick' => 'user'.$uid,
-                'group' => 'friend',
-                'presence' => 'offline',
-                'show' => 'unavailable',
-                'status' => '#',
-                'avatar' => WEBIM_IMAGE('male.png')
-        );
+    public function getUserById($uid, $isAgent = false) {
+        return $this->_buddy($uid);
+//         if ($isAgent) {
+//             return $this->model->getAgentById($uid);
+//         }
+//         return $this->model->getUserById($uid);
     }
 
     /**
@@ -83,6 +88,14 @@ class Plugin {
         );
     }
 
+//     public function user() {
+//         global $_SESSION;
+//         $uid = isset($_COOKIE['ECS']['user_id']) ? $_COOKIE['ECS']['user_id'] : null;
+//         if( !$uid ) return null;
+    
+//         return $this->getUserById($uid);
+//     }
+    
 	/*
 	 * API: Buddies of current user.
      *

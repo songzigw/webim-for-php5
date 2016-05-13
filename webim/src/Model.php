@@ -55,6 +55,59 @@ class Model {
         \ORM::configure('driver_options', array(\PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'));
     }
     
+    public function getUserById($uid) {
+        $user = $this->T2('ecs_users')
+                    ->where('user_id', $uid)
+                    ->findOne();
+        if (!$user) {
+            return null;
+        }
+        
+        $agent = $this->T2('ecs_agent')
+                    ->where('user_id', $uid)
+                    ->findOne();
+        if (!$agent) {
+            return (object) array(
+                'id' => $user->user_id,
+                'nick' => $user->user_name,
+                'group' => 'friend',
+                'presence' => 'offline',
+                'show' => 'unavailable',
+                'status' => '#',
+                'avatar' => $user->home_phne
+            );
+        }
+        
+        return (object) array(
+                'id' => $user->user_id,
+                'nick' => $agent->name,
+                'group' => 'friend',
+                'presence' => 'offline',
+                'show' => 'unavailable',
+                'status' => '#',
+                'avatar' => 'http://www.qiaoju360.com/images/agentphoto/'.$agent->face
+            );
+    }
+    
+    public function getAgentById($aid) {
+        $agent = $this->T2('ecs_agent')
+                ->where('agent_id', $aid)
+                ->findOne();
+        if (!$agent) {
+            return null;
+        }
+    
+        return (object) array(
+                'id' => $agent->user_id,
+                'nick' => $agent->name,
+                'group' => 'friend',
+                'presence' => 'offline',
+                'show' => 'unavailable',
+                'status' => '#',
+                'avatar' => 'http://www.qiaoju360.com/images/agentphoto/'.$agent->face
+        );
+    }
+    
     public function insertConversations($conversation) {
         $tConvs = $this->T('conversations');
         $conv = $tConvs->where('uid', $conversation['uid'])
@@ -489,6 +542,9 @@ class Model {
         return $date->format('m-d');
     }
 
+    private function T2($table) {
+        return \ORM::forTable($table);
+    }
 
     /**
      * Table query
