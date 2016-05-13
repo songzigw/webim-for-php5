@@ -955,7 +955,7 @@
     MainUI.prototype.hideTips = function() {
         this.msgTipsUI.hide();
     };
-    MainUI.prototype._onPresences = function(prescencs) {
+    MainUI.prototype._onPresences = function(presences) {
         $('li[data-toggle="chat"]' , this.$html).each(function(i, el) {
             var $el = $(el);
             for (var i = 0; i < presences.length; i++) {
@@ -1285,7 +1285,7 @@
     SimpleUI.prototype.hideTips = function() {
         this.msgTipsUI.hide();
     };
-    SimpleUI.prototype._onPresences = function(prescencs) {
+    SimpleUI.prototype._onPresences = function(presences) {
         // ?????
     };
 
