@@ -1632,7 +1632,6 @@
         this.msgTipsUI.hide();
     };
     ChatBoxUI.prototype._onPresence = function(show) {
-        alert(show);
         if (show != IM.show.UNAVAILABLE) {
             this.showOnline();
         } else {
