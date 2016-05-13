@@ -353,7 +353,7 @@
                 for (var i = 0; i < presences.length; i++) {
                     var presence = presences[i];
                     if (presence.from == box.id) {
-                        box.trigger('presence', [ presence ]);
+                        box.trigger('presence', [ presence.show ]);
                     }
                 }
             }
@@ -973,15 +973,6 @@
                 }
             }
         });
-        for (var key in this[ChatBoxUI.CHAT]) {
-            var box = this[ChatBoxUI.CHAT][key];
-            for (var i = 0; i < presences.length; i++) {
-                var presence = presences[i];
-                if (presence.from == box.id) {
-                    box.trigger('presence', [ presence ]);
-                }
-            }
-        }
     };
 
     /**
@@ -1641,6 +1632,7 @@
         this.msgTipsUI.hide();
     };
     ChatBoxUI.prototype._onPresence = function(show) {
+        alert(show);
         if (show != IM.show.UNAVAILABLE) {
             this.showOnline();
         } else {
