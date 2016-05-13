@@ -1351,7 +1351,7 @@
         $html.appendTo($body);
 
         _this.bind('presence', function(ev, data) {
-            _this._onPresences(show);
+            _this._onPresence(data);
         });
         UI.getInstance().bind('nextalk.resizable',
                 function(ev, data) {
