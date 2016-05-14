@@ -30,6 +30,7 @@
         chatlinkIds : null,
         onChatlinks : null,
         onUnread : null,
+        onLoginWin : null,
         channelType : 'WEBSOCKET'
     };
     main.setConfig = function(ops) {
@@ -147,6 +148,7 @@
         });
         webui.onChatlinks = _this.onChatlinks;
         webui.onUnread = _this.onUnread;
+        webui.onLoginWin = _this.onLoginWin;
         webui.connectServer();
     };
     main._goHidden = function() {

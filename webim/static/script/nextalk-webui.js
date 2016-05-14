@@ -374,6 +374,9 @@
 
     $.extend(UI.prototype, {
         _onLogin : function(ev, data) {
+            if (this.onLoginWin) {
+                this.onLoginWin();
+            }
             var _this = this;
             var mainUI = _this.mainUI;
             mainUI.hideTips();
@@ -510,7 +513,7 @@
     MainUI.HTML =  '<div class="nextalk-page" id="nextalk_page_main">\
                     <!--头部集合 BEGIN-->\
                     <header class="mzen-bar mzen-bar-nav mzen-bar-white">\
-                        <a class="mzen-pull-left mzen-img nextalk-logo" href="/mobile">\
+                        <a class="mzen-pull-left mzen-img nextalk-logo">\
                         <img class="mzen-img-object" src="" data-toggle="logo"/>\
                         </a>\
                         <div class="mzen-title">消息</div>\
@@ -619,6 +622,9 @@
                     <i class="nextalk-show unavailable"></i></div></li>';
     MainUI.prototype.handler = function() {
         var _this = this, ops = UI.getInstance().options;
+        if (ops.mobile) {
+            $('.mzen-pull-left', _this.$header).attr('href', '/mobile');
+        }
         _this.$currUser.click(function() {
             $('.dropdown-menu', $(this)).slideToggle();
         });
@@ -996,7 +1002,7 @@
     };
     IM.ClassEvent.on(SimpleUI);
     SimpleUI.HTML = '<div class="nextalk-page chatbox" id="nextalk_page_main">\
-                        <header class="mzen-bar mzen-bar-nav mzen-bar-white">\
+                        <header class="mzen-bar mzen-bar-nav mzen-bar-info">\
                                 <div class="mzen-pull-right nextalk-user">\
                                 <a class="mzen-img mzen-tap-active\
                                         mzen-up-hover">\
@@ -1039,6 +1045,9 @@
                              </li>';
     SimpleUI.prototype.handler = function() {
         var _this = this, ops = UI.getInstance().options;
+        if (ops.mobile) {
+            $('.mzen-pull-left', _this.$header).attr('href', '/mobile');
+        }
         _this.$currUser.click(function() {
             $('.dropdown-menu', $(this)).slideToggle();
         });
@@ -1061,10 +1070,6 @@
         });
 
         _this.$items.empty();
-        _this.$conversations.css({
-            'background-color' : 'white',
-            'overflow' : 'auto'
-        });
     };
     SimpleUI.prototype.avatar = function() {
         var _this = this;

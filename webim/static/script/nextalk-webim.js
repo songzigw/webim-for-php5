@@ -1757,17 +1757,13 @@
                 } else if (msgDirection == IM.msgDirection.RECEIVE) {
                     _this.other = msg.from;
                     _this.name = msg.nick;
-                    var buddy = _this.webim.getBuddy(_this.other);
-                    if (buddy) {
-                        _this.avatar = buddy.avatar;
-                    } else {
-                        _this.avatar = IM.imgs.HEAD;
-                    }
+                    _this.avatar = msg.avatar;
                 }
                 break;
             case IM.msgType.ROOM:
                 _this.other = msg.to;
                 _this.name = msg.to;
+                _this.avatar = IM.imgs.GROUP;
                 if (msgDirection == IM.msgDirection.SEND) {
                     _this.name = msg.to_nick;
                     _this.avatar = msg.to_avatar;
@@ -1776,8 +1772,6 @@
                     if (room) {
                         _this.name = room.name;
                         _this.avatar = room.avatar;
-                    } else {
-                        _this.avatar = IM.imgs.GROUP;
                     }
                 }
                 break;
@@ -2081,32 +2075,6 @@
                     direction = IM.msgDirection.SEND;
                     msg.read = true;
                     msg.direction = direction;
-                    msg.avatar = u.avatar;
-                    switch (msg.type) {
-                        case IM.msgType.CHAT:
-                            var buddy = _this.getBuddy(msg.to);
-                            if (buddy) {
-                                msg.to_nick = buddy.nick;
-                                msg.to_avatar = buddy.avatar;
-                            } else {
-                                msg.to_nick = IM.name.STRANGER + msg.to;
-                                msg.to_avatar = IM.imgs.HEAD;
-                            }
-                            break;
-                        case IM.msgType.ROOM:
-                            var room = _this.getRoom(msg.to);
-                            if (room) {
-                                msg.to_nick = room.name;
-                                msg.to_avatar = room.avatar;
-                            } else {
-                                msg.to_nick = msg.to;
-                                msg.to_avatar = IM.imgs.GROUP;
-                            }
-                            break;
-                        default:
-                            throw new Error('NexTalkWebIM.msgType out of Bounds.');
-                            break;
-                    }
                 }
                 _this._saveMsg(msg.type, direction, msg);
             }

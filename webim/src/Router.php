@@ -178,10 +178,10 @@ class Router {
 		} else {
 		    $scriptVar['iframe'] = false;
 		}
-		if ($this->input('simple', 'false') == 'false') {
-		    $scriptVar['simple'] = false;
-		} else {
+		if ($this->input('simple', 'true') == 'true') {
 		    $scriptVar['simple'] = true;
+		} else {
+		    $scriptVar['simple'] = false;
 		}
 		if ($this->input('mobile', 'false') == 'false') {
 		    $scriptVar['mobile'] = false;

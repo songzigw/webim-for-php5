@@ -81,13 +81,11 @@
 	border: 0;
 }
 
-.nextalk-iframe .nextalk-minimize {
-    text-align: right;
-}
 .nextalk-iframe .nextalk-minimize a {
-    text-align: right;
     line-height: 20px;
     padding-left: 15px;
     padding-right: 15px;
+    font-size: 16px;
     cursor: pointer;
+    color: white;
 }
