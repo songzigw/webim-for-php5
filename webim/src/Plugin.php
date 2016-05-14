@@ -59,11 +59,11 @@ class Plugin {
     }
 
     public function getUserById($uid, $isAgent = false) {
-        return $this->_buddy($uid);
-//         if ($isAgent) {
-//             return $this->model->getAgentById($uid);
-//         }
-//         return $this->model->getUserById($uid);
+        // return $this->_buddy($uid);
+        if ($isAgent) {
+            return $this->model->getAgentById($uid);
+        }
+        return $this->model->getUserById($uid);
     }
 
     /**
@@ -71,30 +71,30 @@ class Plugin {
      *
      * @return object current user
      */
-    public function user() {
-        global $_SESSION;
-		$uid = isset($_SESSION['uid']) ? $_SESSION['uid'] : null;
-        if( !$uid ) return null;
-
-		return (object)array(
-            'id' => $uid,
-            'nick' => 'user' . $uid,
-            'presence' => 'online',
-            'show' => "available",
-            'avatar' => WEBIM_IMAGE('male.png'),
-            'url' => "#",
-            'role' => 'user',
-            'status' => "",
-        );
-    }
-
 //     public function user() {
 //         global $_SESSION;
-//         $uid = isset($_COOKIE['ECS']['user_id']) ? $_COOKIE['ECS']['user_id'] : null;
+// 		$uid = isset($_SESSION['uid']) ? $_SESSION['uid'] : null;
 //         if( !$uid ) return null;
-    
-//         return $this->getUserById($uid);
+
+// 		return (object)array(
+//             'id' => $uid,
+//             'nick' => 'user' . $uid,
+//             'presence' => 'online',
+//             'show' => "available",
+//             'avatar' => WEBIM_IMAGE('male.png'),
+//             'url' => "#",
+//             'role' => 'user',
+//             'status' => "",
+//         );
 //     }
+
+    public function user() {
+        global $_SESSION;
+        $uid = isset($_COOKIE['ECS']['user_id']) ? $_COOKIE['ECS']['user_id'] : null;
+        if( !$uid ) return null;
+    
+        return $this->getUserById($uid);
+    }
     
 	/*
 	 * API: Buddies of current user.
