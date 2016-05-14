@@ -92,20 +92,19 @@ li {
                 });
         var chatBtns = getElementsByToggle('webim-chatbtn');
         if (chatBtns && chatBtns.length > 0) {
-            var count = 0;
             for (var i = 0; i < chatBtns.length; i++) {
                 var btn = chatBtns[i];
+                var uid = btn.getAttribute('data-id');
+                if (i == 0) {
+                    nextalkMain.chatlinkIds = uid;
+                } else {
+                    nextalkMain.chatlinkIds += ',' + uid;
+                }
                 btn.onclick = function() {
                     var uid = this.getAttribute('data-id');
                     if (!uid) {
                         return;
                     }
-                    if (count == 0) {
-                        nextalkMain.chatlinkIds = uid;
-                    } else {
-                        nextalkMain.chatlinkIds += ',' + uid;
-                    }
-                    count++;
                     var nick = this.getAttribute('data-name');
                     var avatar = this.getAttribute('data-avatar');
                     var win = this.getAttribute('data-win');

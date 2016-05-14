@@ -374,9 +374,6 @@
 
     $.extend(UI.prototype, {
         _onLogin : function(ev, data) {
-            if (this.onLoginWin) {
-                this.onLoginWin();
-            }
             var _this = this;
             var mainUI = _this.mainUI;
             mainUI.hideTips();
@@ -391,6 +388,9 @@
             _this.loginUI.show();
         },
         _onLoginWin : function(ev, data) {
+            if (this.onLoginWin) {
+                this.onLoginWin();
+            }
             var _this = this;
             _this.mainUI.setCurrName();
             _this.loginTask.stop();
