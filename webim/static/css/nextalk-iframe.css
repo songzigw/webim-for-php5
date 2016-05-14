@@ -1,5 +1,6 @@
 .nextalk-alert {
-    position: absolute; margin : 0;
+    position: absolute;
+    margin : 0;
     padding: 0;
     position: absolute;
     font-size: 14px;
@@ -73,6 +74,11 @@
 	background-color: #f9f9f9;
 	border: 1px solid #ccc;
 	border-bottom: 0;
+}
+
+.nextalk-iframe div {
+    bottom: 0px;
+    margin: 0px;
 }
 
 .nextalk-iframe iframe {
