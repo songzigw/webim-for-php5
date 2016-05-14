@@ -85,7 +85,7 @@ class Model {
                 'presence' => 'offline',
                 'show' => 'unavailable',
                 'status' => '#',
-                'avatar' => 'images/agentphoto/'.$agent->face
+                'avatar' => '/images/agentphoto/'.$agent->face
             );
     }
     
@@ -104,7 +104,7 @@ class Model {
                 'presence' => 'offline',
                 'show' => 'unavailable',
                 'status' => '#',
-                'avatar' => 'images/agentphoto/'.$agent->face
+                'avatar' => '/images/agentphoto/'.$agent->face
         );
     }
     
