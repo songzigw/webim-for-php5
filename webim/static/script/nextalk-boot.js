@@ -127,14 +127,14 @@ if (chatBtns && chatBtns.length > 0) {
                     if (btn.getAttribute('data-id') == key) {
                         if (data[key] != 'unavailable') {
                             // 在线
-                            //if (btn.nextElementSibling) {
-                            //    btn.nextElementSibling.innerText = '在线';
-                            //}
+                            btn.style.background = 'red';
+                            btn.style.color = 'white';
+                            btn.innerHTML = '在线咨询(<strong>在线</strong>)';
                         } else {
                             // 下线
-                            //if (btn.nextElementSibling) {
-                            //    btn.nextElementSibling.innerText = '下线';
-                            //}
+                            btn.style.background = '#ddd';
+                            btn.style.color = '#333';
+                            btn.innerHTML = '在线咨询(<strong>下线</strong>)';
                         }
                     }
                 }

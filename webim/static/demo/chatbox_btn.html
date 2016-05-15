@@ -16,24 +16,33 @@ li {
 		<div class="content">
 			<p>页面任意位置，可以添加聊天按钮...</p>
 			<ul>
-				<li><a data-toggle="webim-chatbtn" href="#" data-id="1" data-win="win"
-					data-name="user1" data-avatar="">聊天按钮1</a> <em>下线</em></li>
-				<li><a data-toggle="webim-chatbtn" href="#" data-id="2" data-win="win"
-					data-name="user2" data-avatar="">聊天按钮2</a> <em>下线</em></li>
-				<li><a data-toggle="webim-chatbtn" href="#" data-id="3" data-win="win"
-					data-name="user3" data-avatar="">聊天按钮3</a> <em>下线</em></li>
-				<li><a data-toggle="webim-chatbtn" href="#" data-id="4" data-win="win"
-					data-name="user4" data-avatar="">聊天按钮4</a> <em>下线</em></li>
-				<li><a data-toggle="webim-chatbtn" href="#" data-id="5" data-win="win"
-					data-name="user5" data-avatar="">聊天按钮5</a> <em>下线</em></li>
-				<li><a data-toggle="webim-chatbtn" href="#" data-id="6" data-win="win"
-					data-name="user6" data-avatar="">聊天按钮6</a> <em>下线</em></li>
-				<li><a data-toggle="webim-chatbtn" href="#" data-id="7" data-win="win"
-					data-name="user7" data-avatar="">聊天按钮7</a> <em>下线</em></li>
-				<li><a data-toggle="webim-chatbtn" href="#" data-id="8" data-win="win"
-					data-name="user8" data-avatar="">聊天按钮8</a> <em>下线</em></li>
-				<li><a data-toggle="webim-chatbtn" href="#" data-id="9" data-win="win"
-					data-name="user9" data-avatar="">聊天按钮9</a> <em>下线</em></li>
+				<li>1<a style="color:#333;background:#ddd;padding:3px;"
+				    data-toggle="webim-chatbtn" href="#" data-id="1" data-win="win"
+					data-name="user1" data-avatar="">在线咨询 (<strong>下线</strong>)</a></li>
+				<li>2<a style="color:#333;background:#ddd;padding:3px;"
+				    data-toggle="webim-chatbtn" href="#" data-id="2" data-win="win"
+					data-name="user2" data-avatar="">在线咨询 (<strong>下线</strong>)</a></li>
+				<li>3<a style="color:#333;background:#ddd;padding:3px;"
+				    data-toggle="webim-chatbtn" href="#" data-id="3" data-win="win"
+					data-name="user3" data-avatar="">在线咨询 (<strong>下线</strong>)</a></li>
+				<li>4<a style="color:#333;background:#ddd;padding:3px;"
+				    data-toggle="webim-chatbtn" href="#" data-id="4" data-win="win"
+					data-name="user4" data-avatar="">在线咨询 (<strong>下线</strong>)</a></li>
+				<li>5<a style="color:#333;background:#ddd;padding:3px;"
+				    data-toggle="webim-chatbtn" href="#" data-id="5" data-win="win"
+					data-name="user5" data-avatar="">在线咨询 (<strong>下线</strong>)</a></li>
+				<li>6<a style="color:#333;background:#ddd;padding:3px;"
+				    data-toggle="webim-chatbtn" href="#" data-id="6" data-win="win"
+					data-name="user6" data-avatar="">在线咨询 (<strong>下线</strong>)</a></li>
+				<li>7<a style="color:#333;background:#ddd;padding:3px;"
+				    data-toggle="webim-chatbtn" href="#" data-id="7" data-win="win"
+					data-name="user7" data-avatar="">在线咨询 (<strong>下线</strong>)</a></li>
+				<li>8<a style="color:#333;background:#ddd;padding:3px;"
+				    data-toggle="webim-chatbtn" href="#" data-id="8" data-win="win"
+					data-name="user8" data-avatar="">在线咨询 (<strong>下线</strong>)</a></li>
+				<li>9<a style="color:#333;background:#ddd;padding:3px;"
+				    data-toggle="webim-chatbtn" href="#" data-id="9" data-win="win"
+					data-name="user9" data-avatar="">在线咨询 (<strong>下线</strong>)</a></li>
 			</ul>
 		</div>
 
@@ -123,14 +132,14 @@ li {
                             if (btn.getAttribute('data-id') == key) {
                                 if (data[key] != 'unavailable') {
                                     // 在线
-                                    if (btn.nextElementSibling) {
-                                        btn.nextElementSibling.innerText = '在线';
-                                    }
+                                    btn.style.background = 'red';
+                                    btn.style.color = 'white';
+                                    btn.innerHTML = '在线咨询(<strong>在线</strong>)';
                                 } else {
                                     // 下线
-                                    if (btn.nextElementSibling) {
-                                        btn.nextElementSibling.innerText = '下线';
-                                    }
+                                    btn.style.background = '#ddd';
+                                    btn.style.color = '#333';
+                                    btn.innerHTML = '在线咨询(<strong>下线</strong>)';
                                 }
                             }
                         }
