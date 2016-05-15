@@ -1068,6 +1068,9 @@
         });
 
         _this.$items.empty();
+        _this.$conversations.css({
+            'overflow' : 'auto'
+        });
     };
     SimpleUI.prototype.avatar = function() {
         var _this = this;
@@ -1568,7 +1571,11 @@
         $receive.find('.time').text(tStr);
         $receive.find('.nick').text(msg.nick);
         $receive.find('img').attr('src', msg.avatar);
-        $receive.find('.body').text(msg.body);
+        if (isUrl(msg.body)) {
+            $receive.find('.body').html('<a href="'+msg.body+'" target="_blank">'+msg.body+'</a>');
+        } else {
+            $receive.find('.body').text(msg.body);
+        }
         _this.$bBody.append($receive);
         _this.toBottom();
     };
@@ -1586,7 +1593,11 @@
         $send.find('.time').text(tStr);
         $send.find('.nick').text(msg.nick);
         $send.find('img').attr('src', msg.avatar);
-        $send.find('.body').text(msg.body);
+        if (isUrl(msg.body)) {
+            $send.find('.body').html('<a href="'+msg.body+'" target="_blank">'+msg.body+'</a>');
+        } else {
+            $send.find('.body').text(msg.body);
+        }
         _this.$bBody.append($send);
         _this.toBottom();
     };
@@ -1666,5 +1677,8 @@
         }
     };
 
+    function isUrl(str) {
+        return /^http:\/\/[A-Za-z0-9]+\.[A-Za-z0-9]+[\/=\?%\-&_~`@[\]\':+!]*([^<>\"])*$/.test(str);
+    }
     window.NexTalkWebUI = UI;
 })(NexTalkWebIM);
