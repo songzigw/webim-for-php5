@@ -450,7 +450,7 @@ class Model {
             'group' => "visitor",
             'presence' => 'online',
             'show' => "available",
-            'avatar' => WEBIM_IMAGE('male.png'),
+            'avatar' => WEBIM_IMAGE('visitor.png'),
             'role' => 'visitor',
             'url' => "#",
             'status' => "",
@@ -478,7 +478,7 @@ class Model {
                 "nick" => "v".substr($v->name, 4), //remove vid:
                 "group" => "visitor",
                 "url" => "#",
-                "avatar" => WEBIM_IMAGE('male.png'),
+                "avatar" => WEBIM_IMAGE('visitor.png'),
                 "status" => $status, 
             );
         }

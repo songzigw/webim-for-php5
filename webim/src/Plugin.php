@@ -81,7 +81,7 @@ class Plugin {
 //             'nick' => 'user' . $uid,
 //             'presence' => 'online',
 //             'show' => "available",
-//             'avatar' => WEBIM_IMAGE('male.png'),
+//             'avatar' => WEBIM_IMAGE('head_b.jpg'),
 //             'url' => "#",
 //             'role' => 'user',
 //             'status' => "",
@@ -144,7 +144,7 @@ class Plugin {
             'presence' => 'offline',
             'show' => 'unavailable',
             'status' => '#',
-            'avatar' => WEBIM_IMAGE('male.png')
+            'avatar' => WEBIM_IMAGE('head_a.jpg')
         );
     }
 

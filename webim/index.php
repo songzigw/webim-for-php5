@@ -19,7 +19,7 @@ function WEBIM_PATH() {
 }
 
 function WEBIM_IMAGE($img) {
-    return WEBIM_PATH() . "static/images/{$img}";
+    return WEBIM_PATH() . "static/imgs/{$img}";
 }
 
 require('env.php');
