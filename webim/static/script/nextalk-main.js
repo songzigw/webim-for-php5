@@ -27,6 +27,7 @@
         route : {},
         // 默认聊天对象
         chatObj : null,
+        chatObjs : [],
         chatlinkIds : null,
         onChatlinks : null,
         onUnread : null,
@@ -143,6 +144,7 @@
             mobile : _this.mobile,
             simple : _this.simple,
             chatObj : _this.chatObj,
+            chatObjs : _this.chatObjs,
             chatlinkIds : _this.chatlinkIds,
             channelType : _this.channelType
         });
@@ -190,6 +192,7 @@
             simple : _this.simple,
             // 默认聊天对象
             chatObj : _this.chatObj,
+            chatObjs : _this.chatObjs,
             // API路由
             route : _this.route,
             chatlinkIds : _this.chatlinkIds,

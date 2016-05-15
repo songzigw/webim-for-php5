@@ -26,7 +26,8 @@
         // 简单聊天对话框
         simple : false,
         // 默认聊天对象
-        chatObj : null
+        chatObj : null,
+        chatObjs : []
     });
 
     // 实例化NexTalkWebUI类对象----------------
@@ -289,6 +290,7 @@
 
         _this.onChatlinks = function(data) {};
         _this.onUnread = function(data) {};
+        _this.onLogin = function() {};
 
         _this.bind('nextalk.resizable', function(ev, data) {
             _this.mainUI.resizable();
@@ -866,19 +868,15 @@
                             return false;
                         }
                     });
-            var avatar = ops.chatObj.avatar;
-            if (!avatar || avatar == '') {
-                avatar = IM.imgs.HEAD;
-            }
             _this.itemHTML({
                 type : ChatBoxUI.CHAT,
                 oid : ops.chatObj.id,
                 name : ops.chatObj.name,
-                avatar : avatar,
+                avatar : ops.chatObj.avatar,
                 body : '开始聊天'
             }).prependTo($items);
             webui.openChatBoxUI(ChatBoxUI.CHAT, ops.chatObj.id,
-                    ops.chatObj.name, avatar);
+                    ops.chatObj.name, ops.chatObj.avatar);
         }
         _this.itemsClick();
     };
@@ -1220,6 +1218,27 @@
                 $items.append(_this.itemHTML(conversations[i]));
             }
         }
+        if (webim.connectedTimes == 1 && ops.chatObjs) {
+            for (var i = 0; i < ops.chatObjs.length; i++) {
+                var chatObj = ops.chatObjs[i];
+                $('>li', $items).each(function(i, el) {
+                    var $el = $(el);
+                    if ($el.attr('data-toggle') == IM.msgType.CHAT
+                            && $el.attr('data-id') == chatObj.id) {
+                        $el.remove();
+                        // break
+                        return false;
+                    }
+                });
+                _this.itemHTML({
+                    type : ChatBoxUI.CHAT,
+                    oid : chatObj.id,
+                    name : chatObj.name,
+                    avatar : chatObj.avatar,
+                    body : '开始聊天'
+                }).prependTo($items);
+            }
+        }
         if (webim.connectedTimes == 1 && ops.chatObj) {
             $('>li', $items).each(function(i, el) {
                 var $el = $(el);
@@ -1230,19 +1249,15 @@
                     return false;
                 }
             });
-            var avatar = ops.chatObj.avatar;
-            if (!avatar || avatar == '') {
-                avatar = IM.imgs.HEAD;
-            }
             _this.itemHTML({
                 type : ChatBoxUI.CHAT,
                 oid : ops.chatObj.id,
                 name : ops.chatObj.name,
-                avatar : avatar,
+                avatar : ops.chatObj.avatar,
                 body : '开始聊天'
             }).prependTo($items);
             webui.openChatBoxUI(ChatBoxUI.CHAT, ops.chatObj.id,
-                    ops.chatObj.name, avatar);
+                    ops.chatObj.name, ops.chatObj.avatar);
         }
         _this.itemsClick();
     };
@@ -1441,7 +1456,7 @@
         var $content = $('#nextalk_content_chatbox', $html);
         var $innerContent = $('>.nextalk-wrap', $content);
         var height = $innerContent.height();
-        $content.animate({scrollTop : height}, 300);
+        $content.animate({scrollTop : height}, 50);
     };
     ChatBoxUI.prototype.show = function(show) {
         var _this = this;
@@ -1524,6 +1539,13 @@
                         }
                     }
                 }
+            }
+            // 发送默认消息
+            var ops = webui.options;
+            if (ops.chatObj 
+                    && ops.chatObj.id == _this.id
+                    && ops.chatObj.body) {
+                _this.sendMsg(ops.chatObj.body);
             }
         });
     };

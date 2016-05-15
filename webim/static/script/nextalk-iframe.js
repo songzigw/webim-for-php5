@@ -113,14 +113,11 @@
         }, 200);
     };
     iframe.openChatBoxUI = function(uid, nick, avatar) {
-        if (!uid || !nick) {
+        if (!uid || !nick || !avatar) {
             throw new Error('args: uid, nick, avatar.');
         }
         var ifw = window['nextalk_iframe'].window;
         if (ifw || ifw.NexTalkWebIM) {
-            if (!avatar || avatar == '') {
-                avatar = ifw.NexTalkWebIM.imgs.HEAD;
-            }
             ifw.NexTalkWebUI.getInstance().openChatBoxUI('chat', uid, nick, avatar);
         }
     };

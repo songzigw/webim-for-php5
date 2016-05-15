@@ -2,8 +2,7 @@ var openChatBoxWin = function(id, name, avatar) {
     this.openWindow(
             _IMC.apiPath + "index.php?action=chatbox"
             + "&uid=" + id
-            + "&name=" + name
-            + "&avatar=" + avatar,
+            + "&body=" + document.location.href,
             "window_chat", 790, 500);
 };
 var openWindow = function(url, name, iWidth, iHeight) {
@@ -93,11 +92,18 @@ if (chatBtns && chatBtns.length > 0) {
     for (var i = 0; i < chatBtns.length; i++) {
         var btn = chatBtns[i];
         var uid = btn.getAttribute('data-id');
+        var nick = btn.getAttribute('data-name');
+        var avatar = btn.getAttribute('data-avatar');
         if (i == 0) {
             nextalkMain.chatlinkIds = uid;
         } else {
             nextalkMain.chatlinkIds += ',' + uid;
         }
+        nextalkMain.chatObjs.push({
+            id : uid,
+            name : nick,
+            avatar : avatar
+        });
         btn.onclick = function() {
             var uid = this.getAttribute('data-id');
             if (!uid) {
