@@ -495,7 +495,7 @@ EOF;
         $webim_path = WEBIM_PATH();
         $uid = $this->input('uid');
         $body = $this->input('body');
-        $buddy = $this->plugin->getUserById($uid, true);
+        $buddy = $this->plugin->getUserById($uid);
         if(!$buddy) {
 			header("HTTP/1.0 404 Not Found");
 			exit("User Not Found");
@@ -571,8 +571,9 @@ EOF;
     public function mobile() {
         $webim_path = WEBIM_PATH();
         $uid = $this->input('uid');
+        $body = $this->input('body');
         if ($uid != null) {
-            $buddy = $this->plugin->getUserById($uid, true);
+            $buddy = $this->plugin->getUserById($uid);
             if(!$buddy) {
                 header("HTTP/1.0 404 Not Found");
                 exit("User Not Found");
@@ -594,7 +595,8 @@ EOF;
             echo '        _IMC.chatObj = {';
             echo '            id : "'. $buddy->id .'",';
             echo '            name : "'. $buddy->nick .'",';
-            echo '            avatar : "'. $buddy->avatar .'"';
+            echo '            avatar : "'. $buddy->avatar .'",';
+            echo '            body : "'. $body .'"';
             echo '        };';
             echo '        </script>';
         }

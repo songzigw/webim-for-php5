@@ -134,7 +134,7 @@ if (chatBtns && chatBtns.length > 0) {
                             // 下线
                             btn.style.background = '#ddd';
                             btn.style.color = '#333';
-                            btn.innerHTML = '在线咨询(<strong>下线</strong>)';
+                            btn.innerHTML = '在线咨询(<strong>离线</strong>)';
                         }
                     }
                 }
