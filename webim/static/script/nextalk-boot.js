@@ -1,8 +1,11 @@
-var openChatBoxWin = function(id, name, avatar) {
+var openChatBoxWin = function(chatObj) {
+    var url = "index.php?action=chatbox"
+        + "&uid=" + chatObj.id;
+    if (chatObj.location) {
+        url = url + "&body=" + document.location.href;
+    }
     this.openWindow(
-            _IMC.apiPath + "index.php?action=chatbox"
-            + "&uid=" + id
-            + "&body=" + document.location.href,
+            _IMC.apiPath + url,
             "window_chat", 790, 500);
 };
 var openWindow = function(url, name, iWidth, iHeight) {
@@ -91,31 +94,39 @@ var chatBtns = getElementsByToggle('webim-chatbtn');
 if (chatBtns && chatBtns.length > 0) {
     for (var i = 0; i < chatBtns.length; i++) {
         var btn = chatBtns[i];
-        var uid = btn.getAttribute('data-id');
-        var nick = btn.getAttribute('data-name');
+        var id = btn.getAttribute('data-id');
+        var name = btn.getAttribute('data-name');
         var avatar = btn.getAttribute('data-avatar');
-        if (i == 0) {
-            nextalkMain.chatlinkIds = uid;
-        } else {
-            nextalkMain.chatlinkIds += ',' + uid;
-        }
-        nextalkMain.chatObjs.push({
-            id : uid,
-            name : nick,
+        var chatObj = {
+            id : id,
+            name : name,
             avatar : avatar
-        });
+        };
+        if (i == 0) {
+            nextalkMain.chatlinkIds = id;
+        } else {
+            nextalkMain.chatlinkIds += ',' + id;
+        }
+        nextalkMain.chatObjs.push(chatObj);
         btn.onclick = function() {
-            var uid = this.getAttribute('data-id');
-            if (!uid) {
+            var id = this.getAttribute('data-id');
+            if (!id) {
                 return;
             }
-            var nick = this.getAttribute('data-name');
+            var name = this.getAttribute('data-name');
             var avatar = this.getAttribute('data-avatar');
             var win = this.getAttribute('data-win');
-            if (win) {
-                openChatBoxWin(uid, nick, avatar);
+            var location = this.getAttribute('data-location');
+            var chatObj = {
+                id : id,
+                name : name,
+                avatar : avatar,
+                location : location
+            };
+            if (win == 'win') {
+                openChatBoxWin(chatObj);
             } else {
-                nextalkMain.openChatBoxUI(uid, nick, avatar);
+                nextalkMain.openChatBoxUI(chatObj);
             }
         };
     }

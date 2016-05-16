@@ -112,13 +112,16 @@
             }
         }, 200);
     };
-    iframe.openChatBoxUI = function(uid, nick, avatar) {
-        if (!uid || !nick || !avatar) {
-            throw new Error('args: uid, nick, avatar.');
+    iframe.openChatBoxUI = function(chatObj) {
+        var id = chatObj.id;
+        var name = chatObj.name;
+        var avatar = chatObj.avatar;
+        if (!id || !name || !avatar) {
+            throw new Error('args: id, name, avatar.');
         }
         var ifw = window['nextalk_iframe'].window;
         if (ifw || ifw.NexTalkWebIM) {
-            ifw.NexTalkWebUI.getInstance().openChatBoxUI('chat', uid, nick, avatar);
+            ifw.NexTalkWebUI.getInstance().openChatBoxUI('chat', id, name, avatar);
         }
     };
 
