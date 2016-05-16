@@ -1404,10 +1404,11 @@
                             <div class="mzen-content-padded nextalk-wrap"></div>\
                         </div>\
                         <!-- 聊天输入筐BEGIN -->\
-                        <footer class="mzen-nav">\
+                        <footer>\
                             <form class="mzen-form" onsubmit="return false;">\
                             <div class="nextalk mzen-input-row">\
                                 <input type="text" class="mzen-input" placeholder="输入消息内容..."/>\
+                                <span class="mzen-input-addon mzen-btn mzen-btn-success">发送</span>\
                             </div>\
                             </form>\
                         </footer>\

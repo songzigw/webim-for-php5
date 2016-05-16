@@ -105,11 +105,26 @@ html, body {
 
 .nextalk.mzen-input-row {
     width: 100%;
+    padding : 6px 16px;
+}
+
+.nextalk.mzen-input-row:last-child:after {
+	border-bottom: 0;
+}
+
+.nextalk.mzen-input-row:after {
+	border-bottom: 0;
 }
 
 .nextalk.mzen-input-row .mzen-input {
-    height: 55px;
-    border-bottom: 0;
+    width: 97%;
+    border-bottom: 1px solid #2ecc71;
+}
+
+.nextalk .mzen-btn {
+	padding-left: 10px;
+	padding-right: 10px;
+	color: #fff;
 }
 
 .nextalk-show {
