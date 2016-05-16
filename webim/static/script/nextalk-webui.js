@@ -189,9 +189,6 @@
             },
             onPresences : function(ev, data) {
                 _this._onPresences(ev, data);
-                if (_this.onChatlinks) {
-                    _this.onChatlinks(data);
-                }
             },
             onStatus : function(ev, data) {
                 _this._onStatus(ev, data);
@@ -476,15 +473,16 @@
         },
         _onPresences : function(ev, data) {
             var _this = this;
+            _this.mainUI.trigger('presences', [ data ]);
+            _this._chatBoxUIs.onPresences(data);
             if (_this.onChatlinks) {
                 var presences = {};
                 for (var i = 0; i < data.length; i++) {
-                    presences[data.from] = data.show;
+                    var presence = data[i];
+                    presences[presence.from] = presence.show;
                 }
                 _this.onChatlinks(presences);
             }
-            _this.mainUI.trigger('presences', [ data ]);
-            _this._chatBoxUIs.onPresences(data);
         }
     });
     
@@ -1300,7 +1298,16 @@
         this.msgTipsUI.hide();
     };
     SimpleUI.prototype._onPresences = function(presences) {
-        // ?????
+        $('li[data-toggle="chat"]' , this.$html).each(function(i, el) {
+            var $el = $(el);
+            for (var i = 0; i < presences.length; i++) {
+                var presence = presences[i];
+                if (presence.from == $el.attr('data-id')) {
+                    $el.attr('data-show', presence.show);
+                    break;
+                }
+            }
+        });
     };
 
     /**

@@ -174,7 +174,12 @@
         webim.setReceiveMsgListener({
             onPresences : function(ev, data) {
                 if (_this.onChatlinks) {
-                    _this.onChatlinks(webim.presences);
+                    var presences = {};
+                    for (var i = 0; i < data.length; i++) {
+                        var presence = data[i];
+                        presences[presence.from] = presence.show;
+                    }
+                    _this.onChatlinks(presences);
                 }
             }
         });

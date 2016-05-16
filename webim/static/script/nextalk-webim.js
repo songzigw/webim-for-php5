@@ -2288,6 +2288,7 @@
                                     _this._buddies(ret.buddies);
                                     _this._rooms(ret.rooms);
                                     _this.presences = ret.presences;
+                                    console.log("presences: " + JSON.stringify(_this.presences));
                                     // 触发登入成功事件
                                     _this.trigger("login.win", [ ret ]);
                                     if (typeof callback == "function") {
