@@ -105,7 +105,7 @@
             }
         };
         _this.welcomeUI.init();
-        _this.welcomeUI.show();
+//      _this.welcomeUI.show();
 
         _this.loginUI = {
             HTML : '<div class="nextalk-page nextalk-screen-full nextalk-page-login"\
@@ -1068,7 +1068,8 @@
 
         _this.$items.empty();
         _this.$conversations.css({
-            'overflow' : 'auto'
+            'overflow' : 'auto',
+            'background' : 'white'
         });
     };
     SimpleUI.prototype.avatar = function() {
@@ -1361,9 +1362,6 @@
         _this.$html = $html;
         
         _this.msgTipsUI = new MsgTipsUI();
-        _this.msgTipsUI.$html.css({
-            'bottom' : '52px'
-        });
         _this.$html.append(_this.msgTipsUI.$html);
 
         _this.$bBody = $('.nextalk-wrap', $html);
@@ -1408,8 +1406,10 @@
                         <footer>\
                             <form class="mzen-form" onsubmit="return false;">\
                             <div class="nextalk mzen-input-row">\
-                                <input type="text" class="mzen-input" placeholder="输入消息内容..."/>\
-                                <span class="mzen-input-addon mzen-btn mzen-btn-info">发送</span>\
+                                <div class="mzen-input">\
+                                <p><i class="mzen-iconfont mzen-icon-emoji"></i><i class="mzen-iconfont mzen-icon-pic"></i></p>\
+                                <textarea placeholder="输入消息内容..."></textarea>\
+                                </div><span class="mzen-input-addon mzen-btn mzen-btn-info">发送</span>\
                             </div>\
                             </form>\
                         </footer>\
@@ -1662,7 +1662,7 @@
             .attr('src', _this.avatar);
 
         $('footer form', $html).submit(function() {
-            var input = $('input', $(this));
+            var input = $('textarea', $(this));
             if ($.trim(input.val()) != '') {
                 _this.sendMsg(input.val());
             }
