@@ -10,6 +10,10 @@ html, body {
     background-repeat: no-repeat;
 }
 
+.mzen-chat-sender .mzen-chat-sender-cont a {
+	color: white;
+}
+
 .mzen-content-padded {
 	margin: 10px 10px;
 }
@@ -118,7 +122,7 @@ html, body {
 
 .nextalk.mzen-input-row .mzen-input {
     width: 97%;
-    border-bottom: 1px solid #2ecc71;
+    border-bottom: 1px solid #3498db;
 }
 
 .nextalk .mzen-btn {
@@ -483,27 +487,4 @@ footer.mzen-nav >ul.mzen-bar-tab > li > .mzen-badge {
     border-bottom: 0px solid #c8c7cc;
     -wekbit-box-shadow: 0 0px 0px #cfcfcf;
     box-shadow: 0 0px 0px #cfcfcf;
-}
-.chatbox #nextalk_conversations {
-	background-color: #00569d;
-}
-.chatbox .mzen-list-view {
-	background-color: #00569d;
-	color: #fff !important;
-}
-.chatbox .mzen-list-view p {
-    color: #fff !important;
-}
-.chatbox .mzen-list-view-cell:after {
-    border-bottom: 1px solid #3b5998;
-}
-.chatbox .mzen-list-view:after {
-    border-top: 1px solid #3b5998;
-}
-.chatbox .mzen-tap-active:active {
-    background-color: #8b9dc3;
-}
-.chatbox .mzen-up-hover:hover {
-    cursor: pointer;
-    background-color: #8b9dc3;
 }

@@ -151,6 +151,8 @@
         webui.onChatlinks = _this.onChatlinks;
         webui.onUnread = _this.onUnread;
         webui.onLoginWin = _this.onLoginWin;
+        webui.onChatboxOpen = _this.onChatboxOpen;
+        webui.onChatboxClose = _this.onChatboxClose;
         webui.connectServer();
     };
     main._goHidden = function() {

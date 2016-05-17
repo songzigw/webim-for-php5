@@ -45,6 +45,7 @@
                 + 'style="width:'+ this.panel.width + 'px;height:' + this.panel.height + 'px;">'
                 + '<div class="nextalk-minimize" style="height:' + h + 'px;">'
                 + '<a class="" title="最小化">-</a></div>'
+                + '<div class="nextalk-right" style="height:' + h + 'px;"></div>'
                 + '<div style="width:100%;height:' + (this.panel.height - h) + 'px;">'
                 + '<iframe src="'
                 + this.config.resPath
@@ -95,7 +96,15 @@
         };
         _this.config.onLoginWin = function() {
             _this.$('#nextalk_iframe .nextalk-minimize', document)
-            .width(220).css('background', '#00569d');
+            .width(220).css('background-color', '#00569d');
+        };
+        _this.config.onChatboxOpen = function() {
+            _this.$('#nextalk_iframe .nextalk-right', document)
+            .css('background-color', '#00569d');
+        };
+        _this.config.onChatboxClose = function() {
+            _this.$('#nextalk_iframe .nextalk-right', document)
+            .css('background-color', 'inherit');
         };
         
         var div = document.createElement('div');

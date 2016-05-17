@@ -88,10 +88,21 @@
 }
 
 .nextalk-iframe .nextalk-minimize a {
-    line-height: 20px;
-    padding-left: 15px;
+    line-height: 16px;
+    padding-left: 12px;
     padding-right: 15px;
-    font-size: 16px;
+    font-size: 30px;
     cursor: pointer;
     color: white;
+}
+
+.nextalk-iframe .nextalk-minimize a:hover {
+    text-decoration:none;}
+
+.nextalk-iframe .nextalk-minimize {
+	float: left;
+	text-align: left;
+}
+.nextalk-iframe .nextalk-right {
+	background-color: inherit;
 }

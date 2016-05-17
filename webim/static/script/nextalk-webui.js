@@ -777,7 +777,7 @@
 
         var hh = _this.$header.height();
         var fh = _this.$footer.height();
-        _this.$contentMain.height(wh - hh - fh - 1);
+        _this.$contentMain.height(wh - hh - fh);
     };
     MainUI.prototype.itemsClick = function($items) {
         var webui = UI.getInstance();
@@ -987,7 +987,7 @@
         _this.$title = $('.mzen-title', _this.$header);
         _this.$currUser = $('.nextalk-user', _this.$header);
         _this.$conversations = $('#nextalk_conversations', _this.$html);
-        _this.$items = $('>.mzen-list-view', _this.$conversations);
+        _this.$items = $('>.nextalk-wrap>.mzen-list-view', _this.$conversations);
         _this.msgTipsUI = new MsgTipsUI();
         _this.$html.append(_this.msgTipsUI.$html);
         _this.handler();
@@ -1029,8 +1029,9 @@
                                 </a>\
                         </header>\
                         <div class="nextalk-scroll" id="nextalk_conversations">\
+                        <div class="nextalk-wrap">\
                         <ul class="mzen-list-view"></ul>\
-                        </div>\
+                        </div></div>\
                     </div>';
     SimpleUI.CONVERSATION = '<li class="mzen-list-view-cell mzen-img mzen-tap-active mzen-up-hover">\
                                 <img class="mzen-img-object mzen-pull-left" src="">\
@@ -1389,8 +1390,8 @@
     ChatBoxUI.HTML = '<div class="nextalk-page nextalk-screen-right chatbox"\
                             id="nextalk_page_chatbox" style="display: none;">\
                         <!--头部集合 BEGIN-->\
-                        <header class="mzen-bar mzen-bar-nav mzen-bar-white">\
-                            <a class="mzen-pull-left mzen-tap-active mzen-up-hover">\
+                        <header class="mzen-bar mzen-bar-nav mzen-bar-info">\
+                            <a class="mzen-pull-left">\
                             <span class="mzen-iconfont mzen-icon-left"></span></a>\
                             <div class="mzen-pull-right mzen-tap-active nextalk-user">\
                             <a class="mzen-img">\
@@ -1408,7 +1409,7 @@
                             <form class="mzen-form" onsubmit="return false;">\
                             <div class="nextalk mzen-input-row">\
                                 <input type="text" class="mzen-input" placeholder="输入消息内容..."/>\
-                                <span class="mzen-input-addon mzen-btn mzen-btn-success">发送</span>\
+                                <span class="mzen-input-addon mzen-btn mzen-btn-info">发送</span>\
                             </div>\
                             </form>\
                         </footer>\
@@ -1448,9 +1449,9 @@
                 $html.css('width', '100%');
             } else {
                 if (!simple) {
-                    $html.width(ww - 240 - 2);
+                    $html.width(ww - 240);
                 } else {
-                    $html.width(ww - 220 - 2);
+                    $html.width(ww - 220);
                 }
             }
         } else {
@@ -1474,6 +1475,10 @@
         _this.$html.show();
         _this.focus = true;
         _this.times++;
+        var webui = UI.getInstance();
+        if (webui.onChatboxOpen) {
+            webui.onChatboxOpen();
+        }
         
         if (show) {
             if (show != IM.show.UNAVAILABLE) {
@@ -1564,6 +1569,10 @@
         var _this = this;
         _this.$html.hide();
         _this.focus = false;
+        var webui = UI.getInstance();
+        if (webui.onChatboxClose) {
+            webui.onChatboxClose();
+        }
     };
     ChatBoxUI.prototype.receiveHTML = function(msg) {
         var _this = this;
@@ -1659,6 +1668,10 @@
             }
             input.val('');
             return false;
+        });
+        
+        $('footer .mzen-btn', $html).click(function() {
+            $('footer form', $html).submit();
         });
     };
     ChatBoxUI.prototype.showTipsTask = undefined;
