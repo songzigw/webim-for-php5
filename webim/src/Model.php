@@ -536,7 +536,16 @@ class Model {
             $ask->save();
         }
     }
-
+ 
+    public function get_random_agent() {
+        $query = $this->T2('ecs_agent')
+                    ->whereRaw("(`user_id` != 0)")
+                    ->limit(5);
+        $convArray = $query->findArray();
+        $convObjArr = array_map(array($this, '_toObj'), $convArray);
+        return $convObjArr;
+    }
+  
     private function _format($time) {
         $date = new \DateTime($time);
         return $date->format('m-d');
