@@ -111,24 +111,25 @@ footer .mzen-form {
 	background-color: inherit;
 }
 
-.nextalk.mzen-input-row {
+.nextalk-form.mzen-input-row {
     width: 100%;
     padding : 6px 16px;
 }
 
-.nextalk.mzen-input-row:first-child:after {
+.nextalk-form.mzen-input-row:first-child:after {
 	border-top: 0;
 }
 
-.nextalk.mzen-input-row:last-child:after {
+.nextalk-form.mzen-input-row:last-child:after {
 	border-bottom: 0;
 }
 
-.nextalk.mzen-input-row:after {
+.nextalk-form.mzen-input-row:after {
 	border-bottom: 0;
 }
 
-.nextalk.mzen-input-row .mzen-input {
+.nextalk-form.mzen-input-row .mzen-input {
+	position: relative;
     width: 99%;
     border: 1px solid #3498db;
     border-radius: 4px;
@@ -136,14 +137,16 @@ footer .mzen-form {
     background-color: white;
 }
 
-.nextalk.mzen-input-row .mzen-input p {
+.nextalk-form.mzen-input-row .mzen-input p {
+    margin-top: -5px;
     margin-bottom: 3px;
 }
-.nextalk.mzen-input-row .mzen-input .mzen-iconfont {
+.nextalk-form.mzen-input-row .mzen-input .mzen-iconfont {
 	font-size: 22px;
 	margin-right: 3px;
+	cursor: pointer;
 }
-.nextalk.mzen-input-row .mzen-input textarea {
+.nextalk-form.mzen-input-row .mzen-input textarea {
 	white-space: pre-wrap;
     word-wrap: break-word;
     box-sizing: border-box;
@@ -158,11 +161,36 @@ footer .mzen-form {
     cursor: text;
     border-radius: 0;
 }
-
-.nextalk .mzen-btn {
+.nextalk-form .mzen-btn {
 	padding-left: 10px;
 	padding-right: 10px;
 	color: #fff;
+}
+.nextalk-form .nextalk-emot {
+	position: absolute;
+	bottom: 100%;
+	width: 100%;
+	padding: 3px;
+	margin: 0 -10px;
+	margin-bottom: 1px;
+	font-size: 14px;
+	text-align: left;
+	list-style: none;
+	background-color: #fff;
+	border: 1px solid #D9DADC;
+	border-bottom: 0;
+	-webkit-background-clip: padding-box;
+    background-clip: padding-box;
+	color: #333;
+}
+
+.nextalk-form .nextalk-emot ul>li {
+    float: left;
+    cursor: pointer;
+}
+.nextalk-form .nextalk-emot ul>li>img {
+    width: 24px;
+    height: 24px;
 }
 
 .nextalk-show {

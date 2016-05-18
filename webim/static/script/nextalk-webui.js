@@ -1364,6 +1364,14 @@
         _this.msgTipsUI = new MsgTipsUI();
         _this.$html.append(_this.msgTipsUI.$html);
 
+        _this.emotUI = new EmotUI();
+        var $textarea = $('footer .nextalk-form textarea', $html);
+        _this.emotUI.callback = function(emot) {
+            $textarea.val($textarea.val() + emot);
+        };
+        $('footer .nextalk-form .mzen-input', $html)
+                .append(_this.emotUI.$html);
+
         _this.$bBody = $('.nextalk-wrap', $html);
         _this.$bBody.empty();
 
@@ -1405,7 +1413,7 @@
                         <!-- 聊天输入筐BEGIN -->\
                         <footer>\
                             <form class="mzen-form" onsubmit="return false;">\
-                            <div class="nextalk mzen-input-row">\
+                            <div class="nextalk-form mzen-input-row">\
                                 <div class="mzen-input">\
                                 <p><i class="mzen-iconfont mzen-icon-emoji"></i><i class="mzen-iconfont mzen-icon-pic"></i></p>\
                                 <textarea placeholder="输入消息内容..."></textarea>\
@@ -1591,7 +1599,7 @@
         if (isUrl(msg.body)) {
             $receive.find('.body').html('<a href="'+msg.body+'" target="_blank">'+msg.body+'</a>');
         } else {
-            $receive.find('.body').text(msg.body);
+            $receive.find('.body').html(EmotUI.trans(msg.body));
         }
         _this.$bBody.append($receive);
         _this.toBottom();
@@ -1613,7 +1621,7 @@
         if (isUrl(msg.body)) {
             $send.find('.body').html('<a href="'+msg.body+'" target="_blank">'+msg.body+'</a>');
         } else {
-            $send.find('.body').text(msg.body);
+            $send.find('.body').html(EmotUI.trans(msg.body));
         }
         _this.$bBody.append($send);
         _this.toBottom();
@@ -1672,6 +1680,17 @@
         
         $('footer .mzen-btn', $html).click(function() {
             $('footer form', $html).submit();
+            $('footer textarea', $html).focus();
+        });
+
+        $('footer textarea', $html).on('keydown', function(ev) {
+            if (ev.keyCode == 13) {
+                $('footer form', $html).submit();
+            }
+        });
+
+        $('footer .mzen-icon-emoji', $html).click(function() {
+            _this.emotUI.$html.toggle();
         });
     };
     ChatBoxUI.prototype.showTipsTask = undefined;
@@ -1702,7 +1721,123 @@
         return /^http:\/\/[A-Za-z0-9]+\.[A-Za-z0-9]+[\/=\?%\-&_~`@[\]\':+!]*([^<>\"])*$/.test(str);
     }
 
-    
+    var EmotUI = function() {
+        var webui = UI.getInstance();
+        var _this = this;
+        this.$html = $(EmotUI.HTML);
+        this.hide();
+        var $hUl = $('<ul></ul>');
+        for (var i = 0; i < EmotUI.ICON.length; i++) {
+            var icon = EmotUI.ICON[i];
+            icon.path = webui.options.resPath;
+            var $hLi = $(completion(EmotUI.H_IMG, icon));
+            $('img', $hLi).on('click', function(ev) {
+                ev.preventDefault();
+                _this.callback($(this).attr('data-text'));
+                _this.hide();
+            });
+            $hUl.append($hLi);
+        }
+        this.$html.append($hUl);
+    };
+    EmotUI.HTML = '<div class="nextalk-emot"></div>';
+    EmotUI.H_IMG = '<li><img src="{{path}}imgs/emot/{{image}}" title="{{title}}" data-text="{{text}}"/></li>';
+    EmotUI.ICON = [ {
+        "image" : "default/smile.png",
+        "title" : "smile",
+        "text" : "[smile]"
+    }, {
+        "image" : "default/smile-big.png",
+        "title" : "smile_big",
+        "text" : "[smile_big]"
+    }, {
+        "image" : "default/sad.png",
+        "title" : "wink",
+        "text" : "[wink]"
+    }, {
+        "image" : "default/wink.png",
+        "title" : "wink",
+        "text" : "[wink]"
+    }, {
+        "image" : "default/tongue.png",
+        "title" : "tongue",
+        "text" : "[tongue]"
+    }, {
+        "image" : "default/shock.png",
+        "title" : "shock",
+        "text" : "[shock]"
+    }, {
+        "image" : "default/kiss.png",
+        "title" : "kiss",
+        "text" : "[kiss]"
+    }, {
+        "image" : "default/glasses-cool.png",
+        "title" : "glasses_cool",
+        "text" : "[glasses-cool]"
+    }, {
+        "image" : "default/embarrassed.png",
+        "title" : "embarrassed",
+        "text" : "[embarrassed]"
+    }, {
+        "image" : "default/crying.png",
+        "title" : "crying",
+        "text" : "[crying]"
+    }, {
+        "image" : "default/thinking.png",
+        "title" : "thinking",
+        "text" : "[thinking]"
+    }, {
+        "image" : "default/angel.png",
+        "title" : "angel",
+        "text" : "[angel]"
+    }, {
+        "image" : "default/shut-mouth.png",
+        "title" : "shut_mouth",
+        "text" : "[shut-mouth]"
+    }, {
+        "image" : "default/moneymouth.png",
+        "title" : "moneymouth",
+        "text" : "[moneymouth]"
+    }, {
+        "image" : "default/foot-in-mouth.png",
+        "title" : "foot_in_mouth",
+        "text" : "[foot-in-mouth]"
+    }, {
+        "image" : "default/shout.png",
+        "title" : "shout",
+        "text" : "[shout]"
+    } ];
+    EmotUI.trans = function(body) {
+        var path = UI.getInstance().options.resPath;;
+        var reg = /\[(.*?)\]/gm;
+        var str = body.replace(reg, function(match) {
+            for (var i = 0; i < EmotUI.ICON.length; i++) {
+                var icon = EmotUI.ICON[i];
+                if (icon.text === match) {
+                    return '<img width="24" height="24" ' 
+                        + 'src="' + path + 'imgs/emot/'
+                        + icon.image + '" />';
+                }
+            }
+            return match;
+        });
+        return str;
+    };
+    EmotUI.prototype.show = function() {
+        this.$html.show();
+    };
+    EmotUI.prototype.hide = function() {
+        this.$html.hide();
+    };
 
+    var completion = function(str, data) {
+        var reg = /\{{2}(.*?)\}{2}/gm;
+        var trim = /^\{{2}\s*|\s*\}{2}$/g;
+        var newStr = str.replace(reg, function(match) {
+            var key = match.replace(trim, "");
+            return data[key];
+        });
+        return newStr;
+    }
     window.NexTalkWebUI = UI;
 })(NexTalkWebIM);
