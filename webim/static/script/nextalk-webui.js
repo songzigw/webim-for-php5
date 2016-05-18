@@ -1569,7 +1569,14 @@
             if (ops.chatObj 
                     && ops.chatObj.id == _this.id
                     && ops.chatObj.body) {
-                _this.sendMsg(ops.chatObj.body);
+                if (!ops.chatObj.bodyType) {
+                    _this.sendMsg(ops.chatObj.body);
+                } else {
+                    _this.sendMsg('[type='
+                            + ops.chatObj.bodyType
+                            + ',body='
+                            + ops.chatObj.body + ']');
+                }
             }
         });
     };
@@ -1715,6 +1722,20 @@
         } else {
             this.showUnline();
         }
+    };
+    ChatBoxUI.transBody = function(body) {
+        var reg = /^\[type=(.*?),body=(.*?)\]$/gm;
+        var str = body.replace(reg, function(match) {
+            for (var i = 0; i < EmotUI.ICON.length; i++) {
+                var icon = EmotUI.ICON[i];
+                if (icon.text === match) {
+                    return '<img width="24" height="24" ' 
+                        + 'src="' + path + 'imgs/emot/'
+                        + icon.image + '" />';
+                }
+            }
+            return match;
+        });
     };
 
     function isUrl(str) {
