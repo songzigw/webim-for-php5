@@ -1427,7 +1427,7 @@
     ChatBoxUI.RECEIVE = '<p class="mzen-text-center"><span class="time">???</span></p>\
                          <div class="mzen-chat-receiver">\
                             <div class="mzen-chat-receiver-avatar"><img src=""></div>\
-                            <div style="padding-left:70px;text-align:left;" class="nick">???</div>\
+                            <div style="padding-left:60px;text-align:left;" class="nick">???</div>\
                             <div class="mzen-chat-receiver-cont">\
                                 <div class="mzen-chat-left-triangle"></div>\
                                 <span class="body">???</span>\
@@ -1701,5 +1701,8 @@
     function isUrl(str) {
         return /^http:\/\/[A-Za-z0-9]+\.[A-Za-z0-9]+[\/=\?%\-&_~`@[\]\':+!]*([^<>\"])*$/.test(str);
     }
+
+    
+
     window.NexTalkWebUI = UI;
 })(NexTalkWebIM);

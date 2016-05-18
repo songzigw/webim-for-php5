@@ -136,18 +136,21 @@ footer .mzen-form {
     background-color: white;
 }
 
-.nextalk.mzen-input-row .mzen-input p>i {
-    padding: 3px;
-    font-size: 14px;
+.nextalk.mzen-input-row .mzen-input p {
+    margin-bottom: 3px;
 }
-
+.nextalk.mzen-input-row .mzen-input .mzen-iconfont {
+	font-size: 22px;
+	margin-right: 3px;
+}
 .nextalk.mzen-input-row .mzen-input textarea {
 	white-space: pre-wrap;
     word-wrap: break-word;
     box-sizing: border-box;
     font-size: 14px;
     width: 100%;
-    height: 100%;
+    height: 18px;
+    line-height: 18px;
     padding: 0;
     margin: 0;
     resize: none;
