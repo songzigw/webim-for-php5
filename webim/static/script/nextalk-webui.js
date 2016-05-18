@@ -1262,6 +1262,23 @@
             webui.openChatBoxUI(ChatBoxUI.CHAT, ops.chatObj.id,
                     ops.chatObj.name, ops.chatObj.avatar);
         }
+        if ($('>li', $items).length === 0) {
+            IM.WebAPI.getInstance().agents_random(null, function(ret, err) {
+                if (ret) {
+                    for (var i = 0; i < ret.length; i++) {
+                        var chatObj = ret[i];
+                        _this.itemHTML({
+                            type : ChatBoxUI.CHAT,
+                            oid : chatObj.user_id,
+                            name : chatObj.name,
+                            avatar : '/images/agentphoto/' + chatObj.face,
+                            body : '开始聊天'
+                        }).prependTo($items);
+                    }
+                    _this.itemsClick();
+                }
+            });
+        }
         _this.itemsClick();
     };
     SimpleUI.prototype.loadBuddies = function() {
@@ -1286,7 +1303,7 @@
         _this.msgTipsUI.show('连接成功...', 'mzen-tips-success');
         _this.showTipsTask = setTimeout(function() {
             _this.hideTips();
-        }, 5000);
+        }, 1000);
     };
     SimpleUI.prototype.showDisconnected = function() {
         window.clearTimeout(this.showTipsTask);

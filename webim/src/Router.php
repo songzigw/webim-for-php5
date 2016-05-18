@@ -214,6 +214,17 @@ EOF;
 		exit($script);
 	}
 
+	public function agents_random() {
+	    $agents = $this->model->get_random_agent();
+	    $this->jsonReply($agents);
+	}
+	
+	public function house() {
+	    $houseId = $this->input('id');
+	    $house = $this->model->get_house($houseId);
+	    $this->jsonReply($house);
+	}
+	
     /**
      * Online
      */
