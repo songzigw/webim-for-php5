@@ -1429,14 +1429,14 @@
                         </div>\
                         <!-- 聊天输入筐BEGIN -->\
                         <footer>\
-                            <form class="mzen-form" onsubmit="return false;">\
+                            <div class="mzen-form">\
                             <div class="nextalk-form mzen-input-row">\
                                 <div class="mzen-input">\
                                 <p><i class="mzen-iconfont mzen-icon-emoji"></i><i class="mzen-iconfont mzen-icon-pic"></i></p>\
                                 <textarea placeholder="输入消息内容..."></textarea>\
                                 </div><span class="mzen-input-addon mzen-btn mzen-btn-info">发送</span>\
                             </div>\
-                            </form>\
+                            </div>\
                         </footer>\
                         <!-- 聊天输入筐END -->\
                       </div>';
@@ -1694,29 +1694,28 @@
         $('>header .mzen-pull-right img', $html)
             .attr('src', _this.avatar);
 
-        $('footer form', $html).submit(function() {
-            var input = $('textarea', $(this));
-            if ($.trim(input.val()) != '') {
-                _this.sendMsg(input.val());
-            }
-            input.val('');
-            return false;
-        });
-        
         $('footer .mzen-btn', $html).click(function() {
-            $('footer form', $html).submit();
-            $('footer textarea', $html).focus();
+            _this.submit();
         });
 
         $('footer textarea', $html).on('keydown', function(ev) {
             if (ev.keyCode == 13) {
-                $('footer form', $html).submit();
+                _this.submit();
             }
         });
 
         $('footer .mzen-icon-emoji', $html).click(function() {
             _this.emotUI.$html.toggle();
         });
+    };
+    ChatBoxUI.prototype.submit = function() {
+        var _this = this;
+        var $input = $('.mzen-form textarea', _this.$html);
+        if ($.trim($input.val()) != '') {
+            _this.sendMsg($input.val());
+        }
+        $input.val('');
+        $input.focus();
     };
     ChatBoxUI.prototype.showTipsTask = undefined;
     ChatBoxUI.prototype.showOnline = function() {
