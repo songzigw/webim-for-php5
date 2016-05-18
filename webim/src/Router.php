@@ -494,6 +494,7 @@ EOF;
     public function chatbox() {
         $webim_path = WEBIM_PATH();
         $uid = $this->input('uid');
+        $body_type = $this->input('body_type');
         $body = $this->input('body');
         $buddy = $this->plugin->getUserById($uid);
         if(!$buddy) {
@@ -560,6 +561,7 @@ EOF;
         echo '            id : "'. $buddy->id .'",';
         echo '            name : "'. $buddy->nick .'",';
         echo '            avatar : "'. $buddy->avatar .'",';
+        echo '            body_type : "'. $body_type .'",';
         echo '            body : "'. $body .'"';
         echo '        };';
         echo '        </script>';
@@ -571,6 +573,7 @@ EOF;
     public function mobile() {
         $webim_path = WEBIM_PATH();
         $uid = $this->input('uid');
+        $body_type = $this->input('body_type');
         $body = $this->input('body');
         if ($uid != null) {
             $buddy = $this->plugin->getUserById($uid);
@@ -596,6 +599,7 @@ EOF;
             echo '            id : "'. $buddy->id .'",';
             echo '            name : "'. $buddy->nick .'",';
             echo '            avatar : "'. $buddy->avatar .'",';
+            echo '            body_type : "'. $body_type .'",';
             echo '            body : "'. $body .'"';
             echo '        };';
             echo '        </script>';

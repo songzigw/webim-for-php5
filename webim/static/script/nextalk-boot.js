@@ -1,9 +1,8 @@
 var openChatBoxWin = function(chatObj) {
     var url = "index.php?action=chatbox"
-        + "&uid=" + chatObj.id;
-    if (chatObj.location) {
-        url = url + "&body=" + document.location.href;
-    }
+        + "&uid=" + chatObj.id
+        + "&body_type=" + chatObj.body_type
+        + "&body=" + chatObj.body;
     this.openWindow(
             _IMC.apiPath + url,
             "window_chat", 790, 500);
@@ -116,12 +115,14 @@ if (chatBtns && chatBtns.length > 0) {
             var name = this.getAttribute('data-name');
             var avatar = this.getAttribute('data-avatar');
             var win = this.getAttribute('data-win');
-            var location = this.getAttribute('data-location');
+            var bodytype = this.getAttribute('data-bodytype');
+            var body = this.getAttribute('data-body');
             var chatObj = {
                 id : id,
                 name : name,
                 avatar : avatar,
-                location : location
+                body_type : bodytype,
+                body : body
             };
             if (win == 'win') {
                 openChatBoxWin(chatObj);
