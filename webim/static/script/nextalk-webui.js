@@ -1776,7 +1776,7 @@
                 window.file = file;
                 var data = {
                         type : 2,
-                        body : "/images/agentphoto/agent20160108-21.jpg",
+                        body : ops.resPath + 'imgs/loading_more.gif',
                 };
                 var msg = _this.message(IM.JSON.stringify(data));
                 file.sendHtml = _this.sendHTML(msg);
@@ -1787,16 +1787,16 @@
             },
             
             success: function(file, ret) {
-                if (ret) {
-                    alert(IM.JSON.stringify(ret));
+                if (ret && ret.success) {
                     var data = {
                             type : 2,
-                            body : "/images/agentphoto/agent20160108-21.jpg",
+                            body : ret.path,
                     };
                     var msg = _this.message(IM.JSON.stringify(data));
                     IM.getInstance().sendMessage(msg);
                     // 处理会话列表
                     UI.getInstance().mainUI.loadItem(msg.type, msg.to, msg);
+                    file.sendHtml.find('img').attr('src', ret.path);
                 }
             },
             
