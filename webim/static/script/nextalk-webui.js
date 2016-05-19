@@ -1768,6 +1768,7 @@
         });
         $('footer .mzen-icon-pic', $html).dropzone({
             url: ops.apiPath + "upload-file.php",
+            paramName: 'file',
             maxFiles: 5,
             maxFilesize: 10,
             acceptedFiles: "image/*",

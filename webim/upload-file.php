@@ -1,22 +1,29 @@
 <?php
-header ( 'Content-Type: application/json' );
+header ( 'Content-Type:application/json; charset=utf-8' );
 
-// $errors = mt_rand(0,100)%2==0; // Random response (Demo Purpose)
-$errors = false;
-
-$resp = array ();
-
-// Normal Response Code
-if (function_exists ( 'http_response_code' )) {
-    http_response_code ( 200 );
+function Upload($upDir) {
+    $tmp_name = $_FILES ['file'] ['tmp_name'];
+    $name = $_FILES ['file'] ['name'];
+    $size = $_FILES ['file'] ['size'];
+    $type = $_FILES ['file'] ['type'];
+    //$upDir = $upDir + date ( "Ym" );
+    //@chmod ( $upDir, 0777 ); // 赋予权限
+    //@is_dir ( $upDir ) or mkdir ( $upDir, 0777 );
+    move_uploaded_file ( $_FILES ['file'] ['tmp_name'], $upDir . "/" . $name );
+    $type = explode ( ".", $name );
+    $type = @$type [1];
+    $date = date ( "YmdHis" );
+    $rename = @rename ( $upDir . "/" . $name, $upDir . "/" . $date . "." . $type );
+    if ($rename) {
+        return  $date . "." . $type;
+    }
 }
 
-// On Error
-if ($errors) {
-    if (function_exists ( 'http_response_code' ))
-        http_response_code ( 400 );
-    
-    $resp ['error'] = "Couldn't upload file, reason: ~";
-}
+$image = '/webim/files/' . Upload ( './files' );
 
-echo json_encode ( $resp );
+$data = (object) array(
+       'success' => true,
+       'path' => $image
+);
+echo json_encode($data);
+?>
