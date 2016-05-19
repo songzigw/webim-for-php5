@@ -91,21 +91,26 @@ if (_IMC.chatObj) {
 // 注意传递参数 uid nick avatar
 var chatBtns = getElementsByToggle('webim-chatbtn');
 if (chatBtns && chatBtns.length > 0) {
+    var n = 0;
     for (var i = 0; i < chatBtns.length; i++) {
         var btn = chatBtns[i];
         var id = btn.getAttribute('data-id');
         var name = btn.getAttribute('data-name');
         var avatar = btn.getAttribute('data-avatar');
+        if (!id) {
+            continue;
+        }
         var chatObj = {
             id : id,
             name : name,
             avatar : avatar
         };
-        if (i == 0) {
+        if (n == 0) {
             nextalkMain.chatlinkIds = id;
         } else {
             nextalkMain.chatlinkIds += ',' + id;
         }
+        n++;
         nextalkMain.chatObjs.push(chatObj);
         btn.onclick = function() {
             var id = this.getAttribute('data-id');
