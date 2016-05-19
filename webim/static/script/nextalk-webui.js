@@ -1624,7 +1624,33 @@
         if (isUrl(msg.body)) {
             $receive.find('.body').html('<a href="'+msg.body+'" target="_blank">'+msg.body+'</a>');
         } else {
-            $receive.find('.body').html(EmotUI.trans(msg.body));
+            try {
+                var data = IM.JSON.parse(msg.body);
+                if (data.type == 1) {
+                    $receive.find('.body').html("正在加载中...");
+                    IM.WebAPI.getInstance().house(
+                            {id : data.body},
+                            function(ret, err) {
+                                if (ret) {
+                                    var m = UI.getInstance().options.mobile;
+                                    var a = '/mobile/house.php?id=' + ret.goods_id;
+                                    if (!m) {
+                                        a = '/house.php?id=' + ret.goods_id;
+                                    }
+                                    var html = '<a href="' + a + '" target="_blank"><div><img width="90%"\
+                                        src="http://images.qiaoju360.com/'+ ret.goods_img +'"/>\
+                                        <p>'+ ret.goods_name +'</p></div></a>';
+                                    $receive.find('.body').html(html);
+                                } else {
+                                    $receive.find('.body').html("加载失败...");
+                                }
+                            });
+                } else if (data.type == 2) {
+                    $receive.find('.body').html('<img width="90%" src="'+data.body+'"/>');
+                }
+            } catch (e) {
+                $receive.find('.body').html(EmotUI.trans(msg.body));
+            }
         }
         _this.$bBody.append($receive);
         _this.toBottom();
@@ -1646,14 +1672,50 @@
         if (isUrl(msg.body)) {
             $send.find('.body').html('<a href="'+msg.body+'" target="_blank">'+msg.body+'</a>');
         } else {
-            $send.find('.body').html(EmotUI.trans(msg.body));
+            try {
+                var data = IM.JSON.parse(msg.body);
+                if (data.type == 1) {
+                    $send.find('.body').html("正在加载中...");
+                    IM.WebAPI.getInstance().house(
+                            {id : data.body},
+                            function(ret, err) {
+                                if (ret) {
+                                    var m = UI.getInstance().options.mobile;
+                                    var a = '/mobile/house.php?id=' + ret.goods_id;
+                                    if (!m) {
+                                        a = '/house.php?id=' + ret.goods_id;
+                                    }
+                                    var html = '<a href="' + a + '" target="_blank"><div><img width="90%"\
+                                        src="http://images.qiaoju360.com/'+ ret.goods_img +'"/>\
+                                        <p>'+ ret.goods_name +'</p></div><a>';
+                                    $send.find('.body').html(html);
+                                } else {
+                                    $send.find('.body').html("加载失败...");
+                                }
+                            });
+                } else if (data.type == 2) {
+                    $send.find('.body').html('<img width="90%" src="'+data.body+'"/>');
+                }
+            } catch (e) {
+                $send.find('.body').html(EmotUI.trans(msg.body));
+            }
         }
         _this.$bBody.append($send);
         _this.toBottom();
+        return $send;
     };
     ChatBoxUI.prototype.sendMsg = function(body) {
         var _this = this, webim = IM.getInstance();
         var webui = UI.getInstance();
+        
+        var msg = _this.message(body);
+        _this.sendHTML(msg);
+        webim.sendMessage(msg);
+        // 处理会话列表
+        webui.mainUI.loadItem(msg.type, msg.to, msg);
+    };
+    ChatBoxUI.prototype.message = function(body) {
+        var _this = this, webim = IM.getInstance();
         var currUser = webim.getCurrUser();
 
         var msg = {
@@ -1667,11 +1729,8 @@
             body : body,
             timestamp : IM.nowStamp()
         };
-        _this.sendHTML(msg);
-        webim.sendMessage(msg);
-        // 处理会话列表
-        webui.mainUI.loadItem(msg.type, msg.to, msg);
-    };
+        return msg;
+    }
     ChatBoxUI.prototype.handleHTML = function() {
         var _this = this, $html = _this.$html;
         var ops = UI.getInstance().options;
@@ -1706,6 +1765,43 @@
 
         $('footer .mzen-icon-emoji', $html).click(function() {
             _this.emotUI.$html.toggle();
+        });
+        $('footer .mzen-icon-pic', $html).dropzone({
+            url: ops.apiPath + "upload-file.php",
+            maxFiles: 5,
+            maxFilesize: 10,
+            acceptedFiles: ".gif,.jpg,.png",
+            addedfile: function(file) {
+                window.file = file;
+                var data = {
+                        type : 2,
+                        body : "/images/agentphoto/agent20160108-21.jpg",
+                };
+                var msg = _this.message(IM.JSON.stringify(data));
+                file.sendHtml = _this.sendHTML(msg);
+            },
+            
+            uploadprogress: function(file, progress, bytesSent) {
+                
+            },
+            
+            success: function(file, ret) {
+                if (ret) {
+                    alert(IM.JSON.stringify(ret));
+                    var data = {
+                            type : 2,
+                            body : "/images/agentphoto/agent20160108-21.jpg",
+                    };
+                    var msg = _this.message(IM.JSON.stringify(data));
+                    IM.getInstance().sendMessage(msg);
+                    // 处理会话列表
+                    UI.getInstance().mainUI.loadItem(msg.type, msg.to, msg);
+                }
+            },
+            
+            error: function(file, ret) {
+                
+            }
         });
     };
     ChatBoxUI.prototype.submit = function() {

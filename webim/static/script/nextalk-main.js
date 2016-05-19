@@ -70,6 +70,8 @@
         document.write('<script type="text/javascript" src="' + _this.resPath
                 + 'script/jquery.min.js"></script>');
         document.write('<script type="text/javascript" src="' + _this.resPath
+                + 'script/dropzone.min.js"></script>');
+        document.write('<script type="text/javascript" src="' + _this.resPath
                 + 'script/nextalk-webim.js"></script>');
         document.write('<script type="text/javascript" src="' + _this.resPath
                 + 'script/nextalk-webui.js"></script>');

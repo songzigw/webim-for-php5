@@ -551,13 +551,15 @@ class Model {
                     ->where('goods_id', $houseId)
                     ->findOne();
          if(!$house){
-         return (object) array(
-         'goods_id' => $house->goods_id,
-         'goods_name' => $house->goods_name,
-         'shop_price' => $house->shop_price,
-         'goods_img' => $house->goods_img,
-         );
+            return null;
          }
+         
+         return (object) array(
+                 'goods_id' => $house->goods_id,
+                 'goods_name' => $house->goods_name,
+                 'shop_price' => $house->shop_price,
+                 'goods_img' => $house->goods_img,
+         );
     } 
 
     private function _format($time) {

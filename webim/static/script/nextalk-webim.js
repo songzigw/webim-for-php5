@@ -3026,7 +3026,8 @@
                 upload : "static/images/upload.php",
                 conversations : "index.php?action=conversations",
                 conv_new : "index.php?action=conv_new",
-                agents_random : "index.php?action=agents_random"
+                agents_random : "index.php?action=agents_random",
+                house : "index.php?action=house"
         };
         API.route = function(ob) {
             var options = ob;
@@ -3116,6 +3117,9 @@
             },
             agents_random : function(params, callback) {
                 this._ajax("agents_random", params, callback);
+            },
+            house : function(params, callback) {
+                this._ajax("house", params, callback);
             }
         };
         extend(API.prototype, methods);
