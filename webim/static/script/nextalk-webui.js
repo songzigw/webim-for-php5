@@ -1770,7 +1770,7 @@
             url: ops.apiPath + "upload-file.php",
             maxFiles: 5,
             maxFilesize: 10,
-            acceptedFiles: ".gif,.jpg,.png",
+            acceptedFiles: "image/*",
             addedfile: function(file) {
                 window.file = file;
                 var data = {
