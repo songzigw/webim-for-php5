@@ -1,35 +1,36 @@
 <?php
-//echo date ( "Ym" );
-//echo date ( "YmdHis" );
-
-function Upload($upDir) {
-    $tmp_name = $_FILES ['file'] ['tmp_name'];
-    $name = $_FILES ['file'] ['name'];
-    $size = $_FILES ['file'] ['size'];
-    $type = $_FILES ['file'] ['type'];
-    //$upDir = $upDir + date ( "Ym" );
-    //@chmod ( $upDir, 0777 ); // 赋予权限
-    //@is_dir ( $upDir ) or mkdir ( $upDir, 0777 );
-    move_uploaded_file ( $_FILES ['file'] ['tmp_name'], $upDir . "/" . $name );
-    $type = explode ( ".", $name );
-    $type = @$type [1];
-    $date = date ( "YmdHis" );
-    $rename = @rename ( $upDir . "/" . $name, $upDir . "/" . $date . "." . $type );
-    if ($rename) {
-        return $upDir . "/" . $date . "." . $type;
-    }
-}
+error_reporting ( E_ALL | E_STRICT );
+require ('UploadHandler.php');
 
 if ($_POST ['upload']) {
-    $image = Upload ( './files' );
-    echo $image;
+
+    $upload_handler = new UploadHandler (array(
+            'param_name' => 'file',
+            'print_response' => false
+    ));
+    $rsp = $upload_handler->get_response();
+    $file = $rsp['file'];
+    
+    $data = array(
+            'success' => true
+    );
+    foreach ($file as $f) {
+        $data['path'] = $f->url;
+    }
+    
+    echo json_encode($data);
+
 } else {
-    ?>
-<form enctype="multipart/form-data"
-	action="<?php echo $_SERVER['SCRIPT_NAME']?>" method="post">
-	<input name="file" type="file"> <input name="upload" type="submit"
-		value="Upload File">
+    
+?>
+
+<form enctype="multipart/form-data" method="post"
+	action="<?php echo $_SERVER['SCRIPT_NAME']?>">
+	<input name="file" type="file">
+	<input name="upload" type="submit" value="Upload File">
 </form>
+
 <?php
+
 }
 ?>
