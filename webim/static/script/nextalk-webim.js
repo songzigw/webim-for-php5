@@ -1724,13 +1724,13 @@
                 throw new Error('msg.nick not settings.');
             }
             if (!msg.avatar) {
-                throw new Error('msg.avatar not settings.');
+                //throw new Error('msg.avatar not settings.');
             }
             if (!msg.to_nick) {
                 throw new Error('msg.to_nick not settings.');
             }
             if (!msg.to_avatar) {
-                throw new Error('msg.to_avatar not settings.');
+                //throw new Error('msg.to_avatar not settings.');
             }
         }
 

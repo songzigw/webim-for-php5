@@ -1626,6 +1626,9 @@
         } else {
             try {
                 var data = IM.JSON.parse(msg.body);
+                if (typeof data !== 'object') {
+                    throw new Error();
+                }
                 if (data.type == 1) {
                     $receive.find('.body').html("正在加载中...");
                     IM.WebAPI.getInstance().house(
@@ -1674,6 +1677,9 @@
         } else {
             try {
                 var data = IM.JSON.parse(msg.body);
+                if (typeof data !== 'object') {
+                    throw new Error();
+                }
                 if (data.type == 1) {
                     $send.find('.body').html("正在加载中...");
                     IM.WebAPI.getInstance().house(
