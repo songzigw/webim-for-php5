@@ -1796,7 +1796,7 @@
                     IM.getInstance().sendMessage(msg);
                     // 处理会话列表
                     UI.getInstance().mainUI.loadItem(msg.type, msg.to, msg);
-                    file.sendHtml.find('img').attr('src', ret.path);
+                    file.sendHtml.find('.body img').attr('src', ret.path);
                 }
             },
             
