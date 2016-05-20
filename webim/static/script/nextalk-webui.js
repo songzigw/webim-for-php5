@@ -1800,8 +1800,8 @@
                 }
             },
             
-            error: function(file, ret) {
-                
+            error: function(file) {
+                file.sendHtml.find('.body').html("图片发送失败");
             }
         });
     };
