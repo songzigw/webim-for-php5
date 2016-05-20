@@ -74,7 +74,8 @@ class Model {
                 'presence' => 'offline',
                 'show' => 'unavailable',
                 'status' => '#',
-                'avatar' => $user->home_phne
+                'avatar' => $user->home_phne,
+                'type' => $user->type
             );
         }
         
@@ -85,7 +86,8 @@ class Model {
                 'presence' => 'offline',
                 'show' => 'unavailable',
                 'status' => '#',
-                'avatar' => '/images/agentphoto/'.$agent->face
+                'avatar' => '/images/agentphoto/'.$agent->face,
+                'type' => $user->type
             );
     }
     
@@ -104,7 +106,8 @@ class Model {
                 'presence' => 'offline',
                 'show' => 'unavailable',
                 'status' => '#',
-                'avatar' => '/images/agentphoto/'.$agent->face
+                'avatar' => '/images/agentphoto/'.$agent->face,
+                'type' => 2
         );
     }
     
