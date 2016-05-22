@@ -9,6 +9,9 @@
 if (!window.nextalk) {
     window.nextalk = {};
 }
+if (!nextalk.webim) {
+    nextalk.webim = {};
+}
 
 (function(webim) {
 
