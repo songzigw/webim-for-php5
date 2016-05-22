@@ -1,0 +1,851 @@
+/*!
+ * nextalk.webim.client.js v1.0.0
+ * http://nextalk.im/
+ *
+ * Copyright (c) 2014 NexTalk
+ *
+ */
+
+(function(webim) {
+
+    "use strict";
+
+    var console    = webim.console,
+        idsArray   = webim.idsArray,
+        timestamp  = webim.timestamp,
+        isFunction = webim.isFunction,
+        isArray    = webim.isArray,
+        isObject   = webim.isObject,
+        trim       = webim.trim,
+        makeArray  = webim.makeArray,
+        extend     = webim.extend,
+        each       = webim.each,
+        inArray    = webim.inArray,
+        grep       = webim.grep,
+        map        = webim.map,
+        JSON       = webim.JSON,
+        ajax       = webim.ajax,
+        isMobile   = webim.isMobile,
+        Date       = webim.Date,
+        Channel    = webim.Channel,
+        ClassEvent = webim.ClassEvent;
+
+    /**
+     * Validate an object's parameter names to ensure they match a list of
+     * expected variables name for this option type. Used to ensure option
+     * object passed into the API don't contain erroneous parameters.
+     * 
+     * @param {Object}
+     *                obj - User options object
+     * @param {Object}
+     *                keys - valid keys and types that may exist in obj.
+     * @throws {Error}
+     *                 Invalid option parameter found.
+     * @private
+     */
+    var validate = function(obj, keys) {
+        for ( var key in obj) {
+            if (obj.hasOwnProperty(key)) {
+                if (keys.hasOwnProperty(key)) {
+                    var dataType = keys[key].type;
+                    if (!isSameType(obj[key], dataType)) {
+                        throw new Error(
+                                format(webim.error.INVALID_TYPE,
+                                [typeof obj[key], key]));
+                    }
+                } else {
+                    var errorStr = "Unknown property, " + key
+                            + ". Valid properties are:";
+                    for ( var key in keys)
+                        if (keys.hasOwnProperty(key))
+                            errorStr = errorStr + " " + key;
+                    throw new Error(errorStr);
+                }
+            }
+        }
+        for (var key in keys) {
+            if (keys[key].requisite) {
+                if (!obj.hasOwnProperty(key) || !obj[key]) {
+                    throw new Error(
+                            format(webim.error.PARAM_EMPTY, [key]));
+                }
+            }
+        }
+    };
+    
+    var isSameType = function(data, dataType) {
+        if (typeof dataType === 'string'
+                && typeof data === dataType) {
+            return true;
+        }
+
+        if (isArray(dataType)) {
+            for (var i = 0; i < dataType.length; i++) {
+                if (data == dataType[i]) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    };
+
+    /**
+     * Format an error message text.
+     * 
+     * @private
+     * @param {error}
+     *                ERROR.KEY value above.
+     * @param {substitutions}
+     *                [array] substituted into the text.
+     * @return the text with the substitutions made.
+     */
+    var format = function(error, substitutions) {
+        var text = error.text;
+        if (substitutions) {
+            var field, start;
+            for (var i = 0; i < substitutions.length; i++) {
+                field = "{" + i + "}";
+                start = text.indexOf(field);
+                if (start > 0) {
+                    var part1 = text.substring(0, start);
+                    var part2 = text.substring(start + field.length);
+                    text = part1 + substitutions[i] + part2;
+                }
+            }
+        }
+        return text;
+    };
+
+    var sound = (function() {
+        var playSound = true;
+        var webimAudio;
+        var play = function(url) {
+            if (window.Audio) {
+                if (!webimAudio) {
+                    var webimAudio = new Audio();
+                }
+                webimAudio.src = url;
+                webimAudio.play();
+            } else if (navigator.userAgent.indexOf('MSIE') >= 0) {
+                try {
+                    document.getElementById('webim-bgsound').src = url;
+                } catch (e) {}
+            }
+        };
+        var _urls = {
+            lib : "sound.swf",
+            msg : "sound/msg.mp3"
+        };
+        return {
+            enable : function() {
+                playSound = true;
+            },
+            disable : function() {
+                playSound = false;
+            },
+            init : function(urls) {
+                extend(_urls, urls);
+                if (!window.Audio && navigator.userAgent.indexOf('MSIE') >= 0) {
+                    var soundEl = document.createElement('bgsound');
+                    soundEl.id = 'webim-bgsound';
+                    soundEl.src = '#';
+                    soundEl.autostart = 'true';
+                    soundEl.loop = '1';
+                    var dodys = document.getElementsByTagName('body');
+                    if (dodys && dodys.length > 0) {
+                        dodys[0].appendChild(soundEl);
+                    }
+                }
+            },
+            play : function(type) {
+                var url = isUrl(type) ? type : _urls[type];
+                playSound && play(url);
+            }
+        }
+    })();
+
+    /** 版本号 */
+    webim.VERSION = webim.version = webim.v = "1.0.0";
+
+    /** 错误码 */
+    webim.error = {
+        // 未知原因失败
+        UNKNOWN      : {code :-1, text : "Unknown."},
+        // 请求超时
+        TIMEOUT      : {code : 1, text : "Timed out."},
+        INVALID_TYPE : {code : 2, text : "Invalid type {0} for {1}."},
+        PARAM_EMPTY  : {code : 3, text : "Parameter empty for {0}."}
+    };
+
+    /** 连接状态 */
+    webim.connStatus = {
+        // 网络不可用
+        NETWORK_UNAVAILABLE : -1,
+        // 连接中
+        CONNECTING          :  0,
+        // 连接成功
+        CONNECTED           :  1,
+        // 断开连接
+        DISCONNECTED        :  2
+    };
+
+    /** 消息方向 */
+    webim.msgDirection = {
+        SEND    : 'send',
+        RECEIVE : 'receive'
+    };
+    // ???
+    // 数据库表中加两个字段to_nick to_avatar
+    webim.name = {
+        NOTICE   : '系统通知',
+        STRANGER : '陌生人'
+    };
+
+    /** 现场状态 */
+    webim.show = {
+        // 在线
+        AVAILABLE   : "available",
+        // 忙碌
+        DND         : "dnd",
+        // 离开
+        AWAY        : "away",
+        // 隐身
+        INVISIBLE   : "invisible",
+        // 聊天中
+        CHAT        : "chat",
+        // 离线
+        UNAVAILABLE : "unavailable"
+    };
+
+    webim.imgs = {
+        HEAD       : webim.resPath + 'imgs/head_def.png',
+        GROUP      : webim.resPath + 'imgs/group.gif',
+        NOTICE     : webim.resPath + 'imgs/message_notice.png',
+        LOGO_INDEX : webim.resPath + 'imgs/logo.png',
+        LOGO       : webim.resPath + 'imgs/webim.72x72.png'
+    };
+
+    /** 会话主体类型 */
+    webim.userType = {
+        SUPERVISOR : 'supervisor',
+        GENERAL    : 'general'
+    };
+
+    // 资源文件根路径
+    webim.resPath = '/src';
+    // WebAPI接口根路径
+    webim.appPath = '/';
+    // WebAPI服务器API
+    webim.webApi = null;
+    webim.status = null;
+    webim.history = null;
+    webim.client = null;
+    webim.currTimeMillis = null;
+
+    webim.init = function(options) {
+        // 入参验证
+        validate(options, {
+            resPath     : {type : 'string', requisite : true},
+            apiPath     : {type : 'string', requisite : true},
+            channelType : {type : [Channel.type.XHR_POLLING,
+                                   Channel.type.WEBSOCKET],
+                           requisite : false},
+            isJsonp     : {type : 'boolean', requisite : false},
+            chatlinkIds : {type : 'string', requisite : false},
+            playSound   : {type : 'boolean', requisite : false}
+        });
+
+        var _this = this;
+        _this.resPath = options.resPath;
+        _this.apiPath = options.apiPath;
+        delete options.resPath;
+        delete options.apiPath;
+
+        // 初始化Web业务服务API
+        _this.webApi = _this.WebAPI.init({
+            apiPath : _this.apiPath,
+            dataType : ajax.settings.dataType
+        });
+
+        _this.status = new webim.Status();
+        _this.history = new webim.History();
+
+        _this.client = Client.init(options);
+        sound.init({msg : _this.resPath + 'sound/msg.mp3'});
+
+        window.setInterval(function() {
+            if (webim.currTimeMillis) {
+                webim.currTimeMillis += 1000;
+            }
+        }, 1000);
+    };
+
+    var Client = function(options) {
+        var _this = this;
+        _this.options = extend({},
+                Client.DEFAULTS,
+                options || {});
+        // 用户登入成功次数
+        _this.loginTimes = 0;
+        // 客户端连接成功次数
+        _this.connectedTimes = 0;
+
+        // 初始化
+        _this._init();
+    };
+    ClassEvent.on(Client);
+    /** 默认配置信息 */
+    Client.DEFAULTS = {
+        // 通信令牌 暂时不用
+        // ticket : 'ticket',
+        // APP_KEY 暂时不用
+        // appKey : 'app_key',
+        
+        // 管道类型，默认为Websocket
+        // Websocket->(XHR)Polling降级方式
+        channelType : Channel.type.WEBSOCKET,
+        // 是否支持跨域访问
+        isJsonp : false,
+        // 聊天热线，多个ID逗号","分割
+        chatlinkIds : null,
+        // 消息提示音
+        playSound : true
+    };
+    /** 实例化一个Client */
+    Client._instance = null;
+    /**
+     * 获取实例化的Client
+     */
+    Client.getInstance = function() {
+        if (!Client._instance) {
+            throw new Error("Client is not initialized.");
+        }
+        return Client._instance;
+    };
+    /**
+     * 初始化Client
+     */
+    Client.init = function(options) {
+        if (!Client._instance) {
+            Client._instance = new Client(options);
+        }
+        return Client.getInstance();
+    };
+    /**
+     * 初始化Client
+     */
+    Client.prototype._init = function() {
+        var _this = this, options = _this.options;
+
+        ajax.setup({
+            dataType : options.isJsonp ? "jsonp" : "json"
+        });
+
+        _this._initListeners();
+        _this._initTimerTask();
+        return _this;
+    };
+    /** 绑定客户端存在的各种事件监听 */
+    Client.prototype._initListeners = function() {
+        var _this = this;
+        // 登入状态监听器
+        _this.loginStatusListener = {
+            onLogin : function(ev, data) {},
+            onLoginFail : function(ev, data) {},
+            onLoginWin : function(ev, data) {}
+        };
+        // 连接状态监听器
+        _this.connStatusListener = {
+             onConnecting : function(ev, data) {},
+             onConnected : function(ev, data) {},
+             onDisconnected : function(ev, data) {},
+             onNetworkUnavailable : function(ev, data) {}
+        };
+        // 消息接收监听器
+        _this.receiveMsgListener = {
+            onMessages : function(ev, data) {},
+            onStatus : function(ev, data) {},
+            onPresences : function(ev, data) {}
+        };
+
+        // 正在登入中
+        _this.bind("login", function(ev, data) {
+            console.log("login: " + JSON.stringify(data));
+            _this.loginStatusListener.onLogin(ev, data);
+        });
+        _this.bind("login.win", function(ev, data) {
+            console.log("login.win: " + JSON.stringify(data));
+            _this.loginTimes++;
+            _this.loginStatusListener.onLoginWin(ev, data);
+        });
+        _this.bind("login.fail", function(ev, data) {
+            console.log("login.fail: " + JSON.stringify(data));
+            _this.loginStatusListener.onLoginFail(ev, data);
+        });
+
+        // 正在连接
+        _this.bind("connecting", function(ev, data) {
+            console.log("connecting: " + JSON.stringify(data));
+            if (_this.connStatus != webim.connStatus.CONNECTING) {
+                _this.connStatus = webim.connStatus.CONNECTING;
+                _this.connStatusListener.onConnecting(ev, data);
+            }
+        });
+        // 连接成功
+        _this.bind("connected", function(ev, data) {
+            console.log("connected: " + JSON.stringify(data));
+            _this.connectedTimes++;
+            if (_this.connStatus != webim.connStatus.CONNECTED) {
+                _this.connStatus = webim.connStatus.CONNECTED;
+                if (webim.status.get("s") == webim.show.UNAVAILABLE) {
+                    webim.status.set("s", webim.show.AVAILALE);
+                }
+                _this._show(webim.status.get("s"));
+                _this.connStatusListener.onConnected(ev, data);
+            }
+        });
+        // 断开连接
+        _this.bind("disconnected", function(ev, data) {
+            console.log("disconnected: " + JSON.stringify(data));
+            if (_this.connStatus != webim.connStatus.DISCONNECTED) {
+                _this.connStatus = webim.connStatus.DISCONNECTED;
+                _this._show(webim.show.UNAVAILABLE);
+                _this.connStatusListener.onDisconnected(ev, data);
+            }
+        });
+        // 网络不可用
+        _this.bind("network.unavailable", function(ev, data) {
+            console.log("network.unavailable: " + JSON.stringify(data));
+            if (_this.connStatus != webim.connStatus.NETWORK_UNAVAILABLE) {
+                _this.connStatus = webim.connStatus.NETWORK_UNAVAILABLE;
+                _this._show(webim.show.UNAVAILABLE);
+                _this.connStatusListener.onNetworkUnavailable(ev, data);
+            }
+        });
+
+        // 接收消息
+        _this.bind("messages", function(ev, data) {
+            console.log("messages: " + JSON.stringify(data));
+            var u = _this.getCurrUser();
+            for (var i = 0; i < data.length; i++) {
+                var msg = data[i];
+                var direction = webim.msgDirection.RECEIVE;
+                msg.read = false;
+                msg.direction = direction;
+                // 如果是自己发送出去的
+                if (msg.from == u.id) {
+                    direction = webim.msgDirection.SEND;
+                    msg.read = true;
+                    msg.direction = direction;
+                }
+                _this._saveMsg(msg);
+            }
+            _this.receiveMsgListener.onMessages(ev, data);
+        });
+        // 输入状态
+        _this.bind("status", function(ev, data) {
+            console.log("status: " + JSON.stringify(data));
+            _this.receiveMsgListener.onStatus(ev, data);
+        });
+        // 现场变更
+        _this.bind("presences", function(ev, data) {
+            console.log("presences: " + JSON.stringify(data));
+            _this.presences = data;
+            _this.receiveMsgListener.onPresences(ev, data);
+        });
+    };
+
+    // 数据存储
+    extend(Client.prototype, {
+
+        /** 连接状态 */
+        connStatus : webim.connStatus.DISCONNECTED,
+        /** 登入服务时间戳 */
+        serverTime : null,
+        /** 连接信息 */
+        connection : null,
+        /** 当前登入用户 */
+        currUser : null,
+        /** 联系人列表 */
+        buddies : [],
+        /** 房间列表 */
+        rooms : [],
+        /** 现场状态 */
+        presences : {},
+
+        _serverTime : function(time) {
+            this.serverTime = time;
+        },
+
+        _connection : function(connInfo) {
+            this.connection = this.connection || {};
+            extend(this.connection, connInfo);
+        },
+
+        _currUser : function(user) {
+            this.currUser = this.currUser || {};
+            extend(this.currUser, user);
+        },
+        
+        _show : function(show) {
+            var user = this.getCurrUser();
+            extend(user, {show : show});
+        },
+
+        _buddies : function(buddies) {
+            this.buddies = this.buddies || [];
+            extend(this.buddies, buddies);
+        },
+
+        _rooms : function(rooms) {
+            this.rooms = this.rooms || [];
+            extend(this.rooms, rooms);
+        },
+
+        getServerTime : function() {
+            return this.serverTime;
+        },
+
+        getConnection : function() {
+            this.connection = this.connection || {};
+            return this.connection;
+        },
+
+        getCurrUser : function() {
+            this.currUser = this.currUser || {};
+            return this.currUser;
+        },
+
+        getShow : function() {
+            var currUser = this.getCurrUser();
+            if (!currUser.show) {
+                currUser.show = webim.show.UNAVAILABLE;
+            }
+            return currUser.show;
+        },
+
+        getBuddies : function() {
+            return this.buddies;
+        },
+        
+        getBuddy : function(uid) {
+            if (!this.getBuddies()) {
+                return undefined;
+            }
+            var bs = this.getBuddies();
+            for (var i = 0; i < bs.length; i++) {
+                var b = bs[i];
+                if (b.id == uid) {
+                    return b;
+                }
+            }
+            return undefined;
+        },
+
+        getRooms : function() {
+            return this.rooms;
+        }
+    });
+
+    /**
+     * 定义或开启部分定时任务
+     */
+    Client.prototype._initTimerTask = function() {
+        //var _this = this;
+        // 设置网络是否可用实时检测
+        // ???
+        //_this.trigger("network.unavailable", [ data ]);
+    };
+
+    /**
+     * 设置登入状态监听器
+     */
+    Client.prototype.setLoginStatusListener = function(listener) {
+        extend(this.loginStatusListener, listener || {});
+    };
+
+    /**
+     * 设置连接状态监听器
+     */
+    Client.prototype.setConnStatusListener = function(listener) {
+        extend(this.connStatusListener, listener || {});
+    };
+
+    /**
+     * 设置消息接收监听器
+     */
+    Client.prototype.setReceiveMsgListener = function(listener) {
+        extend(this.receiveMsgListener, listener || {});
+    };
+
+    /**
+     * 连接服务器
+     */
+    Client.prototype.connectServer = function() {
+        var _this = this, options = _this.options;
+        // 如果服务器已经连上
+        if (_this.connStatus == webim.connStatus.CONNECTED ||
+                _this.connStatus == webim.connStatus.CONNECTING) {
+            return;
+        }
+
+        var params = {};
+        if (options.chatlinkIds) {
+            params.chatlinkIds = options.chatlinkIds;
+        }
+        // 连接前请先登入成功
+        _this.login(params, function() {
+            // 登入成功，开始连接
+            _this._connectServer();
+        });
+    }
+
+    Client.prototype._connectServer = function() {
+        var _this = this, options = _this.options;
+        var conn = _this.getConnection();
+
+        _this.trigger("connecting", [ _this._dataAccess ]);
+        // 创建通信管道
+        var ops = extend({type: options.channelType}, conn);
+        _this.channel = new Channel(ops);
+
+        // 给管道注册事件监听器
+        _this.channel.onConnected = function(ev, data) {
+            _this.trigger("connected", [ data ]);
+        };
+        _this.channel.onDisconnected = function(ev, data) {
+            _this.trigger("disconnected", [ data ]);
+        }
+        _this.channel.onError = function(ev, data) {
+            // 可能是网络不可用，或者其他原因???
+            _this.trigger("network.unavailable", [ data ]);
+        };
+        _this.channel.onMessage = function(ev, data) {
+            _this.handle(data);
+        };
+
+        // 发起管道连接
+        _this.channel.connect();
+    };
+
+    Client.prototype._disconnectServer = function() {
+        var _this = this;
+        _this.channel.disconnect();
+    };
+
+    Client.prototype.handle = function(data) {
+        var _this = this;
+        if (data.messages && data.messages.length) {
+            var origin = data.messages, msgs = [], events = [];
+            for (var i = 0; i < origin.length; i++) {
+                var msg = origin[i];
+                if (msg.body && msg.body.indexOf("webim-event:") == 0) {
+                    msg.event = msg.body.replace("webim-event:", "").split(
+                            "|,|");
+                    events.push(msg);
+                } else {
+                    msgs.push(msg);
+                }
+            }
+            msgs.length && _this.trigger("messages", [ msgs ]);
+            events.length && _this.trigger("event", [ events ]);
+        }
+        data.presences && data.presences.length
+                && _this.trigger("presences", [ data.presences ]);
+        data.statuses && data.statuses.length
+                && _this.trigger("status", [ data.statuses ]);
+    };
+
+    Client.prototype.online = function(show, callback) {
+        var _this = this;
+        if (show == webim.show.UNAVAILABLE) {
+            return new Error("webim.show.UNAVAILABLE is error.");
+        }
+        if (show == _this.getShow()) {
+            callback();
+            return;
+        }
+
+        // 检查一下管道连接
+        if (_this.connStatus == webim.connStatus.CONNECTING) {
+            callback();
+            return;
+        }
+        if (_this.connStatus != webim.connStatus.CONNECTED) {
+            webim.status.set("s", show);
+            _this.connectServer();
+        } else {
+            _this._sendPresence({show : show}, callback);
+        }
+    },
+
+    Client.prototype.offline = function(callback) {
+        var _this = this, connection = _this.getConnection();
+        if (_this.connStatus == webim.connStatus.DISCONNECTED) {
+            callback();
+            return;
+        }
+
+        var params = {
+            ticket : connection.ticket
+        };
+        webim.webApi.offline(params, function(ret, err) {
+            if (ret == "ok") {
+                // 断开连接
+                _this._disconnectServer();
+                callback();
+            } else {
+                callback();
+            }
+        });
+    };
+
+    extend(Client.prototype, {
+        login : function(params, callback) {
+            var _this = this, status = _this.status;
+
+            var buddy_ids = [], room_ids = [], tabs = status
+                    .get("tabs"), tabIds = status.get("tabIds");
+            if (tabIds && tabIds.length && tabs) {
+                each(tabs, function(k, v) {
+                    if (k[0] == "b")
+                        buddy_ids.push(k.slice(2));
+                    if (k[0] == "r")
+                        room_ids.push(k.slice(2));
+                });
+            }
+            if (status.get("s") == webim.show.UNAVAILABLE) {
+                status.set("s", webim.show.AVAILABLE);
+            } 
+            params = extend({
+                buddy_ids : buddy_ids.join(","),
+                room_ids : room_ids.join(","),
+                show : status.get("s") || webim.show.AVAILABLE
+            }, params);
+            // set auto open true
+            status.set("o", false);
+            status.set("s", params.show);
+
+            // 触发正在登入事件
+            _this.trigger("login", [ params ]);
+            webim.webApi.online(params, function(ret, err) {
+                window.setTimeout(function() {
+                    if (ret) {
+                        if (ret.success) {
+                            _this._serverTime(ret.server_time);
+                            _this._connection(ret.connection);
+                            _this._currUser(ret.user);
+                            _this._buddies(ret.buddies);
+                            _this._rooms(ret.rooms);
+                            _this.presences = ret.presences;
+                            // 触发登入成功事件
+                            _this.trigger("login.win", [ ret ]);
+                            if (typeof callback == "function") {
+                                callback();
+                            }
+                        } else {
+                            // 触发登入失败事件
+                            _this.trigger("login.fail", [ ret.error_msg ]);
+                        }
+                    } else {
+                        // 触发登入失败事件
+                        // 可能是网络不可用，或者其他原因???
+                        _this.trigger("login.fail", [ err ]);
+                    }
+                }, 300);
+            });
+        },
+
+        _sendPresence : function(msg, callback) {
+            var _this = this;
+            msg.ticket = _this.getConnection().ticket;
+
+            var params = extend({}, msg);
+            webim.webApi.presence(params, function(ret, err) {
+                if (ret == "ok") {
+                    // save show status
+                    //_this._currUser({show : msg.show});
+                    _this.getCurrUser().show = msg.show;
+                    _this.status.set("s", msg.show);
+                    callback();
+                } else {
+                    callback();
+                }
+            });
+        },
+
+        sendMessage : function(msg, callback) {
+            var _this = this;
+            msg.direction = webim.msgDirection.SEND;
+            _this._saveMsg(msg);
+
+            var params = extend({
+                ticket : _this.getConnection().ticket
+            }, msg);
+            webim.webApi.message(params, callback);
+        },
+
+        sendStatus : function(msg, callback) {
+            var _this = this;
+            msg.ticket = _this.getConnection().ticket;
+
+            var params = extend({}, msg);
+            webim.webApi.status(params, callback);
+        }
+    });
+
+    Client.prototype._saveMsg = function(msg) {
+        var _this = this;
+        if (msg.direction == webim.msgDirection.RECEIVE) {
+            if (_this.options.playSound) {
+                sound.play('msg');
+            }
+        }
+        var convData = Conversation.parser(msg);
+        var key = webim.convList.key(
+                convData.currUid,
+                convData.objId);
+        // 获取会话消息
+        var conversation = webim.convList.get(
+                    convData.type, key);
+        if (!conversation) {
+            conversation = new Conversation(msg);
+            webim.convList.set(
+                    convData.type, key, conversation);
+        } else {
+            conversation.add(msg);
+        }
+    };
+    /*
+    IM.prototype.setRead = function(msgType, other, msg) {
+        var _this = this;
+        if (typeof msg.read == 'boolean' && !msg.read) {
+            msg.read = true;
+            _this.getDialogInfo(msgType, other)._setRead();
+        }
+    };
+    IM.prototype.readAll = function(msgType, other) {
+        var dInfo = this.getDialogInfo(msgType, other);
+        if (!dInfo) {
+            return [];
+        }
+        return dInfo._readAll();
+    };
+    IM.prototype.getDialogInfo = function(msgType, other) {
+        var _this = this;
+        // 获取对话消息
+        var dInfo = webim.convList.get(msgType, other);
+        if (!dInfo)
+            return undefined;
+
+        return dInfo;
+    };
+    IM.prototype.getUnreadTotal = function() {
+        return webim.convList.unreadTotal;
+    };
+    */
+    
+    // webim.Client = Client;
+
+})(nextalk.webim);
