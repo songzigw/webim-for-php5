@@ -44,7 +44,7 @@ if (!nextalk.webui) {
         return newStr;
     };
 
-    extend(webui, {
+    $.extend(webui, {
         completion : completion
     });
 })(nextalk.webim, nextalk.webui);
