@@ -135,14 +135,6 @@
         UNAVAILABLE : "unavailable"
     };
 
-    webim.imgs = {
-        HEAD       : webim.resPath + 'imgs/head_def.png',
-        GROUP      : webim.resPath + 'imgs/group.gif',
-        NOTICE     : webim.resPath + 'imgs/message_notice.png',
-        LOGO_INDEX : webim.resPath + 'imgs/logo.png',
-        LOGO       : webim.resPath + 'imgs/webim.72x72.png'
-    };
-
     /** 会话主体类型 */
     webim.userType = {
         SUPERVISOR : 'supervisor',
@@ -183,11 +175,16 @@
             apiPath : _this.apiPath,
             dataType : ajax.settings.dataType
         });
-
         _this.status = new webim.Status();
-
         _this.client = Client.init(options);
         sound.init({msg : _this.resPath + 'sound/msg.mp3'});
+        _this.imgs = {
+            HEAD       : _this.resPath + 'imgs/head_def.png',
+            GROUP      : _this.resPath + 'imgs/group.gif',
+            NOTICE     : _this.resPath + 'imgs/message_notice.png',
+            LOGO_INDEX : _this.resPath + 'imgs/logo.png',
+            LOGO       : _this.resPath + 'imgs/webim.72x72.png'
+        };
 
         window.setInterval(function() {
             if (webim.currTimeMillis) {
