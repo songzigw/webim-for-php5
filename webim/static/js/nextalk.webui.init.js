@@ -59,6 +59,8 @@ if (!nextalk.webui) {
             chatObj     : {type : 'object', requisite : false},
             chatObjs    : {type : 'array', requisite : false}
         });
+        webim.resPath = options.resPath;
+        webim.apiPath = options.apiPath;
 
         var _this = this;
         if (options.mobile) {
