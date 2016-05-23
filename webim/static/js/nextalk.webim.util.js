@@ -1241,7 +1241,8 @@ if (!nextalk.webim) {
         validate   : validate,
         format     : format,
         ClassEvent : ClassEvent,
-        model      : model
+        model      : model,
+        checkUpdate: checkUpdate
     });
 
 })(nextalk.webim);

@@ -30,7 +30,8 @@
         isUrl      = webim.isUrl,
         validate   = webim.validate,
         format     = webim.format,
-        model      = webim.model;
+        model      = webim.model,
+        checkUpdate= webim.checkUpdate;
 
     // 状态(cookie临时存储[刷新页面有效])
     model(
