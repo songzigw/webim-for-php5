@@ -59,6 +59,15 @@
     Conversation.ROOM   = 'room';
     // 通知
     Conversation.NOTICE = 'notice';
+    Conversation.list = function(callback) {
+        var client = webim.client,
+            webApi = webim.webApi;
+
+        var params = {
+            ticket : client.getConnection().ticket
+        };
+        webApi.convList(params, callback);
+    };
     Conversation.parser = function(msg) {
         // 入参验证
         validate(msg, {
@@ -169,7 +178,7 @@
     /**
      * 获取所有的往来会话，将未读标识去掉，未读数清零
      */
-    Conversation.prototype._readAll = function() {
+    Conversation.prototype.readAll = function() {
         var _this = this;
         for (var i = 0, len = _this.record.length; i < len; i++) {
             var msg = _this.record[i];
@@ -184,21 +193,11 @@
     /**
      * 设置为读取
      */
-    Conversation.prototype._setRead = function() {
+    Conversation.prototype.setRead = function() {
         if (this.notCount > 0) {
             this.notCount--;
             webim.convList.unreadTotal--;
         }
-    };
-    Conversation.prototype.list = function(callback) {
-        var _this = this,
-            client = webim.client,
-            webApi = webim.webApi;
-
-        var params = {
-            ticket : client.getConnection().ticket
-        };
-        webApi.convList(params, callback);
     };
 
     // 会话消息列表
@@ -208,27 +207,33 @@
         // 聊天室消息
         room : {},
         // 系统通知
-        nocification : null,
+        notice : {},
         // 未读消息总数
         unreadTotal : 0,
 
         get : function(type, key) {
+            // 入参验证
+            validate(key, {
+                currUid : {type : 'string', requisite : true},
+                objId   : {type : 'string', requisite : true}
+            });
             var _this = this;
-            if (type == webim.Conversation.NOTICE)
-                return _this[type];
+            key = _this._key(key.currUid, key.objId);
             return _this[type][key];
         },
 
         set : function(type, key, value) {
+            // 入参验证
+            validate(key, {
+                currUid : {type : 'string', requisite : true},
+                objId   : {type : 'string', requisite : true}
+            });
             var _this = this;
-            if (type == webim.Conversation.NOTICE) {
-                _this[type] = value;
-                return;
-            }
+            key = _this._key(key.currUid, key.objId);
             _this[type][key] = value;
         },
         
-        key : function(currUid, objId) {
+        _key : function(currUid, objId) {
             return [currUid, objId].join('_');
         }
     };

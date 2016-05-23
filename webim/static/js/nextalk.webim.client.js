@@ -805,9 +805,8 @@
             }
         }
         var convData = Conversation.parser(msg);
-        var key = webim.convList.key(
-                convData.currUid,
-                convData.objId);
+        var key = {currUid : convData.currUid,
+                   objId   : convData.objId};
         // 获取会话消息
         var conversation = webim.convList.get(
                     convData.type, key);
@@ -826,25 +825,6 @@
             msg.read = true;
             _this.getDialogInfo(msgType, other)._setRead();
         }
-    };
-    IM.prototype.readAll = function(msgType, other) {
-        var dInfo = this.getDialogInfo(msgType, other);
-        if (!dInfo) {
-            return [];
-        }
-        return dInfo._readAll();
-    };
-    IM.prototype.getDialogInfo = function(msgType, other) {
-        var _this = this;
-        // 获取对话消息
-        var dInfo = webim.convList.get(msgType, other);
-        if (!dInfo)
-            return undefined;
-
-        return dInfo;
-    };
-    IM.prototype.getUnreadTotal = function() {
-        return webim.convList.unreadTotal;
     };
     */
     

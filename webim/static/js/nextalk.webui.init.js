@@ -250,11 +250,8 @@ if (!nextalk.webui) {
         _this.onUnread = function(data) {};
         _this.onLogin = function() {};
 
-        _this.bind('nextalk.resizable', function(ev, data) {
-            _this.mainUI.resizable();
-        });
         $(window).resize(function() {
-            _this.trigger('nextalk.resizable', []);
+            _this.mainUI.resizable();
         });
     };
 
@@ -369,12 +366,13 @@ if (!nextalk.webui) {
             mainUI.showConnecting();
         },
         _onConnected : function(ev, data) {
-            var _this = this, mainUI = _this.mainUI;
+            var _this = this;
+            var mainUI = _this.mainUI;
             mainUI.showConnected();
             mainUI.setCurrName();
             mainUI.avatar();
             // 加载最近会话列表
-            IM.getInstance().conversations(function(ret, err) {
+            webim.Conversation.list(function(ret, err) {
                 if (ret) {
                     mainUI.loadRecently(ret);
                 }
@@ -404,7 +402,7 @@ if (!nextalk.webui) {
                 var msg = data[i];
                 var chatBoxUI;
                 // 如果是自己发送出去的
-                if (msg.direction == IM.msgDirection.SEND) {
+                if (msg.direction == webim.msgDirection.SEND) {
                     chatBoxUI = boxUIs.get(msg.type, msg.to);
                     if (chatBoxUI) {
                         chatBoxUI.sendHTML(msg);
@@ -448,4 +446,3 @@ if (!nextalk.webui) {
     });
 
 })(nextalk.webim, nextalk.webui);
-

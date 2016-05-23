@@ -33,7 +33,7 @@ if (!nextalk.webui) {
             _this._onPresences(data);
         });
     };
-    IM.ClassEvent.on(SimpleUI);
+    webim.ClassEvent.on(SimpleUI);
     SimpleUI.HTML = '<div class="nextalk-page chatbox" id="nextalk_page_main">\
                         <header class="mzen-bar mzen-bar-nav mzen-bar-info">\
                                 <div class="mzen-pull-right nextalk-user">\
@@ -78,8 +78,8 @@ if (!nextalk.webui) {
                                 <span class="mzen-badge mzen-badge-danger mzen-pull-right">???</span>\
                              </li>';
     SimpleUI.prototype.handler = function() {
-        var _this = this, ops = UI.getInstance().options;
-        if (ops.mobile) {
+        var _this = this;
+        if (webui.mobile) {
             $('.mzen-pull-left', _this.$header).attr('href', '/mobile');
         }
         _this.$currUser.click(function() {
@@ -88,15 +88,15 @@ if (!nextalk.webui) {
         //_this.$currUser.find('ul').css('right', 'initial');
         $('.dropdown-menu li', _this.$currUser).each(function(i, el) {
             $(el).click(function() {
-                var webim = IM.getInstance();
-                UI.getInstance().showTask.start();
+                var client = webim.client;
+                webui.showTask.start();
                 var show = $(el).attr('data-show');
-                if (show == IM.show.UNAVAILABLE) {
-                    webim.offline(function() {
+                if (show == webim.show.UNAVAILABLE) {
+                    client.offline(function() {
                         _this.avatar();
                     });
                 } else {
-                    webim.online(show, function() {
+                    client.online(show, function() {
                         _this.avatar();
                     });
                 }
@@ -111,12 +111,11 @@ if (!nextalk.webui) {
     };
     SimpleUI.prototype.avatar = function() {
         var _this = this;
-        var webim = IM.getInstance();
-        var webui = UI.getInstance();
-        var show = webim.getShow();
+        var client = webim.client;
+        var show = client.getShow();
 
-        if (webim.connStatus == IM.connStatus.CONNECTED) {
-            var u = webim.getCurrUser();
+        if (client.connStatus == webim.connStatus.CONNECTED) {
+            var u = client.getCurrUser();
             $('img', _this.$currUser).attr('src', u.avatar);
             $('img', _this.$currUser).attr('alt', u.nick);
             $('a', _this.$currUser).attr('title', u.nick);
@@ -134,8 +133,7 @@ if (!nextalk.webui) {
         });
     };
     SimpleUI.prototype.setCurrName = function() {
-        var webim = IM.getInstance();
-        var u = webim.getCurrUser();
+        var u = webim.client.getCurrUser();
         this.$title.text(u.nick);
     };
     SimpleUI.prototype.itemHTML = function() {
@@ -149,15 +147,15 @@ if (!nextalk.webui) {
             $('p', $item).text(conv.name);
             $('span', $item).remove();
         } else if (arguments.length == 2) {
-            var dInfo = arguments[0];
+            var conv = arguments[0];
             var body = arguments[1];
-            $item.attr('data-toggle', dInfo.msgType);
-            $item.attr('data-id', dInfo.other);
-            $item.attr('data-name', dInfo.name);
-            $('img', $item).attr('src', dInfo.avatar);
-            $('p', $item).text(dInfo.name);
-            if (dInfo.notCount != 0) {
-                $('span', $item).text(dInfo.notCount);
+            $item.attr('data-toggle', conv.type);
+            $item.attr('data-id', conv.objId);
+            $item.attr('data-name', conv.objName);
+            $('img', $item).attr('src', conv.objAvatar);
+            $('p', $item).text(conv.objName);
+            if (conv.notCount != 0) {
+                $('span', $item).text(conv.notCount);
             } else {
                 $('span', $item).remove();
             }
@@ -166,8 +164,7 @@ if (!nextalk.webui) {
     };
     SimpleUI.prototype.resizable = function() {
         var _this = this, $html = this.$html;
-        var webui = UI.getInstance();
-        var mobile = webui.options.mobile;
+        var mobile = webui.mobile;
         
         var $w = $(window);
         var wh = $w.height();
@@ -187,7 +184,6 @@ if (!nextalk.webui) {
         _this.$conversations.height(wh - hh);
     };
     SimpleUI.prototype.itemsClick = function($items) {
-        var webui = UI.getInstance();
         if (!$items) {
             $items = this.$items;
         }
@@ -204,7 +200,7 @@ if (!nextalk.webui) {
                 if (item.attr('data-toggle') == ChatBoxUI.NOTICE) {
                     webui.openChatBoxUI(ChatBoxUI.NOTICE,
                             ChatBoxUI.NOTICE,
-                            IM.name.NOTICE, imgSrc);
+                            webim.name.NOTICE, imgSrc);
                     return;
                 }
 
@@ -227,43 +223,42 @@ if (!nextalk.webui) {
             });
         });
     };
-    SimpleUI.prototype.loadItem = function(msgType, other, msg) {
-        var _this = this, webim = IM.getInstance();
-        var $items = _this.$items;
+    SimpleUI.prototype.loadItem = function(type, other, msg) {
+        var _this = this, $items = _this.$items;
 
         $('>li', $items).each(function(i, el) {
             var $el = $(el);
-            if ($el.attr('data-toggle') == msgType
+            if ($el.attr('data-toggle') == type
                     && $el.attr('data-id') == other) {
                 $el.remove();
                 // break
                 return false;
             }
         });
-        var dInfo = webim.getDialogInfo(msgType, other);
-        _this.itemHTML(dInfo, msg.body).prependTo($items);
+        var currU = webim.client.getCurrUser();
+        var conv = webim.convList.get(type,
+                                {currUid : currU.id
+                                 objId : other});
+        _this.itemHTML(conv, msg.body).prependTo($items);
 
         // 设置底部的未读数据
         _this.showUnreadTotal();
         _this.itemsClick();
     };
     SimpleUI.prototype.loadRecently = function(conversations) {
-        var _this = this, webim = IM.getInstance();
-        var webui = UI.getInstance();
-        var ops = webui.options;
-        var $items = _this.$items.empty();
+        var _this = this, $items = _this.$items.empty();
         
         if (conversations && conversations.length > 0) {
             for (var i = 0; i < conversations.length; i++) {
                 $items.append(_this.itemHTML(conversations[i]));
             }
         }
-        if (webim.connectedTimes == 1 && ops.chatObjs) {
-            for (var i = 0; i < ops.chatObjs.length; i++) {
-                var chatObj = ops.chatObjs[i];
+        if (webui.chatObjs) {
+            for (var i = 0; i < webui.chatObjs.length; i++) {
+                var chatObj = webui.chatObjs[i];
                 $('>li', $items).each(function(i, el) {
                     var $el = $(el);
-                    if ($el.attr('data-toggle') == IM.msgType.CHAT
+                    if ($el.attr('data-toggle') == webim.Conversation.CHAT
                             && $el.attr('data-id') == chatObj.id) {
                         $el.remove();
                         // break
@@ -279,11 +274,11 @@ if (!nextalk.webui) {
                 }).prependTo($items);
             }
         }
-        if (webim.connectedTimes == 1 && ops.chatObj) {
+        if (webui.chatObj) {
             $('>li', $items).each(function(i, el) {
                 var $el = $(el);
-                if ($el.attr('data-toggle') == IM.msgType.CHAT
-                        && $el.attr('data-id') == ops.chatObj.id) {
+                if ($el.attr('data-toggle') == webim.Conversation.CHAT
+                        && $el.attr('data-id') == webui.chatObj.id) {
                     $el.remove();
                     // break
                     return false;
@@ -291,16 +286,16 @@ if (!nextalk.webui) {
             });
             _this.itemHTML({
                 type : ChatBoxUI.CHAT,
-                oid : ops.chatObj.id,
-                name : ops.chatObj.name,
-                avatar : ops.chatObj.avatar,
+                oid : webui.chatObj.id,
+                name : webui.chatObj.name,
+                avatar : webui.chatObj.avatar,
                 body : '开始聊天'
             }).prependTo($items);
-            webui.openChatBoxUI(ChatBoxUI.CHAT, ops.chatObj.id,
-                    ops.chatObj.name, ops.chatObj.avatar);
+            webui.openChatBoxUI(ChatBoxUI.CHAT, webui.chatObj.id,
+                    webui.chatObj.name, webui.chatObj.avatar);
         }
         if ($('>li', $items).length === 0) {
-            IM.WebAPI.getInstance().agents_random(null, function(ret, err) {
+            webim.webApi.agents_random(null, function(ret, err) {
                 if (ret) {
                     for (var i = 0; i < ret.length; i++) {
                         var chatObj = ret[i];
@@ -322,9 +317,7 @@ if (!nextalk.webui) {
         
     };
     SimpleUI.prototype.showUnreadTotal = function() {
-        var webui = UI.getInstance();
-        var webim = IM.getInstance();
-        var total = webim.getUnreadTotal();
+        var total = webim.convList.unreadTotal;
         if (webui.onUnread) {
             webui.onUnread(total);
         }
