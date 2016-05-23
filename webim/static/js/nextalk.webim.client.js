@@ -30,8 +30,8 @@
         isUrl      = webim.isUrl,
         Channel    = webim.Channel,
         ClassEvent = webim.ClassEvent,
-        validate   = validate,
-        format     = format;
+        validate   = webim.validate,
+        format     = webim.format;
 
     var sound = (function() {
         var playSound = true;

@@ -28,8 +28,8 @@
         isMobile   = webim.isMobile,
         Date       = webim.Date,
         isUrl      = webim.isUrl,
-        validate   = validate,
-        format     = format;
+        validate   = webim.validate,
+        format     = webim.format;
 
     /**
      * 当前主体与另外一个对象的会话信息

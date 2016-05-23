@@ -32,9 +32,10 @@ if (!nextalk.webui) {
         isMobile   = webim.isMobile,
         Date       = webim.Date,
         isUrl      = webim.isUrl,
-        completion = webui.completion,
-        validate   = validate,
-        format     = format;
+        Channel    = webim.Channel
+        validate   = webim.validate,
+        format     = webim.format,
+        completion = webui.completion;
 
     /** 版本号 */
     webui.VERSION = webui.version = webui.v = "1.0.0";
