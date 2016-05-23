@@ -344,6 +344,7 @@
             var u = _this.getCurrUser();
             for (var i = 0; i < data.length; i++) {
                 var msg = data[i];
+                msg.timestamp = Number(msg.timestamp);
                 var direction = webim.msgDirection.RECEIVE;
                 msg.read = false;
                 msg.direction = direction;
