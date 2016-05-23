@@ -99,7 +99,7 @@
             if (!window.nextalk) {
                 return;
             }
-            if (!nextalk.webmi) {
+            if (!nextalk.webim) {
                 return;
             }
             if (!nextalk.webui) {
@@ -139,7 +139,7 @@
             if (!window.nextalk) {
                 return;
             }
-            if (!nextalk.webmi) {
+            if (!nextalk.webim) {
                 return;
             }
             window.clearInterval(task);
