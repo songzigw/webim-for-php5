@@ -33,7 +33,7 @@ if (!nextalk.webui) {
         });
         return $h;
     };
-    
+
     var completion = function(str, data) {
         var reg = /\{{2}(.*?)\}{2}/gm;
         var trim = /^\{{2}\s*|\s*\}{2}$/g;

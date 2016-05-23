@@ -14,16 +14,16 @@ if (!nextalk.webui) {
 
     "use strict";
 
-    var EmotUI = function() {
+    var Emot = function() {
         var webui = UI.getInstance();
         var _this = this;
-        _this.$html = $(EmotUI.HTML);
+        _this.$html = $(Emot.HTML);
         _this.hide();
         var $hUl = $('<ul></ul>');
-        for (var i = 0; i < EmotUI.ICON.length; i++) {
-            var icon = EmotUI.ICON[i];
+        for (var i = 0; i < Emot.ICON.length; i++) {
+            var icon = Emot.ICON[i];
             icon.path = webui.options.resPath;
-            var $hLi = $(completion(EmotUI.H_IMG, icon));
+            var $hLi = $(completion(Emot.H_IMG, icon));
             $('img', $hLi).on('click', function(ev) {
                 ev.preventDefault();
                 _this.callback($(this).attr('data-text'));
@@ -33,10 +33,10 @@ if (!nextalk.webui) {
         }
         this.$html.append($hUl);
     };
-    EmotUI.HTML = '<div class="nextalk-emot"></div>';
-    EmotUI.H_IMG = '<li><img src="{{path}}imgs/emot/{{image}}"\
+    Emot.HTML = '<div class="nextalk-emot"></div>';
+    Emot.H_IMG = '<li><img src="{{path}}imgs/emot/{{image}}"\
         title="{{title}}" data-text="{{text}}"/></li>';
-    EmotUI.ICON = [ {
+    Emot.ICON = [ {
                 "image" : "default/smile.png",
                 "title" : "smile",
                 "text" : "[smile]"
@@ -101,12 +101,12 @@ if (!nextalk.webui) {
                 "title" : "shout",
                 "text" : "[shout]"
             } ];
-    EmotUI.trans = function(body) {
+    Emot.trans = function(body) {
         var path = UI.getInstance().options.resPath;;
         var reg = /\[(.*?)\]/gm;
         var str = body.replace(reg, function(match) {
-            for (var i = 0; i < EmotUI.ICON.length; i++) {
-                var icon = EmotUI.ICON[i];
+            for (var i = 0; i < Emot.ICON.length; i++) {
+                var icon = Emot.ICON[i];
                 if (icon.text === match) {
                     return '<img width="24" height="24" ' 
                         + 'src="' + path + 'imgs/emot/'
@@ -117,13 +117,13 @@ if (!nextalk.webui) {
         });
         return str;
     };
-    EmotUI.prototype.show = function() {
+    Emot.prototype.show = function() {
         this.$html.show();
     };
-    EmotUI.prototype.hide = function() {
+    Emot.prototype.hide = function() {
         this.$html.hide();
     };
 
-    webui.EmotUI = EmotUI;
+    webui.Emot = Emot;
 })(nextalk.webim, nextalk.webui);
 

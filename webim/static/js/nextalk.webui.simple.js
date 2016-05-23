@@ -25,8 +25,8 @@ if (!nextalk.webui) {
         _this.$currUser = $('.nextalk-user', _this.$header);
         _this.$conversations = $('#nextalk_conversations', _this.$html);
         _this.$items = $('>.nextalk-wrap>.mzen-list-view', _this.$conversations);
-        _this.msgTipsUI = new MsgTipsUI();
-        _this.$html.append(_this.msgTipsUI.$html);
+        _this.msgTips = new MsgTips();
+        _this.$html.append(_this.msgTips.$html);
         _this.handler();
         
         _this.bind('presences', function(ev, data) {
@@ -197,9 +197,9 @@ if (!nextalk.webui) {
             // 点击启动一个新的聊天盒子
             item.click(function() {
                 var imgSrc = item.find('img').attr('src');
-                if (item.attr('data-toggle') == ChatBoxUI.NOTICE) {
-                    webui.openChatBoxUI(ChatBoxUI.NOTICE,
-                            ChatBoxUI.NOTICE,
+                if (item.attr('data-toggle') == ChatBox.NOTICE) {
+                    webui.openChatBox(ChatBox.NOTICE,
+                            ChatBox.NOTICE,
                             webim.name.NOTICE, imgSrc);
                     return;
                 }
@@ -210,13 +210,13 @@ if (!nextalk.webui) {
                 }
 
                 var name = item.attr('data-name');
-                if (item.attr('data-toggle') == ChatBoxUI.ROOM) {
-                    webui.openChatBoxUI(ChatBoxUI.ROOM,
+                if (item.attr('data-toggle') == ChatBox.ROOM) {
+                    webui.openChatBox(ChatBox.ROOM,
                             dataId, name, imgSrc);
                     return;
                 }
-                if (item.attr('data-toggle') == ChatBoxUI.CHAT) {
-                    webui.openChatBoxUI(ChatBoxUI.CHAT,
+                if (item.attr('data-toggle') == ChatBox.CHAT) {
+                    webui.openChatBox(ChatBox.CHAT,
                             dataId, name, imgSrc);
                     return;
                 }
@@ -266,7 +266,7 @@ if (!nextalk.webui) {
                     }
                 });
                 _this.itemHTML({
-                    type : ChatBoxUI.CHAT,
+                    type : ChatBox.CHAT,
                     oid : chatObj.id,
                     name : chatObj.name,
                     avatar : chatObj.avatar,
@@ -285,13 +285,13 @@ if (!nextalk.webui) {
                 }
             });
             _this.itemHTML({
-                type : ChatBoxUI.CHAT,
+                type : ChatBox.CHAT,
                 oid : webui.chatObj.id,
                 name : webui.chatObj.name,
                 avatar : webui.chatObj.avatar,
                 body : '开始聊天'
             }).prependTo($items);
-            webui.openChatBoxUI(ChatBoxUI.CHAT, webui.chatObj.id,
+            webui.openChatBox(ChatBox.CHAT, webui.chatObj.id,
                     webui.chatObj.name, webui.chatObj.avatar);
         }
         if ($('>li', $items).length === 0) {
@@ -300,7 +300,7 @@ if (!nextalk.webui) {
                     for (var i = 0; i < ret.length; i++) {
                         var chatObj = ret[i];
                         _this.itemHTML({
-                            type : ChatBoxUI.CHAT,
+                            type : ChatBox.CHAT,
                             oid : chatObj.user_id,
                             name : chatObj.name,
                             avatar : '/images/agentphoto/' + chatObj.face,
@@ -325,26 +325,26 @@ if (!nextalk.webui) {
     SimpleUI.prototype.showTipsTask = undefined;
     SimpleUI.prototype.showConnecting = function() {
         window.clearTimeout(this.showTipsTask);
-        this.msgTipsUI.show('正在连接...', 'mzen-tips-info');
+        this.msgTips.show('正在连接...', 'mzen-tips-info');
     };
     SimpleUI.prototype.showConnected = function() {
         var _this = this;
         window.clearTimeout(_this.showTipsTask);
-        _this.msgTipsUI.show('连接成功...', 'mzen-tips-success');
+        _this.msgTips.show('连接成功...', 'mzen-tips-success');
         _this.showTipsTask = setTimeout(function() {
             _this.hideTips();
         }, 1000);
     };
     SimpleUI.prototype.showDisconnected = function() {
         window.clearTimeout(this.showTipsTask);
-        this.msgTipsUI.show('连接断开...', 'mzen-tips-danger');
+        this.msgTips.show('连接断开...', 'mzen-tips-danger');
     };
     SimpleUI.prototype.showNetwork = function() {
         window.clearTimeout(this.showTipsTask);
-        this.msgTipsUI.show('网络不可用...', 'mzen-tips-danger');
+        this.msgTips.show('网络不可用...', 'mzen-tips-danger');
     };
     SimpleUI.prototype.hideTips = function() {
-        this.msgTipsUI.hide();
+        this.msgTips.hide();
     };
     SimpleUI.prototype._onPresences = function(presences) {
         $('li[data-toggle="chat"]' , this.$html).each(function(i, el) {

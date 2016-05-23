@@ -269,7 +269,7 @@ if (!nextalk.webui) {
     };
     
     /** 定义聊天盒子存储空间 */
-    webui._chatBoxUIs = {
+    webui._chatBoxs = {
         // 系统通知盒子
         notification : undefined,
         // 房间聊天盒子
@@ -278,14 +278,14 @@ if (!nextalk.webui) {
         chat : {},
 
         get : function(boxType, key) {
-            if (boxType == ChatBoxUI.NOTICE)
+            if (boxType == ChatBox.NOTICE)
                 return this[boxType];
             return this[boxType][key];
         },
 
         set : function(boxType, key, value) {
             var _this = this;
-            if (boxType == ChatBoxUI.NOTICE) {
+            if (boxType == ChatBox.NOTICE) {
                 _this[boxType] = value;
                 return;
             }
@@ -293,20 +293,20 @@ if (!nextalk.webui) {
         },
 
         hideAll : function() {
-            if (this[ChatBoxUI.NOTICE]) {
-                this[ChatBoxUI.NOTICE].hide();
+            if (this[ChatBox.NOTICE]) {
+                this[ChatBox.NOTICE].hide();
             }
-            for (var key in this[ChatBoxUI.ROOM]) {
-                this[ChatBoxUI.ROOM][key].hide();
+            for (var key in this[ChatBox.ROOM]) {
+                this[ChatBox.ROOM][key].hide();
             }
-            for (var key in this[ChatBoxUI.CHAT]) {
-                this[ChatBoxUI.CHAT][key].hide();
+            for (var key in this[ChatBox.CHAT]) {
+                this[ChatBox.CHAT][key].hide();
             }
         },
         
         onPresences : function(presences) {
-            for (var key in this[ChatBoxUI.CHAT]) {
-                var box = this[ChatBoxUI.CHAT][key];
+            for (var key in this[ChatBox.CHAT]) {
+                var box = this[ChatBox.CHAT][key];
                 for (var i = 0; i < presences.length; i++) {
                     var presence = presences[i];
                     if (presence.from == box.id) {
@@ -317,14 +317,14 @@ if (!nextalk.webui) {
         }
     };
 
-    webui.openChatBoxUI = function(boxType, id, name, avatar) {
+    webui.openChatBox = function(boxType, id, name, avatar) {
         var _this = this;
         // 隐藏所有的盒子
-        _this._chatBoxUIs.hideAll();
-        var boxUI = _this._chatBoxUIs.get(boxType, id);
+        _this._chatBoxs.hideAll();
+        var boxUI = _this._chatBoxs.get(boxType, id);
         if (!boxUI) {
-            boxUI = new ChatBoxUI(boxType, id, name, avatar);
-            _this._chatBoxUIs.set(boxType, id, boxUI);
+            boxUI = new ChatBox(boxType, id, name, avatar);
+            _this._chatBoxs.set(boxType, id, boxUI);
         }
         boxUI.show();
     };
@@ -397,29 +397,29 @@ if (!nextalk.webui) {
             mainUI.avatar();
         },
         _onMessage : function(ev, data) {
-            var _this = this, boxUIs = _this._chatBoxUIs;
+            var _this = this, chatBoxs = _this._chatBoxs;
             for (var i = 0; i < data.length; i++) {
                 var msg = data[i];
-                var chatBoxUI;
+                var chatBox;
                 // 如果是自己发送出去的
                 if (msg.direction == webim.msgDirection.SEND) {
-                    chatBoxUI = boxUIs.get(msg.type, msg.to);
-                    if (chatBoxUI) {
-                        chatBoxUI.sendHTML(msg);
-                        if (chatBoxUI.focus == true) {
+                    chatBox = chatBoxs.get(msg.type, msg.to);
+                    if (chatBox) {
+                        chatBox.sendHTML(msg);
+                        if (chatBox.focus == true) {
                             // 设置为已读
-                            webim.client.setRead(msg.type, msg.to, msg);
+                            webim.convList.read(msg);
                         }
                     }
                     // 处理会话列表
                     _this.mainUI.loadItem(msg.type, msg.to, msg);
                 } else {
-                    chatBoxUI = boxUIs.get(msg.type, msg.from);
-                    if (chatBoxUI) {
-                        chatBoxUI.receiveHTML(msg);
-                        if (chatBoxUI.focus == true) {
+                    chatBox = chatBoxs.get(msg.type, msg.from);
+                    if (chatBox) {
+                        chatBox.receiveHTML(msg);
+                        if (chatBox.focus == true) {
                             // 设置为已读
-                            webim.client.setRead(msg.type, msg.from, msg);
+                            webim.convList.read(msg);
                         }
                     }
                     // 处理会话列表
@@ -433,7 +433,7 @@ if (!nextalk.webui) {
         _onPresences : function(ev, data) {
             var _this = this;
             _this.mainUI.trigger('presences', [ data ]);
-            _this._chatBoxUIs.onPresences(data);
+            _this._chatBoxs.onPresences(data);
             if (_this.onChatlinks) {
                 var presences = {};
                 for (var i = 0; i < data.length; i++) {

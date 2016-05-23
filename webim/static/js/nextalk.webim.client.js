@@ -818,15 +818,6 @@
             conversation.add(msg);
         }
     };
-    /*
-    IM.prototype.setRead = function(msgType, other, msg) {
-        var _this = this;
-        if (typeof msg.read == 'boolean' && !msg.read) {
-            msg.read = true;
-            _this.getDialogInfo(msgType, other)._setRead();
-        }
-    };
-    */
     
     // webim.Client = Client;
 

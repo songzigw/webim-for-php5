@@ -17,23 +17,23 @@ if (!nextalk.webui) {
     /**
      * 各种消息提示条
      */
-    var MsgTipsUI = function() {
+    var MsgTips = function() {
         var _this = this;
-        _this.$html = webui.$(MsgTipsUI.HTML);
+        _this.$html = webui.$(MsgTips.HTML);
         _this.$html.hide();
     };
-    MsgTipsUI.HTML = '<div class="mzen-tips mzen-tips-info nextalk-msg-tips">\
+    MsgTips.HTML = '<div class="mzen-tips mzen-tips-info nextalk-msg-tips">\
                         <div class="mzen-tips-content mzen-ellipsis-1">\
                             <i class="mzen-iconfont mzen-icon-warnfill"></i>\
                             <span>???</span>\
                         </div>\
                       </div>';
-    MsgTipsUI.CLASSES = ['mzen-tips-danger',
+    MsgTips.CLASSES = ['mzen-tips-danger',
                          'mzen-tips-info',
                          'mzen-tips-success'];
-    MsgTipsUI.prototype.show = function(title, cla) {
+    MsgTips.prototype.show = function(title, cla) {
         var _this = this, $html = _this.$html;
-        var claes = MsgTipsUI.CLASSES;
+        var claes = MsgTips.CLASSES;
         
         for (var i = 0; i < claes.length; i++) {
             $html.removeClass(claes[i]);
@@ -43,10 +43,10 @@ if (!nextalk.webui) {
         $html.addClass(cla);
         $html.show();
     };
-    MsgTipsUI.prototype.hide = function() {
+    MsgTips.prototype.hide = function() {
         this.$html.hide();
     };
 
-    webui.MsgTipsUI = MsgTipsUI;
+    webui.MsgTips = MsgTips;
 })(nextalk.webim, nextalk.webui);
 

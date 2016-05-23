@@ -190,15 +190,6 @@
         _this.notCount = 0;
         return _this.record;
     };
-    /**
-     * 设置为读取
-     */
-    Conversation.prototype.setRead = function() {
-        if (this.notCount > 0) {
-            this.notCount--;
-            webim.convList.unreadTotal--;
-        }
-    };
 
     // 会话消息列表
     webim.convList = {
@@ -235,6 +226,21 @@
         
         _key : function(currUid, objId) {
             return [currUid, objId].join('_');
+        },
+        
+        read : function(msg) {
+            var _this = this;
+            if (typeof msg.read == 'boolean' && !msg.read) {
+                msg.read = true;
+                var cData = Conversation.parser(msg);
+                var conv = _this.get(cData.type, {
+                        currUid : cData.currUid,
+                        objId : cData.objId})._setRead();
+                if (conv.notCount > 0) {
+                    conv.notCount--;
+                    webim.convList.unreadTotal--;
+                }
+            }
         }
     };
     webim.Conversation = Conversation;
