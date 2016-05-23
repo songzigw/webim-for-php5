@@ -1220,7 +1220,8 @@ if (!nextalk.webim) {
         Date       : Date,
         isUrl      : isUrl,
         validate   : validate,
-        format     : format
+        format     : format,
+        ClassEvent : ClassEvent
     });
 
 })(nextalk.webim);
