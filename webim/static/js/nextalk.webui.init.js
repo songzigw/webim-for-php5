@@ -35,7 +35,7 @@ if (!nextalk.webui) {
         Channel    = webim.Channel,
         validate   = webim.validate,
         format     = webim.format,
-        completion = webui.completion;
+        completion = webui.completion,
         Simple     = webui.Simple;
 
     /** 版本号 */
