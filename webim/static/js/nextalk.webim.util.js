@@ -1128,6 +1128,9 @@ if (!nextalk.webim) {
      */
     var validate = function(obj, keys) {
         for ( var key in obj) {
+            if (!obj[key]) {
+                continue;
+            }
             if (obj.hasOwnProperty(key)) {
                 if (keys.hasOwnProperty(key)) {
                     var dataType = keys[key].type;

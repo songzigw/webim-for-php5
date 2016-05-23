@@ -136,7 +136,7 @@ if (!nextalk.webui) {
     ChatBox.prototype.resizable = function() {
         var _this = this, $html = _this.$html;
         var mobile = webui.mobile;
-        var simple = webui.simple;
+        var $main = webui.main.$html;
 
         var $w = $(window);
         var wh = $w.height();
@@ -146,11 +146,7 @@ if (!nextalk.webui) {
             if (ww <= 320) {
                 $html.css('width', '100%');
             } else {
-                if (!simple) {
-                    $html.width(ww - 240);
-                } else {
-                    $html.width(ww - 220);
-                }
+                $html.width(ww - $main.width());
             }
         } else {
             $html.css('width', '100%');
@@ -402,7 +398,7 @@ if (!nextalk.webui) {
             to_nick : _this.name,
             to_avatar : _this.avatar,
             body : body,
-            timestamp : webim.nowStamp()
+            timestamp : webim.timestamp()
         };
         return msg;
     }

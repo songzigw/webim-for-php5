@@ -718,14 +718,14 @@
                 sound.play('msg');
             }
         }
-        var convData = Conversation.parser(msg);
+        var convData = webim.Conversation.parser(msg);
         var key = {currUid : convData.currUid,
                    objId   : convData.objId};
         // 获取会话消息
         var conversation = webim.convList.get(
                     convData.type, key);
         if (!conversation) {
-            conversation = new Conversation(msg);
+            conversation = new webim.Conversation(msg);
             webim.convList.set(
                     convData.type, key, conversation);
         } else {

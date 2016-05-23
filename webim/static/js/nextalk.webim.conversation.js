@@ -69,7 +69,7 @@
         var params = {
             ticket : client.getConnection().ticket
         };
-        webApi.conversations(params, callback);
+        webApi.conv_list(params, callback);
     };
     Conversation.parser = function(msg) {
         // 入参验证
@@ -194,7 +194,7 @@
         return _this.record;
     };
 
-    // 会话消息列表
+    /** 会话消息列表 */
     webim.convList = {
         // 私聊消息
         chat : {},

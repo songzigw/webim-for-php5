@@ -71,8 +71,10 @@
         reject : "index.php?action=reject_ask",
         // upload files
         upload : "static/images/upload.php",
-        conversations : "index.php?action=conversations",
-        conv_new : "index.php?action=conv_new"
+        conv_list : "index.php?action=conversations",
+        conv_new : "index.php?action=conv_new",
+        agents_random : "index.php?action=agents_random",
+        house : "index.php?action=house"
     };
     WebAPI.route = function(ob) {
         var options = ob;
@@ -149,8 +151,8 @@
             this._ajax("presence", params, callback);
         },
 
-        conversations : function(params, callback) {
-            this._ajax("conversations", params, callback);
+        conv_list : function(params, callback) {
+            this._ajax("conv_list", params, callback);
         },
 
         conv_new : function(params, callback) {
@@ -159,6 +161,12 @@
 
         history : function(params, callback) {
             this._ajax("history", params, callback);
+        },
+        agents_random : function(params, callback) {
+            this._ajax("agents_random", params, callback);
+        },
+        house : function(params, callback) {
+            this._ajax("house", params, callback);
         }
     };
     extend(WebAPI.prototype, methods);
