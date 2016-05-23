@@ -44,5 +44,8 @@ if (!nextalk.webui) {
         return newStr;
     };
 
+    extend(webui, {
+        completion : completion
+    });
 })(nextalk.webim, nextalk.webui);
 

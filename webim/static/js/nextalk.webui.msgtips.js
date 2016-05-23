@@ -14,6 +14,26 @@ if (!nextalk.webui) {
 
     "use strict";
 
+    var console    = webim.console,
+        idsArray   = webim.idsArray,
+        timestamp  = webim.timestamp,
+        isFunction = webim.isFunction,
+        isArray    = webim.isArray,
+        isObject   = webim.isObject,
+        trim       = webim.trim,
+        makeArray  = webim.makeArray,
+        extend     = webim.extend,
+        each       = webim.each,
+        inArray    = webim.inArray,
+        grep       = webim.grep,
+        map        = webim.map,
+        JSON       = webim.JSON,
+        ajax       = webim.ajax,
+        isMobile   = webim.isMobile,
+        Date       = webim.Date,
+        isUrl      = webim.isUrl,
+        completion = webui.completion;
+
     /**
      * 各种消息提示条
      */
