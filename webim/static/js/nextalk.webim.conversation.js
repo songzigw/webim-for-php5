@@ -69,7 +69,7 @@
         var params = {
             ticket : client.getConnection().ticket
         };
-        webApi.convList(params, callback);
+        webApi.conversations(params, callback);
     };
     Conversation.parser = function(msg) {
         // 入参验证
