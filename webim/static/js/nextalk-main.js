@@ -67,9 +67,9 @@
         document.write('<link rel="stylesheet" type="text/css" href="'
                 + _this.resPath + 'css/nextalk-webui.css" />');
         document.write('<script type="text/javascript" src="' + _this.resPath
-                + 'js/jquery.min.js"></script>');
+                + 'script/jquery.min.js"></script>');
         document.write('<script type="text/javascript" src="' + _this.resPath
-                + 'js/dropzone.min.js"></script>');
+                + 'script/dropzone.min.js"></script>');
         document.write('<script type="text/javascript" src="' + _this.resPath
                 + 'js/nextalk.webim.util.js"></script>');
         document.write('<script type="text/javascript" src="' + _this.resPath
