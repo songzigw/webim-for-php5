@@ -123,7 +123,7 @@
                     };
                     addData = makeArray(addData);
                     var l = addData.length, v, id,
-                    userId = IM.getInstance().getCurrUser().id;
+                    userId = webim.client.getCurrUser().id;
                     
                     if (!l)
                         return;
@@ -162,13 +162,12 @@
                     self.data[type][id] = [];
                     self.trigger("clear", [ type, id ]);
 
-                    var api = IM.WebAPI.getInstance();
                     var params = {
-                        ticket : IM.getInstance().getConnection().ticket,
+                        ticket : webim.client.getConnection().ticket,
                         type : type,
                         id : id
                     };
-                    api.clear(params, function(ret, err) {
+                    webim.webApi.clear(params, function(ret, err) {
 
                     });
                 },
@@ -201,13 +200,12 @@
                     var self = this;
                     self.data[type][id] = [];
 
-                    var api = IM.WebAPI.getInstance();
                     var params = {
-                        ticket : IM.getInstance().getConnection().ticket,
+                        ticket : webim.client.getConnection().ticket,
                         type : type,
                         id : id
                     };
-                    api.history(params, function(ret, err) {
+                    webim.webApi.history(params, function(ret, err) {
                         callback(ret, err);
                         if (ret) {
                             //self.init(type, id, ret);

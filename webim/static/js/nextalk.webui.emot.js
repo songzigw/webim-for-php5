@@ -121,7 +121,7 @@ if (!nextalk.webui) {
                 "text" : "[shout]"
             } ];
     Emot.trans = function(body) {
-        var path = UI.getInstance().options.resPath;;
+        var path = webim.resPath;;
         var reg = /\[(.*?)\]/gm;
         var str = body.replace(reg, function(match) {
             for (var i = 0; i < Emot.ICON.length; i++) {
