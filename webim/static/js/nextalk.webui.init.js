@@ -108,9 +108,9 @@ if (!nextalk.webui) {
         };
         _this.loginUI.init();
         
-        _this.mainUI = new SimpleUI();
-        _this.$body.append(_this.mainUI.$html);
-        _this.mainUI.resizable();
+        _this.main = new Simple();
+        _this.$body.append(_this.main.$html);
+        _this.main.resizable();
         
         // 界面渲染完成
         // -----------------------------------------------------
@@ -163,7 +163,7 @@ if (!nextalk.webui) {
      * 定义或开启部分定时任务
      */
     webui._initTimerTask = function() {
-        var _this = this, mainUI = _this.mainUI;
+        var _this = this, main = _this.main;
         
         // 关闭所有定时任务
         _this.stopAllTask = function() {
@@ -209,7 +209,7 @@ if (!nextalk.webui) {
             start : function() {
                 window.clearInterval(this._interval);
                 
-                var $avatar = $('a', mainUI.$currUser);
+                var $avatar = $('a', main.$currUser);
                 var colors = this.colors;
                 var num = colors.length;
                 for (var k = 0; k < num; k++) {
@@ -232,7 +232,7 @@ if (!nextalk.webui) {
             stop : function() {
                 window.clearInterval(this._interval);
                 
-                var $avatar = $('a', mainUI.$currUser);
+                var $avatar = $('a', main.$currUser);
                 var colors = this.colors;
                 for (var k = 0; k < colors.length; k++) {
                     $avatar.removeClass(colors[k]);
@@ -251,7 +251,7 @@ if (!nextalk.webui) {
         _this.onLogin = function() {};
 
         $(window).resize(function() {
-            _this.mainUI.resizable();
+            _this.main.resizable();
         });
     };
 
@@ -332,11 +332,11 @@ if (!nextalk.webui) {
     $.extend(webui, {
         _onLogin : function(ev, data) {
             var _this = this;
-            var mainUI = _this.mainUI;
-            mainUI.hideTips();
+            var main = _this.main;
+            main.hideTips();
 
             if (webim.client.loginTimes > 0) {
-                mainUI.showConnecting();
+                main.showConnecting();
                 return;
             }
 
@@ -349,12 +349,12 @@ if (!nextalk.webui) {
                 this.onLoginWin();
             }
             var _this = this;
-            _this.mainUI.setCurrName();
+            _this.main.setCurrName();
             _this.loginTask.stop();
             _this.loginUI.hide();
         },
         _onLoginFail : function(ev, data) {
-            var _this = this, mainUI = _this.mainUI;
+            var _this = this, main = _this.main;
             _this.stopAllTask();
             _this.loginUI.$p.text('登入失败');
             _this.loginUI.show();
@@ -362,39 +362,39 @@ if (!nextalk.webui) {
             _this.loginUI.$btn.show();
         },
         _onConnecting : function(ev, data) {
-            var _this = this, mainUI = _this.mainUI;
-            mainUI.showConnecting();
+            var _this = this, main = _this.main;
+            main.showConnecting();
         },
         _onConnected : function(ev, data) {
             var _this = this;
-            var mainUI = _this.mainUI;
-            mainUI.showConnected();
-            mainUI.setCurrName();
-            mainUI.avatar();
+            var main = _this.main;
+            main.showConnected();
+            main.setCurrName();
+            main.avatar();
             // 加载最近会话列表
             webim.Conversation.list(function(ret, err) {
                 if (ret) {
-                    mainUI.loadRecently(ret);
+                    main.loadRecently(ret);
                 }
             });
             // 加载联系人列表
-            mainUI.loadBuddies();
+            main.loadBuddies();
             // 触发状态事件
             if (_this.onChatlinks) {
                 _this.onChatlinks(webim.client.presences);
             }
         },
         _onDisconnected : function(ev, data) {
-            var _this = this, mainUI = _this.mainUI;
-            mainUI.showDisconnected();
+            var _this = this, main = _this.main;
+            main.showDisconnected();
             _this.stopAllTask();
-            mainUI.avatar();
+            main.avatar();
         },
         _onNetworkUnavailable : function(ev, data) {
-            var _this = this, mainUI = _this.mainUI;
-            mainUI.showNetwork();
+            var _this = this, main = _this.main;
+            main.showNetwork();
             _this.stopAllTask();
-            mainUI.avatar();
+            main.avatar();
         },
         _onMessage : function(ev, data) {
             var _this = this, chatBoxs = _this._chatBoxs;
@@ -412,7 +412,7 @@ if (!nextalk.webui) {
                         }
                     }
                     // 处理会话列表
-                    _this.mainUI.loadItem(msg.type, msg.to, msg);
+                    _this.main.loadItem(msg.type, msg.to, msg);
                 } else {
                     chatBox = chatBoxs.get(msg.type, msg.from);
                     if (chatBox) {
@@ -423,7 +423,7 @@ if (!nextalk.webui) {
                         }
                     }
                     // 处理会话列表
-                    _this.mainUI.loadItem(msg.type, msg.from, msg);
+                    _this.main.loadItem(msg.type, msg.from, msg);
                 }
             }
         },
@@ -432,7 +432,7 @@ if (!nextalk.webui) {
         },
         _onPresences : function(ev, data) {
             var _this = this;
-            _this.mainUI.trigger('presences', [ data ]);
+            _this.main.trigger('presences', [ data ]);
             _this._chatBoxs.onPresences(data);
             if (_this.onChatlinks) {
                 var presences = {};

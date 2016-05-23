@@ -26,7 +26,8 @@
         JSON       = webim.JSON,
         ajax       = webim.ajax,
         isMobile   = webim.isMobile,
-        Date       = webim.Date;
+        Date       = webim.Date,
+        isUrl      = webim.isUrl;
 
     /**
      * XMLHttpRequest轮询

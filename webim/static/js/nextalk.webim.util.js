@@ -1130,7 +1130,8 @@ if (!nextalk.webim) {
         JSON       : JSON,
         ajax       : ajax,
         isMobile   : isMobile,
-        Date       : Date
+        Date       : Date,
+        isUrl      : isUrl
     });
 
 })(nextalk.webim);

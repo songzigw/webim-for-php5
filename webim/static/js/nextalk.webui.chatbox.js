@@ -173,7 +173,7 @@ if (!nextalk.webui) {
         if (conv) {
             record = conv.readAll();
         }
-        var $items = webui.mainUI.$items;
+        var $items = webui.main.$items;
         $('>li', $items).each(function(i, el) {
             var $el = $(el);
             if ($el.attr('data-toggle') == _this.type
@@ -189,7 +189,7 @@ if (!nextalk.webui) {
             }
         });
         // 设置底部的未读数据
-        webui.mainUI.showUnreadTotal();
+        webui.main.showUnreadTotal();
 
         // 如果聊天盒子第一次显示，加载内存对话记录和历史对话记录
         if (_this.times > 1) {
@@ -364,7 +364,7 @@ if (!nextalk.webui) {
         _this.sendHTML(msg);
         webim.client.sendMessage(msg);
         // 处理会话列表
-        webui.mainUI.loadItem(msg.type, msg.to, msg);
+        webui.main.loadItem(msg.type, msg.to, msg);
     };
     ChatBox.prototype.message = function(body) {
         var _this = this;
@@ -446,7 +446,7 @@ if (!nextalk.webui) {
                     var msg = _this.message(webim.JSON.stringify(data));
                     webim.client.sendMessage(msg);
                     // 处理会话列表
-                    webui.mainUI.loadItem(msg.type, msg.to, msg);
+                    webui.main.loadItem(msg.type, msg.to, msg);
                     file.sendHtml.find('.body img').attr('src', ret.path);
                 }
             },

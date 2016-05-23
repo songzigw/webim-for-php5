@@ -27,6 +27,7 @@
         ajax       = webim.ajax,
         isMobile   = webim.isMobile,
         Date       = webim.Date,
+        isUrl      = webim.isUrl,
         Channel    = webim.Channel,
         ClassEvent = webim.ClassEvent;
 

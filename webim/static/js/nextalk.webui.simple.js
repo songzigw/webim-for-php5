@@ -17,9 +17,9 @@ if (!nextalk.webui) {
     /**
      * 简单的聊天界面
      */
-    var SimpleUI = function() {
+    var Simple = function() {
         var _this = this;
-        _this.$html = webui.$(SimpleUI.HTML);
+        _this.$html = webui.$(Simple.HTML);
         _this.$header = $('header', _this.$html);
         _this.$title = $('.mzen-title', _this.$header);
         _this.$currUser = $('.nextalk-user', _this.$header);
@@ -33,8 +33,8 @@ if (!nextalk.webui) {
             _this._onPresences(data);
         });
     };
-    webim.ClassEvent.on(SimpleUI);
-    SimpleUI.HTML = '<div class="nextalk-page chatbox" id="nextalk_page_main">\
+    webim.ClassEvent.on(Simple);
+    Simple.HTML = '<div class="nextalk-page chatbox" id="nextalk_page_main">\
                         <header class="mzen-bar mzen-bar-nav mzen-bar-info">\
                                 <div class="mzen-pull-right nextalk-user">\
                                 <a class="mzen-img mzen-tap-active\
@@ -70,14 +70,14 @@ if (!nextalk.webui) {
                         <ul class="mzen-list-view"></ul>\
                         </div></div>\
                     </div>';
-    SimpleUI.CONVERSATION = '<li class="mzen-list-view-cell mzen-img mzen-tap-active mzen-up-hover">\
+    Simple.CONVERSATION = '<li class="mzen-list-view-cell mzen-img mzen-tap-active mzen-up-hover">\
                                 <img class="mzen-img-object mzen-pull-left" src="">\
                                 <div class="mzen-img-body">\
                                     <p class="mzen-ellipsis-1">???</p>\
                                 </div>\
                                 <span class="mzen-badge mzen-badge-danger mzen-pull-right">???</span>\
                              </li>';
-    SimpleUI.prototype.handler = function() {
+    Simple.prototype.handler = function() {
         var _this = this;
         if (webui.mobile) {
             $('.mzen-pull-left', _this.$header).attr('href', '/mobile');
@@ -109,7 +109,7 @@ if (!nextalk.webui) {
             'background' : 'white'
         });
     };
-    SimpleUI.prototype.avatar = function() {
+    Simple.prototype.avatar = function() {
         var _this = this;
         var client = webim.client;
         var show = client.getShow();
@@ -132,12 +132,12 @@ if (!nextalk.webui) {
             }
         });
     };
-    SimpleUI.prototype.setCurrName = function() {
+    Simple.prototype.setCurrName = function() {
         var u = webim.client.getCurrUser();
         this.$title.text(u.nick);
     };
-    SimpleUI.prototype.itemHTML = function() {
-        var $item = webui.$(SimpleUI.CONVERSATION);
+    Simple.prototype.itemHTML = function() {
+        var $item = webui.$(Simple.CONVERSATION);
         if (arguments.length == 1) {
             var conv = arguments[0];
             $item.attr('data-toggle', conv.type);
@@ -162,7 +162,7 @@ if (!nextalk.webui) {
         }
         return $item;
     };
-    SimpleUI.prototype.resizable = function() {
+    Simple.prototype.resizable = function() {
         var _this = this, $html = this.$html;
         var mobile = webui.mobile;
         
@@ -183,7 +183,7 @@ if (!nextalk.webui) {
         var hh = _this.$header.height();
         _this.$conversations.height(wh - hh);
     };
-    SimpleUI.prototype.itemsClick = function($items) {
+    Simple.prototype.itemsClick = function($items) {
         if (!$items) {
             $items = this.$items;
         }
@@ -223,7 +223,7 @@ if (!nextalk.webui) {
             });
         });
     };
-    SimpleUI.prototype.loadItem = function(type, other, msg) {
+    Simple.prototype.loadItem = function(type, other, msg) {
         var _this = this, $items = _this.$items;
 
         $('>li', $items).each(function(i, el) {
@@ -245,7 +245,7 @@ if (!nextalk.webui) {
         _this.showUnreadTotal();
         _this.itemsClick();
     };
-    SimpleUI.prototype.loadRecently = function(conversations) {
+    Simple.prototype.loadRecently = function(conversations) {
         var _this = this, $items = _this.$items.empty();
         
         if (conversations && conversations.length > 0) {
@@ -313,21 +313,21 @@ if (!nextalk.webui) {
         }
         _this.itemsClick();
     };
-    SimpleUI.prototype.loadBuddies = function() {
+    Simple.prototype.loadBuddies = function() {
         
     };
-    SimpleUI.prototype.showUnreadTotal = function() {
+    Simple.prototype.showUnreadTotal = function() {
         var total = webim.convList.unreadTotal;
         if (webui.onUnread) {
             webui.onUnread(total);
         }
     };
-    SimpleUI.prototype.showTipsTask = undefined;
-    SimpleUI.prototype.showConnecting = function() {
+    Simple.prototype.showTipsTask = undefined;
+    Simple.prototype.showConnecting = function() {
         window.clearTimeout(this.showTipsTask);
         this.msgTips.show('正在连接...', 'mzen-tips-info');
     };
-    SimpleUI.prototype.showConnected = function() {
+    Simple.prototype.showConnected = function() {
         var _this = this;
         window.clearTimeout(_this.showTipsTask);
         _this.msgTips.show('连接成功...', 'mzen-tips-success');
@@ -335,18 +335,18 @@ if (!nextalk.webui) {
             _this.hideTips();
         }, 1000);
     };
-    SimpleUI.prototype.showDisconnected = function() {
+    Simple.prototype.showDisconnected = function() {
         window.clearTimeout(this.showTipsTask);
         this.msgTips.show('连接断开...', 'mzen-tips-danger');
     };
-    SimpleUI.prototype.showNetwork = function() {
+    Simple.prototype.showNetwork = function() {
         window.clearTimeout(this.showTipsTask);
         this.msgTips.show('网络不可用...', 'mzen-tips-danger');
     };
-    SimpleUI.prototype.hideTips = function() {
+    Simple.prototype.hideTips = function() {
         this.msgTips.hide();
     };
-    SimpleUI.prototype._onPresences = function(presences) {
+    Simple.prototype._onPresences = function(presences) {
         $('li[data-toggle="chat"]' , this.$html).each(function(i, el) {
             var $el = $(el);
             for (var i = 0; i < presences.length; i++) {
@@ -359,7 +359,7 @@ if (!nextalk.webui) {
         });
     };
 
-    webui.SimpleUI = SimpleUI;
+    webui.Simple = Simple;
 })(nextalk.webim, nextalk.webui);
 
 
