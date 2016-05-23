@@ -35,14 +35,13 @@ if (!nextalk.webui) {
         completion = webui.completion;
 
     var Emot = function() {
-        var webui = UI.getInstance();
         var _this = this;
         _this.$html = $(Emot.HTML);
         _this.hide();
         var $hUl = $('<ul></ul>');
         for (var i = 0; i < Emot.ICON.length; i++) {
             var icon = Emot.ICON[i];
-            icon.path = webui.options.resPath;
+            icon.path = webim.resPath;
             var $hLi = $(completion(Emot.H_IMG, icon));
             $('img', $hLi).on('click', function(ev) {
                 ev.preventDefault();
