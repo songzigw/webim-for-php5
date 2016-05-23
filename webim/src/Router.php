@@ -207,8 +207,8 @@ class Router {
 
         $script =
 <<<EOF
-_IMC.script = '<script src="' + _IMC.resPath + 'script/nextalk-main.js?vsn=' + _IMC.version + '" type="text/javascript"></script>';
-_IMC.script += '<script src="' + _IMC.resPath + 'script/nextalk-boot.js?vsn=' + _IMC.version + '" type="text/javascript"></script>';
+_IMC.script = '<script src="' + _IMC.resPath + 'js/nextalk-main.js?vsn=' + _IMC.version + '" type="text/javascript"></script>';
+_IMC.script += '<script src="' + _IMC.resPath + 'js/nextalk-boot.js?vsn=' + _IMC.version + '" type="text/javascript"></script>';
 document.write( _IMC.script );
 EOF;
 		exit($script);
