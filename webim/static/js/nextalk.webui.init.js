@@ -36,6 +36,7 @@ if (!nextalk.webui) {
         validate   = webim.validate,
         format     = webim.format,
         completion = webui.completion;
+        Simple     = webui.Simple;
 
     /** 版本号 */
     webui.VERSION = webui.version = webui.v = "1.0.0";
