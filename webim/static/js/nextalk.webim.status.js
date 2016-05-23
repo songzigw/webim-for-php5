@@ -97,4 +97,122 @@
                 }
             });
 
+    // 消息历史记录 Support chat and grpchat
+    model(
+            "History",
+            {},
+            {
+                _init : function() {
+                    var self = this;
+                    self.data = self.data || {};
+                    self.data.chat = self.data.chat || {};
+                    self.data.grpchat = self.data.grpchat || {};
+                },
+                clean : function() {
+                    var self = this;
+                    self.data.chat = {};
+                    self.data.grpchat = {};
+                },
+                get : function(type, id) {
+                    return this.data[type][id];
+                },
+                set : function(addData) {
+                    var self = this, data = self.data, cache = {
+                        "chat" : {},
+                        "grpchat" : {}
+                    };
+                    addData = makeArray(addData);
+                    var l = addData.length, v, id,
+                    userId = IM.getInstance().getCurrUser().id;
+                    
+                    if (!l)
+                        return;
+                    for (var i = 0; i < l; i++) {
+                        // for(var i in addData){
+                        v = addData[i];
+                        type = v.type;
+                        id = type == "chat" ? (v.to == userId ? v.from : v.to)
+                                : v.to;
+                        if (id && type) {
+                            cache[type][id] = cache[type][id] || [];
+                            cache[type][id].push(v);
+                        }
+                    }
+                    for ( var type in cache) {
+                        for ( var id in cache[type]) {
+                            var v = cache[type][id];
+                            if (data[type][id]) {
+                                // data[type][id] = data[type][id].concat(v);
+                                data[type][id] = [].concat(data[type][id])
+                                        .concat(v);
+                                // Fix memory released in ie9
+                                self._triggerMsg(type, id, v);
+                            } else {
+                                self.load(type, id);
+                            }
+                        }
+                    }
+                },
+                _triggerMsg : function(type, id, data) {
+                    // this.trigger("message." + id, [data]);
+                    this.trigger(type, [ id, data ]);
+                },
+                clear : function(type, id) {
+                    var self = this;
+                    self.data[type][id] = [];
+                    self.trigger("clear", [ type, id ]);
+
+                    var api = IM.WebAPI.getInstance();
+                    var params = {
+                        ticket : IM.getInstance().getConnection().ticket,
+                        type : type,
+                        id : id
+                    };
+                    api.clear(params, function(ret, err) {
+
+                    });
+                },
+                download : function(type, id) {
+                    var self = this, url = route("download"), f = document
+                            .createElement('iframe'), d = new Date(), ar = [], data = {
+                        id : id,
+                        type : type,
+                        time : (new Date()).getTime(),
+                        date : d.getFullYear() + "-" + (d.getMonth() + 1) + "-"
+                                + d.getDate()
+                    };
+                    for ( var key in data) {
+                        ar[ar.length] = encodeURIComponent(key) + '='
+                                + encodeURIComponent(data[key]);
+                    }
+                    url += (/\?/.test(url) ? "&" : "?") + ar.join("&");
+                    f.setAttribute("src", url);
+                    f.style.display = 'none';
+                    document.body.appendChild(f);
+                },
+                init : function(type, id, data) {
+                    var self = this;
+                    if (isArray(data)) {
+                        self.data[type][id] = data;
+                        self._triggerMsg(type, id, data);
+                    }
+                },
+                load : function(type, id, callback) {
+                    var self = this;
+                    self.data[type][id] = [];
+
+                    var api = IM.WebAPI.getInstance();
+                    var params = {
+                        ticket : IM.getInstance().getConnection().ticket,
+                        type : type,
+                        id : id
+                    };
+                    api.history(params, function(ret, err) {
+                        callback(ret, err);
+                        if (ret) {
+                            //self.init(type, id, ret);
+                        }
+                    });
+                }
+            });
 })(nextalk.webim);

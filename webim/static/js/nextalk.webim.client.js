@@ -148,6 +148,7 @@
     // WebAPI服务器API
     webim.webApi = null;
     webim.status = null;
+    webim.history = null;
     webim.client = null;
     webim.currTimeMillis = null;
 
@@ -176,6 +177,7 @@
             dataType : ajax.settings.dataType
         });
         _this.status = new webim.Status();
+        _this.history = new webim.History();
         _this.client = Client.init(options);
         sound.init({msg : _this.resPath + 'sound/msg.mp3'});
         _this.imgs = {
