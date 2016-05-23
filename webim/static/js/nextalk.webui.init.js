@@ -32,7 +32,7 @@ if (!nextalk.webui) {
         isMobile   = webim.isMobile,
         Date       = webim.Date,
         isUrl      = webim.isUrl,
-        Channel    = webim.Channel
+        Channel    = webim.Channel,
         validate   = webim.validate,
         format     = webim.format,
         completion = webui.completion;
