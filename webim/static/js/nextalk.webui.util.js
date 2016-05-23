@@ -28,7 +28,7 @@ if (!nextalk.webui) {
         });
         $('img', $h).each(function(i, el) {
             $(el).error(function() {
-                $(this).attr('src', IM.imgs.HEAD);
+                $(this).attr('src', webim.imgs.HEAD);
             });
         });
         return $h;
