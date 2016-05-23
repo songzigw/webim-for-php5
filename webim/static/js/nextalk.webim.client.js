@@ -31,7 +31,8 @@
         Channel    = webim.Channel,
         ClassEvent = webim.ClassEvent,
         validate   = webim.validate,
-        format     = webim.format;
+        format     = webim.format
+        Status     = webim.Status;
 
     var sound = (function() {
         var playSound = true;
@@ -155,7 +156,6 @@
     // WebAPI服务器API
     webim.webApi = null;
     webim.status = null;
-    webim.history = null;
     webim.client = null;
     webim.currTimeMillis = null;
 
@@ -185,7 +185,6 @@
         });
 
         _this.status = new webim.Status();
-        _this.history = new webim.History();
 
         _this.client = Client.init(options);
         sound.init({msg : _this.resPath + 'sound/msg.mp3'});

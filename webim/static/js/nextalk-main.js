@@ -77,6 +77,8 @@
         document.write('<script type="text/javascript" src="' + _this.resPath
                 + 'js/nextalk.webim.webapi.js"></script>');
         document.write('<script type="text/javascript" src="' + _this.resPath
+                + 'js/nextalk.webim.status.js"></script>');
+        document.write('<script type="text/javascript" src="' + _this.resPath
                 + 'js/nextalk.webim.conversation.js"></script>');
         document.write('<script type="text/javascript" src="' + _this.resPath
                 + 'js/nextalk.webim.client.js"></script>');
@@ -131,6 +133,8 @@
                 + 'js/nextalk.webim.channel.js"></script>');
         document.write('<script type="text/javascript" src="' + _this.resPath
                 + 'js/nextalk.webim.webapi.js"></script>');
+        document.write('<script type="text/javascript" src="' + _this.resPath
+                + 'js/nextalk.webim.status.js"></script>');
         document.write('<script type="text/javascript" src="' + _this.resPath
                 + 'js/nextalk.webim.conversation.js"></script>');
         document.write('<script type="text/javascript" src="' + _this.resPath

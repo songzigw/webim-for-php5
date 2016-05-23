@@ -1205,6 +1205,20 @@ if (!nextalk.webim) {
         return text;
     };
     
+    function model(name, defaults, proto) {
+        function M(data, options) {
+            var self = this;
+            self.data = data;
+            self.options = extend({}, M.DEFAULTS, options);
+            isFunction(self._init) && self._init();
+        }
+        M.DEFAULTS = defaults;
+
+        ClassEvent.on(M);
+        extend(M.prototype, proto);
+        webim[name] = M;
+    }
+    
     extend(webim, {
         console    : console,
         idsArray   : idsArray,
@@ -1226,7 +1240,8 @@ if (!nextalk.webim) {
         isUrl      : isUrl,
         validate   : validate,
         format     : format,
-        ClassEvent : ClassEvent
+        ClassEvent : ClassEvent,
+        model      : model
     });
 
 })(nextalk.webim);
