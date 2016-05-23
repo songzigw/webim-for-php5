@@ -257,7 +257,7 @@ if (!nextalk.webui) {
         });
         var currU = webim.client.getCurrUser();
         var conv = webim.convList.get(type,
-                                {currUid : currU.id
+                                {currUid : currU.id,
                                  objId : other});
         _this.itemHTML(conv, msg.body).prependTo($items);
 

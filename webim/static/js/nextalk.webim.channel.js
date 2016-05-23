@@ -27,7 +27,8 @@
         ajax       = webim.ajax,
         isMobile   = webim.isMobile,
         Date       = webim.Date,
-        isUrl      = webim.isUrl;
+        isUrl      = webim.isUrl,
+        ClassEvent = webim.ClassEvent;
 
     /**
      * XMLHttpRequest轮询
