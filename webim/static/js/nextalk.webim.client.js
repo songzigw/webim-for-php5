@@ -31,7 +31,7 @@
         Channel    = webim.Channel,
         ClassEvent = webim.ClassEvent,
         validate   = webim.validate,
-        format     = webim.format
+        format     = webim.format,
         Status     = webim.Status;
 
     var sound = (function() {
