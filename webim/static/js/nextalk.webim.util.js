@@ -1157,9 +1157,14 @@ if (!nextalk.webim) {
     };
     
     var _isSameType = function(data, dataType) {
-        if (typeof dataType === 'string'
-                && typeof data === dataType) {
-            return true;
+        if (typeof dataType === 'string') {
+            if (dataType === 'array'
+                    && isArray(data)) {
+                return true;
+            }
+            if (typeof data === dataType) {
+                return true;
+            }
         }
 
         if (isArray(dataType)) {
