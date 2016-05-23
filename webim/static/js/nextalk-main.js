@@ -175,7 +175,7 @@
             resPath : _this.resPath,
             apiPath : _this.apiPath,
             mobile : _this.mobile,
-            simple : _this.simple,
+            //simple : _this.simple,
             chatObj : _this.chatObj,
             chatObjs : _this.chatObjs,
             chatlinkIds : _this.chatlinkIds,
