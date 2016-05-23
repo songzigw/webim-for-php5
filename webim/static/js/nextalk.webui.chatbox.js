@@ -33,7 +33,8 @@ if (!nextalk.webui) {
         Date       = webim.Date,
         isUrl      = webim.isUrl,
         ClassEvent = webim.ClassEvent,
-        completion = webui.completion;
+        completion = webui.completion,
+        MsgTips    = webui.MsgTips;
 
     /**
      * 聊天盒子类
