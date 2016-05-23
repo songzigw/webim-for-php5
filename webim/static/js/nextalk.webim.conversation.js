@@ -27,7 +27,9 @@
         ajax       = webim.ajax,
         isMobile   = webim.isMobile,
         Date       = webim.Date,
-        isUrl      = webim.isUrl;
+        isUrl      = webim.isUrl,
+        validate   = validate,
+        format     = format;
 
     /**
      * 当前主体与另外一个对象的会话信息

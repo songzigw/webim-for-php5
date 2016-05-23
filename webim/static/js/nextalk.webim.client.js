@@ -29,94 +29,9 @@
         Date       = webim.Date,
         isUrl      = webim.isUrl,
         Channel    = webim.Channel,
-        ClassEvent = webim.ClassEvent;
-
-    /**
-     * Validate an object's parameter names to ensure they match a list of
-     * expected variables name for this option type. Used to ensure option
-     * object passed into the API don't contain erroneous parameters.
-     * 
-     * @param {Object}
-     *                obj - User options object
-     * @param {Object}
-     *                keys - valid keys and types that may exist in obj.
-     * @throws {Error}
-     *                 Invalid option parameter found.
-     * @private
-     */
-    var validate = function(obj, keys) {
-        for ( var key in obj) {
-            if (obj.hasOwnProperty(key)) {
-                if (keys.hasOwnProperty(key)) {
-                    var dataType = keys[key].type;
-                    if (!isSameType(obj[key], dataType)) {
-                        throw new Error(
-                                format(webim.error.INVALID_TYPE,
-                                [typeof obj[key], key]));
-                    }
-                } else {
-                    var errorStr = "Unknown property, " + key
-                            + ". Valid properties are:";
-                    for ( var key in keys)
-                        if (keys.hasOwnProperty(key))
-                            errorStr = errorStr + " " + key;
-                    throw new Error(errorStr);
-                }
-            }
-        }
-        for (var key in keys) {
-            if (keys[key].requisite) {
-                if (!obj.hasOwnProperty(key) || !obj[key]) {
-                    throw new Error(
-                            format(webim.error.PARAM_EMPTY, [key]));
-                }
-            }
-        }
-    };
-    
-    var isSameType = function(data, dataType) {
-        if (typeof dataType === 'string'
-                && typeof data === dataType) {
-            return true;
-        }
-
-        if (isArray(dataType)) {
-            for (var i = 0; i < dataType.length; i++) {
-                if (data == dataType[i]) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    };
-
-    /**
-     * Format an error message text.
-     * 
-     * @private
-     * @param {error}
-     *                ERROR.KEY value above.
-     * @param {substitutions}
-     *                [array] substituted into the text.
-     * @return the text with the substitutions made.
-     */
-    var format = function(error, substitutions) {
-        var text = error.text;
-        if (substitutions) {
-            var field, start;
-            for (var i = 0; i < substitutions.length; i++) {
-                field = "{" + i + "}";
-                start = text.indexOf(field);
-                if (start > 0) {
-                    var part1 = text.substring(0, start);
-                    var part2 = text.substring(start + field.length);
-                    text = part1 + substitutions[i] + part2;
-                }
-            }
-        }
-        return text;
-    };
+        ClassEvent = webim.ClassEvent,
+        validate   = validate,
+        format     = format;
 
     var sound = (function() {
         var playSound = true;
