@@ -618,7 +618,7 @@
 
     extend(Client.prototype, {
         login : function(params, callback) {
-            var _this = this, status = _this.status;
+            var _this = this, status = webim.status;
 
             var buddy_ids = [], room_ids = [], tabs = status
                     .get("tabs"), tabIds = status.get("tabIds");
@@ -684,7 +684,7 @@
                     // save show status
                     //_this._currUser({show : msg.show});
                     _this.getCurrUser().show = msg.show;
-                    _this.status.set("s", msg.show);
+                    webim.status.set("s", msg.show);
                     callback();
                 } else {
                     callback();
