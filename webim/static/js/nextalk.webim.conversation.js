@@ -70,7 +70,7 @@
                                  Conversation.notice],
                          requisite : true},
             from      : {type : 'string', requisite : true},
-            nick      : {type : 'string', requisite : true},
+            nick      : {type : 'string', requisite : false},
             avatar    : {type : 'string', requisite : false},
             to        : {type : 'string', requisite : true},
             to_name   : {type : 'string', requisite : false},
@@ -83,7 +83,12 @@
             read      : {type : 'boolean', requisite : false}
         });
 
-        var conv = {}, currUser = webim.client.getCurrUser();
+        var conv = {
+            type      : msg.type,
+            timestamp : msg.timestamp,
+            direction : msg.direction,
+            body      : msg.body
+        }, currUser = webim.client.getCurrUser();
         if (currUser.type == webim.userType.GENERAL) {
             conv.currUid = currUser.id;
             conv.currNick = currUser.nick;
@@ -126,13 +131,34 @@
                     break;
                 case webim.Conversation.CHAT:
                     if (msg.direction == webim.msgDirection.SEND) {
+                        if (!msg.nick) {
+                            msg.nick = conv.currNick;
+                        }
+                        if (!msg.avatar) {
+                            msg.avatar = conv.currAvatar;
+                        }
                         conv.objId = msg.to;
-                        conv.objName = msg.to_name;
-                        conv.objAvatar = msg.to_avatar;
+                        if (msg.to_name) {
+                            conv.objName = msg.to_name;
+                        }
+                        if (msg.to_avatar) {
+                            conv.objAvatar = msg.to_avatar;
+                        }
                     } else if (msg.direction == webim.msgDirection.RECEIVE) {
+                        if (!msg.to_name) {
+                            msg.to_name = conv.currNick;
+                        }
+                        if (!msg.to_avatar) {
+                            msg.to_avatar = conv.currAvatar;
+                        }
                         conv.objId = msg.from;
                         conv.objName = msg.nick;
-                        conv.objAvatar = msg.avatar;
+                        if (msg.avatar) {
+                            conv.objAvatar = msg.avatar;
+                        } else {
+                            conv.objAvatar = webim.imgs.HEAD;
+                            msg.avatar = conv.objAvatar;
+                        }
                     }
                     break;
             }
@@ -157,10 +183,6 @@
                 conv.objAvatar = msg.avatar;
             }
         }
-        conv.type = msg.type;
-        conv.timestamp = msg.timestamp;
-        conv.direction = msg.direction;
-        conv.body = msg.body;
         return conv;
     };
     /**
