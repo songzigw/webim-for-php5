@@ -186,7 +186,7 @@ if (!nextalk.webui) {
 
         var key = {currUid : webim.client.getCurrUser().id,
                    objId   : _this.id};
-        var conv = webim.convMsg.get(_this.type, key);
+        var conv = webim.convMessage.get(_this.type, key);
         // 去除红色的未读数据
         var record = [];
         if (conv) {
