@@ -158,29 +158,19 @@ if (!nextalk.webui) {
         var u = webim.client.getCurrUser();
         this.$title.text(u.nick);
     };
-    Simple.prototype.itemHTML = function() {
+    Simple.prototype.itemHTML = function(conv) {
         var $item = webui.$(Simple.CONVERSATION);
-        if (arguments.length == 1) {
-            var conv = arguments[0];
-            $item.attr('data-toggle', conv.type);
-            $item.attr('data-id', conv.oid);
-            $item.attr('data-name', conv.name);
-            $('img', $item).attr('src', conv.avatar);
-            $('p', $item).text(conv.name);
+        $item.attr('data-toggle', conv.type);
+        $item.attr('data-objId', conv.objId);
+        $item.attr('data-objName', conv.objName);
+        $item.attr('data-objAvatar', conv.objAvatar);
+        
+        $('img', $item).attr('src', conv.objAvatar);
+        $('p', $item).text(conv.objName);
+        if (conv.notCount && conv.notCount != 0) {
+            $('span', $item).text(conv.notCount);
+        } else {
             $('span', $item).remove();
-        } else if (arguments.length == 2) {
-            var conv = arguments[0];
-            var body = arguments[1];
-            $item.attr('data-toggle', conv.type);
-            $item.attr('data-id', conv.objId);
-            $item.attr('data-name', conv.objName);
-            $('img', $item).attr('src', conv.objAvatar);
-            $('p', $item).text(conv.objName);
-            if (conv.notCount != 0) {
-                $('span', $item).text(conv.notCount);
-            } else {
-                $('span', $item).remove();
-            }
         }
         return $item;
     };
@@ -226,7 +216,7 @@ if (!nextalk.webui) {
                     return;
                 }
 
-                var dataId = item.attr('data-id');
+                var dataId = item.attr('data-objId');
                 if (!dataId || dataId == '') {
                     return;
                 }
@@ -251,28 +241,28 @@ if (!nextalk.webui) {
         $('>li', $items).each(function(i, el) {
             var $el = $(el);
             if ($el.attr('data-toggle') == type
-                    && $el.attr('data-id') == other) {
+                    && $el.attr('data-objId') == other) {
                 $el.remove();
                 // break
                 return false;
             }
         });
-        var currU = webim.client.getCurrUser();
+        var cUser = webim.client.getCurrUser();
         var conv = webim.convMessage.get(type,
-                                {currUid : currU.id,
+                                {currUid : cUser.id,
                                  objId : other});
-        _this.itemHTML(conv, msg.body).prependTo($items);
+        _this.itemHTML(conv).prependTo($items);
 
         // 设置底部的未读数据
         _this.showUnreadTotal();
         _this.itemsClick();
     };
-    Simple.prototype.loadRecently = function(conversations) {
+    Simple.prototype.loadRecently = function(convs) {
         var _this = this, $items = _this.$items.empty();
         
-        if (conversations && conversations.length > 0) {
-            for (var i = 0; i < conversations.length; i++) {
-                $items.append(_this.itemHTML(conversations[i]));
+        if (convs && convs.length > 0) {
+            for (var i = 0; i < convs.length; i++) {
+                $items.append(_this.itemHTML(convs[i]));
             }
         }
         if (webui.chatObjs) {
@@ -281,26 +271,26 @@ if (!nextalk.webui) {
                 $('>li', $items).each(function(i, el) {
                     var $el = $(el);
                     if ($el.attr('data-toggle') == webim.Conversation.CHAT
-                            && $el.attr('data-id') == chatObj.id) {
+                            && $el.attr('data-objId') == chatObj.id) {
                         $el.remove();
                         // break
                         return false;
                     }
                 });
-                _this.itemHTML({
+                $items.append(_this.itemHTML({
                     type : ChatBox.CHAT,
-                    oid : chatObj.id,
-                    name : chatObj.name,
-                    avatar : chatObj.avatar,
+                    objId : chatObj.id,
+                    objName : chatObj.name,
+                    objAvatar : chatObj.avatar,
                     body : '开始聊天'
-                }).prependTo($items);
+                }));
             }
         }
         if (webui.chatObj) {
             $('>li', $items).each(function(i, el) {
                 var $el = $(el);
                 if ($el.attr('data-toggle') == webim.Conversation.CHAT
-                        && $el.attr('data-id') == webui.chatObj.id) {
+                        && $el.attr('data-objId') == webui.chatObj.id) {
                     $el.remove();
                     // break
                     return false;
@@ -308,9 +298,9 @@ if (!nextalk.webui) {
             });
             _this.itemHTML({
                 type : ChatBox.CHAT,
-                oid : webui.chatObj.id,
-                name : webui.chatObj.name,
-                avatar : webui.chatObj.avatar,
+                objId : webui.chatObj.id,
+                objName : webui.chatObj.name,
+                objAvatar : webui.chatObj.avatar,
                 body : '开始聊天'
             }).prependTo($items);
             webui.openChatBox(ChatBox.CHAT, webui.chatObj.id,
@@ -323,9 +313,9 @@ if (!nextalk.webui) {
                         var chatObj = ret[i];
                         _this.itemHTML({
                             type : ChatBox.CHAT,
-                            oid : chatObj.user_id,
-                            name : chatObj.name,
-                            avatar : '/images/agentphoto/' + chatObj.face,
+                            objId : chatObj.user_id,
+                            objName : chatObj.name,
+                            objAvatar : '/images/agentphoto/' + chatObj.face,
                             body : '开始聊天'
                         }).prependTo($items);
                     }
@@ -373,7 +363,7 @@ if (!nextalk.webui) {
             var $el = $(el);
             for (var i = 0; i < presences.length; i++) {
                 var presence = presences[i];
-                if (presence.from == $el.attr('data-id')) {
+                if (presence.from == $el.attr('data-objId')) {
                     $el.attr('data-show', presence.show);
                     break;
                 }

@@ -262,7 +262,30 @@
             var params = {
                 ticket : client.getConnection().ticket
             };
-            webApi.conv_list(params, callback);
+            webApi.conv_list(params, function(ret, err) {
+                var convs = [];
+                if (ret) {
+                    for (var i = 0; i < ret.length; i++) {
+                        var c = ret[i];
+                        var msg = {
+                            type      : c.type,
+                            from      : c.uid,
+                            //nick    : c.???,
+                            //avatar  : c.???,
+                            to        : c.oid,
+                            to_nick   : c.name,
+                            to_avatar : c.avatar,
+                            body      : c.body,
+                            timestamp : new Date(c.updated).getTime(),
+                            // 方便编程假设所有会话消息方向为发送
+                            // 可能与实际不符，但这种假设，无影响
+                            direction : webim.direction.SEND
+                        };
+                        convs.push(Conversation.parser(msg));
+                    }
+                }
+                callback(convs);
+            });
         }
     };
     webim.Conversation = Conversation;

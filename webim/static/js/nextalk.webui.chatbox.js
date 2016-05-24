@@ -40,12 +40,12 @@ if (!nextalk.webui) {
     /**
      * 聊天盒子类
      */
-    var ChatBox = function(type, id, name, avatar) {
+    var ChatBox = function(type, objId, objName, objAvatar) {
         var _this = this;
         _this.type = type;
-        _this.id = id;
-        _this.name = name;
-        _this.avatar = avatar;
+        _this.objId = objId;
+        _this.objName = objName;
+        _this.objAvatar = objAvatar;
         _this.focus = false;
         _this.times = 0;
 
@@ -185,7 +185,7 @@ if (!nextalk.webui) {
         _this.toBottom();
 
         var key = {currUid : webim.client.getCurrUser().id,
-                   objId   : _this.id};
+                   objId   : _this.objId};
         var conv = webim.convMessage.get(_this.type, key);
         // 去除红色的未读数据
         var record = [];
@@ -196,7 +196,7 @@ if (!nextalk.webui) {
         $('>li', $items).each(function(i, el) {
             var $el = $(el);
             if ($el.attr('data-toggle') == _this.type
-                    && $el.attr('data-id') == _this.id) {
+                    && $el.attr('data-objId') == _this.objId) {
                 if (conv && conv.notCount > 0) {
                     $el.find('span.mzen-badge-danger').text(
                             conv.notCount);
@@ -218,7 +218,7 @@ if (!nextalk.webui) {
         // 历史数据库中查询
         var currUser = webim.client.getCurrUser();
         var history = webim.history;
-        history.load(_this.type, _this.id, function(ret, err) {
+        history.load(_this.type, _this.objId, function(ret, err) {
             if (ret) {
                 for (var i = 0; i < ret.length; i++) {
                     var msg = ret[i];
@@ -227,7 +227,7 @@ if (!nextalk.webui) {
                         msg.avatar = currUser.avatar;
                     } else {
                         msg.direction = webim.msgDirection.RECEIVE;
-                        msg.avatar = _this.avatar;
+                        msg.avatar = _this.objAvatar;
                     }
                 }
                 if (ret.length == 0) {
@@ -252,7 +252,7 @@ if (!nextalk.webui) {
             }
             // 发送默认消息
             if (webui.chatObj 
-                    && webui.chatObj.id == _this.id
+                    && webui.chatObj.id == _this.objId
                     && webui.chatObj.body) {
                 if (!webui.chatObj.body_type) {
                     _this.sendMsg(webui.chatObj.body);
@@ -394,9 +394,9 @@ if (!nextalk.webui) {
             from : currUser.id,
             nick : currUser.nick,
             avatar : currUser.avatar,
-            to : _this.id,
-            to_nick : _this.name,
-            to_avatar : _this.avatar,
+            to : _this.objId,
+            to_nick : _this.objName,
+            to_avatar : _this.objAvatar,
             body : body,
             timestamp : webim.timestamp()
         };
@@ -409,9 +409,10 @@ if (!nextalk.webui) {
             $('footer', $html).hide();
         }
         $html.attr('data-type', _this.type);
-        $html.attr('data-id', _this.id);
-        $html.attr('data-name', _this.name);
-        $('header>.mzen-title', $html).text(_this.name);
+        $html.attr('data-objId', _this.objId);
+        $html.attr('data-objName', _this.objName);
+        $html.attr('data-objAvatar', _this.objAvatar);
+        $('header>.mzen-title', $html).text(_this.objName);
         var $content = $('#nextalk_content_chatbox', $html);
         $content.css('overflow', 'auto');
 
@@ -421,7 +422,7 @@ if (!nextalk.webui) {
                 });
         // 设置在线状态和头像
         $('>header .mzen-pull-right img', $html)
-            .attr('src', _this.avatar);
+            .attr('src', _this.objAvatar);
 
         $('footer .mzen-btn', $html).click(function() {
             _this.submit();
@@ -506,6 +507,67 @@ if (!nextalk.webui) {
         } else {
             this.showUnline();
         }
+    };
+
+    /** 定义聊天盒子存储空间 */
+    webui._chatBoxs = {
+        // 系统通知盒子
+        notification : undefined,
+        // 房间聊天盒子
+        room : {},
+        // 私信聊天盒子
+        chat : {},
+
+        get : function(boxType, key) {
+            if (boxType == ChatBox.NOTICE)
+                return this[boxType];
+            return this[boxType][key];
+        },
+
+        set : function(boxType, key, value) {
+            var _this = this;
+            if (boxType == ChatBox.NOTICE) {
+                _this[boxType] = value;
+                return;
+            }
+            _this[boxType][key] = value;
+        },
+
+        hideAll : function() {
+            if (this[ChatBox.NOTICE]) {
+                this[ChatBox.NOTICE].hide();
+            }
+            for (var key in this[ChatBox.ROOM]) {
+                this[ChatBox.ROOM][key].hide();
+            }
+            for (var key in this[ChatBox.CHAT]) {
+                this[ChatBox.CHAT][key].hide();
+            }
+        },
+        
+        onPresences : function(presences) {
+            for (var key in this[ChatBox.CHAT]) {
+                var box = this[ChatBox.CHAT][key];
+                for (var i = 0; i < presences.length; i++) {
+                    var presence = presences[i];
+                    if (presence.from == box.id) {
+                        box.trigger('presence', [ presence.show ]);
+                    }
+                }
+            }
+        }
+    };
+
+    webui.openChatBox = function(boxType, objId, objName, objAvatar) {
+        var _this = this;
+        // 隐藏所有的盒子
+        _this._chatBoxs.hideAll();
+        var chatBox = _this._chatBoxs.get(boxType, objId);
+        if (!chatBox) {
+            chatBox = new ChatBox(boxType, objId, objName, objAvatar);
+            _this._chatBoxs.set(boxType, objId, chatBox);
+        }
+        chatBox.show();
     };
 
     webui.ChatBox = ChatBox;

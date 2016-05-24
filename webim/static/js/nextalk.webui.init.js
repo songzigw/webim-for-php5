@@ -294,67 +294,6 @@ if (!nextalk.webui) {
         _this.welcomeUI.hide();
         webim.client.connectServer();
     };
-    
-    /** 定义聊天盒子存储空间 */
-    webui._chatBoxs = {
-        // 系统通知盒子
-        notification : undefined,
-        // 房间聊天盒子
-        room : {},
-        // 私信聊天盒子
-        chat : {},
-
-        get : function(boxType, key) {
-            if (boxType == ChatBox.NOTICE)
-                return this[boxType];
-            return this[boxType][key];
-        },
-
-        set : function(boxType, key, value) {
-            var _this = this;
-            if (boxType == ChatBox.NOTICE) {
-                _this[boxType] = value;
-                return;
-            }
-            _this[boxType][key] = value;
-        },
-
-        hideAll : function() {
-            if (this[ChatBox.NOTICE]) {
-                this[ChatBox.NOTICE].hide();
-            }
-            for (var key in this[ChatBox.ROOM]) {
-                this[ChatBox.ROOM][key].hide();
-            }
-            for (var key in this[ChatBox.CHAT]) {
-                this[ChatBox.CHAT][key].hide();
-            }
-        },
-        
-        onPresences : function(presences) {
-            for (var key in this[ChatBox.CHAT]) {
-                var box = this[ChatBox.CHAT][key];
-                for (var i = 0; i < presences.length; i++) {
-                    var presence = presences[i];
-                    if (presence.from == box.id) {
-                        box.trigger('presence', [ presence.show ]);
-                    }
-                }
-            }
-        }
-    };
-
-    webui.openChatBox = function(boxType, id, name, avatar) {
-        var _this = this;
-        // 隐藏所有的盒子
-        _this._chatBoxs.hideAll();
-        var boxUI = _this._chatBoxs.get(boxType, id);
-        if (!boxUI) {
-            boxUI = new ChatBox(boxType, id, name, avatar);
-            _this._chatBoxs.set(boxType, id, boxUI);
-        }
-        boxUI.show();
-    };
 
     $.extend(webui, {
         _onLogin : function(ev, data) {
@@ -399,10 +338,8 @@ if (!nextalk.webui) {
             main.setCurrName();
             main.avatar();
             // 加载最近会话列表
-            webim.convMessage.list(function(ret, err) {
-                if (ret) {
-                    main.loadRecently(ret);
-                }
+            webim.convMessage.list(function(convs) {
+                main.loadRecently(convs);
             });
             // 加载联系人列表
             main.loadBuddies();
