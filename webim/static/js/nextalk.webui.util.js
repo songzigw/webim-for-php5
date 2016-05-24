@@ -16,15 +16,14 @@ if (!nextalk.webui) {
 
     webui.$ = function(html) {
         var $h = $(html);
-        var path = webim.resPath;
         $('img[data-toggle=logo_index]', $h).each(function() {
-            $(this).attr('src', path + 'imgs/logo.png');
+            $(this).attr('src', webim.imgs.LOGO_INDEX);
         });
         $('img[data-toggle=logo]', $h).each(function() {
-            $(this).attr('src', path + 'imgs/webim.72x72.png');
+            $(this).attr('src', webim.imgs.LOGO);
         });
         $('img[data-toggle=head]', $h).each(function() {
-            $(this).attr('src', path + 'imgs/head_def.png');
+            $(this).attr('src', webim.imgs.HEAD);
         });
         $('img', $h).each(function(i, el) {
             $(el).error(function() {

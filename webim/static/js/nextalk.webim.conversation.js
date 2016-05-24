@@ -82,7 +82,7 @@
             nick      : {type : 'string', requisite : true},
             avatar    : {type : 'string', requisite : false},
             to        : {type : 'string', requisite : true},
-            to_nick   : {type : 'string', requisite : true},
+            to_nick   : {type : 'string', requisite : false},
             to_avatar : {type : 'string', requisite : false},
             body      : {type : 'string', requisite : true},
             timestamp : {type : 'number', requisite : true},
@@ -109,11 +109,28 @@
                     conv.objId = webim.Conversation.NOTICE;
                     conv.objName = webim.name.NOTICE;
                     conv.objAvatar = webim.imgs.NOTICE;
+                    msg.nick = conv.objName;
+                    msg.avatar = conv.objAvatar;
+                    msg.to_nick = conv.currNick;
+                    msg.to_avatar = conv.currAvatar;
                     break;
                 case webim.Conversation.ROOM:
+                    if (!msg.avatar) {
+                        msg.avatar = webim.imgs.HEAD;
+                    }
                     conv.objId = msg.to;
-                    conv.objName = msg.to_nick;
-                    conv.objAvatar = msg.to_avatar;
+                    if (msg.to_nick) {
+                        conv.objName = msg.to_nick;
+                    } else {
+                        conv.objName = msg.to + 'room';
+                        msg.to_nick = conv.objName;
+                    }
+                    if (msg.to_avatar) {
+                        conv.objAvatar = msg.to_avatar;
+                    } else {
+                        conv.objAvatar = webim.imgs.GROUP;
+                        msg.to_avatar = conv.objAvatar;
+                    }
                     break;
                 case webim.Conversation.CHAT:
                     if (msg.direction == webim.msgDirection.SEND) {
@@ -150,6 +167,8 @@
         }
         conv.type = msg.type;
         conv.timestamp = msg.timestamp;
+        conv.direction = msg.direction;
+        conv.body = msg.body;
         return conv;
     };
     /**
@@ -164,7 +183,6 @@
                 webim.convList.unreadTotal++;
             }
         }
-        _this.timestamp = msg.timestamp;
         _this.message = msg;
         _this.record[_this.record.length] = msg;
 

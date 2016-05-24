@@ -344,15 +344,15 @@
             var u = _this.getCurrUser();
             for (var i = 0; i < data.length; i++) {
                 var msg = data[i];
-                msg.timestamp = Number(msg.timestamp);
                 var direction = webim.msgDirection.RECEIVE;
-                msg.read = false;
                 msg.direction = direction;
+                msg.timestamp = Number(msg.timestamp);
+                msg.read = false;
                 // 如果是自己发送出去的
                 if (msg.from == u.id) {
                     direction = webim.msgDirection.SEND;
-                    msg.read = true;
                     msg.direction = direction;
+                    msg.read = true;
                 }
                 _this._saveMsg(msg);
             }
