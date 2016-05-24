@@ -216,42 +216,33 @@ if (!nextalk.webui) {
         }
 
         // 历史数据库中查询
-        var currUser = webim.client.getCurrUser();
         var history = webim.history;
-        history.load(_this.type, _this.objId, function(ret, err) {
-            if (ret) {
-                for (var i = 0; i < ret.length; i++) {
-                    var msg = ret[i];
-                    if (msg.from == currUser.id) {
-                        msg.direction = webim.msgDirection.SEND;
-                        msg.avatar = currUser.avatar;
+        history.load(_this.type, _this.objId, function(msgs) {
+            if (msgs.length == 0) {
+                for (var i = 0, len = record.length; i < len; i++) {
+                    var msg = record[i];
+                    if (msg.direction == webim.msgDirection.SEND) {
+                        _this.sendHTML(msg);
                     } else {
-                        msg.direction = webim.msgDirection.RECEIVE;
-                        msg.avatar = _this.objAvatar;
+                        _this.receiveHTML(msg);
                     }
                 }
-                if (ret.length == 0) {
-                    for (var i = 0, len = record.length; i < len; i++) {
-                        var msg = record[i];
-                        if (msg.direction == webim.msgDirection.SEND) {
-                            _this.sendHTML(msg);
-                        } else {
-                            _this.receiveHTML(msg);
+            } else {
+                for (var i = 0, len = msgs.length; i < len; i++) {
+                    var msg = msgs[i];
+                    if (msg.direction == webim.msgDirection.SEND) {
+                        _this.sendHTML(msg);
+                    } else {
+                        if (!msg.avatar) {
+                            msg.avatar = _this.objAvatar;
                         }
-                    }
-                } else {
-                    for (var i = 0, len = ret.length; i < len; i++) {
-                        var msg = ret[i];
-                        if (msg.direction == webim.msgDirection.SEND) {
-                            _this.sendHTML(msg);
-                        } else {
-                            _this.receiveHTML(msg);
-                        }
+                        _this.receiveHTML(msg);
                     }
                 }
             }
+            
             // 发送默认消息
-            if (webui.chatObj 
+            if (webui.chatObj
                     && webui.chatObj.id == _this.objId
                     && webui.chatObj.body) {
                 if (!webui.chatObj.body_type) {

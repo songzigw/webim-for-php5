@@ -70,7 +70,7 @@
                                  Conversation.notice],
                          requisite : true},
             from      : {type : 'string', requisite : true},
-            nick      : {type : 'string', requisite : false},
+            nick      : {type : 'string', requisite : true},
             avatar    : {type : 'string', requisite : false},
             to        : {type : 'string', requisite : true},
             to_name   : {type : 'string', requisite : false},
@@ -288,13 +288,14 @@
             webApi.conv_list(params, function(ret, err) {
                 var convs = [];
                 if (ret) {
+                    var cUser = webim.client.getCurrUser();
                     for (var i = 0; i < ret.length; i++) {
                         var c = ret[i];
                         var msg = {
                             type      : c.type,
                             from      : c.uid,
-                            //nick    : c.???,
-                            //avatar  : c.???,
+                            nick      : cUser.nick,
+                            avatar    : cUser.avatar,
                             to        : c.oid,
                             to_name   : c.name,
                             to_avatar : c.avatar,

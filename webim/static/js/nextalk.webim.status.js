@@ -206,10 +206,23 @@
                         id : id
                     };
                     webim.webApi.history(params, function(ret, err) {
-                        callback(ret, err);
+                        var currUser = webim.client.getCurrUser();
+                        var messages = [];
                         if (ret) {
-                            //self.init(type, id, ret);
+                            for (var i = 0; i < ret.length; i++) {
+                                var msg = ret[i];
+                                if (msg.from == currUser.id) {
+                                    msg.direction = webim.msgDirection.SEND;
+                                    if (!msg.avatar) {
+                                        msg.avatar = currUser.avatar;
+                                    }
+                                } else {
+                                    msg.direction = webim.msgDirection.RECEIVE;
+                                }
+                                messages.push(msg);
+                            }
                         }
+                        callback(messages);
                     });
                 }
             });
