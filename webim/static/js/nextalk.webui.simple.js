@@ -208,11 +208,11 @@ if (!nextalk.webui) {
 
             // 点击启动一个新的聊天盒子
             item.click(function() {
-                var imgSrc = item.attr('data-objAvatar');
+                var objAvatar = item.attr('data-objAvatar');
                 if (item.attr('data-toggle') == ChatBox.NOTICE) {
                     webui.openChatBox(ChatBox.NOTICE,
                             ChatBox.NOTICE,
-                            webim.name.NOTICE, imgSrc);
+                            webim.name.NOTICE, objAvatar);
                     return;
                 }
 
@@ -224,12 +224,12 @@ if (!nextalk.webui) {
                 var name = item.attr('data-objName');
                 if (item.attr('data-toggle') == ChatBox.ROOM) {
                     webui.openChatBox(ChatBox.ROOM,
-                            dataId, name, imgSrc);
+                            dataId, name, objAvatar);
                     return;
                 }
                 if (item.attr('data-toggle') == ChatBox.CHAT) {
                     webui.openChatBox(ChatBox.CHAT,
-                            dataId, name, imgSrc);
+                            dataId, name, objAvatar);
                     return;
                 }
             });
