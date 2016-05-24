@@ -399,7 +399,7 @@ if (!nextalk.webui) {
             main.setCurrName();
             main.avatar();
             // 加载最近会话列表
-            webim.Conversation.list(function(ret, err) {
+            webim.convMsg.list(function(ret, err) {
                 if (ret) {
                     main.loadRecently(ret);
                 }
@@ -435,7 +435,7 @@ if (!nextalk.webui) {
                         chatBox.sendHTML(msg);
                         if (chatBox.focus == true) {
                             // 设置为已读
-                            webim.convList.read(msg);
+                            webim.convMsg.read(msg);
                         }
                     }
                     // 处理会话列表
@@ -446,7 +446,7 @@ if (!nextalk.webui) {
                         chatBox.receiveHTML(msg);
                         if (chatBox.focus == true) {
                             // 设置为已读
-                            webim.convList.read(msg);
+                            webim.convMsg.read(msg);
                         }
                     }
                     // 处理会话列表

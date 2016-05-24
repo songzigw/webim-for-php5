@@ -258,7 +258,7 @@ if (!nextalk.webui) {
             }
         });
         var currU = webim.client.getCurrUser();
-        var conv = webim.convList.get(type,
+        var conv = webim.convMsg.get(type,
                                 {currUid : currU.id,
                                  objId : other});
         _this.itemHTML(conv, msg.body).prependTo($items);
@@ -339,7 +339,7 @@ if (!nextalk.webui) {
         
     };
     Simple.prototype.showUnreadTotal = function() {
-        var total = webim.convList.unreadTotal;
+        var total = webim.convMsg.unreadTotal;
         if (webui.onUnread) {
             webui.onUnread(total);
         }

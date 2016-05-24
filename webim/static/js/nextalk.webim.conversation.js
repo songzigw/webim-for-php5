@@ -62,15 +62,6 @@
     Conversation.ROOM   = 'room';
     // 通知
     Conversation.NOTICE = 'notice';
-    Conversation.list = function(callback) {
-        var client = webim.client,
-            webApi = webim.webApi;
-
-        var params = {
-            ticket : client.getConnection().ticket
-        };
-        webApi.conv_list(params, callback);
-    };
     Conversation.parser = function(msg) {
         // 入参验证
         validate(msg, {
@@ -180,7 +171,7 @@
         if (msg.direction == webim.msgDirection.RECEIVE) {
             if (typeof msg.read === 'boolean' && !msg.read) {
                 _this.notCount++;
-                webim.convList.unreadTotal++;
+                webim.convMsg.unreadTotal++;
             }
         }
         _this.message = msg;
@@ -205,15 +196,15 @@
             var msg = _this.record[i];
             if (typeof msg.read === 'boolean' && !msg.read) {
                 msg.read = true;
-                webim.convList.unreadTotal--;
+                webim.convMsg.unreadTotal--;
             }
         }
         _this.notCount = 0;
         return _this.record;
     };
 
-    /** 会话消息列表 */
-    webim.convList = {
+    /** 会话消息 */
+    webim.convMsg = {
         // 私聊消息
         chat : {},
         // 聊天室消息
@@ -259,9 +250,19 @@
                         objId : cData.objId})._setRead();
                 if (conv.notCount > 0) {
                     conv.notCount--;
-                    webim.convList.unreadTotal--;
+                    webim.convMsg.unreadTotal--;
                 }
             }
+        },
+        
+        list : function(callback) {
+            var client = webim.client,
+                webApi = webim.webApi;
+
+            var params = {
+                ticket : client.getConnection().ticket
+            };
+            webApi.conv_list(params, callback);
         }
     };
     webim.Conversation = Conversation;
