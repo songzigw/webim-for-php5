@@ -727,12 +727,10 @@
                     convData.type, key);
         if (!conversation) {
             conversation = new webim.Conversation(msg);
-            conversation.add(msg);
             webim.convMessage.set(
                     convData.type, key, conversation);
-        } else {
-            conversation.add(msg);
         }
+        conversation.add(msg);
     };
     
     // webim.Client = Client;
