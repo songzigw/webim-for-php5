@@ -173,8 +173,8 @@ if (!nextalk.webui) {
             }
         });
         webim.client.setReceiveMsgListener({
-            onMessage : function(ev, data) {
-                _this._onMessage(ev, data);
+            onMessages : function(ev, data) {
+                _this._onMessages(ev, data);
             },
             onPresences : function(ev, data) {
                 _this._onPresences(ev, data);
@@ -359,7 +359,7 @@ if (!nextalk.webui) {
             _this.stopAllTask();
             main.avatar();
         },
-        _onMessage : function(ev, data) {
+        _onMessages : function(ev, data) {
             var _this = this, chatBoxs = _this._chatBoxs;
             for (var i = 0; i < data.length; i++) {
                 var msg = data[i];

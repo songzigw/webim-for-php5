@@ -36,3 +36,7 @@ CREATE TABLE `webim_conversations` (
 -- ----------------------------
 -- Records of webim_conversations
 -- ----------------------------
+
+ALTER TABLE `webim_conversations`
+CHANGE COLUMN `name` `oname`  varchar(20) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL AFTER `direction`,
+CHANGE COLUMN `avatar` `oavatar`  varchar(300) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL AFTER `oname`;

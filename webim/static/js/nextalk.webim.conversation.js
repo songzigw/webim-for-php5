@@ -204,8 +204,8 @@
             type : _this.type,
             uid : _this.currUid,
             oid : _this.objId,
-            name : _this.objName,
-            avatar : _this.objAvatar,
+            oname : _this.objName,
+            oavatar : _this.objAvatar,
             body : msg.body,
             direction : msg.direction
         });
@@ -265,12 +265,12 @@
         
         read : function(msg) {
             var _this = this;
-            if (typeof msg.read == 'boolean' && !msg.read) {
+            if (typeof msg.read === 'boolean' && !msg.read) {
                 msg.read = true;
                 var cData = Conversation.parser(msg);
                 var conv = _this.get(cData.type, {
                         currUid : cData.currUid,
-                        objId : cData.objId})._setRead();
+                        objId : cData.objId});
                 if (conv.notCount > 0) {
                     conv.notCount--;
                     webim.convMessage.unreadTotal--;
@@ -297,8 +297,8 @@
                             nick      : cUser.nick,
                             avatar    : cUser.avatar,
                             to        : c.oid,
-                            to_name   : c.name,
-                            to_avatar : c.avatar,
+                            to_name   : c.oname,
+                            to_avatar : c.oavatar,
                             body      : c.body,
                             timestamp : new Date(c.updated).getTime(),
                             // 方便编程假设所有会话消息方向为发送

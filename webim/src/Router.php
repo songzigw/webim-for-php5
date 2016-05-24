@@ -415,8 +415,8 @@ EOF;
 				"send" => $send,
 				"type" => $type,
 				"to" => $to,
-                "to_name" => $to_name,
-                "to_avatar" => $to_avatar,
+                //"to_name" => $to_name,
+                //"to_avatar" => $to_avatar,
                 'from' => $this->user->id,
                 'nick' => $this->user->nick,
                 'avatar' => $this->user->avatar,
@@ -837,8 +837,8 @@ EOF;
                 'body' => $this->input('body'),
                 'type' => $this->input('type'),
                 'direction' => $this->input('direction'),
-                'name' => $this->input('name'),
-                'avatar' => $this->input('avatar')
+                'oname' => $this->input('oname'),
+                'oavatar' => $this->input('oavatar')
         );
         $this->model->insertConversations($conv);
         $this->okReply();

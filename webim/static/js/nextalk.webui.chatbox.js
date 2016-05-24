@@ -503,7 +503,7 @@ if (!nextalk.webui) {
     /** 定义聊天盒子存储空间 */
     webui._chatBoxs = {
         // 系统通知盒子
-        notification : undefined,
+        notice : undefined,
         // 房间聊天盒子
         room : {},
         // 私信聊天盒子
