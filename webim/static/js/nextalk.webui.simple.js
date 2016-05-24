@@ -88,7 +88,7 @@ if (!nextalk.webui) {
                                 </a>\
                         </header>\
                         <div class="nextalk-scroll" id="nextalk_conversations">\
-                        <div class="nextalk-wrap">\
+                        <div class="mzen-content nextalk-wrap">\
                         <ul class="mzen-list-view"></ul>\
                         </div></div>\
                     </div>';
