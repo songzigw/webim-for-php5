@@ -302,7 +302,7 @@
                             timestamp : new Date(c.updated).getTime(),
                             // 方便编程假设所有会话消息方向为发送
                             // 可能与实际不符，但这种假设，无影响
-                            direction : webim.msDirection.SEND
+                            direction : webim.msgDirection.SEND
                         };
                         convs.push(Conversation.parser(msg));
                     }
