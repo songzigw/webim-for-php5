@@ -60,8 +60,6 @@ if (!nextalk.webui) {
             chatObj     : {type : 'object', requisite : false},
             chatObjs    : {type : 'array', requisite : false}
         });
-        webim.resPath = options.resPath;
-        webim.apiPath = options.apiPath;
 
         var _this = this;
         if (options.mobile) {
@@ -76,6 +74,9 @@ if (!nextalk.webui) {
         delete options.mobile;
         delete options.chatObj;
         delete options.chatObjs;
+
+        // 初始化webim
+        webim.init(options);
 
         // 界面元素根节点body
         _this.$body = $('body');
@@ -146,8 +147,6 @@ if (!nextalk.webui) {
         _this._initListeners();
         _this._initTimerTask();
 
-        // 初始化webim
-        webim.init(options);
         webim.client.setLoginStatusListener({
             onLogin : function(ev, data) {
                 _this._onLogin(ev, data);
