@@ -112,8 +112,7 @@
         SEND    : 'send',
         RECEIVE : 'receive'
     };
-    // ???
-    // 数据库表中加两个字段to_nick to_avatar
+
     webim.name = {
         NOTICE   : '系统通知',
         STRANGER : '陌生人'

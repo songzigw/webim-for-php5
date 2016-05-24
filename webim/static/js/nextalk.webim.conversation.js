@@ -73,7 +73,7 @@
             nick      : {type : 'string', requisite : true},
             avatar    : {type : 'string', requisite : false},
             to        : {type : 'string', requisite : true},
-            to_nick   : {type : 'string', requisite : false},
+            to_name   : {type : 'string', requisite : false},
             to_avatar : {type : 'string', requisite : false},
             body      : {type : 'string', requisite : true},
             timestamp : {type : 'number', requisite : true},
@@ -97,12 +97,13 @@
 
             switch (msg.type) {
                 case webim.Conversation.NOTICE:
+                    // 通知消息方向都应该是收取
                     conv.objId = webim.Conversation.NOTICE;
                     conv.objName = webim.name.NOTICE;
                     conv.objAvatar = webim.imgs.NOTICE;
                     msg.nick = conv.objName;
                     msg.avatar = conv.objAvatar;
-                    msg.to_nick = conv.currNick;
+                    msg.to_name = conv.currNick;
                     msg.to_avatar = conv.currAvatar;
                     break;
                 case webim.Conversation.ROOM:
@@ -110,11 +111,11 @@
                         msg.avatar = webim.imgs.HEAD;
                     }
                     conv.objId = msg.to;
-                    if (msg.to_nick) {
-                        conv.objName = msg.to_nick;
+                    if (msg.to_name) {
+                        conv.objName = msg.to_name;
                     } else {
                         conv.objName = msg.to + 'room';
-                        msg.to_nick = conv.objName;
+                        msg.to_name = conv.objName;
                     }
                     if (msg.to_avatar) {
                         conv.objAvatar = msg.to_avatar;
@@ -126,7 +127,7 @@
                 case webim.Conversation.CHAT:
                     if (msg.direction == webim.msgDirection.SEND) {
                         conv.objId = msg.to;
-                        conv.objName = msg.to_nick;
+                        conv.objName = msg.to_name;
                         conv.objAvatar = msg.to_avatar;
                     } else if (msg.direction == webim.msgDirection.RECEIVE) {
                         conv.objId = msg.from;
@@ -147,7 +148,7 @@
                 conv.currNick = msg.nick;
                 conv.currAvatar = msg.avatar;
                 conv.objId = msg.to;
-                conv.objName = msg.to_nick;
+                conv.objName = msg.to_name;
                 conv.objAvatar = msg.to_avatar;
             } else if (msg.direction == webim.msgDirection.RECEIVE) {
                 
@@ -273,7 +274,7 @@
                             //nick    : c.???,
                             //avatar  : c.???,
                             to        : c.oid,
-                            to_nick   : c.name,
+                            to_name   : c.name,
                             to_avatar : c.avatar,
                             body      : c.body,
                             timestamp : new Date(c.updated).getTime(),

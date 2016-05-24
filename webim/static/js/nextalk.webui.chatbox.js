@@ -395,7 +395,7 @@ if (!nextalk.webui) {
             nick : currUser.nick,
             avatar : currUser.avatar,
             to : _this.objId,
-            to_nick : _this.objName,
+            to_name : _this.objName,
             to_avatar : _this.objAvatar,
             body : body,
             timestamp : webim.timestamp()

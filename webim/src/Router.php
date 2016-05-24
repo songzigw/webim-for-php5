@@ -396,7 +396,7 @@ EOF;
 		$type = $this->input("type");
 		$offline = $this->input("offline");
 		$to = $this->input("to");
-		$to_nick = $this->input("to_nick");
+		$to_name = $this->input("to_name");
 		$to_avatar = $this->input("to_avatar");
 		$body = stripslashes( $this->input("body") );
         if( defined('WEBIM_MESSAGE_DECODE') ) {
@@ -415,6 +415,8 @@ EOF;
 				"send" => $send,
 				"type" => $type,
 				"to" => $to,
+                "to_name" => $to_name,
+                "to_avatar" => $to_avatar,
                 'from' => $this->user->id,
                 'nick' => $this->user->nick,
                 'avatar' => $this->user->avatar,
@@ -424,7 +426,7 @@ EOF;
 			));
 		}
 		if($send == 1){
-			$this->client->message(null, $to, $body, $type, $style, $timestamp, $this->user->avatar, $to_nick, $to_avatar);
+			$this->client->message(null, $to, $body, $type, $style, $timestamp, $this->user->avatar, $to_name, $to_avatar);
 		}
         //Error Reply
         //$this->jsonReply(array('status' => 'error', 'message' => $body));
