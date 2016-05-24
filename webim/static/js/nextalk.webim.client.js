@@ -723,11 +723,12 @@
         var key = {currUid : convData.currUid,
                    objId   : convData.objId};
         // 获取会话消息
-        var conversation = webim.convMsg.get(
+        var conversation = webim.convMessage.get(
                     convData.type, key);
         if (!conversation) {
             conversation = new webim.Conversation(msg);
-            webim.convMsg.set(
+            conversation.add(msg);
+            webim.convMessage.set(
                     convData.type, key, conversation);
         } else {
             conversation.add(msg);

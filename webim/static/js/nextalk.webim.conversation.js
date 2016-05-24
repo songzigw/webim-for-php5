@@ -54,7 +54,7 @@
         // 会话历史记录
         _this.record = [];
 
-        _this.add(msg);
+        extend(_this, Conversation.parser(msg));
     }
     // 私聊
     Conversation.CHAT   = 'chat';
@@ -171,7 +171,7 @@
         if (msg.direction == webim.msgDirection.RECEIVE) {
             if (typeof msg.read === 'boolean' && !msg.read) {
                 _this.notCount++;
-                webim.convMsg.unreadTotal++;
+                webim.convMessage.unreadTotal++;
             }
         }
         _this.message = msg;
@@ -196,15 +196,15 @@
             var msg = _this.record[i];
             if (typeof msg.read === 'boolean' && !msg.read) {
                 msg.read = true;
-                webim.convMsg.unreadTotal--;
+                webim.convMessage.unreadTotal--;
             }
         }
         _this.notCount = 0;
         return _this.record;
     };
 
-    /** 会话消息 */
-    webim.convMsg = {
+    /** 会话消息存储 */
+    webim.convMessage = {
         // 私聊消息
         chat : {},
         // 聊天室消息
@@ -250,7 +250,7 @@
                         objId : cData.objId})._setRead();
                 if (conv.notCount > 0) {
                     conv.notCount--;
-                    webim.convMsg.unreadTotal--;
+                    webim.convMessage.unreadTotal--;
                 }
             }
         },
