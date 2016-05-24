@@ -1,8 +1,12 @@
 var openChatBoxWin = function(chatObj) {
     var url = "index.php?action=chatbox"
-        + "&uid=" + chatObj.id
-        + "&body_type=" + chatObj.body_type
-        + "&body=" + chatObj.body;
+        + "&uid=" + chatObj.id;
+    if (chatObj.body_type) {
+        url += "&body_type=" + chatObj.body_type;
+    }
+    if (chatObj.body) {
+        url += "&body=" + chatObj.body;
+    }
     this.openWindow(
             _IMC.apiPath + url,
             "window_chat", 790, 500);
