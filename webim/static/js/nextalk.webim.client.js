@@ -90,9 +90,7 @@
         // 未知原因失败
         UNKNOWN      : {code :-1, text : "Unknown."},
         // 请求超时
-        TIMEOUT      : {code : 1, text : "Timed out."},
-        INVALID_TYPE : {code : 2, text : "Invalid type {0} for {1}."},
-        PARAM_EMPTY  : {code : 3, text : "Parameter empty for {0}."}
+        TIMEOUT      : {code : 1, text : "Timed out."}
     };
 
     /** 连接状态 */

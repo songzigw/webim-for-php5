@@ -1136,16 +1136,16 @@ if (!nextalk.webim) {
                     var dataType = keys[key].type;
                     if (!_isSameType(obj[key], dataType)) {
                         throw new Error(
-                                format(webim.error.INVALID_TYPE,
-                                [typeof obj[key], key]));
+                                format({text : "Invalid type {0} for {1}."},
+                                       [typeof obj[key], key]));
                     }
                 } else {
-                    var errorStr = "Unknown property, " + key
+                    var errStr = "Unknown property, " + key
                             + ". Valid properties are:";
                     for ( var key in keys)
                         if (keys.hasOwnProperty(key))
-                            errorStr = errorStr + " " + key;
-                    throw new Error(errorStr);
+                            errStr = errStr + " " + key;
+                    throw new Error(errStr);
                 }
             }
         }
@@ -1153,7 +1153,8 @@ if (!nextalk.webim) {
             if (keys[key].requisite) {
                 if (!obj.hasOwnProperty(key) || !obj[key]) {
                     throw new Error(
-                            format(webim.error.PARAM_EMPTY, [key]));
+                            format({text : "Parameter empty for {0}."},
+                                   [key]));
                 }
             }
         }
