@@ -375,7 +375,7 @@ if (!nextalk.webui) {
                         }
                     }
                     // 处理会话列表
-                    _this.main.loadItem(msg.type, msg.to, msg);
+                    _this.main.loadItem(msg.type, msg.to);
                 } else {
                     chatBox = chatBoxs.get(msg.type, msg.from);
                     if (chatBox) {
@@ -386,7 +386,7 @@ if (!nextalk.webui) {
                         }
                     }
                     // 处理会话列表
-                    _this.main.loadItem(msg.type, msg.from, msg);
+                    _this.main.loadItem(msg.type, msg.from);
                 }
             }
         },

@@ -48,7 +48,11 @@
         _this.objAvatar = null;
         _this.type = msg.type;
         // 最近一次会话时间
-        _this.timestamp = webim.currTimeMillis;
+        _this.timestamp = msg.timestamp;
+        // 最近一次会话方向
+        _this.direction = msg.direction;
+        // 最近一次会话内容
+        _this.body = msg.body;
         // 最近一次会话消息
         _this.message = msg;
         // 会话历史记录

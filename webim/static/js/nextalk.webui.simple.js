@@ -235,13 +235,13 @@ if (!nextalk.webui) {
             });
         });
     };
-    Simple.prototype.loadItem = function(type, other, msg) {
+    Simple.prototype.loadItem = function(type, objId) {
         var _this = this, $items = _this.$items;
 
         $('>li', $items).each(function(i, el) {
             var $el = $(el);
             if ($el.attr('data-toggle') == type
-                    && $el.attr('data-objId') == other) {
+                    && $el.attr('data-objId') == objId) {
                 $el.remove();
                 // break
                 return false;
@@ -250,7 +250,7 @@ if (!nextalk.webui) {
         var cUser = webim.client.getCurrUser();
         var conv = webim.convMessage.get(type,
                                 {currUid : cUser.id,
-                                 objId : other});
+                                 objId : objId});
         _this.itemHTML(conv).prependTo($items);
 
         // 设置底部的未读数据

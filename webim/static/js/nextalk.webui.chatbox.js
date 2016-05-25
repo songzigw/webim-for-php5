@@ -374,7 +374,7 @@ if (!nextalk.webui) {
         _this.sendHTML(msg);
         webim.client.sendMessage(msg);
         // 处理会话列表
-        webui.main.loadItem(msg.type, msg.to, msg);
+        webui.main.loadItem(msg.type, msg.to);
     };
     ChatBox.prototype.message = function(body) {
         var _this = this;
@@ -457,7 +457,7 @@ if (!nextalk.webui) {
                     var msg = _this.message(webim.JSON.stringify(data));
                     webim.client.sendMessage(msg);
                     // 处理会话列表
-                    webui.main.loadItem(msg.type, msg.to, msg);
+                    webui.main.loadItem(msg.type, msg.to);
                     file.sendHtml.find('.body img').attr('src', ret.path);
                 }
             },
