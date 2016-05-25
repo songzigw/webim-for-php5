@@ -159,8 +159,30 @@ if (!nextalk.webui) {
         this.$title.text(u.nick);
     };
     Simple.prototype.itemHTML = function(conv) {
+        // 入参验证
+        webim.validate(conv, {
+            type      : {type : [webim.Conversation.CHAT,
+                                 webim.Conversation.ROOM,
+                                 webim.Conversation.NOTICE],
+                         requisite : true},
+            currUid   : {type : 'string', requisite : true},
+            currNick  : {type : 'string', requisite : true},
+            currAvatar: {type : 'string', requisite : false},
+            objId     : {type : 'string', requisite : true},
+            objName   : {type : 'string', requisite : true},
+            objAvatar : {type : 'string', requisite : false},
+            body      : {type : 'string', requisite : false},
+            timestamp : {type : 'number', requisite : false},
+            direction : {type : [webim.msgDirection.SEND,
+                                 webim.msgDirection.RECEIVE],
+                         requisite : false}
+        });
+
         var $item = webui.$(Simple.CONVERSATION);
         $item.attr('data-toggle', conv.type);
+        $item.attr('data-currUid', conv.currUid);
+        $item.attr('data-currNick', conv.currNick);
+        $item.attr('data-currAvatar', conv.currAvatar);
         $item.attr('data-objId', conv.objId);
         $item.attr('data-objName', conv.objName);
         $item.attr('data-objAvatar', conv.objAvatar);
@@ -208,54 +230,44 @@ if (!nextalk.webui) {
 
             // 点击启动一个新的聊天盒子
             item.click(function() {
-                var objAvatar = item.attr('data-objAvatar');
-                if (item.attr('data-toggle') == ChatBox.NOTICE) {
-                    webui.openChatBox(ChatBox.NOTICE,
-                            ChatBox.NOTICE,
-                            webim.name.NOTICE, objAvatar);
-                    return;
-                }
-
-                var dataId = item.attr('data-objId');
-                if (!dataId || dataId == '') {
-                    return;
-                }
-
-                var name = item.attr('data-objName');
-                if (item.attr('data-toggle') == ChatBox.ROOM) {
-                    webui.openChatBox(ChatBox.ROOM,
-                            dataId, name, objAvatar);
-                    return;
-                }
-                if (item.attr('data-toggle') == ChatBox.CHAT) {
-                    webui.openChatBox(ChatBox.CHAT,
-                            dataId, name, objAvatar);
-                    return;
-                }
+                var conv = {
+                    type : this.attr('data-toggle'),
+                    currUid : this.attr('data-currUid'),
+                    currNick : this.attr('data-currNick'),
+                    currAvatar : this.attr('data-currAvatar'),
+                    objId : this.attr('data-objId'),
+                    objName : this.attr('data-objName'),
+                    objAvatar : this.attr('data-objAvatar')
+                };
+                webui.openChatBox(conv);
             });
         });
     };
-    Simple.prototype.loadItem = function(type, objId) {
+    Simple.prototype.loadItem = function(type, currUid, objId) {
         var _this = this, $items = _this.$items;
 
-        $('>li', $items).each(function(i, el) {
-            var $el = $(el);
-            if ($el.attr('data-toggle') == type
-                    && $el.attr('data-objId') == objId) {
-                $el.remove();
-                // break
-                return false;
-            }
-        });
-        var cUser = webim.client.getCurrUser();
+        _this.removeItem(type, currUid, objId);
         var conv = webim.convMessage.get(type,
-                                {currUid : cUser.id,
+                                {currUid : currUid,
                                  objId : objId});
         _this.itemHTML(conv).prependTo($items);
 
         // 设置底部的未读数据
         _this.showUnreadTotal();
         _this.itemsClick();
+    };
+    Simple.prototype.removeItem = function(type, currUid, objId) {
+        var _this = this, $items = _this.$items;
+        $('>li', $items).each(function(i, el) {
+            var $el = $(el);
+            if ($el.attr('data-toggle') == type
+                    && $el.attr('data-currUid') == currUid
+                    && $el.attr('data-objId') == objId) {
+                $el.remove();
+                // break
+                return false;
+            }
+        });
     };
     Simple.prototype.loadRecently = function(convs) {
         var _this = this, $items = _this.$items.empty();
@@ -265,20 +277,17 @@ if (!nextalk.webui) {
                 $items.append(_this.itemHTML(convs[i]));
             }
         }
+
+        var currUser = webim.client.getCurrUser();
         if (webui.chatObjs) {
             for (var i = 0; i < webui.chatObjs.length; i++) {
                 var chatObj = webui.chatObjs[i];
-                $('>li', $items).each(function(i, el) {
-                    var $el = $(el);
-                    if ($el.attr('data-toggle') == webim.Conversation.CHAT
-                            && $el.attr('data-objId') == chatObj.id) {
-                        $el.remove();
-                        // break
-                        return false;
-                    }
-                });
+                _this.removeItem(chatObj.type, currUser.id, chatObj.id);
                 $items.append(_this.itemHTML({
-                    type : ChatBox.CHAT,
+                    type : chatObj.type,
+                    currUid : currUser.id,
+                    currNick : currUser.nick,
+                    currAvatar : currUser.avatar,
                     objId : chatObj.id,
                     objName : chatObj.name,
                     objAvatar : chatObj.avatar,
@@ -287,24 +296,20 @@ if (!nextalk.webui) {
             }
         }
         if (webui.chatObj) {
-            $('>li', $items).each(function(i, el) {
-                var $el = $(el);
-                if ($el.attr('data-toggle') == webim.Conversation.CHAT
-                        && $el.attr('data-objId') == webui.chatObj.id) {
-                    $el.remove();
-                    // break
-                    return false;
-                }
-            });
-            _this.itemHTML({
-                type : ChatBox.CHAT,
-                objId : webui.chatObj.id,
-                objName : webui.chatObj.name,
-                objAvatar : webui.chatObj.avatar,
-                body : '开始聊天'
-            }).prependTo($items);
-            webui.openChatBox(ChatBox.CHAT, webui.chatObj.id,
-                    webui.chatObj.name, webui.chatObj.avatar);
+            var chatObj = webui.chatObj;
+            _this.removeItem(chatObj.type, currUser.id, chatObj.id);
+            var conv = {
+                    type : chatObj.type,
+                    currUid : currUser.id,
+                    currNick : currUser.nick,
+                    currAvatar : currUser.avatar,
+                    objId : chatObj.id,
+                    objName : chatObj.name,
+                    objAvatar : chatObj.avatar,
+                    body : '开始聊天'
+                };
+            _this.itemHTML(conv).prependTo($items);
+            webui.openChatBox(conv);
         }
         if ($('>li', $items).length === 0) {
             webim.webApi.agents_random(null, function(ret, err) {
@@ -312,7 +317,10 @@ if (!nextalk.webui) {
                     for (var i = 0; i < ret.length; i++) {
                         var chatObj = ret[i];
                         _this.itemHTML({
-                            type : ChatBox.CHAT,
+                            type : webim.Conversation.CHAT,
+                            currUid : currUser.id,
+                            currNick : currUser.nick,
+                            currAvatar : currUser.avatar,
                             objId : chatObj.user_id,
                             objName : chatObj.name,
                             objAvatar : '/images/agentphoto/' + chatObj.face,
@@ -364,8 +372,8 @@ if (!nextalk.webui) {
             for (var i = 0; i < presences.length; i++) {
                 var presence = presences[i];
                 if (presence.from == $el.attr('data-objId')) {
-                    $el.attr('data-show', presence.show);
-                    break;
+                    $el.attr('data-objShow', presence.show);
+                    //break;
                 }
             }
         });

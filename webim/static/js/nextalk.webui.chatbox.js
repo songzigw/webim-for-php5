@@ -40,12 +40,34 @@ if (!nextalk.webui) {
     /**
      * 聊天盒子类
      */
-    var ChatBox = function(type, objId, objName, objAvatar) {
+    var ChatBox = function(conv) {
+        // 入参验证
+        webim.validate(conv, {
+            type      : {type : [webim.Conversation.CHAT,
+                                 webim.Conversation.ROOM,
+                                 webim.Conversation.NOTICE],
+                         requisite : true},
+            currUid   : {type : 'string', requisite : true},
+            currNick  : {type : 'string', requisite : true},
+            currAvatar: {type : 'string', requisite : false},
+            objId     : {type : 'string', requisite : true},
+            objName   : {type : 'string', requisite : true},
+            objAvatar : {type : 'string', requisite : false},
+            body      : {type : 'string', requisite : false},
+            timestamp : {type : 'number', requisite : false},
+            direction : {type : [webim.msgDirection.SEND,
+                                 webim.msgDirection.RECEIVE],
+                         requisite : false}
+        });
+
         var _this = this;
         _this.type = type;
-        _this.objId = objId;
-        _this.objName = objName;
-        _this.objAvatar = objAvatar;
+        _this.currUid = conv.currUid;
+        _this.currNick = conv.currNick;
+        _this.currAvatar = conv.currAvatar;
+        _this.objId = conv.objId;
+        _this.objName = conv.objName;
+        _this.objAvatar = conv.objAvatar;
         _this.focus = false;
         _this.times = 0;
 
@@ -79,10 +101,6 @@ if (!nextalk.webui) {
     };
     webim.ClassEvent.on(ChatBox);
 
-    // 聊天盒子类型
-    ChatBox.NOTICE = webim.Conversation.NOTICE;
-    ChatBox.CHAT = webim.Conversation.CHAT;
-    ChatBox.ROOM = webim.Conversation.ROOM;
     // 聊天盒子模板
     ChatBox.HTML = '<div class="nextalk-page nextalk-screen-right chatbox"\
                             id="nextalk_page_chatbox" style="display: none;">\
@@ -184,7 +202,7 @@ if (!nextalk.webui) {
         _this.resizable();
         _this.toBottom();
 
-        var key = {currUid : webim.client.getCurrUser().id,
+        var key = {currUid : _this.currUid,
                    objId   : _this.objId};
         var conv = webim.convMessage.get(_this.type, key);
         // 去除红色的未读数据
@@ -196,6 +214,7 @@ if (!nextalk.webui) {
         $('>li', $items).each(function(i, el) {
             var $el = $(el);
             if ($el.attr('data-toggle') == _this.type
+                    && $el.attr('data-currUid') == _this.currUid
                     && $el.attr('data-objId') == _this.objId) {
                 if (conv && conv.notCount > 0) {
                     $el.find('span.mzen-badge-danger').text(
@@ -217,7 +236,9 @@ if (!nextalk.webui) {
 
         // 历史数据库中查询
         var history = webim.history;
-        history.load(_this.type, _this.objId, function(msgs) {
+        history.load({type : _this.type,
+                      currUid : _this.currUid,
+                      objId : _this.objId}, function(msgs) {
             if (msgs.length == 0) {
                 for (var i = 0, len = record.length; i < len; i++) {
                     var msg = record[i];
@@ -240,7 +261,7 @@ if (!nextalk.webui) {
                     }
                 }
             }
-            
+
             // 发送默认消息
             if (webui.chatObj
                     && webui.chatObj.id == _this.objId
@@ -374,21 +395,19 @@ if (!nextalk.webui) {
         _this.sendHTML(msg);
         webim.client.sendMessage(msg);
         // 处理会话列表
-        webui.main.loadItem(msg.type, msg.to);
+        webui.main.loadItem(msg.type, _this.currUid, msg.to);
     };
     ChatBox.prototype.message = function(body) {
         var _this = this;
-        var currUser = webim.client.getCurrUser();
-
         var msg = {
-            type : _this.type,
-            from : currUser.id,
-            nick : currUser.nick,
-            avatar : currUser.avatar,
-            to : _this.objId,
-            to_name : _this.objName,
+            type      : _this.type,
+            from      : _this.currUid,
+            nick      : _this.currNick,
+            avatar    : _this.currAvatar,
+            to        : _this.objId,
+            to_name   : _this.objName,
             to_avatar : _this.objAvatar,
-            body : body,
+            body      : body,
             timestamp : webim.timestamp()
         };
         return msg;
@@ -396,10 +415,13 @@ if (!nextalk.webui) {
     ChatBox.prototype.handleHTML = function() {
         var _this = this, $html = _this.$html;
 
-        if (_this.type == ChatBox.NOTICE) {
+        if (_this.type == webim.Conversation.NOTICE) {
             $('footer', $html).hide();
         }
         $html.attr('data-type', _this.type);
+        $html.attr('data-currUid', _this.currUid);
+        $html.attr('data-currNick', _this.currNick);
+        $html.attr('data-currAvatar', _this.currAvatar);
         $html.attr('data-objId', _this.objId);
         $html.attr('data-objName', _this.objName);
         $html.attr('data-objAvatar', _this.objAvatar);
@@ -457,7 +479,7 @@ if (!nextalk.webui) {
                     var msg = _this.message(webim.JSON.stringify(data));
                     webim.client.sendMessage(msg);
                     // 处理会话列表
-                    webui.main.loadItem(msg.type, msg.to);
+                    webui.main.loadItem(msg.type, _this.currUid, msg.to);
                     file.sendHtml.find('.body img').attr('src', ret.path);
                 }
             },
@@ -480,14 +502,14 @@ if (!nextalk.webui) {
     ChatBox.prototype.showOnline = function() {
         var _this = this;
         window.clearTimeout(_this.showTipsTask);
-        _this.msgTips.show('用户在线，可以聊天...', 'mzen-tips-success');
+        _this.msgTips.show('对方当前在线...', 'mzen-tips-success');
         _this.showTipsTask = setTimeout(function() {
             _this.hideTips();
         }, 2000);
     };
     ChatBox.prototype.showUnline = function() {
         window.clearTimeout(this.showTipsTask);
-        this.msgTips.show('用户已经下线...', 'mzen-tips-danger');
+        this.msgTips.show('对方已经离线...', 'mzen-tips-danger');
     };
     ChatBox.prototype.hideTips = function() {
         this.msgTips.hide();
@@ -503,45 +525,56 @@ if (!nextalk.webui) {
     /** 定义聊天盒子存储空间 */
     webui._chatBoxs = {
         // 系统通知盒子
-        notice : undefined,
+        notice : {},
         // 房间聊天盒子
         room : {},
         // 私信聊天盒子
         chat : {},
 
-        get : function(boxType, key) {
-            if (boxType == ChatBox.NOTICE)
-                return this[boxType];
-            return this[boxType][key];
+        get : function(type, key) {
+            // 入参验证
+            validate(key, {
+                currUid : {type : 'string', requisite : true},
+                objId   : {type : 'string', requisite : true}
+            });
+            var _this = this;
+            key = _this._key(key.currUid, key.objId);
+            return _this[type][key];
         },
 
-        set : function(boxType, key, value) {
+        set : function(type, key, value) {
+            // 入参验证
+            validate(key, {
+                currUid : {type : 'string', requisite : true},
+                objId   : {type : 'string', requisite : true}
+            });
             var _this = this;
-            if (boxType == ChatBox.NOTICE) {
-                _this[boxType] = value;
-                return;
-            }
-            _this[boxType][key] = value;
+            key = _this._key(key.currUid, key.objId);
+            _this[type][key] = value;
+        },
+
+        _key : function(currUid, objId) {
+            return [currUid, objId].join('_');
         },
 
         hideAll : function() {
-            if (this[ChatBox.NOTICE]) {
-                this[ChatBox.NOTICE].hide();
+            if (var key in this[webim.Conversation.NOTICE]) {
+                this[webim.Conversation.NOTICE][key].hide();
             }
-            for (var key in this[ChatBox.ROOM]) {
-                this[ChatBox.ROOM][key].hide();
+            for (var key in this[webim.Conversation.ROOM]) {
+                this[webim.Conversation.ROOM][key].hide();
             }
-            for (var key in this[ChatBox.CHAT]) {
-                this[ChatBox.CHAT][key].hide();
+            for (var key in this[webim.Conversation.CHAT]) {
+                this[webim.Conversation.CHAT][key].hide();
             }
         },
         
         onPresences : function(presences) {
-            for (var key in this[ChatBox.CHAT]) {
-                var box = this[ChatBox.CHAT][key];
+            for (var key in this[webim.Conversation.CHAT]) {
+                var box = this[webim.Conversation.CHAT][key];
                 for (var i = 0; i < presences.length; i++) {
                     var presence = presences[i];
-                    if (presence.from == box.id) {
+                    if (presence.from == box.objId) {
                         box.trigger('presence', [ presence.show ]);
                     }
                 }
@@ -549,14 +582,18 @@ if (!nextalk.webui) {
         }
     };
 
-    webui.openChatBox = function(boxType, objId, objName, objAvatar) {
+    webui.openChatBox = function(conv) {
         var _this = this;
         // 隐藏所有的盒子
         _this._chatBoxs.hideAll();
-        var chatBox = _this._chatBoxs.get(boxType, objId);
+        var key = {
+            currUid : conv.currUid,
+            objId   : conv.objId
+        };
+        var chatBox = _this._chatBoxs.get(conv.type, key);
         if (!chatBox) {
-            chatBox = new ChatBox(boxType, objId, objName, objAvatar);
-            _this._chatBoxs.set(boxType, objId, chatBox);
+            chatBox = new ChatBox(conv);
+            _this._chatBoxs.set(type, key, chatBox);
         }
         chatBox.show();
     };

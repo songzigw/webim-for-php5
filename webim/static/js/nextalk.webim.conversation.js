@@ -71,7 +71,7 @@
         validate(msg, {
             type      : {type : [Conversation.CHAT,
                                  Conversation.ROOM,
-                                 Conversation.notice],
+                                 Conversation.NOTICE],
                          requisite : true},
             from      : {type : 'string', requisite : true},
             nick      : {type : 'string', requisite : true},

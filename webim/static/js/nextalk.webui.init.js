@@ -375,7 +375,7 @@ if (!nextalk.webui) {
                         }
                     }
                     // 处理会话列表
-                    _this.main.loadItem(msg.type, msg.to);
+                    _this.main.loadItem(msg.type, msg.from, msg.to);
                 } else {
                     chatBox = chatBoxs.get(msg.type, msg.from);
                     if (chatBox) {
@@ -386,7 +386,12 @@ if (!nextalk.webui) {
                         }
                     }
                     // 处理会话列表
-                    _this.main.loadItem(msg.type, msg.from);
+                    var currUser = webim.client.getCurrUser();
+                    if (currUser.type == webim.userType.GENERAL) {
+                        _this.main.loadItem(msg.type, currUser.id, msg.from);
+                    } else if (currUser.type == webim.userType.SUPERVISOR) {
+                        _this.main.loadItem(msg.type, msg.to, msg.from);
+                    }
                 }
             }
         },
