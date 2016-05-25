@@ -295,11 +295,10 @@
                     var cUser = webim.client.getCurrUser();
                     for (var i = 0; i < ret.length; i++) {
                         var c = ret[i];
+                        var agent = webim.client.getAgent(c.uid);
                         var msg = {
                             type      : c.type,
                             from      : c.uid,
-                            nick      : cUser.nick,
-                            avatar    : cUser.avatar,
                             to        : c.oid,
                             to_name   : c.oname,
                             to_avatar : c.oavatar,
@@ -309,6 +308,16 @@
                             // 可能与实际不符，但这种假设，无影响
                             direction : webim.msgDirection.SEND
                         };
+                        if (agent) {
+                            msg.nick   = agent.nick;
+                            msg.avatar = agent.avatar;
+                        } else {
+                            if (c.uid != cUser.id) {
+                                continue;
+                            }
+                            msg.nick   = cUser.nick;
+                            msg.avatar = cUser.avatar;
+                        }
                         convs.push(Conversation.parser(msg));
                     }
                 }

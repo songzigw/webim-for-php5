@@ -338,7 +338,7 @@
         // 接收消息
         _this.bind("messages", function(ev, data) {
             console.log("messages: " + JSON.stringify(data));
-            var u = _this.getCurrUser();
+            var cu = _this.getCurrUser();
             for (var i = 0; i < data.length; i++) {
                 var msg = data[i];
                 var direction = webim.msgDirection.RECEIVE;
@@ -346,7 +346,7 @@
                 msg.timestamp = Number(msg.timestamp);
                 msg.read = false;
                 // 如果是自己发送出去的
-                if (msg.from == u.id) {
+                if (msg.from == cu.id || _this.getAgent(msg.from)) {
                     direction = webim.msgDirection.SEND;
                     msg.direction = direction;
                     msg.read = true;
@@ -385,6 +385,18 @@
         rooms : [],
         /** 现场状态 */
         presences : {},
+        /** 被监管的用户 */
+        agents : [],
+
+        getAgent : function(uid) {
+            for (var i = 0; i < this.agents.length; i++) {
+                var agent = this.agents[i];
+                if (agent.id == uid) {
+                    return agent;
+                }
+            }
+            return null;
+        },
 
         _serverTime : function(time) {
             this.serverTime = time;
