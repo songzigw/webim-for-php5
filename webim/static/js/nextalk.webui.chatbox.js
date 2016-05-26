@@ -603,7 +603,7 @@ if (!nextalk.webui) {
         var chatBox = _this._chatBoxs.get(conv.type, key);
         if (!chatBox) {
             chatBox = new ChatBox(conv);
-            _this._chatBoxs.set(type, key, chatBox);
+            _this._chatBoxs.set(conv.type, key, chatBox);
         }
         chatBox.show();
     };
