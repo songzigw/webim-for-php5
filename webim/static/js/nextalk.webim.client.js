@@ -227,6 +227,8 @@
         // 消息提示音
         playSound : true
     };
+    /** 登入动画延时 */
+    Client.LOGIN_DELAY = 0;
     /** 实例化一个Client */
     Client._instance = null;
     /**
@@ -683,7 +685,7 @@
                         // 可能是网络不可用，或者其他原因???
                         _this.trigger("login.fail", [ err ]);
                     }
-                }, 300);
+                }, Client.LOGIN_DELAY);
             });
         },
 

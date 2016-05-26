@@ -281,11 +281,12 @@ if (!nextalk.webui) {
         });
     };
 
+    webui.CONNECT_DELAY = 0;
     webui.connectServer = function() {
         var _this = this;
         window.setTimeout(function() {
             _this._connectServer();
-        }, 0);
+        }, _this.CONNECT_DELAY);
     };
 
     webui._connectServer = function() {
