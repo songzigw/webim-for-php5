@@ -86,12 +86,13 @@ if (!nextalk.webui) {
                             id="nextalk_page_init">\
                             <div class="mzen-content\
                                 mzen-flex-col mzen-flex-center">\
-                            <img alt="logo" src="" data-toggle="logo_index"/>\
+                            <img alt="logo" src="{{logo}}"/>\
                             <p>一起来聊聊</p></div>\
                     </div>',
             init : function() {
                 var _ui = this;
-                _ui.$html = webui.$(_ui.HTML).hide();
+                _ui.$html = $(completion(_ui.HTML,
+                        {logo : webim.imgs.LOGO_INDEX})).hide();
                 _ui.$html.appendTo(_this.$body);
             },
             show : function() {
@@ -108,14 +109,15 @@ if (!nextalk.webui) {
             HTML : '<div class="nextalk-page nextalk-screen-full nextalk-page-login"\
                             id="nextalk_page_login">\
                             <div class="mzen-content mzen-flex-col mzen-flex-center">\
-                            <img alt="logo" src="" data-toggle="logo_index"/>\
+                            <img alt="logo" src="{{logo}}"/>\
                             <p>正在登入中...</p>\
                             <button class="mzen-btn mzen-btn-danger">重新登入</button>\
                             </div>\
                     </div>',
             init : function() {
                 var _ui = this;
-                _ui.$html = webui.$(_ui.HTML).hide();
+                _ui.$html = $(completion(_ui.HTML,
+                        {logo : webim.imgs.LOGO_INDEX})).hide();
                 _ui.$btn = $('button', _ui.$html).hide();
                 _ui.$p = $('p', _ui.$html);
                 _ui._handler();

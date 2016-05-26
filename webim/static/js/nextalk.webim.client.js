@@ -186,7 +186,7 @@
             GROUP      : _this.resPath + 'imgs/group.gif',
             NOTICE     : _this.resPath + 'imgs/message_notice.png',
             LOGO_INDEX : _this.resPath + 'imgs/logo.png',
-            LOGO       : _this.resPath + 'imgs/webim.72x72.png'
+            LOGO_MIN   : _this.resPath + 'imgs/webim.72x72.png'
         };
 
         window.setInterval(function() {

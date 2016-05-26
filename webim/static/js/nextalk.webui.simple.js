@@ -41,7 +41,8 @@ if (!nextalk.webui) {
      */
     var Simple = function() {
         var _this = this;
-        _this.$html = webui.$(Simple.HTML);
+        _this.$html = webui.$(completion(Simple.HTML,
+                {logo : webim.imgs.LOGO_MIN}));
         _this.$header = $('header', _this.$html);
         _this.$title = $('.mzen-title', _this.$header);
         _this.$currUser = $('.nextalk-user', _this.$header);
@@ -84,7 +85,7 @@ if (!nextalk.webui) {
                                 </div>\
                                 <div class="mzen-title">???</div>\
                                 <a class="mzen-pull-left mzen-img nextalk-logo">\
-                                <img class="mzen-img-object" src="" data-toggle="logo"/>\
+                                <img class="mzen-img-object" src="{{logo}}"/>\
                                 </a>\
                         </header>\
                         <div class="nextalk-scroll" id="nextalk_conversations">\
