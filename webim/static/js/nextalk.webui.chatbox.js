@@ -61,7 +61,7 @@ if (!nextalk.webui) {
         });
 
         var _this = this;
-        _this.type = type;
+        _this.type = conv.type;
         _this.currUid = conv.currUid;
         _this.currNick = conv.currNick;
         _this.currAvatar = conv.currAvatar;
