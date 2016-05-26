@@ -125,7 +125,7 @@ if (!window.nextalk) {
         document.write('<link rel="stylesheet" type="text/css" href="'
                 + _this.resPath + 'css/nextalk-iframe.css" />');
         document.write('<script type="text/javascript" src="' + _this.resPath
-                + 'js/nextalk-iframe.js"></script>');
+                + 'js/nextalk.iframe.js"></script>');
         var task = window.setInterval(function() {
             if (!window.nextalk.iframe) {
                 return;
