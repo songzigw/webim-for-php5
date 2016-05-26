@@ -196,14 +196,14 @@
                         self._triggerMsg(type, id, data);
                     }
                 },
-                load : function(type, id, callback) {
+                load : function(conv, callback) {
                     var self = this;
-                    self.data[type][id] = [];
 
                     var params = {
-                        ticket : webim.client.getConnection().ticket,
-                        type : type,
-                        id : id
+                        ticket  : webim.client.getConnection().ticket,
+                        type    : conv.type,
+                        currUid : conv.currUid,
+                        objId   : conv.objId
                     };
                     webim.webApi.history(params, function(ret, err) {
                         var currUser = webim.client.getCurrUser();

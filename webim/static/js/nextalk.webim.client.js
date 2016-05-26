@@ -134,8 +134,12 @@
 
     /** 会话主体类型 */
     webim.userType = {
-        SUPERVISOR : 'supervisor',
-        GENERAL    : 'general'
+        // 服务
+        SERVER  : 'server',
+        // 坐席
+        AGENT   : 'agent',
+        // 普通
+        GENERAL : 'general'
     };
 
     // 资源文件根路径

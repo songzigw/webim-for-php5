@@ -363,36 +363,23 @@ if (!nextalk.webui) {
             var _this = this, chatBoxs = _this._chatBoxs;
             for (var i = 0; i < data.length; i++) {
                 var msg = data[i];
-                var chatBox;
-                // 如果是自己发送出去的
-                if (msg.direction == webim.msgDirection.SEND) {
-                    chatBox = chatBoxs.get(msg.type, msg.to);
-                    if (chatBox) {
+                var conv = webim.Conversation.parser(msg);
+                var chatBox = chatBoxs.get(conv.type,
+                                          {currUid : conv.currUid,
+                                           objId   : conv.objId});
+                if (chatBox) {
+                    if (msg.direction == webim.msgDirection.SEND) {
                         chatBox.sendHTML(msg);
-                        if (chatBox.focus == true) {
-                            // 设置为已读
-                            webim.convMessage.read(msg);
-                        }
-                    }
-                    // 处理会话列表
-                    _this.main.loadItem(msg.type, msg.from, msg.to);
-                } else {
-                    chatBox = chatBoxs.get(msg.type, msg.from);
-                    if (chatBox) {
+                    } else {
                         chatBox.receiveHTML(msg);
-                        if (chatBox.focus == true) {
-                            // 设置为已读
-                            webim.convMessage.read(msg);
-                        }
                     }
-                    // 处理会话列表
-                    var currUser = webim.client.getCurrUser();
-                    if (currUser.type == webim.userType.GENERAL) {
-                        _this.main.loadItem(msg.type, currUser.id, msg.from);
-                    } else if (currUser.type == webim.userType.SUPERVISOR) {
-                        _this.main.loadItem(msg.type, msg.to, msg.from);
+                    if (chatBox.focus == true) {
+                        // 设置为已读
+                        webim.convMessage.read(msg);
                     }
                 }
+                // 处理会话列表
+                _this.main.loadItem(conv.type, conv.currUid, conv.objId);
             }
         },
         _onStatus : function(ev, data) {

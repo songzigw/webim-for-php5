@@ -166,7 +166,7 @@
                     }
                     break;
             }
-        } else if (currUser.type == webim.userType.SUPERVISOR) {
+        } else if (currUser.type == webim.userType.SERVER) {
             if (msg.type != webim.Conversation.CHAT) {
                 throw new Error('Supervisor message type error.');
             }
