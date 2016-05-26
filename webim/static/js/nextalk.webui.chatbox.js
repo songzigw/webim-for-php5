@@ -562,7 +562,7 @@ if (!nextalk.webui) {
         },
 
         hideAll : function() {
-            if (var key in this[webim.Conversation.NOTICE]) {
+            for (var key in this[webim.Conversation.NOTICE]) {
                 this[webim.Conversation.NOTICE][key].hide();
             }
             for (var key in this[webim.Conversation.ROOM]) {
