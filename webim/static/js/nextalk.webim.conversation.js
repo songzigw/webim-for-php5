@@ -37,7 +37,7 @@
      */
     var Conversation = function(msg) {
         var _this = this;
-        _this.notCount = 0;
+        _this.type = msg.type;
         // 当前主体ID
         _this.currUid = null;
         _this.currNick = null;
@@ -46,19 +46,19 @@
         _this.objId = null;
         _this.objName = null;
         _this.objAvatar = null;
-        _this.type = msg.type;
         // 最近一次会话时间
         _this.timestamp = msg.timestamp;
         // 最近一次会话方向
         _this.direction = msg.direction;
         // 最近一次会话内容
         _this.body = msg.body;
+
+        extend(_this, Conversation.parser(msg));
+        _this.notCount = 0;
         // 最近一次会话消息
         _this.message = msg;
         // 会话历史记录
         _this.record = [];
-
-        extend(_this, Conversation.parser(msg));
     }
     // 私聊
     Conversation.CHAT   = 'chat';

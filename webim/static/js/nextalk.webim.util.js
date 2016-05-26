@@ -1139,14 +1139,15 @@ if (!nextalk.webim) {
                                 format({text : "Invalid type {0} for {1}."},
                                        [typeof obj[key], key]));
                     }
-                } else {
-                    var errStr = "Unknown property, " + key
-                            + ". Valid properties are:";
-                    for ( var key in keys)
-                        if (keys.hasOwnProperty(key))
-                            errStr = errStr + " " + key;
-                    throw new Error(errStr);
                 }
+//                else {
+//                    var errStr = "Unknown property, " + key
+//                            + ". Valid properties are:";
+//                    for ( var key in keys)
+//                        if (keys.hasOwnProperty(key))
+//                            errStr = errStr + " " + key;
+//                    throw new Error(errStr);
+//                }
             }
         }
         for (var key in keys) {
