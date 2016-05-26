@@ -230,14 +230,15 @@ if (!nextalk.webui) {
 
             // 点击启动一个新的聊天盒子
             item.click(function() {
+                var $this = $(this);
                 var conv = {
-                    type : this.attr('data-toggle'),
-                    currUid : this.attr('data-currUid'),
-                    currNick : this.attr('data-currNick'),
-                    currAvatar : this.attr('data-currAvatar'),
-                    objId : this.attr('data-objId'),
-                    objName : this.attr('data-objName'),
-                    objAvatar : this.attr('data-objAvatar')
+                    type : $this.attr('data-toggle'),
+                    currUid : $this.attr('data-currUid'),
+                    currNick : $this.attr('data-currNick'),
+                    currAvatar : $this.attr('data-currAvatar'),
+                    objId : $this.attr('data-objId'),
+                    objName : $this.attr('data-objName'),
+                    objAvatar : $this.attr('data-objAvatar')
                 };
                 webui.openChatBox(conv);
             });
