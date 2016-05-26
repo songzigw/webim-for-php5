@@ -590,6 +590,12 @@ if (!nextalk.webui) {
         var _this = this;
         // 隐藏所有的盒子
         _this._chatBoxs.hideAll();
+        if (!conv.currUid) {
+            var cUser = webim.client.getCurrUser();
+            conv.currUid = cUser.id;
+            conv.currNick = cUser.nick;
+            conv.currAvatar = cUser.avatar;
+        }
         var key = {
             currUid : conv.currUid,
             objId   : conv.objId

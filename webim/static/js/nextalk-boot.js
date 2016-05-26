@@ -105,6 +105,7 @@ if (chatBtns && chatBtns.length > 0) {
             continue;
         }
         var chatObj = {
+            type : 'chat',
             id : id,
             name : name,
             avatar : avatar
@@ -127,6 +128,7 @@ if (chatBtns && chatBtns.length > 0) {
             var bodytype = this.getAttribute('data-bodytype');
             var body = this.getAttribute('data-body');
             var chatObj = {
+                type : 'chat',
                 id : id,
                 name : name,
                 avatar : avatar,

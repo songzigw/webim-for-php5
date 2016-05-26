@@ -134,7 +134,12 @@ if (!window.nextalk) {
         }
         var ifw = window['nextalk_iframe'].window;
         if (ifw || ifw.nextalk) {
-            ifw.nextalk.webui.openChatBox('chat', id, name, avatar);
+            ifw.nextalk.webui.openChatBox({
+                type : 'chat',
+                objId : id,
+                objName : name,
+                objAvatar : avatar
+            });
         }
     };
 
