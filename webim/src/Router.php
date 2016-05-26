@@ -458,7 +458,8 @@ EOF;
      */
 	public function history() {
         $uid = $this->user->id;
-		$with = $this->input('id');
+        $uid = $this->input('currUid');
+		$with = $this->input('objId');
 		$type = $this->input('type');
 		$histories = $this->model->histories($uid, $with, $type);
 		$this->jsonReply($histories);
