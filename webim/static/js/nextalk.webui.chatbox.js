@@ -412,7 +412,7 @@ if (!nextalk.webui) {
             to_name   : _this.objName,
             to_avatar : _this.objAvatar,
             body      : body,
-            timestamp : webim.timestamp()
+            timestamp : webim.currTimeMillis
         };
         return msg;
     }

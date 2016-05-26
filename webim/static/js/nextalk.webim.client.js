@@ -405,7 +405,8 @@
         },
 
         _serverTime : function(time) {
-            this.serverTime = time;
+            this.serverTime = Number(time);
+            webim.currTimeMillis = Number(time);
         },
 
         _connection : function(connInfo) {
