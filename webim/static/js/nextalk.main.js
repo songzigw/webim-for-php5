@@ -111,10 +111,10 @@ if (!window.nextalk) {
             if (!window.$) {
                 return;
             }
-            if (!nextalk.webim) {
+            if (!nextalk.webim || !nextalk.webim.load) {
                 return;
             }
-            if (!nextalk.webui) {
+            if (!nextalk.webui || !nextalk.webui.load) {
                 return;
             }
             window.clearInterval(task);
@@ -128,7 +128,7 @@ if (!window.nextalk) {
         document.write('<script type="text/javascript" src="' + _this.resPath
                 + 'js/nextalk.iframe.js?' + v + '"></script>');
         var task = window.setInterval(function() {
-            if (!window.nextalk.iframe) {
+            if (!nextalk.iframe) {
                 return;
             }
             window.clearInterval(task);
@@ -150,7 +150,7 @@ if (!window.nextalk) {
         document.write('<script type="text/javascript" src="' + _this.resPath
                 + 'js/nextalk.webim.client.js?' + v + '"></script>');
         var task = window.setInterval(function() {
-            if (!nextalk.webim) {
+            if (!nextalk.webim || !nextalk.webim.load) {
                 return;
             }
             window.clearInterval(task);
@@ -251,7 +251,7 @@ if (!window.nextalk) {
             channelType : _this.channelType
         };
         nextalk.iframe.go();
-        //delete window.nextalk.main;
+        //delete nextalk.main;
     };
 
     var top = window.top;

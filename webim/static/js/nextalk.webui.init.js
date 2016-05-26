@@ -403,4 +403,5 @@ if (!nextalk.webui) {
         }
     });
 
+    webui.load = true;
 })(nextalk.webim, nextalk.webui);

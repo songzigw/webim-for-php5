@@ -748,7 +748,8 @@
         }
         conversation.add(msg);
     };
-    
+
     // webim.Client = Client;
 
+    webim.load = true;
 })(nextalk.webim);
