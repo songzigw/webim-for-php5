@@ -537,7 +537,7 @@ if (!nextalk.webui) {
 
         get : function(type, key) {
             // 入参验证
-            validate(key, {
+            webim.validate(key, {
                 currUid : {type : 'string', requisite : true},
                 objId   : {type : 'string', requisite : true}
             });
@@ -548,7 +548,7 @@ if (!nextalk.webui) {
 
         set : function(type, key, value) {
             // 入参验证
-            validate(key, {
+            webim.validate(key, {
                 currUid : {type : 'string', requisite : true},
                 objId   : {type : 'string', requisite : true}
             });
