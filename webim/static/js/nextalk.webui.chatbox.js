@@ -80,8 +80,12 @@ if (!nextalk.webui) {
 
         _this.emot = new Emot();
         var $textarea = $('footer .nextalk-form textarea', $html);
+        $textarea.on('focus', function(ev) {
+            _this.emot.hide();
+        });
         _this.emot.callback = function(emot) {
             $textarea.val($textarea.val() + emot);
+            $textarea.focus();
         };
         $('footer .nextalk-form .mzen-input', $html)
                 .append(_this.emot.$html);

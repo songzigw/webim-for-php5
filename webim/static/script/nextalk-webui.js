@@ -1383,8 +1383,12 @@
 
         _this.emotUI = new EmotUI();
         var $textarea = $('footer .nextalk-form textarea', $html);
+        $textarea.on('focus', function(ev) {
+            _this.emotUI.hide();
+        });
         _this.emotUI.callback = function(emot) {
             $textarea.val($textarea.val() + emot);
+            $textarea.focus();
         };
         $('footer .nextalk-form .mzen-input', $html)
                 .append(_this.emotUI.$html);
