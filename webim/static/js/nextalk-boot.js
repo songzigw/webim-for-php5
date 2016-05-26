@@ -42,7 +42,7 @@ var getElementsByToggle = function(toggle) {
     return targets;
 };
 
-nextalkMain.setConfig({
+nextalk.main.setConfig({
     // 引入资源文件的根路径
     resPath : _IMC.resPath,
     // API根路径
@@ -84,11 +84,11 @@ nextalkMain.setConfig({
     mobile : _IMC.mobile
 });
 if (_IMC.channelType) {
-    nextalkMain.channelType = _IMC.channelType
+    nextalk.main.channelType = _IMC.channelType
 }
 if (_IMC.chatObj) {
-    nextalkMain.chatObj = _IMC.chatObj;
-    nextalkMain.iframe = false;
+    nextalk.main.chatObj = _IMC.chatObj;
+    nextalk.main.iframe = false;
 }
 
 // 给聊天按钮设置单击事件
@@ -110,12 +110,12 @@ if (chatBtns && chatBtns.length > 0) {
             avatar : avatar
         };
         if (n == 0) {
-            nextalkMain.chatlinkIds = id;
+            nextalk.main.chatlinkIds = id;
         } else {
-            nextalkMain.chatlinkIds += ',' + id;
+            nextalk.main.chatlinkIds += ',' + id;
         }
         n++;
-        nextalkMain.chatObjs.push(chatObj);
+        nextalk.main.chatObjs.push(chatObj);
         btn.onclick = function() {
             var id = this.getAttribute('data-id');
             if (!id) {
@@ -136,11 +136,11 @@ if (chatBtns && chatBtns.length > 0) {
             if (win == 'win') {
                 openChatBoxWin(chatObj);
             } else {
-                nextalkMain.openChatBoxUI(chatObj);
+                nextalk.main.openChatBoxUI(chatObj);
             }
         };
     }
-    nextalkMain.onChatlinks = function(data) {
+    nextalk.main.onChatlinks = function(data) {
         if (data) {
             for (var i = 0; i < chatBtns.length; i++) {
                 var btn = chatBtns[i];
@@ -164,4 +164,4 @@ if (chatBtns && chatBtns.length > 0) {
     };
 }
 
-nextalkMain.go();
+nextalk.main.go();

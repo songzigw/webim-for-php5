@@ -135,11 +135,11 @@ if (!nextalk.webui) {
             }
         };
         _this.loginUI.init();
-        
+
         _this.main = new Simple();
         _this.$body.append(_this.main.$html);
         _this.main.resizable();
-        
+
         // 界面渲染完成
         // -----------------------------------------------------
 

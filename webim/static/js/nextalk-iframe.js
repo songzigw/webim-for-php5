@@ -1,12 +1,16 @@
 /*!
- * nextalk-top.js v1.0.0
+ * nextalk.iframe.js v1.0.0
  * http://nextalk.im/
  *
  * Copyright (c) 2014 NexTalk
  *
  */
 
-(function(win, undefined) {
+if (!window.nextalk) {
+    window.nextalk = {};
+}
+
+(function(nextalk) {
 
     "use strict";
 
@@ -134,5 +138,5 @@
         }
     };
 
-    win.nextalkIframe = iframe;
-})(window);
+    nextalk.iframe = iframe;
+})(nextalk);

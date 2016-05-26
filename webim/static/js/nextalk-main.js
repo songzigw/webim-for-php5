@@ -1,7 +1,19 @@
+/*!
+ * nextalk.main.js v1.0.0
+ * http://nextalk.im/
+ *
+ * Copyright (c) 2014 NexTalk
+ *
+ */
+
+if (!window.nextalk) {
+    window.nextalk = {};
+}
+
 /**
  * 程序入口
  */
-(function() {
+(function(nextalk) {
 
     "use strict";
 
@@ -45,7 +57,7 @@
     main._loadDep = function() {
         var _this = this;
 
-	if (typeof _this.hidden == 'boolean'
+        if (typeof _this.hidden == 'boolean'
             && _this.hidden == true) {
             _this._loadDepHidden();
             return;
@@ -98,9 +110,6 @@
             if (!window.$) {
                 return;
             }
-            if (!window.nextalk) {
-                return;
-            }
             if (!nextalk.webim) {
                 return;
             }
@@ -118,7 +127,7 @@
         document.write('<script type="text/javascript" src="' + _this.resPath
                 + 'js/nextalk-iframe.js"></script>');
         var task = window.setInterval(function() {
-            if (!window.nextalkIframe) {
+            if (!window.nextalk.iframe) {
                 return;
             }
             window.clearInterval(task);
@@ -140,9 +149,6 @@
         document.write('<script type="text/javascript" src="' + _this.resPath
                 + 'js/nextalk.webim.client.js"></script>');
         var task = window.setInterval(function() {
-            if (!window.nextalk) {
-                return;
-            }
             if (!nextalk.webim) {
                 return;
             }
@@ -226,8 +232,8 @@
     };
     main._goIframe = function() {
         var _this = this;
-        main.openChatBoxUI = nextalkIframe.openChatBoxUI;
-        nextalkIframe.config = {
+        main.openChatBoxUI = nextalk.iframe.openChatBoxUI;
+        nextalk.iframe.config = {
             // 引入资源文件的根路径
             resPath : _this.resPath,
             // API根路径
@@ -243,16 +249,16 @@
             onChatlinks : _this.onChatlinks,
             channelType : _this.channelType
         };
-        nextalkIframe.go();
-        //delete window.nextalkMain;
+        nextalk.iframe.go();
+        //delete window.nextalk.main;
     };
 
     var top = window.top;
     if (top != window.self) {
         // 获取父窗体中的配置
-        main.setConfig(top.nextalkIframe.config);
+        main.setConfig(top.nextalk.iframe.config);
     }
 
-    window.nextalkMain = main;
-})();
+    nextalk.main = main;
+})(nextalk);
 
