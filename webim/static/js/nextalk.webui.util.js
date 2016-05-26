@@ -16,6 +16,11 @@ if (!nextalk.webui) {
 
     webui.$ = function(html) {
         var $h = $(html);
+        $('img', $h).each(function(i, el) {
+            $(el).error(function() {
+                $(this).attr('src', webim.imgs.HEAD);
+            });
+        });
         $('img[data-toggle=logo_index]', $h).each(function() {
             $(this).attr('src', webim.imgs.LOGO_INDEX);
         });
@@ -24,11 +29,6 @@ if (!nextalk.webui) {
         });
         $('img[data-toggle=head]', $h).each(function() {
             $(this).attr('src', webim.imgs.HEAD);
-        });
-        $('img', $h).each(function(i, el) {
-            $(el).error(function() {
-                $(this).attr('src', webim.imgs.HEAD);
-            });
         });
         return $h;
     };
