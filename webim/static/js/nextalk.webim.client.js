@@ -132,13 +132,13 @@
         UNAVAILABLE : "unavailable"
     };
 
-    /** 会话主体类型 */
+    /** 聊天用户类型 */
     webim.userType = {
-        // 服务
-        SERVER  : 'server',
-        // 坐席
+        // 幕后用户
+        BACKSTAGE  : 'backstage',
+        // 坐席用户
         AGENT   : 'agent',
-        // 普通
+        // 普通用户
         GENERAL : 'general'
     };
 
