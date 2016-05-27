@@ -287,7 +287,7 @@ if (!nextalk.webui) {
     ChatBox.INSERT = '\
         <ul class="mzen-list-view chatbox-insert">\
         <li class="mzen-list-view-cell mzen-img">\
-        <img class="mzen-img-object mzen-pull-left" src="http://www.qiaoju360.com/data/city/%E5%9C%A3%E6%8B%89%E8%92%99.jpg">\
+        <a><img class="mzen-img-object mzen-pull-left" src="http://www.qiaoju360.com/data/city/%E5%9C%A3%E6%8B%89%E8%92%99.jpg"></a>\
         <div class="mzen-img-body">图文列表\
             <p class="mzen-ellipsis-2">图文列表缩略图在左边的样式，默认大小为80PX，文字介绍内容可以为一行也可以为两行，超出部分自动省略</p>\
         </div></li>\
