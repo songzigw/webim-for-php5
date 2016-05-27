@@ -1,6 +1,6 @@
 var demo = {
-    resPath : '/webim/static/',
-    apiPath : '/webim/',
+    resPath : '/webim-for-php5/webim/static/',
+    apiPath : '/webim-for-php5/webim/',
     route : {
         online : "index.php?action=online",
         offline : "index.php?action=offline",
