@@ -128,10 +128,10 @@ if (!nextalk.webui) {
                             <div class="mzen-form">\
                             <div class="nextalk-form mzen-input-row">\
                                 <div class="mzen-input">\
-                                <p><i class="mzen-iconfont mzen-icon-emoji"></i><i class="mzen-iconfont mzen-icon-pic"></i></p>\
                                 <textarea placeholder="输入消息内容..."></textarea>\
                                 </div><span class="mzen-input-addon mzen-btn mzen-btn-info">发送</span>\
                             </div>\
+        <p><i class="mzen-iconfont mzen-icon-emoji"></i><i class="mzen-iconfont mzen-icon-pic"></i></p>\
                             </div>\
                         </footer>\
                         <!-- 聊天输入筐END -->\
