@@ -142,6 +142,7 @@ footer .mzen-form {
 }
 .mzen-form > .nextalk-chatbox-menu .mzen-iconfont {
 	font-size: 24px;
+    margin-left: 3px;
 	margin-right: 3px;
 	cursor: pointer;
 }

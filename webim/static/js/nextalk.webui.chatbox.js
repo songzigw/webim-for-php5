@@ -131,7 +131,7 @@ if (!nextalk.webui) {
                                 <textarea placeholder="输入消息内容..."></textarea>\
                                 </div><span class="mzen-input-addon mzen-btn mzen-btn-info">发送</span>\
                             </div>\
-        <div class="nextalk-chatbox-menu"><i class="mzen-iconfont mzen-icon-emoji"></i><i class="mzen-iconfont mzen-icon-pic"></i></div>\
+        <p class="nextalk-chatbox-menu"><i class="mzen-iconfont mzen-icon-emoji"></i><i class="mzen-iconfont mzen-icon-pic"></p></div>\
                             </div>\
                         </footer>\
                         <!-- 聊天输入筐END -->\
