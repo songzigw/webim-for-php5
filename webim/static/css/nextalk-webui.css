@@ -21,8 +21,8 @@ html, body {
 .mzen-bar-nav {
     height: 45px;
     border-bottom: 0px solid #c8c7cc;
-    -wekbit-box-shadow: 0 1px 10px #cfcfcf;
-    box-shadow: 0 1px 10px #cfcfcf;
+    /*-wekbit-box-shadow: 0 1px 10px #cfcfcf;
+    box-shadow: 0 1px 10px #cfcfcf;*/
 }
 
 .mzen-btn-block {
