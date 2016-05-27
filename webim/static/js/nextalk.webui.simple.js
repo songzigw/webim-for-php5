@@ -205,18 +205,19 @@ if (!nextalk.webui) {
         var wh = $w.height();
         var ww = $w.width();
 
+        var hh = _this.$header.height();
+        _this.$conversations.height(wh - hh);
+
         if (!mobile) {
             if (ww <= 320) {
                 $html.css('width', '100%');
             } else {
                 $html.width(220);
             }
+            _this.$conversations.height(wh - hh);
         } else {
             $html.css('width', '100%');
         }
-
-        var hh = _this.$header.height();
-        _this.$conversations.height(wh - hh);
     };
     Simple.prototype.itemsClick = function($items) {
         if (!$items) {

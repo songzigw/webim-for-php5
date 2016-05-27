@@ -125,7 +125,7 @@ if (!nextalk.webui) {
                             <div class="mzen-content-padded nextalk-wrap"></div>\
                         </div>\
                         <!-- 聊天输入筐BEGIN -->\
-                        <footer>\
+                        <footer class="nextalk-chatbox-footer">\
                             <form class="mzen-form">\
                             <div class="nextalk-form mzen-input-row">\
                                 <div class="mzen-input">\
@@ -165,6 +165,11 @@ if (!nextalk.webui) {
         var wh = $w.height();
         var ww = $w.width();
 
+        var hh = $('header', $html).height();
+        var fh = $('footer', $html).height();
+        var $content = $('#nextalk_content_chatbox', $html);
+        $content.height(wh - hh - fh);
+
         if (!mobile) {
             if (ww <= 320) {
                 $html.css('width', '100%');
@@ -175,10 +180,7 @@ if (!nextalk.webui) {
             $html.css('width', '100%');
         }
 
-        var hh = $('header', $html).height();
-        var fh = $('footer', $html).height();
-        var $content = $('#nextalk_content_chatbox', $html);
-        $content.height(wh - hh - fh);
+        
     };
     ChatBox.prototype.toBottom = function() {
         var $html = this.$html;

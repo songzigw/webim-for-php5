@@ -552,3 +552,9 @@ footer.mzen-nav >ul.mzen-bar-tab > li > .mzen-badge {
 .chatbox-insert .mzen-list-view-cell:after {
 	border-bottom: 0;
 }
+
+.nextalk-chatbox-footer {
+	position: absolute;
+	bottom: 0;
+	background-color: inherit;
+}
