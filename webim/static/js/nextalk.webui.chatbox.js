@@ -126,7 +126,7 @@ if (!nextalk.webui) {
                         </div>\
                         <!-- 聊天输入筐BEGIN -->\
                         <footer class="nextalk-chatbox-footer">\
-                            <form class="mzen-form">\
+                            <form class="mzen-form" method="get" action="">\
                             <div class="nextalk-form mzen-input-row">\
                                 <div class="mzen-input">\
                                 <input type="text" placeholder="输入消息内容..."/>\
