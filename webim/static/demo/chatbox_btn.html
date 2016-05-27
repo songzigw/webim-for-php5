@@ -49,7 +49,7 @@ li {
 	</div>
 
 	<script type="text/javascript" src="demo.js"></script>
-	<script type="text/javascript" src="../script/nextalk-main.js"></script>
+	<script type="text/javascript" src="../js/nextalk.main.js"></script>
 	<script type="text/javascript">
 	var openChatBoxWin = function(chatObj) {
 	    var url = "index.php?action=chatbox"
@@ -91,7 +91,7 @@ li {
             }
             return targets;
         };
-        nextalkMain.setConfig({
+        nextalk.main.setConfig({
                     // 引入资源文件的根路径
                     resPath : demo.resPath,
                     // API根路径
@@ -113,11 +113,11 @@ li {
                     avatar : avatar
                 };
                 if (i == 0) {
-                    nextalkMain.chatlinkIds = id;
+                    nextalk.main.chatlinkIds = id;
                 } else {
-                    nextalkMain.chatlinkIds += ',' + id;
+                    nextalk.main.chatlinkIds += ',' + id;
                 }
-                nextalkMain.chatObjs.push(chatObj);
+                nextalk.main.chatObjs.push(chatObj);
                 btn.onclick = function() {
                     var id = this.getAttribute('data-id');
                     if (!id) {
@@ -136,11 +136,11 @@ li {
                     if (win == 'win') {
                         openChatBoxWin(chatObj);
                     } else {
-                        nextalkMain.openChatBoxUI(chatObj);
+                        nextalk.main.openChatBoxUI(chatObj);
                     }
                 };
             }
-            nextalkMain.onChatlinks = function(data) {
+            nextalk.main.onChatlinks = function(data) {
                 if (data) {
                     for (var i = 0; i < chatBtns.length; i++) {
                         var btn = chatBtns[i];
@@ -164,7 +164,7 @@ li {
             };
         }
 
-        nextalkMain.go();
+        nextalk.main.go();
     </script>
 </body>
 </html>

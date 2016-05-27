@@ -566,7 +566,6 @@ EOF;
         echo '<meta charset="UTF-8">';
         echo '<meta name="viewport"';
         echo '    content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />';
-        echo '<script type="text/javascript" src="https://getfirebug.com/firebug-lite.js"></script>';
         echo '<title>Chat</title>';
         echo '</head>';
         echo '<body>';

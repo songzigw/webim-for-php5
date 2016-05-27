@@ -5,10 +5,11 @@
 <meta name="viewport"
     content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
 <title>简单的聊天盒子</title>
+<script type="text/javascript" src="https://getfirebug.com/firebug-lite.js"></script>
 </head>
 <body>
     <script type="text/javascript" src="demo.js"></script>
-    <script type="text/javascript" src="../script/nextalk-main.js"></script>
+    <script type="text/javascript" src="../js/nextalk.main.js"></script>
     <script type="text/javascript">
         function getParam(name) {
             var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
@@ -20,7 +21,7 @@
             name : getParam('name'),
             avatar : getParam('avatar')
         };
-        nextalkMain.setConfig({
+        nextalk.main.setConfig({
             // 引入资源文件的根路径
             resPath : demo.resPath,
             // API根路径
@@ -32,7 +33,7 @@
             // API路由
             route : demo.route
         });
-        nextalkMain.go();
+        nextalk.main.go();
     </script>
 
 </body>

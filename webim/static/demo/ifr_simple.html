@@ -35,7 +35,7 @@
     </div>
     
     <script type="text/javascript" src="demo.js"></script>
-    <script type="text/javascript" src="../script/nextalk-main.js"></script>
+    <script type="text/javascript" src="../js/nextalk.main.js"></script>
     <script type="text/javascript">
         var getElementsByToggle = function(toggle) {
             var eles = document.getElementsByTagName('*');
@@ -48,7 +48,7 @@
             }
             return targets;
         };
-        nextalkMain.setConfig({
+        nextalk.main.setConfig({
             // 引入资源文件的根路径
             resPath : demo.resPath,
             // API根路径
@@ -71,9 +71,9 @@
                         return;
                     }
                     if (count == 0) {
-                        nextalkMain.chatlinkIds = uid;
+                        nextalk.main.chatlinkIds = uid;
                     } else {
-                        nextalkMain.chatlinkIds += ',' + uid;
+                        nextalk.main.chatlinkIds += ',' + uid;
                     }
                     count++;
                     var nick = this.getAttribute('data-name');
@@ -82,11 +82,11 @@
                     if (win) {
                         openChatBox(uid, nick, avatar);
                     } else {
-                        nextalkMain.openChatBoxUI(uid, nick, avatar);
+                        nextalk.main.openChatBoxUI(uid, nick, avatar);
                     }
                 };
             }
-            nextalkMain.onChatlinks = function(data) {
+            nextalk.main.onChatlinks = function(data) {
                 if (data) {
                     for (var i = 0; i < chatBtns.length; i++) {
                         var btn = chatBtns[i];
@@ -110,7 +110,7 @@
             };
         }
         
-        nextalkMain.go();        
+        nextalk.main.go();        
     </script>
 
 </body>
