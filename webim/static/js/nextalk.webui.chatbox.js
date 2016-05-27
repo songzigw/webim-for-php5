@@ -79,13 +79,13 @@ if (!nextalk.webui) {
         _this.$html.append(_this.msgTips.$html);
 
         _this.emot = new Emot();
-        var $textarea = $('footer .nextalk-form textarea', $html);
-        $textarea.on('focus', function(ev) {
+        var $input = $('footer .nextalk-form input', $html);
+        $input.on('focus', function(ev) {
             _this.emot.hide();
             _this.resizable();
         });
         _this.emot.callback = function(emot) {
-            $textarea.val($textarea.val() + emot);
+            $input.val($input.val() + emot);
             _this.resizable();
         };
         $('footer .mzen-form', $html)
@@ -126,14 +126,14 @@ if (!nextalk.webui) {
                         </div>\
                         <!-- 聊天输入筐BEGIN -->\
                         <footer>\
-                            <div class="mzen-form">\
+                            <form class="mzen-form">\
                             <div class="nextalk-form mzen-input-row">\
                                 <div class="mzen-input">\
-                                <textarea placeholder="输入消息内容..."></textarea>\
+                                <input type="text" placeholder="输入消息内容..."/>\
                                 </div><span class="mzen-input-addon mzen-btn mzen-btn-info">发送</span>\
                             </div>\
         <p class="nextalk-chatbox-menu"><i class="mzen-iconfont mzen-icon-emoji"></i><i class="mzen-iconfont mzen-icon-pic"></i></p>\
-                            </div>\
+                            </form>\
                         </footer>\
                         <!-- 聊天输入筐END -->\
                       </div>';
@@ -459,15 +459,18 @@ if (!nextalk.webui) {
         $('>header .mzen-pull-right img', $html)
             .attr('src', _this.objAvatar);
 
-        $('footer .mzen-btn', $html).click(function() {
+        $('footer .mzen-btn', $html).on('click', function() {
             _this.submit();
         });
-
-        $('footer textarea', $html).on('keydown', function(ev) {
-            if (ev.keyCode == 13) {
-                _this.submit();
-            }
+        $('footer form.mzen-form', $html).on('submit', function() {
+            _this.submit();
+            return false;
         });
+//        $('footer input', $html).on('keydown', function(ev) {
+//            if (ev.keyCode == 13) {
+//                _this.submit();
+//            }
+//        });
 
         $('footer .mzen-icon-emoji', $html).on('click', function() {
             _this.emot.toggle();
@@ -514,7 +517,7 @@ if (!nextalk.webui) {
     };
     ChatBox.prototype.submit = function() {
         var _this = this;
-        var $input = $('.mzen-form textarea', _this.$html);
+        var $input = $('.mzen-form input', _this.$html);
         if ($.trim($input.val()) != '') {
             _this.sendMsg($input.val());
         }
