@@ -111,7 +111,7 @@
         var info = {
             type : options.method,
             url : options.apiPath + WebAPI.route(apiId),
-            data : data,
+            data : extend(data, {'_' : timestamp()}),
             dataType : options.dataType,
             cache : options.cache,
             context : options.context,
