@@ -82,12 +82,14 @@ if (!nextalk.webui) {
         var $textarea = $('footer .nextalk-form textarea', $html);
         $textarea.on('focus', function(ev) {
             _this.emot.hide();
+            _this.resizable();
         });
         _this.emot.callback = function(emot) {
             $textarea.val($textarea.val() + emot);
-            $textarea.focus();
+            // $textarea.focus();
+            _this.resizable();
         };
-        $('footer .nextalk-form .mzen-input', $html)
+        $('footer .mzen-form', $html)
                 .append(_this.emot.$html);
 
         _this.$bBody = $('.nextalk-wrap', $html);
@@ -469,8 +471,9 @@ if (!nextalk.webui) {
             }
         });
 
-        $('footer .mzen-icon-emoji', $html).click(function() {
-            _this.emot.$html.toggle();
+        $('footer .mzen-icon-emoji', $html).on('click', function() {
+            _this.emot.toggle();
+            _this.resizable();
         });
         $('footer .mzen-icon-pic', $html).dropzone({
             url: webim.apiPath + "upload-file.php",

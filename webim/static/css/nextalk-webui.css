@@ -113,7 +113,7 @@ footer .mzen-form {
 
 .nextalk-form.mzen-input-row {
     width: 100%;
-    padding : 6px 10px;
+    padding : 6px 10px 0px 10px;
 }
 
 .nextalk-form.mzen-input-row:first-child:after {
@@ -138,10 +138,10 @@ footer .mzen-form {
 }
 
 .mzen-form > .nextalk-chatbox-menu {
-	margin: 2px 10px 6px 10px;
+	margin: 0px 10px 0px 10px;
 }
 .mzen-form > .nextalk-chatbox-menu .mzen-iconfont {
-	font-size: 24px;
+	font-size: 22px;
     margin-left: 3px;
 	margin-right: 3px;
 	cursor: pointer;
@@ -154,7 +154,7 @@ footer .mzen-form {
     width: 100%;
     height: 20px;
     padding: 0px 10px 0px 10px;
-    margin: 6px 0px 4px 0px;
+    margin: 6px 0px 0px 0px;
     resize: none;
     border: none;
     cursor: text;
@@ -165,29 +165,27 @@ footer .mzen-form {
 	padding-right: 10px;
 	color: #fff;
 }
-.nextalk-form .nextalk-emot {
-	position: absolute;
-	bottom: 100%;
+.mzen-form .nextalk-emot:after {
+	content: " ";
+    clear: both;
+    display: block;
+}
+.mzen-form .nextalk-emot {
 	width: 100%;
-	padding: 3px;
-	margin: 0 -10px;
-	margin-bottom: 1px;
+	padding: 3px 13px;
 	font-size: 14px;
 	text-align: left;
 	list-style: none;
 	background-color: #fff;
-	border: 1px solid #D9DADC;
-	border-bottom: 0;
 	-webkit-background-clip: padding-box;
     background-clip: padding-box;
 	color: #333;
 }
-
-.nextalk-form .nextalk-emot ul>li {
+.mzen-form .nextalk-emot ul>li {
     float: left;
     cursor: pointer;
 }
-.nextalk-form .nextalk-emot ul>li>img {
+.mzen-form .nextalk-emot ul>li>img {
     width: 24px;
     height: 24px;
 }

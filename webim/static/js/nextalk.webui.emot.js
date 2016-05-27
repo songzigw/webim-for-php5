@@ -142,6 +142,9 @@ if (!nextalk.webui) {
     Emot.prototype.hide = function() {
         this.$html.hide();
     };
+    Emot.prototype.toggle = function() {
+        this.$html.toggle();
+    };
 
     webui.Emot = Emot;
 })(nextalk.webim, nextalk.webui);
