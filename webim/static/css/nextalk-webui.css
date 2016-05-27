@@ -552,6 +552,6 @@ footer.mzen-nav >ul.mzen-bar-tab > li > .mzen-badge {
     /*-wekbit-box-shadow: 0 0px 0px #cfcfcf;
     box-shadow: 0 0px 0px #cfcfcf;*/
 }
-.chatbox .mzen-list-view-cell:after {
+.chatbox-insert .mzen-list-view-cell:after {
 	border-bottom: 0;
 }
