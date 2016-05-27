@@ -52,10 +52,10 @@ li {
 	<script type="text/javascript" src="../js/nextalk.main.js"></script>
 	<script type="text/javascript">
 	var openChatBoxWin = function(chatObj) {
-	    var url = "index.php?action=chatbox"
-	        + "&uid=" + chatObj.id;
+	    var url = "static/demo/chatbox_simple.html"
+	    //    + "&uid=" + chatObj.id;
 	    if (chatObj.location) {
-	        url = url + "&body=" + document.location.href;
+	        //url = url + "&body=" + document.location.href;
 	    }
 	    this.openWindow(
 	            demo.apiPath + url,
