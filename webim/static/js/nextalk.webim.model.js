@@ -61,7 +61,7 @@
                     }
                     if (!data) {
                         var c = self.store ? self.store.getItem(key)
-                                : cookie(key);
+                                : webim.cookie(key);
                         self.data = c ? JSON.parse(c) : {};
                     } else {
                         self._save(data);
@@ -89,7 +89,7 @@
                     var self = this, key = self.options.key, domain = self.options.domain;
                     self.data = data;
                     data = JSON.stringify(data);
-                    self.store ? self.store.setItem(key, data) : cookie(key,
+                    self.store ? self.store.setItem(key, data) : webim.cookie(key,
                             data, {
                                 path : '/',
                                 domain : domain

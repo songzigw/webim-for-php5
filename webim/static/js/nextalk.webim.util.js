@@ -1247,7 +1247,8 @@ if (!nextalk.webim) {
         format     : format,
         ClassEvent : ClassEvent,
         model      : model,
-        checkUpdate: checkUpdate
+        checkUpdate: checkUpdate,
+        cookie     : cookie
     });
 
 })(nextalk.webim);
