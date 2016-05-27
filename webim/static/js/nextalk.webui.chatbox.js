@@ -270,17 +270,34 @@ if (!nextalk.webui) {
             if (webui.chatObj
                     && webui.chatObj.id == _this.objId
                     && webui.chatObj.body) {
-                if (!webui.chatObj.body_type) {
-                    _this.sendMsg(webui.chatObj.body);
-                } else {
-                    var body = {
-                        type : webui.chatObj.body_type,
-                        body : webui.chatObj.body
-                    };
-                    _this.sendMsg(webim.JSON.stringify(body));
-                }
+//                if (!webui.chatObj.body_type) {
+//                    _this.sendMsg(webui.chatObj.body);
+//                } else {
+//                    var body = {
+//                        type : webui.chatObj.body_type,
+//                        body : webui.chatObj.body
+//                    };
+//                    _this.sendMsg(webim.JSON.stringify(body));
+//                }
+                _this.insertHTML();
             }
+            _this.insertHTML();
         });
+    };
+    ChatBox.INSERT = '\
+        <ul class="mzen-list-view">\
+        <li class="mzen-list-view-cell mzen-img">\
+        <img class="mzen-img-object mzen-pull-left" src="http://www.qiaoju360.com/data/city/%E5%9C%A3%E6%8B%89%E8%92%99.jpg">\
+        <div class="mzen-img-body">图文列表\
+            <p class="mzen-ellipsis-2">图文列表缩略图在左边的样式，默认大小为80PX，文字介绍内容可以为一行也可以为两行，超出部分自动省略</p>\
+        </div>\
+        </li>\
+        </ul>';
+    ChatBox.prototype.insertHTML = function() {
+        var _this = this;
+        var $insert = $(ChatBox.INSERT);
+        _this.$bBody.append($insert);
+        _this.toBottom();
     };
     ChatBox.prototype.hide = function() {
         var _this = this;
