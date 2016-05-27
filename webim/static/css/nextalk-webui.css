@@ -34,8 +34,8 @@ html, body {
 }
 
 .mzen-list-view .mzen-img-object {
-    width: 49px;
-    height: 49px;
+    width: 100px;
+    height: auto;
     border-radius: 3px;
 }
 
@@ -549,6 +549,6 @@ footer.mzen-nav >ul.mzen-bar-tab > li > .mzen-badge {
 }
 .chatbox .mzen-bar-nav {
     border-bottom: 0px solid #c8c7cc;
-    -wekbit-box-shadow: 0 0px 0px #cfcfcf;
-    box-shadow: 0 0px 0px #cfcfcf;
+    /*-wekbit-box-shadow: 0 0px 0px #cfcfcf;
+    box-shadow: 0 0px 0px #cfcfcf;*/
 }

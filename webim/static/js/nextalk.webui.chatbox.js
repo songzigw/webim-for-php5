@@ -106,7 +106,7 @@ if (!nextalk.webui) {
     webim.ClassEvent.on(ChatBox);
 
     // 聊天盒子模板
-    ChatBox.HTML = '<div class="nextalk-page nextalk-screen-right chatbox"\
+    ChatBox.HTML = '<div class="nextalk-page nextalk-screen-right"\
                             id="nextalk_page_chatbox" style="display: none;">\
                         <!--头部集合 BEGIN-->\
                         <header class="mzen-bar mzen-bar-nav mzen-bar-info">\
@@ -290,9 +290,9 @@ if (!nextalk.webui) {
         <img class="mzen-img-object mzen-pull-left" src="http://www.qiaoju360.com/data/city/%E5%9C%A3%E6%8B%89%E8%92%99.jpg">\
         <div class="mzen-img-body">图文列表\
             <p class="mzen-ellipsis-2">图文列表缩略图在左边的样式，默认大小为80PX，文字介绍内容可以为一行也可以为两行，超出部分自动省略</p>\
-        </div>\
-        </li>\
-        </ul>';
+        </div></li><li class="mzen-list-view-cell">\
+        <button class="mzen-btn mzen-btn-warning">发送房源给TA看看</button>\
+        </li></ul>';
     ChatBox.prototype.insertHTML = function() {
         var _this = this;
         var $insert = $(ChatBox.INSERT);
