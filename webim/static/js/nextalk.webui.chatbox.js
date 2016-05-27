@@ -86,7 +86,6 @@ if (!nextalk.webui) {
         });
         _this.emot.callback = function(emot) {
             $textarea.val($textarea.val() + emot);
-            // $textarea.focus();
             _this.resizable();
         };
         $('footer .mzen-form', $html)
@@ -283,7 +282,6 @@ if (!nextalk.webui) {
 //                }
                 _this.insertHTML();
             }
-            _this.insertHTML();
         });
     };
     ChatBox.INSERT = '\

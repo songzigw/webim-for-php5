@@ -45,8 +45,8 @@ if (!nextalk.webui) {
             var $hLi = $(completion(Emot.H_IMG, icon));
             $('img', $hLi).on('click', function(ev) {
                 ev.preventDefault();
-                _this.callback($(this).attr('data-text'));
                 _this.hide();
+                _this.callback($(this).attr('data-text'));
             });
             $hUl.append($hLi);
         }
