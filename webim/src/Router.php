@@ -510,10 +510,13 @@ EOF;
         $uid = $this->input('uid');
         $body_type = $this->input('body_type');
         $body = $this->input('body');
-        $buddy = $this->plugin->getUserById($uid);
-        if(!$buddy) {
-			header("HTTP/1.0 404 Not Found");
-			exit("User Not Found");
+        $type = $this->user->type;
+        if ($uid != null && $type == 'general') {
+            $buddy = $this->plugin->getUserById($uid);
+            if(!$buddy) {
+                header("HTTP/1.0 404 Not Found");
+                exit("User Not Found");
+            }
         }
 		header('Content-Type',	'text/html; charset=utf-8');
 // 		echo '<html><head>';
@@ -590,11 +593,24 @@ EOF;
         $uid = $this->input('uid');
         $body_type = $this->input('body_type');
         $body = $this->input('body');
-        if ($uid != null) {
+        $uids = $this->idsArray($this->input('uids', ''));
+        $type = $this->user->type;
+        if ($uid != null && $type == 'general') {
             $buddy = $this->plugin->getUserById($uid);
             if(!$buddy) {
                 header("HTTP/1.0 404 Not Found");
                 exit("User Not Found");
+            }
+        }
+        if ($type == 'general') {
+            $agents = array();
+            foreach($uids as $id){
+                $a = $this->plugin->getUserById($id);
+                if ($a) {
+                    $a->type = 'chat';
+                    $a->name = $a->nick;
+                    $agents[] = $a;
+                }
             }
         }
 		header('Content-Type',	'text/html; charset=utf-8');
@@ -607,9 +623,9 @@ EOF;
         echo '<title>Chat</title>';
         echo '</head>';
         echo '<body>';
+        echo '        <script type="text/javascript">';
+        echo '        var _IMC = {};';
         if ($buddy) {
-            echo '        <script type="text/javascript">';
-            echo '        var _IMC = {};';
             echo '        _IMC.chatObj = {';
             echo '            type : "chat",';
             echo '            id : "'. $buddy->id .'",';
@@ -618,8 +634,9 @@ EOF;
             echo '            body_type : "'. $body_type .'",';
             echo '            body : "'. $body .'"';
             echo '        };';
-            echo '        </script>';
         }
+        echo '        _IMC.chatObjs = ' . json_encode($agents) . ';';
+        echo '        </script>';
         echo '<script type="text/javascript" src="'.$webim_path.'index.php?action=boot&iframe=false&mobile=true"></script>';
         echo '</body>';
         echo '</html>';

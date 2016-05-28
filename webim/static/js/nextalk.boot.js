@@ -90,6 +90,9 @@ if (_IMC.chatObj) {
     nextalk.main.chatObj = _IMC.chatObj;
     nextalk.main.iframe = false;
 }
+if (_IMC.chatObjs) {
+    nextalk.main.chatObjs = _IMC.chatObjs;
+}
 
 // 给聊天按钮设置单击事件
 // 注意传递参数 uid nick avatar

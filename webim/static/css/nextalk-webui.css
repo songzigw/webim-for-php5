@@ -240,8 +240,8 @@ footer .mzen-form {
 }
 .nextalk-msg-tips {
     position: absolute;
-    top: 49px;
-    /*bottom: 0;*/
+    /*top: 49px;*/
+    bottom: 110px;
     left: 10px;
     right: 10px;
     width: auto;

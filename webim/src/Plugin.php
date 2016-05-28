@@ -117,8 +117,8 @@ class Plugin {
 	 */
 	public function buddies($uid) {
         //TODO: DEMO Code
-//        return array_map( array($this, '_buddy'), range(1, 10) );
-        return array();
+        return array_map( array($this, '_buddy'), range(1, 10) );
+//        return array();
 	}
 
 	/*
@@ -131,8 +131,8 @@ class Plugin {
 	 * Buddy
 	 */
 	public function buddiesByIds($uid, $ids) {
-//        return array_map( array($this, '_buddy'), $ids );
-	    return array();
+        return array_map( array($this, '_buddy'), $ids );
+//	    return array();
 	}
 
     /**

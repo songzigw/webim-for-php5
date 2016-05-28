@@ -130,8 +130,8 @@ class Model {
             $conv->set(array(
                     'body' => $conversation['body'],
                     'direction' => $conversation['direction'],
-                    'name' => $conversation['name'],
-                    'avatar' => $conversation['avatar']
+                    'oname' => $conversation['oname'],
+                    'oavatar' => $conversation['oavatar']
                    ))
                  ->setExpr('updated', 'NOW()');
             $conv->save();

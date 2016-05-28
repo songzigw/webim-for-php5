@@ -523,7 +523,7 @@
 
         var params = {};
         if (options.chatlinkIds) {
-            params.chatlinkIds = options.chatlinkIds;
+            params.chatlink_ids = options.chatlinkIds;
         }
         // 连接前请先登入成功
         _this.login(params, function() {
