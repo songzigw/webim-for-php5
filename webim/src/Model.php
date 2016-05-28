@@ -63,6 +63,15 @@ class Model {
             return null;
         }
         
+        if ($user->user_type == 0) {
+            $type = 'general';
+        } elseif ($user->user_type == 1) {
+            $type = 'agent';
+        } elseif ($user->user_type == 2) {
+            $type = 'backstage';
+        } else {
+            $type = 'general';
+        }
         $agent = $this->T2('ecs_agent')
                     ->where('user_id', $uid)
                     ->findOne();
@@ -75,7 +84,7 @@ class Model {
                 'show' => 'unavailable',
                 'status' => '#',
                 'avatar' => $user->home_phne,
-                'type' => $user->type
+                'type' => $type
             );
         }
         
@@ -87,7 +96,7 @@ class Model {
                 'show' => 'unavailable',
                 'status' => '#',
                 'avatar' => '/images/agentphoto/'.$agent->face,
-                'type' => $user->type
+                'type' => 'agent'
             );
     }
     
@@ -107,7 +116,7 @@ class Model {
                 'show' => 'unavailable',
                 'status' => '#',
                 'avatar' => '/images/agentphoto/'.$agent->face,
-                'type' => 2
+                'type' => 'agent'
         );
     }
     
@@ -457,6 +466,7 @@ class Model {
             'role' => 'visitor',
             'url' => "#",
             'status' => "",
+            'type' => 'general',
         );
     }
     
@@ -482,7 +492,8 @@ class Model {
                 "group" => "visitor",
                 "url" => "#",
                 "avatar" => WEBIM_IMAGE('visitor.png'),
-                "status" => $status, 
+                "status" => $status,
+                'type' => 'general',
             );
         }
         return $visitors;

@@ -59,11 +59,11 @@ class Plugin {
     }
 
     public function getUserById($uid, $isAgent = false) {
-        return $this->_buddy($uid);
-//         if ($isAgent) {
-//             return $this->model->getAgentById($uid);
-//         }
-//         return $this->model->getUserById($uid);
+//        return $this->_buddy($uid);
+        if ($isAgent) {
+            return $this->model->getAgentById($uid);
+        }
+        return $this->model->getUserById($uid);
     }
 
     /**
@@ -71,30 +71,30 @@ class Plugin {
      *
      * @return object current user
      */
-    public function user() {
-        global $_SESSION;
-		$uid = isset($_SESSION['uid']) ? $_SESSION['uid'] : null;
-        if( !$uid ) return null;
-
-		return (object)array(
-            'id' => $uid,
-            'nick' => 'user' . $uid,
-            'presence' => 'online',
-            'show' => "available",
-            'avatar' => WEBIM_IMAGE('head_b.jpg'),
-            'url' => "#",
-            'role' => 'user',
-            'status' => "",
-        );
-    }
-
 //     public function user() {
 //         global $_SESSION;
-//         $uid = isset($_COOKIE['ECS']['user_id']) ? $_COOKIE['ECS']['user_id'] : null;
+// 		$uid = isset($_SESSION['uid']) ? $_SESSION['uid'] : null;
 //         if( !$uid ) return null;
-    
-//         return $this->getUserById($uid);
+
+// 		return (object)array(
+//             'id' => $uid,
+//             'nick' => 'user' . $uid,
+//             'presence' => 'online',
+//             'show' => "available",
+//             'avatar' => WEBIM_IMAGE('head_b.jpg'),
+//             'url' => "#",
+//             'role' => 'user',
+//             'status' => "",
+//         );
 //     }
+
+    public function user() {
+        global $_SESSION;
+        $uid = isset($_COOKIE['ECS']['user_id']) ? $_COOKIE['ECS']['user_id'] : null;
+        if( !$uid ) return null;
+    
+        return $this->getUserById($uid);
+    }
     
 	/*
 	 * API: Buddies of current user.
@@ -117,8 +117,8 @@ class Plugin {
 	 */
 	public function buddies($uid) {
         //TODO: DEMO Code
-        return array_map( array($this, '_buddy'), range(1, 10) );
-        //return array();
+//        return array_map( array($this, '_buddy'), range(1, 10) );
+        return array();
 	}
 
 	/*
@@ -131,8 +131,8 @@ class Plugin {
 	 * Buddy
 	 */
 	public function buddiesByIds($uid, $ids) {
-        return array_map( array($this, '_buddy'), $ids );
-	    //return array();
+//        return array_map( array($this, '_buddy'), $ids );
+	    return array();
 	}
 
     /**
@@ -179,8 +179,8 @@ class Plugin {
 			'blocked' => false,
             'temporary' => false
 		);
-		return array( $room );	
-		//return array();
+//		return array( $room );	
+		return array();
 	}
 
 	/*
@@ -206,8 +206,8 @@ class Plugin {
                 );
             }
         }
-		return $rooms;
-        //return array();
+//		return $rooms;
+        return array();
 	}
 
     /**
