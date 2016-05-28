@@ -93,7 +93,7 @@
             direction : msg.direction,
             body      : msg.body
         }, currUser = webim.client.getCurrUser();
-        if (currUser.type == webim.userType.GENERAL) {
+        if (currUser.type != webim.userType.BACKSTAGE) {
             conv.currUid = currUser.id;
             conv.currNick = currUser.nick;
             conv.currAvatar = currUser.avatar;
@@ -166,7 +166,7 @@
                     }
                     break;
             }
-        } else if (currUser.type == webim.userType.BACKSTAGE) {
+        } else {
             if (msg.type != webim.Conversation.CHAT) {
                 throw new Error('Supervisor message type error.');
             }
