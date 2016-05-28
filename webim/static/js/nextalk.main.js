@@ -106,6 +106,8 @@ if (!window.nextalk) {
         document.write('<script type="text/javascript" src="' + _this.resPath
                 + 'js/nextalk.webui.simple.js?' + v + '"></script>');
         document.write('<script type="text/javascript" src="' + _this.resPath
+                + 'js/nextalk.webui.goods.js?' + v + '"></script>');
+        document.write('<script type="text/javascript" src="' + _this.resPath
                 + 'js/nextalk.webui.init.js?' + v + '"></script>');
         var task = window.setInterval(function() {
             if (!window.$) {

@@ -55,6 +55,29 @@ class Model {
         \ORM::configure('driver_options', array(\PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'));
     }
     
+    /** 用户获取收藏房源信息 */
+    public function get_user_favorite($userid) {
+        $house = $this->T2('ecs_user_favorite')
+        ->tableAlias('t1')
+        ->select('t1.goods_id', 'goods_id')
+        ->select('t1.goods_name', 'goods_name')
+        ->select('t1.shop_price', 'shop_price')
+        ->select('t1.goods_img', 'goods_img')
+        ->join($this->T2('ecs_goods'), array('t1.item_id', '=', 't2.goods_id'), 't2')
+        ->where('t1.user_id', $user_id)
+        ->findArray();
+        if(!$house){
+            return null;
+        }
+         
+        return (object) array(
+                'goods_id' => $house->goods_id,
+                'goods_name' => $house->goods_name,
+                'shop_price' => $house->shop_price,
+                'goods_img' => $house->goods_img,
+        );
+    }
+    
     public function getUserById($uid) {
         $user = $this->T2('ecs_users')
                     ->where('user_id', $uid)

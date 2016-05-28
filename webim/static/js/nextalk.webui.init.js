@@ -339,6 +339,9 @@ if (!nextalk.webui) {
             if (u.type != webim.userType.GENERAL) {
                 _this.chatObj = null;
                 _this.chatObjs = [];
+                _this.goods = undefined;
+            } else {
+                _this.goods = new webui.Goods();
             }
             var main = _this.main;
             main.showConnected();

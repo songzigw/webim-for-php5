@@ -132,7 +132,7 @@ if (!nextalk.webui) {
                                 <input type="text" placeholder="输入消息内容..."/>\
                                 </div><span class="mzen-input-addon mzen-btn mzen-btn-info">发送</span>\
                             </div>\
-        <p class="nextalk-chatbox-menu"><i class="mzen-iconfont mzen-icon-emoji"></i><i class="mzen-iconfont mzen-icon-pic"></i></p>\
+        <p class="nextalk-chatbox-menu"><i class="mzen-iconfont mzen-icon-emoji"></i><i class="mzen-iconfont mzen-icon-pic"></i><i class="mzen-iconfont mzen-icon-home"></i></p>\
                             </form>\
                         </footer>\
                         <!-- 聊天输入筐END -->\
@@ -179,8 +179,6 @@ if (!nextalk.webui) {
         } else {
             $html.css('width', '100%');
         }
-
-        
     };
     ChatBox.prototype.toBottom = function() {
         var $html = this.$html;
@@ -488,6 +486,13 @@ if (!nextalk.webui) {
             _this.emot.toggle();
             _this.resizable();
         });
+        if (webui.goods) {
+            $('footer .mzen-icon-home', $html).on('click', function() {
+                webui.goods.open({type : _this.type, currUid : _this.currUid, objId : _this.objId});
+            });
+        } else {
+            $('footer .mzen-icon-home', $html).remove();
+        }
         $('footer .mzen-icon-pic', $html).dropzone({
             url: webim.apiPath + "upload-file.php",
             paramName: 'file',
