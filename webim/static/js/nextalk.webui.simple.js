@@ -312,9 +312,12 @@ if (!nextalk.webui) {
                     body : '开始聊天'
                 };
             _this.itemHTML(conv).prependTo($items);
-            webui.openChatBox(conv);
+            if (webim.client.connectedTimes == 1) {
+                webui.openChatBox(conv);
+            }
         }
-        if ($('>li', $items).length === 0) {
+        if ($('>li', $items).length === 0
+                && currUser.type == webim.userType.GENERAL) {
             webim.webApi.agents_random(null, function(ret, err) {
                 if (ret) {
                     for (var i = 0; i < ret.length; i++) {

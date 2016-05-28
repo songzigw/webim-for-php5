@@ -335,6 +335,11 @@ if (!nextalk.webui) {
         },
         _onConnected : function(ev, data) {
             var _this = this;
+            var u = webim.client.getCurrUser();
+            if (u.type != webim.userType.GENERAL) {
+                _this.chatObj = null;
+                _this.chatObjs = [];
+            }
             var main = _this.main;
             main.showConnected();
             main.setCurrName();

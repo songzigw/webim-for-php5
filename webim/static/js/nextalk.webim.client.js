@@ -670,8 +670,8 @@
                             _this._buddies(ret.buddies);
                             _this._rooms(ret.rooms);
                             _this.presences = ret.presences;
-                            // ??? 如果是监管者用户，就查询出他所有被被监管对象
-                            _this.getCurrUser().type = webim.userType.GENERAL;
+                            // 如果是幕后用户，就查询出他所有被被监管对象
+                            _this.agents = [];
                             // 触发登入成功事件
                             _this.trigger("login.win", [ ret ]);
                             if (typeof callback == "function") {
