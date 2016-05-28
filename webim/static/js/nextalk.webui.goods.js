@@ -75,27 +75,33 @@ if (!nextalk.webui) {
                 .click(function() {
                     _this.close();
                 });
-        webim.webApi.house({id : '30082'},
+        webim.webApi.house_fav(
                 function(ret, err) {
                     if (ret) {
-                        ret.goods_img = 'http://images.qiaoju360.com/' + ret.goods_img;
-                        var $house = $(webui.completion(Goods.ITEM, ret));
-                        $('button.mzen-btn', $house).on('click', function() {
-                            if (_this.conv) {
-                                var conv = _this.conv;
-                                var key = {
-                                        currUid : conv.currUid,
-                                        objId   : conv.objId
-                                    };
-                                var chatBox = webui._chatBoxs.get(conv.type, key);
-                                chatBox.sendMsg(webim.JSON.stringify({
-                                    type : '1',
-                                    body : ret.goods_id
-                                }));
-                            }
-                            _this.close();
-                        });
-                        _this.$items.append($house);
+                        for (var i = 0; i < ret.length; i++) {
+                            var h = ret[i];
+                            h.goods_img = 'http://images.qiaoju360.com/' + h.goods_img;
+                            var $house = $(webui.completion(Goods.ITEM, h));
+                            $('button.mzen-btn', $house).on('click', function() {
+                                if (_this.conv) {
+                                    var conv = _this.conv;
+                                    var key = {
+                                            currUid : conv.currUid,
+                                            objId   : conv.objId
+                                        };
+                                    var chatBox = webui._chatBoxs.get(conv.type, key);
+                                    chatBox.sendMsg(webim.JSON.stringify({
+                                        type : '1',
+                                        body : h.goods_id
+                                    }));
+                                }
+                                _this.close();
+                            });
+                            _this.$items.append($house);
+                        }
+                        if (ret.length <= 0) {
+                            _this.$items.append('<li class="mzen-list-view-cell mzen-img"><p>当前没有收藏房源</p></li>');
+                        }
                     }
                 });
     };

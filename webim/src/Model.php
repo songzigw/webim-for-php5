@@ -57,25 +57,17 @@ class Model {
     
     /** 用户获取收藏房源信息 */
     public function get_user_favorite($userid) {
-        $house = $this->T2('ecs_user_favorite')
+        $house = $this->T2('ecs_goods')
         ->tableAlias('t1')
         ->select('t1.goods_id', 'goods_id')
         ->select('t1.goods_name', 'goods_name')
         ->select('t1.shop_price', 'shop_price')
         ->select('t1.goods_img', 'goods_img')
-        ->join($this->T2('ecs_goods'), array('t1.item_id', '=', 't2.goods_id'), 't2')
-        ->where('t1.user_id', $user_id)
+        ->join('ecs_user_favorite', array('t2.item_id', '=', 't1.goods_id'), 't2')
+        ->where('t2.user_id', $userid)
         ->findArray();
-        if(!$house){
-            return null;
-        }
-         
-        return (object) array(
-                'goods_id' => $house->goods_id,
-                'goods_name' => $house->goods_name,
-                'shop_price' => $house->shop_price,
-                'goods_img' => $house->goods_img,
-        );
+        return array_map( array($this, '_toObj'), $house);
+        
     }
     
     public function getUserById($uid) {

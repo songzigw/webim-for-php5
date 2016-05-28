@@ -849,6 +849,11 @@ EOF;
         $this->jsonReply($convs);
     }
     
+    public function get_user_favorite() {
+        $uid = $this->user->id;
+        $convs = $this->model->get_user_favorite($uid);
+        $this->jsonReply($convs);
+    }
     public function conv_new() {
         // $uid = $this->user->id;
         $conv = array(
