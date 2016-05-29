@@ -4,10 +4,10 @@ html, body {
     height: 100%;
     width: 100%;
     font-size: 14px;
-    background-color: #f9f9f9;
+    /*background-color: #f9f9f9;
     background: url(../imgs/icon_no.png);
     background-position: center right 190px;
-    background-repeat: no-repeat;
+    background-repeat: no-repeat;*/
 }
 
 .mzen-chat-sender .mzen-chat-sender-cont a {
@@ -20,7 +20,7 @@ html, body {
 
 .mzen-bar-nav {
     height: 45px;
-    border-bottom: 0px solid #c8c7cc;
+    border-bottom: 1px solid #c8c7cc;
     /*-wekbit-box-shadow: 0 1px 10px #cfcfcf;
     box-shadow: 0 1px 10px #cfcfcf;*/
 }
@@ -240,8 +240,8 @@ footer .mzen-form {
 }
 .nextalk-msg-tips {
     position: absolute;
-    /*top: 49px;*/
-    bottom: 110px;
+    top: 49px;
+    /*bottom: 110px;*/
     left: 10px;
     right: 10px;
     width: auto;
@@ -297,6 +297,7 @@ footer .mzen-form {
 .mzen-bar-nav .nextalk-logo,
 .mzen-bar-nav .nextalk-user {
     height: 45px;
+    width: 55px;
     line-height: 45px !important;
     position: relative;
 }
@@ -314,7 +315,7 @@ footer .mzen-form {
   display: none;
   position: absolute;
   top: 100%;
-  right: 3px;
+  left: 3px;
   z-index: 2;
   float: left;
   min-width: 110px;
@@ -543,11 +544,6 @@ footer.mzen-nav >ul.mzen-bar-tab > li > .mzen-badge {
 	line-height: 38px;
 	vertical-align: middle;
 	cursor: pointer;
-}
-.chatbox .mzen-bar-nav {
-    border-bottom: 0px solid #c8c7cc;
-    /*-wekbit-box-shadow: 0 0px 0px #cfcfcf;
-    box-shadow: 0 0px 0px #cfcfcf;*/
 }
 .chatbox-house .mzen-list-view-cell:after {
 	border-bottom: 0;

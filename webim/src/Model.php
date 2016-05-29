@@ -87,6 +87,14 @@ class Model {
         } else {
             $type = 'general';
         }
+        
+        if ($type == 'backstage') {
+            $agentArray = $this->T2('ecs_agent')
+                        ->where('customer_id', $uid)
+                        ->findArray();
+            $agentObjArr = array_map(array($this, '_toUserObj'), $agentArray);
+        }
+        
         $agent = $this->T2('ecs_agent')
                     ->where('user_id', $uid)
                     ->findOne();
@@ -99,7 +107,8 @@ class Model {
                 'show' => 'unavailable',
                 'status' => '#',
                 'avatar' => $user->home_phne,
-                'type' => $type
+                'type' => $type,
+                'agents' => $agentObjArr
             );
         }
         
@@ -111,7 +120,8 @@ class Model {
                 'show' => 'unavailable',
                 'status' => '#',
                 'avatar' => '/images/agentphoto/'.$agent->face,
-                'type' => 'agent'
+                'type' => 'agent',
+                'agents' => $agentObjArr
             );
     }
     
@@ -161,12 +171,31 @@ class Model {
         $row->save();
     }
     
-    public function queryConversations($uid) {
-        $query = $this->T('conversations')
-                    ->where('uid', $uid)
-                    ->orderByDesc('updated');
-        $convArray = $query->findArray();
-        $convObjArr = array_map(array($this, '_toObj'), $convArray);
+    public function queryConversations($uid, $type) {
+        if ($type != 'general') {
+            $query = $this->T('conversations')
+            ->where('uid', $uid)
+            ->orderByDesc('updated');
+            $convArray = $query->findArray();
+            $convObjArr = array_map(array($this, '_toObj'), $convArray);
+        } else {
+            $convArray = $this->T2('webim_conversations')
+            ->tableAlias('conver')
+            ->select('conver.id', 'id')
+            ->select('conver.uid', 'uid')
+            ->select('conver.oid', 'oid')
+            ->select('conver.body', 'body')
+            ->select('conver.created', 'created')
+            ->select('conver.updated', 'updated')
+            ->select('conver.type', 'type')
+            ->select('conver.direction', 'direction')
+            ->select('conver.oname', 'oname')
+            ->select('conver.oavatar', 'oavatar')
+            ->join('ecs_agents', array('agent.user_id', '=', 'conver.uid'), 'agent')
+            ->where('agent.customer_id', $id)
+            ->findArray();
+            $convObjArr = array_map(array($this, '_toObj'), $convArray);
+        }
         return $convObjArr;
     }
     
@@ -624,6 +653,18 @@ class Model {
         return (object)$v;
     }
 
+    private function _toUserObj($agent) {
+        return (object) array(
+                'id' => $agent->user_id,
+                'nick' => $agent->name,
+                'group' => 'friend',
+                'presence' => 'offline',
+                'show' => 'unavailable',
+                'status' => '#',
+                'avatar' => '/images/agentphoto/'.$agent->face,
+                'type' => 'agent'
+        );
+    }
 }
 
 ?>

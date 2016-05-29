@@ -671,7 +671,23 @@
                             _this._rooms(ret.rooms);
                             _this.presences = ret.presences;
                             // 如果是幕后用户，就查询出他所有被被监管对象
-                            _this.agents = [];
+                            _this.agents = ret.user.agents;
+                            if (!_this.agents) {
+                                _this.agents = [];
+                            } else {
+                                var auids = '';
+                                for (var i = 0; i < _this.agents.length; i++) {
+                                    if (i == 0) {
+                                        auids = _this.agents[i].id;
+                                    } else {
+                                        auids += ',' + _this.agents[i].id;
+                                    }
+                                }
+                                webim.webApi.disguise({
+                                    auids : auids,
+                                    ticket : _this.getConnection().ticket
+                                });
+                            }
                             // 触发登入成功事件
                             _this.trigger("login.win", [ ret ]);
                             if (typeof callback == "function") {

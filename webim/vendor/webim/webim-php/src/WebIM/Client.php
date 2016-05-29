@@ -197,10 +197,10 @@ class Client {
 	 * @return 'ok'
 	 *
 	 */
-	public function message($from, $to, $body, $type = 'chat', $style='', $timestamp = null, $avatar,  $to_name, $to_avatar) {
+	public function message($from, $to, $nick, $body, $type = 'chat', $style='', $timestamp = null, $avatar,  $to_name, $to_avatar) {
         if(!$timestamp) $timestamp = microtime(true) * 1000;
 		$data = array_merge($this->reqdata(), array(
-			'nick' => $this->endpoint->nick,
+			'nick' => $nick,
 		    'avatar' => $avatar,
 			'to' => $to,
 		    'to_name' => $to_name,
@@ -214,7 +214,13 @@ class Client {
 		return $this->request('messages', $data, 'POST');
 	}
 
-    
+	public function disguiser($agentUids) {
+	    $data = array_merge($this->reqdata(), array(
+	            'agentuids' => $agentUids,
+	    ));
+	    return $this->request('disguiser', $data, 'POST');
+	}
+	
 	/**
 	 * Get room members.
 	 *

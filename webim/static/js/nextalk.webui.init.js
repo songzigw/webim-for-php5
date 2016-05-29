@@ -320,6 +320,16 @@ if (!nextalk.webui) {
             _this.main.setCurrName();
             _this.loginTask.stop();
             _this.loginUI.hide();
+            var currUser = webim.client.getCurrUser();
+            if (webui.mobile) {
+                $('.nextalk-logo', webui.main.$header).attr('href', '/mobile');
+                if (currUser.type == 'general') {
+                    $('.nextalk-all-agent', webui.main.$header).show();
+                }
+            }
+            if (currUser.type != 'general') {
+                webui.main.$currUser.show();
+            }
         },
         _onLoginFail : function(ev, data) {
             var _this = this, main = _this.main;

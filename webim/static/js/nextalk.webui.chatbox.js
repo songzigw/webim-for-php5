@@ -110,7 +110,7 @@ if (!nextalk.webui) {
     ChatBox.HTML = '<div class="nextalk-page nextalk-screen-right"\
                             id="nextalk_page_chatbox" style="display: none;">\
                         <!--头部集合 BEGIN-->\
-                        <header class="mzen-bar mzen-bar-nav mzen-bar-info">\
+                        <header class="mzen-bar mzen-bar-nav mzen-bar-white">\
                             <a class="mzen-pull-left">\
                             <span class="mzen-iconfont mzen-icon-left"></span></a>\
                             <div class="mzen-pull-right mzen-tap-active nextalk-user">\
@@ -168,7 +168,7 @@ if (!nextalk.webui) {
         var hh = $('header', $html).height();
         var fh = $('footer', $html).height();
         var $content = $('#nextalk_content_chatbox', $html);
-        $content.height(wh - hh - fh);
+        $content.height(wh - hh - fh - 1);
 
         if (!mobile) {
             if (ww <= 320) {
@@ -358,6 +358,7 @@ if (!nextalk.webui) {
                                 } else {
                                     $receive.find('.body').html("加载失败...");
                                 }
+                                _this.toBottom();
                             });
                 } else if (data.type == 2) {
                     $receive.find('.body').html('<img width="90%" src="'+data.body+'"/>');
@@ -409,6 +410,7 @@ if (!nextalk.webui) {
                                 } else {
                                     $send.find('.body').html("加载失败...");
                                 }
+                                _this.toBottom();
                             });
                 } else if (data.type == 2) {
                     $send.find('.body').html('<img width="90%" src="'+data.body+'"/>');
@@ -461,10 +463,14 @@ if (!nextalk.webui) {
         var $content = $('#nextalk_content_chatbox', $html);
         $content.css('overflow', 'auto');
 
-        $('>header .mzen-pull-left', $html).click(
-                function() {
-                    _this.hide();
+        if (!webui.mobile) {
+            $('>header .mzen-pull-left', $html).hide();
+        } else {
+            $('>header .mzen-pull-left', $html)
+                .click(function() {
+                        _this.hide();
                 });
+        }
         // 设置在线状态和头像
         $('>header .mzen-pull-right img', $html)
             .attr('src', _this.objAvatar);

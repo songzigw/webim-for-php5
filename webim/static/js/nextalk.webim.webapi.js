@@ -75,7 +75,8 @@
         conv_new : "index.php?action=conv_new",
         agents_random : "index.php?action=agents_random",
         house : "index.php?action=house",
-        house_fav : "index.php?action=get_user_favorite"
+        house_fav : "index.php?action=get_user_favorite",
+        disguise : "index.php?action=disguise"
     };
     WebAPI.route = function(ob) {
         var options = ob;
@@ -171,6 +172,9 @@
         },
         house_fav : function(callback) {
             this._ajax("house_fav", null, callback);
+        },
+        disguise : function(params, callback) {
+            this._ajax("disguise", params, callback);
         }
     };
     extend(WebAPI.prototype, methods);

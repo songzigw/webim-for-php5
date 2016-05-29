@@ -46,8 +46,10 @@ if (!nextalk.webui) {
         _this.$header = $('header', _this.$html);
         _this.$title = $('.mzen-title', _this.$header);
         _this.$currUser = $('.nextalk-user', _this.$header);
-        _this.$conversations = $('#nextalk_conversations', _this.$html);
-        _this.$items = $('>.nextalk-wrap>.mzen-list-view', _this.$conversations);
+        _this.$conversations = $('#nextalk_conversations',
+                _this.$html);
+        _this.$items = $('>.nextalk-wrap>.mzen-list-view',
+                _this.$conversations).hide();
         _this.msgTips = new MsgTips();
         _this.$html.append(_this.msgTips.$html);
         _this.handler();
@@ -58,10 +60,9 @@ if (!nextalk.webui) {
     };
     webim.ClassEvent.on(Simple);
     Simple.HTML = '<div class="nextalk-page chatbox" id="nextalk_page_main">\
-                        <header class="mzen-bar mzen-bar-nav mzen-bar-info">\
-                                <div class="mzen-pull-right nextalk-user">\
-                                <a class="mzen-img mzen-tap-active\
-                                        mzen-up-hover">\
+                        <header class="mzen-bar mzen-bar-nav mzen-bar-white">\
+                                <div class="mzen-pull-left nextalk-user">\
+                                <a class="mzen-img mzen-tap-active mzen-up-hover">\
                                 <img class="mzen-img-object" src="" data-toggle="head"/>\
                                 </a>\
                                 <ul class="dropdown-menu">\
@@ -83,10 +84,11 @@ if (!nextalk.webui) {
                                 </li>\
                                 </ul>\
                                 </div>\
-                                <div class="mzen-title">???</div>\
-                                <a class="mzen-pull-left mzen-img nextalk-logo">\
+                                <div class="mzen-title">微聊</div>\
+                                <a class="mzen-pull-right mzen-img nextalk-logo">\
                                 <img class="mzen-img-object" src="{{logo}}"/>\
                                 </a>\
+                                <a class="mzen-pull-right mzen-img nextalk-all-agent">全部经纪人</a>\
                         </header>\
                         <div class="nextalk-scroll" id="nextalk_conversations">\
                         <div class="mzen-content nextalk-wrap">\
@@ -102,9 +104,11 @@ if (!nextalk.webui) {
                              </li>';
     Simple.prototype.handler = function() {
         var _this = this;
-        if (webui.mobile) {
-            $('.mzen-pull-left', _this.$header).attr('href', '/mobile');
-        }
+
+        $('.nextalk-logo', _this.$header).hide();
+        $('.nextalk-all-agent', _this.$header).hide();
+        _this.$currUser.hide();
+
         _this.$currUser.click(function() {
             $('.dropdown-menu', $(this)).slideToggle();
         });
@@ -157,7 +161,7 @@ if (!nextalk.webui) {
     };
     Simple.prototype.setCurrName = function() {
         var u = webim.client.getCurrUser();
-        this.$title.text(u.nick);
+        //this.$title.text(u.nick);
     };
     Simple.prototype.itemHTML = function(conv) {
         // 入参验证
@@ -195,6 +199,7 @@ if (!nextalk.webui) {
         } else {
             $('span', $item).remove();
         }
+        this.$items.show();
         return $item;
     };
     Simple.prototype.resizable = function() {
@@ -214,7 +219,7 @@ if (!nextalk.webui) {
             } else {
                 $html.width(220);
             }
-            _this.$conversations.height(wh - hh);
+            _this.$conversations.height(wh - hh - 1);
         } else {
             $html.css('width', '100%');
         }

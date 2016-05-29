@@ -30,7 +30,7 @@ if (!window.nextalk) {
         // Iframe 宽高
         panel : {
             width : 690,
-            height : 430
+            height : 450
         },
         $ : undefined
     };
@@ -43,16 +43,11 @@ if (!window.nextalk) {
         return btnHTML;
     };
 
-    var h = 20;
     iframe._getIfrHTML = function() {
         var ifrHTML = '<div class="nextalk-iframe" id="nextalk_iframe" '
                 + 'style="width:'+ this.panel.width + 'px;height:' + this.panel.height + 'px;">'
-                + '<div class="nextalk-minimize" style="height:' + h + 'px;">'
-                + '<a class="" title="最小化">-</a></div>'
-                + '<div class="nextalk-right" style="height:' + h + 'px;"></div>'
-                + '<div style="width:100%;height:' + (this.panel.height - h) + 'px;">'
-                + '<iframe src="'
-                + this.config.resPath
+                + '<div style="width:100%;height:' + (this.panel.height) + 'px;">'
+                + '<iframe src="' + this.config.resPath
                 + 'html/iframe.html" name="nextalk_iframe" frameborder="no" scrolling="no"/>'
                 + '</div></div>';
         return ifrHTML;

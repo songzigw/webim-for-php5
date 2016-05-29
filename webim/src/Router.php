@@ -394,6 +394,9 @@ EOF;
 
         global $IMC;
 		$type = $this->input("type");
+		$from = $this->input('from');
+		$nick = $this->input('nick');
+		$avatar = $this->input('avatar');
 		$offline = $this->input("offline");
 		$to = $this->input("to");
 		$to_name = $this->input("to_name");
@@ -417,20 +420,26 @@ EOF;
 				"to" => $to,
                 //"to_name" => $to_name,
                 //"to_avatar" => $to_avatar,
-                'from' => $this->user->id,
-                'nick' => $this->user->nick,
-                'avatar' => $this->user->avatar,
+                'from' => $from,
+                'nick' => $nick,
+                'avatar' => $avatar,
 				"body" => $body,
 				"style" => $style,
 				"timestamp" => $timestamp,
 			));
 		}
 		if($send == 1){
-			$this->client->message(null, $to, $body, $type, $style, $timestamp, $this->user->avatar, $to_name, $to_avatar);
+			$this->client->message($from, $to, $nick, $body, $type, $style, $timestamp, $avatar, $to_name, $to_avatar);
 		}
         //Error Reply
         //$this->jsonReply(array('status' => 'error', 'message' => $body));
 		$this->okReply();
+	}
+	
+	public function disguiser() {
+	    $auids = $this->input('auids');
+	    $this->client->disguiser($auids);
+	    $this->okReply();
 	}
 
     /**
@@ -845,7 +854,8 @@ EOF;
     
     public function conversations() {
         $uid = $this->user->id;
-        $convs = $this->model->queryConversations($uid);
+        $type = $this->user->type;
+        $convs = $this->model->queryConversations($uid, $type);
         $this->jsonReply($convs);
     }
     
