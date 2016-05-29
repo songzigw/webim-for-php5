@@ -192,8 +192,8 @@ class Model {
             ->select('conver.direction', 'direction')
             ->select('conver.oname', 'oname')
             ->select('conver.oavatar', 'oavatar')
-            ->join('ecs_agents', array('agent.user_id', '=', 'conver.uid'), 'agent')
-            ->where('agent.customer_id', $id)
+            ->join('ecs_agent', array('agent.user_id', '=', 'conver.uid'), 'agent')
+            ->where('agent.customer_id', $uid)
             ->findArray();
             $convObjArr = array_map(array($this, '_toObj'), $convArray);
         }

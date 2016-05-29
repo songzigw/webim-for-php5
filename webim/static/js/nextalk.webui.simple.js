@@ -88,7 +88,7 @@ if (!nextalk.webui) {
                                 <a class="mzen-pull-right mzen-img nextalk-logo">\
                                 <img class="mzen-img-object" src="{{logo}}"/>\
                                 </a>\
-                                <a class="mzen-pull-right mzen-img nextalk-all-agent">全部经纪人</a>\
+                                <a class="mzen-pull-right mzen-img nextalk-all-agent" href="/mobile/broker_list.php">全部经纪人</a>\
                         </header>\
                         <div class="nextalk-scroll" id="nextalk_conversations">\
                         <div class="mzen-content nextalk-wrap">\
@@ -132,8 +132,7 @@ if (!nextalk.webui) {
 
         _this.$items.empty();
         _this.$conversations.css({
-            'overflow' : 'auto',
-            'background' : 'white'
+            'overflow' : 'auto'
         });
     };
     Simple.prototype.avatar = function() {
@@ -210,7 +209,6 @@ if (!nextalk.webui) {
         var wh = $w.height();
         var ww = $w.width();
 
-        _this.$header.outerHeight(46);
         var hh = _this.$header.outerHeight();
         _this.$conversations.height(wh - hh);
 

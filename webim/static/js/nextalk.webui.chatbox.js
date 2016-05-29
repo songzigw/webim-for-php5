@@ -111,7 +111,7 @@ if (!nextalk.webui) {
                             id="nextalk_page_chatbox" style="display: none;">\
                         <!--头部集合 BEGIN-->\
                         <header class="mzen-bar mzen-bar-nav mzen-bar-white">\
-                            <a class="mzen-pull-left">\
+                            <a class="mzen-pull-left nextalk-return">\
                             <span class="mzen-iconfont mzen-icon-left"></span></a>\
                             <div class="mzen-pull-left mzen-tap-active nextalk-user">\
                             <a class="mzen-img">\
@@ -464,9 +464,9 @@ if (!nextalk.webui) {
         $content.css('overflow', 'auto');
 
         if (!webui.mobile) {
-            $('>header .mzen-pull-left', $html).hide();
+            $('>header .nextalk-return', $html).hide();
         } else {
-            $('>header .mzen-pull-left', $html)
+            $('>header .nextalk-return', $html)
                 .click(function() {
                         _this.hide();
                 });

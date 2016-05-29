@@ -520,6 +520,7 @@ EOF;
         $body_type = $this->input('body_type');
         $body = $this->input('body');
         $type = $this->user->type;
+        $buddy = null;
         if ($uid != null && $type == 'general') {
             $buddy = $this->plugin->getUserById($uid);
             if(!$buddy) {
@@ -604,6 +605,7 @@ EOF;
         $body = $this->input('body');
         $uids = $this->idsArray($this->input('uids', ''));
         $type = $this->user->type;
+        $buddy = null;
         if ($uid != null && $type == 'general') {
             $buddy = $this->plugin->getUserById($uid);
             if(!$buddy) {
