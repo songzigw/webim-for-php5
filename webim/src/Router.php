@@ -584,14 +584,16 @@ EOF;
         echo '<body>';
         echo '        <script type="text/javascript">';
         echo '        var _IMC = {};';
-        echo '        _IMC.chatObj = {';
-        echo '            type : "chat",';
-        echo '            id : "'. $buddy->id .'",';
-        echo '            name : "'. $buddy->nick .'",';
-        echo '            avatar : "'. $buddy->avatar .'",';
-        echo '            body_type : "'. $body_type .'",';
-        echo '            body : "'. $body .'"';
-        echo '        };';
+        if ($buddy) {
+            echo '        _IMC.chatObj = {';
+            echo '            type : "chat",';
+            echo '            id : "'. $buddy->id .'",';
+            echo '            name : "'. $buddy->nick .'",';
+            echo '            avatar : "'. $buddy->avatar .'",';
+            echo '            body_type : "'. $body_type .'",';
+            echo '            body : "'. $body .'"';
+            echo '        };';
+        }
         echo '        </script>';
         echo '        <script type="text/javascript" src="'.$webim_path.'index.php?action=boot&simple=true&iframe=false"></script>';
         echo '</body>';
@@ -613,8 +615,8 @@ EOF;
                 exit("User Not Found");
             }
         }
+        $agents = array();
         if ($type == 'general') {
-            $agents = array();
             foreach($uids as $id){
                 $a = $this->plugin->getUserById($id);
                 if ($a) {
