@@ -210,6 +210,7 @@ if (!nextalk.webui) {
         var wh = $w.height();
         var ww = $w.width();
 
+        _this.$header.outerHeight(46);
         var hh = _this.$header.outerHeight();
         _this.$conversations.height(wh - hh);
 

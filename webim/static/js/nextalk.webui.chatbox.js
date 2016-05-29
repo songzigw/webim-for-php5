@@ -113,7 +113,7 @@ if (!nextalk.webui) {
                         <header class="mzen-bar mzen-bar-nav mzen-bar-white">\
                             <a class="mzen-pull-left">\
                             <span class="mzen-iconfont mzen-icon-left"></span></a>\
-                            <div class="mzen-pull-right mzen-tap-active nextalk-user">\
+                            <div class="mzen-pull-left mzen-tap-active nextalk-user">\
                             <a class="mzen-img">\
                             <img class="mzen-img-object" src="" data-toggle="head">\
                             </a>\
@@ -472,8 +472,11 @@ if (!nextalk.webui) {
                 });
         }
         // 设置在线状态和头像
-        $('>header .mzen-pull-right img', $html)
+        $('>header .nextalk-user img', $html)
             .attr('src', _this.objAvatar);
+        if (webui.mobile) {
+            $('>header .nextalk-user img', $html).hide();
+        }
 
         $('footer .mzen-btn', $html).on('click', function() {
             _this.submit();

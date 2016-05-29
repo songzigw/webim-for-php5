@@ -87,7 +87,8 @@ class Model {
         } else {
             $type = 'general';
         }
-        
+
+        $agentObjArr = array();
         if ($type == 'backstage') {
             $agentArray = $this->T2('ecs_agent')
                         ->where('customer_id', $uid)
