@@ -436,9 +436,9 @@ EOF;
 		$this->okReply();
 	}
 	
-	public function disguiser() {
+	public function disguise() {
 	    $auids = $this->input('auids');
-	    $this->client->disguiser($auids);
+	    $this->client->disguise($auids);
 	    $this->okReply();
 	}
 

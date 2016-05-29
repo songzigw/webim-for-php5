@@ -172,7 +172,7 @@ class Model {
     }
     
     public function queryConversations($uid, $type) {
-        if ($type != 'general') {
+        if ($type != 'backstage') {
             $query = $this->T('conversations')
             ->where('uid', $uid)
             ->orderByDesc('updated');
@@ -655,13 +655,13 @@ class Model {
 
     private function _toUserObj($agent) {
         return (object) array(
-                'id' => $agent->user_id,
-                'nick' => $agent->name,
+                'id' => $agent['user_id'],
+                'nick' => $agent['name'],
                 'group' => 'friend',
                 'presence' => 'offline',
                 'show' => 'unavailable',
                 'status' => '#',
-                'avatar' => '/images/agentphoto/'.$agent->face,
+                'avatar' => '/images/agentphoto/'.$agent['face'],
                 'type' => 'agent'
         );
     }

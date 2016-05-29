@@ -210,7 +210,7 @@ if (!nextalk.webui) {
         var wh = $w.height();
         var ww = $w.width();
 
-        var hh = _this.$header.height();
+        var hh = _this.$header.outerHeight();
         _this.$conversations.height(wh - hh);
 
         if (!mobile) {
@@ -219,7 +219,7 @@ if (!nextalk.webui) {
             } else {
                 $html.width(220);
             }
-            _this.$conversations.height(wh - hh - 1);
+            _this.$conversations.height(wh - hh);
         } else {
             $html.css('width', '100%');
         }

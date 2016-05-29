@@ -165,10 +165,10 @@ if (!nextalk.webui) {
         var wh = $w.height();
         var ww = $w.width();
 
-        var hh = $('header', $html).height();
-        var fh = $('footer', $html).height();
+        var hh = $('header', $html).outerHeight() ;
+        var fh = $('footer', $html).outerHeight();
         var $content = $('#nextalk_content_chatbox', $html);
-        $content.height(wh - hh - fh - 1);
+        $content.height(wh - hh - fh);
 
         if (!mobile) {
             if (ww <= 320) {
