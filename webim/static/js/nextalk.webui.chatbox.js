@@ -142,7 +142,7 @@ if (!nextalk.webui) {
     ChatBox.SEND = '<p class="mzen-text-center"><span class="time">???</span></p>\
                       <div class="mzen-chat-sender">\
                         <div class="mzen-chat-sender-avatar"><img src=""></div>\
-                        <div style="padding-right:60px;text-align:right;" class="nick">???</div>\
+                        <!--<div style="padding-right:60px;text-align:right;" class="nick">???</div>-->\
                         <div class="mzen-chat-sender-cont">\
                             <div class="mzen-chat-right-triangle"></div>\
                             <span class="body">???</span>\
@@ -151,7 +151,7 @@ if (!nextalk.webui) {
     ChatBox.RECEIVE = '<p class="mzen-text-center"><span class="time">???</span></p>\
                          <div class="mzen-chat-receiver">\
                             <div class="mzen-chat-receiver-avatar"><img src=""></div>\
-                            <div style="padding-left:60px;text-align:left;" class="nick">???</div>\
+                            <!--<div style="padding-left:60px;text-align:left;" class="nick">???</div>-->\
                             <div class="mzen-chat-receiver-cont">\
                                 <div class="mzen-chat-left-triangle"></div>\
                                 <span class="body">???</span>\

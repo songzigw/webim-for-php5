@@ -11,29 +11,30 @@
 
 .nextalk-main {
 	display: none;
-	position: fixed;
-	box-sizing: content-box;
-	height: 26px;
-	bottom: 0px;
-	right: 50px;
-	padding: 0px 10px;
-	border-radius: 2px 2px 0px 0px;
-	transition: all 0.3s ease-in-out 0.1s;
-	-webkit-transition: all 0.3s ease-in-out 0.1s;
-	background: rgb(15, 156, 66);
+    position: fixed;
+    box-sizing: content-box;
+    height: 30px;
+    bottom: 0px;
+    right: 50px;
+    padding: 0px;
+    border-radius: 2px 2px 0px 0px;
+    transition: all 0.3s ease-in-out 0.1s;
+    -webkit-transition: all 0.3s ease-in-out 0.1s;
+    box-shadow: 0px 0px 8px 3px rgba(0,0,0,0.2);
+    background: #f0f1f4;
 }
 
 .nextalk-main .nextalk-btn {
 	text-decoration: none;
 	outline: none;
 	font-family: Microsoft Yahei, Arial, Helvetica;
-	color: #fff;
+	color: #333;
 	font-size: 14px;
 	display: inline-block;
 	margin: 0;
-	padding: 0;
+	padding: 0 25px;
 	border: none;
-	line-height: 26px;
+	line-height: 30px;
 	float: none;
 	cursor: pointer;
 }

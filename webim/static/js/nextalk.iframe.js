@@ -38,7 +38,7 @@ if (!window.nextalk) {
     iframe._getBtnHTML = function() {
         var btnHTML = '<div class="nextalk-main" id="nextalk_main">'
                 + '<a class="nextalk-btn">' + '<img class="nextalk-ico" src="'
-                + this.config.resPath + 'imgs/chat.png" />' + '<span>聊天</span></a>'
+                + this.config.resPath + 'imgs/chat.png" />' + '<span>微聊</span></a>'
                 + '<span class="nextalk-alert" id="nextalk_unread">0</span></div>';
         return btnHTML;
     };
