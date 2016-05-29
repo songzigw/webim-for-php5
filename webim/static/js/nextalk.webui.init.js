@@ -43,6 +43,7 @@ if (!nextalk.webui) {
     webui.VERSION = webui.version = webui.v = "1.0.0";
 
     webui.mobile = false;
+    webui.iframe = false;
     webui.chatObj = null;
     webui.chatObjs = [];
     webui.init = function(options) {
@@ -65,21 +66,40 @@ if (!nextalk.webui) {
         if (options.mobile) {
             _this.mobile = options.mobile;
         }
+        if (options.iframe) {
+            _this.iframe = options.iframe;
+        }
         if (options.chatObj) {
             _this.chatObj = options.chatObj;
         }
         if (options.chatObjs) {
             _this.chatObjs = options.chatObjs;
         }
-        delete options.mobile;
-        delete options.chatObj;
-        delete options.chatObjs;
 
         // 初始化webim
         webim.init(options);
 
         // 界面元素根节点body
         _this.$body = $('body');
+        _this.$btnClose = {
+             HTML : '\
+                 <div class="nextalk-btn-close">\
+                 <a href="#"><span class="mzen-iconfont mzen-icon-close"></span></a>\
+                 </div>',
+            init : function() {
+                var _ui = this;
+                _ui.$html = $(_ui.HTML);
+                $('a', _ui.$html).on('click', function() {
+                    if (webui.onClickCloseIframe) {
+                        webui.onClickCloseIframe();
+                    }
+                });
+                _ui.$html.appendTo(_this.$body);
+            }
+        };
+        if (webui.iframe) {
+            _this.$btnClose.init();
+        }
 
         _this.welcomeUI = {
             HTML : '<div class="nextalk-page nextalk-screen-full nextalk-page-login"\

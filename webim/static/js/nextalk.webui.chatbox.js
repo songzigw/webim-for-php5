@@ -119,6 +119,8 @@ if (!nextalk.webui) {
                             </a>\
                             </div>\
                             <div class="mzen-title">???</div>\
+                            <a class="mzen-pull-right nextalk-close-iframe" href="#">\
+                            <span class="mzen-iconfont mzen-icon-close"></span></a>\
                         </header>\
                         <!--头部集合 END-->\
                         <div class="nextalk-scroll" id="nextalk_content_chatbox">\
@@ -474,9 +476,19 @@ if (!nextalk.webui) {
         // 设置在线状态和头像
         $('>header .nextalk-user img', $html)
             .attr('src', _this.objAvatar);
+        $('>header .nextalk-user img', $html).hide();
         if (webui.mobile) {
             $('>header .nextalk-user img', $html).hide();
         }
+        $('>header .nextalk-close-iframe', $html).hide();
+        if (!webui.iframe) {
+            $('>header .nextalk-close-iframe', $html).hide();
+        }
+        $('>header .nextalk-close-iframe', $html).on('click', function() {
+            if (webui.onClickCloseIframe) {
+                webui.onClickCloseIframe();
+            }
+        });
 
         $('footer .mzen-btn', $html).on('click', function() {
             _this.submit();

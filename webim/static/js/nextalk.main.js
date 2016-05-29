@@ -189,6 +189,7 @@ if (!window.nextalk) {
             apiPath : _this.apiPath,
             mobile : _this.mobile,
             //simple : _this.simple,
+            iframe : _this.isIframe,
             chatObj : _this.chatObj,
             chatObjs : _this.chatObjs,
             chatlinkIds : _this.chatlinkIds,
@@ -199,6 +200,7 @@ if (!window.nextalk) {
         nextalk.webui.onLoginWin = _this.onLoginWin;
         nextalk.webui.onChatboxOpen = _this.onChatboxOpen;
         nextalk.webui.onChatboxClose = _this.onChatboxClose;
+        nextalk.webui.onClickCloseIframe = _this.onClickCloseIframe;
         nextalk.webui.connectServer();
     };
     main._goHidden = function() {
@@ -243,6 +245,7 @@ if (!window.nextalk) {
             apiPath : _this.apiPath,
             // 简易聊天UI
             simple : _this.simple,
+            isIframe : _this.iframe,
             // 默认聊天对象
             chatObj : _this.chatObj,
             chatObjs : _this.chatObjs,

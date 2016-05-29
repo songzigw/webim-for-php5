@@ -105,6 +105,13 @@ if (!window.nextalk) {
             _this.$('#nextalk_iframe .nextalk-right', document)
             .css('background-color', 'inherit');
         };
+        _this.config.onClickCloseIframe = function() {
+            iframe.$('#nextalk_unread', document).hide();
+            var nkMain = iframe.$('#nextalk_main', document);
+            var nkIframe = iframe.$('#nextalk_iframe', document);
+            nkIframe.hide();
+            slideUp(nkMain, -42);
+        };
         
         var div = document.createElement('div');
         div.innerHTML = this._getBtnHTML() + this._getIfrHTML();
