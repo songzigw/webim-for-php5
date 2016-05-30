@@ -194,6 +194,13 @@
      */
     Conversation.prototype.add = function(msg) {
         var _this = this;
+        var difference = msg.timestamp - _this.timestamp;
+        if (difference != 0 && difference < 10000) {
+            msg.showTimestamp = false;
+        } else {
+            msg.showTimestamp = true;
+        }
+
         extend(_this, Conversation.parser(msg));
         if (msg.direction == webim.msgDirection.RECEIVE) {
             if (typeof msg.read === 'boolean' && !msg.read) {

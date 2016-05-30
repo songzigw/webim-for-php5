@@ -207,18 +207,31 @@
                     };
                     webim.webApi.history(params, function(ret, err) {
                         var currUser = webim.client.getCurrUser();
+                        var lastTime;
                         var messages = [];
                         if (ret) {
                             for (var i = 0; i < ret.length; i++) {
                                 var msg = ret[i];
-                                if (msg.from == currUser.id) {
+                                var agent = webim.client.getAgent(msg.from);
+                                if (msg.from == currUser.id || agent) {
                                     msg.direction = webim.msgDirection.SEND;
                                     if (!msg.avatar) {
-                                        msg.avatar = currUser.avatar;
+                                        if (agent) {
+                                            msg.avatar = agent.avatar;
+                                        } else {
+                                            msg.avatar = currUser.avatar;
+                                        }
                                     }
                                 } else {
                                     msg.direction = webim.msgDirection.RECEIVE;
                                 }
+                                msg.timestamp = Number(msg.timestamp);
+                                if (lastTime && (msg.timestamp - lastTime) < 10000) {
+                                    msg.showTimestamp = false;
+                                } else {
+                                    msg.showTimestamp = true;
+                                }
+                                lastTime = msg.timestamp;
                                 messages.push(msg);
                             }
                         }

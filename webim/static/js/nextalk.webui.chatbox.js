@@ -332,6 +332,11 @@ if (!nextalk.webui) {
             tStr = time.format('hh:mm:ss');
         }
         $receive.find('.time').text(tStr);
+        if (msg.showTimestamp) {
+            $($receive[0]).show();
+        } else {
+            $($receive[0]).hide();
+        }
         $receive.find('.nick').text(msg.nick);
         $receive.find('img').attr('src', msg.avatar);
         if (isUrl(msg.body)) {
@@ -384,6 +389,11 @@ if (!nextalk.webui) {
             tStr = time.format('hh:mm:ss');
         }
         $send.find('.time').text(tStr);
+        if (msg.showTimestamp) {
+            $($send[0]).show();
+        } else {
+            $($send[0]).hide();
+        }
         $send.find('.nick').text(msg.nick);
         $send.find('img').attr('src', msg.avatar);
         if (isUrl(msg.body)) {
@@ -428,8 +438,13 @@ if (!nextalk.webui) {
     ChatBox.prototype.sendMsg = function(body) {
         var _this = this;
         var msg = _this.message(body);
-        _this.sendHTML(msg);
+        var $send = _this.sendHTML(msg);
         webim.client.sendMessage(msg);
+        if (msg.showTimestamp) {
+            $($send[0]).show();
+        } else {
+            $($send[0]).hide();
+        }
         // 处理会话列表
         webui.main.loadItem(msg.type, _this.currUid, msg.to);
     };
