@@ -58,11 +58,8 @@ class Plugin {
     public function __construct() { 
     }
 
-    public function getUserById($uid, $isAgent = false) {
+    public function getUserById($uid) {
 //        return $this->_buddy($uid);
-        if ($isAgent) {
-            return $this->model->getAgentById($uid);
-        }
         return $this->model->getUserById($uid);
     }
 

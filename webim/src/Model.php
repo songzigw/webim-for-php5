@@ -126,9 +126,9 @@ class Model {
             );
     }
     
-    public function getAgentById($aid) {
+    public function getAgentByUid($uid) {
         $agent = $this->T2('ecs_agent')
-                ->where('agent_id', $aid)
+                ->where('user_id', $uid)
                 ->findOne();
         if (!$agent) {
             return null;
