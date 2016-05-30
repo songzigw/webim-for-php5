@@ -665,6 +665,7 @@ if (!nextalk.webui) {
             chatBox = new ChatBox(conv);
             _this._chatBoxs.set(conv.type, key, chatBox);
         }
+        webui.main.selectActive(conv.type, conv.currUid, conv.objId);
         chatBox.show();
     };
 

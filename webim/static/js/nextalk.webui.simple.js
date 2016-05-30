@@ -276,6 +276,18 @@ if (!nextalk.webui) {
             }
         });
     };
+    Simple.prototype.selectActive = function(type, currUid, objId) {
+        var _this = this, $items = _this.$items;
+        $('>li', $items).each(function(i, el) {
+            var $el = $(el);
+            $el.removeClass('nextalk-chatbox-active');
+            if ($el.attr('data-toggle') == type
+                    && $el.attr('data-currUid') == currUid
+                    && $el.attr('data-objId') == objId) {
+                $el.addClass('nextalk-chatbox-active');
+            }
+        });
+    };
     Simple.prototype.loadRecently = function(convs) {
         var _this = this, $items = _this.$items.empty();
         

@@ -567,3 +567,7 @@ footer.mzen-nav >ul.mzen-bar-tab > li > .mzen-badge {
 	bottom: 0;
 	background-color: inherit;
 }
+
+.nextalk-chatbox-active {
+    background-color: #f4f4f4;
+}
