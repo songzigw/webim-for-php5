@@ -880,6 +880,18 @@ EOF;
                 'oavatar' => $this->input('oavatar')
         );
         $this->model->insertConversations($conv);
+        if ($this->input('type') == 'chat' && $this->input('direction') == 'send') {
+            $conv = array(
+                    'uid' => $this->input('oid'),
+                    'oid' => $this->input('uid'),
+                    'body' => $this->input('body'),
+                    'type' => 'chat',
+                    'direction' => 'receive',
+                    'oname' => $this->input('nick'),
+                    'oavatar' => $this->input('avatar')
+            );
+            $this->model->insertConversations($conv);
+        }
         $this->okReply();
     }
 
