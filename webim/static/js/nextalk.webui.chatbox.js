@@ -491,7 +491,7 @@ if (!nextalk.webui) {
         // 设置在线状态和头像
         $('>header .nextalk-user img', $html)
             .attr('src', _this.objAvatar);
-        $('>header .nextalk-user img', $html).hide();
+        $('>header .nextalk-user', $html).hide();
         if (webui.mobile) {
             $('>header .nextalk-user img', $html).hide();
         }
