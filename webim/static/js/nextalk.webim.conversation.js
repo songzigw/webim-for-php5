@@ -216,6 +216,8 @@
         webim.webApi.conv_new({
             type : _this.type,
             uid : _this.currUid,
+            nick : _this.currNick,
+            avatar : _this.currAvatar,
             oid : _this.objId,
             oname : _this.objName,
             oavatar : _this.objAvatar,
