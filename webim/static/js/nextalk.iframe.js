@@ -94,16 +94,13 @@ if (!window.nextalk) {
             }
         };
         _this.config.onLoginWin = function() {
-            _this.$('#nextalk_iframe .nextalk-minimize', document)
-            .width(220).css('background-color', '#00569d');
+            
         };
         _this.config.onChatboxOpen = function() {
-            _this.$('#nextalk_iframe .nextalk-right', document)
-            .css('background-color', '#00569d');
+            
         };
         _this.config.onChatboxClose = function() {
-            _this.$('#nextalk_iframe .nextalk-right', document)
-            .css('background-color', 'inherit');
+            
         };
         _this.config.onClickCloseIframe = function() {
             iframe.$('#nextalk_unread', document).hide();
