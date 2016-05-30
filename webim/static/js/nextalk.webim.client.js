@@ -85,6 +85,8 @@
     /** 版本号 */
     webim.VERSION = webim.version = webim.v = "1.0.0";
 
+    /** 两次消息最长间隔 */
+    webim.MSG_INTERVAL = 1000 * 20;
     /** 错误码 */
     webim.error = {
         // 未知原因失败

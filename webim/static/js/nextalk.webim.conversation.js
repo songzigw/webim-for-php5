@@ -195,7 +195,7 @@
     Conversation.prototype.add = function(msg) {
         var _this = this;
         var difference = msg.timestamp - _this.timestamp;
-        if (difference != 0 && difference < 10000) {
+        if (difference != 0 && difference < webim.MSG_INTERVAL) {
             msg.showTimestamp = false;
         } else {
             msg.showTimestamp = true;

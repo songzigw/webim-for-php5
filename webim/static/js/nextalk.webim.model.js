@@ -226,7 +226,7 @@
                                     msg.direction = webim.msgDirection.RECEIVE;
                                 }
                                 msg.timestamp = Number(msg.timestamp);
-                                if (lastTime && (msg.timestamp - lastTime) < 10000) {
+                                if (lastTime && (msg.timestamp - lastTime) < webim.MSG_INTERVAL) {
                                     msg.showTimestamp = false;
                                 } else {
                                     msg.showTimestamp = true;
