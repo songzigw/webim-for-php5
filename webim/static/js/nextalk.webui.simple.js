@@ -265,6 +265,7 @@ if (!nextalk.webui) {
                                 {currUid : currUid,
                                  objId : objId});
         _this.itemHTML(conv).prependTo($items);
+        _this.selectActive(type, currUid, objId);
 
         // 设置底部的未读数据
         _this.showUnreadTotal();
