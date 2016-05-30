@@ -10,6 +10,10 @@ html, body {
     background-repeat: no-repeat;*/
 }
 
+.mzen-list-view:after {
+	border-top: 0;
+}
+
 .mzen-chat-sender .mzen-chat-sender-cont a {
 	color: white;
 }

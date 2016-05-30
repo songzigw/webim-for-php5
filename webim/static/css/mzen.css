@@ -2573,8 +2573,8 @@ input.mzen-counter-input {
     box-sizing: border-box;
 }
 .mzen-tips-content {
-    line-height: 45px;
-    height: 45px;
+    line-height: 35px;
+    height: 35px;
     padding-left: 10px;
     padding-right: 30px;
     width: 100%;
@@ -2585,12 +2585,12 @@ input.mzen-counter-input {
 .mzen-tips-content i {
     display: inline-block;
     width: 30px;
-    height: 45px;
+    height: 35px;
     vertical-align: top;
 }
 .mzen-tips-content i:before {
     font-size: 22px;
-    line-height: 45px;
+    line-height: 35px;
     display: block;
     color: #ffffff;
 }

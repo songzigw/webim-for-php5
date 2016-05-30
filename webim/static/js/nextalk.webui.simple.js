@@ -51,7 +51,9 @@ if (!nextalk.webui) {
         _this.$items = $('>.nextalk-wrap>.mzen-list-view',
                 _this.$conversations).hide();
         _this.msgTips = new MsgTips();
-        _this.$html.append(_this.msgTips.$html);
+        _this.msgTips.$html.removeClass('nextalk-msg-tips');
+        _this.$conversations.prepend(_this.msgTips.$html);
+        //_this.$html.append(_this.msgTips.$html);
         _this.handler();
         
         _this.bind('presences', function(ev, data) {
@@ -61,8 +63,8 @@ if (!nextalk.webui) {
     webim.ClassEvent.on(Simple);
     Simple.HTML = '<div class="nextalk-page chatbox" id="nextalk_page_main">\
                         <header class="mzen-bar mzen-bar-nav mzen-bar-white">\
-                                <div class="mzen-pull-left nextalk-user">\
-                                <a class="mzen-img mzen-tap-active mzen-up-hover">\
+                                <div class="mzen-pull-left nextalk-user mzen-tap-active">\
+                                <a class="mzen-img">\
                                 <img class="mzen-img-object" src="" data-toggle="head"/>\
                                 </a>\
                                 <ul class="dropdown-menu">\
@@ -110,7 +112,7 @@ if (!nextalk.webui) {
         _this.$currUser.hide();
 
         _this.$currUser.click(function() {
-            $('.dropdown-menu', $(this)).slideToggle();
+            //$('.dropdown-menu', $(this)).slideToggle();
         });
         //_this.$currUser.find('ul').css('right', 'initial');
         $('.dropdown-menu li', _this.$currUser).each(function(i, el) {
