@@ -134,7 +134,8 @@ if (!nextalk.webui) {
 
         _this.$items.empty();
         _this.$conversations.css({
-            'overflow' : 'auto'
+            'overflow' : 'auto',
+            'background' : 'white'
         });
     };
     Simple.prototype.avatar = function() {
