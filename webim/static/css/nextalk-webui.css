@@ -562,6 +562,19 @@ footer.mzen-nav >ul.mzen-bar-tab > li > .mzen-badge {
 	vertical-align: middle;
 	cursor: pointer;
 }
+.nextalk-separator-del .mzen-list-view:after {
+    border-bottom: 0px;
+    border-top: 0px;
+}
+.nextalk-separator-del .mzen-list-view-cell:after {
+    border-bottom: 0px;
+    border-top: 0px;
+}
+.nextalk-separator-del .mzen-list-view-cell:before {
+    border-bottom: 0px;
+    border-top: 0px;
+}
+
 .chatbox-house .mzen-list-view-cell:after {
 	border-bottom: 0;
 }

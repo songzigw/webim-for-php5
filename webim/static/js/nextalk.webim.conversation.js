@@ -77,7 +77,7 @@
             nick      : {type : 'string', requisite : true},
             avatar    : {type : 'string', requisite : false},
             to        : {type : 'string', requisite : true},
-            to_name   : {type : 'string', requisite : false},
+            to_name   : {type : 'string', requisite : true},
             to_avatar : {type : 'string', requisite : false},
             body      : {type : 'string', requisite : true},
             timestamp : {type : 'number', requisite : true},
@@ -181,10 +181,12 @@
                 conv.objName = msg.to_name;
                 conv.objAvatar = msg.to_avatar;
             } else if (msg.direction == webim.msgDirection.RECEIVE) {
-                
                 conv.objId = msg.from;
                 conv.objName = msg.nick;
                 conv.objAvatar = msg.avatar;
+                conv.currUid = msg.to;
+                conv.currNick = msg.to_name;
+                conv.currAvatar = msg.to_avatar;
             }
         }
         return conv;

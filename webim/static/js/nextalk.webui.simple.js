@@ -132,6 +132,10 @@ if (!nextalk.webui) {
             });
         });
 
+        if (!webui.mobile) {
+            _this.$html.addClass('mzen-border-r');
+            _this.$conversations.addClass('nextalk-separator-del');
+        }
         _this.$items.empty();
         _this.$conversations.css({
             'overflow' : 'auto',
