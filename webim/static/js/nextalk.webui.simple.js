@@ -381,7 +381,7 @@ if (!nextalk.webui) {
     };
     Simple.prototype.showDisconnected = function() {
         window.clearTimeout(this.showTipsTask);
-        this.msgTips.show('连接断开...', 'mzen-tips-danger');
+        this.msgTips.show('连接断开，请刷新网页！', 'mzen-tips-danger');
     };
     Simple.prototype.showNetwork = function() {
         window.clearTimeout(this.showTipsTask);
