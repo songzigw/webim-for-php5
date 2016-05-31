@@ -121,6 +121,8 @@ if (!nextalk.webui) {
                             <div class="mzen-title">???</div>\
                             <a class="mzen-pull-right nextalk-close-iframe" href="#">\
                             <span class="mzen-iconfont mzen-icon-close"></span></a>\
+                            <a class="mzen-pull-right nextalk-call-phone" href="#">\
+                            <span class="mzen-iconfont mzen-icon-phone"></span></a>\
                         </header>\
                         <!--头部集合 END-->\
                         <div class="nextalk-scroll" id="nextalk_content_chatbox">\
@@ -480,30 +482,33 @@ if (!nextalk.webui) {
         var $content = $('#nextalk_content_chatbox', $html);
         $content.css('overflow', 'auto');
 
-        if (!webui.mobile) {
-            $('>header .nextalk-return', $html).hide();
-        } else {
-            $('>header .nextalk-return', $html)
-                .click(function() {
-                        _this.hide();
-                });
-        }
         // 设置在线状态和头像
-        $('>header .nextalk-user img', $html)
-            .attr('src', _this.objAvatar);
+        $('>header .nextalk-return', $html).hide().click(function() {
+            _this.hide();
+        });
+        $('>header .nextalk-user img', $html).attr('src', _this.objAvatar);
         $('>header .nextalk-user', $html).hide();
-        if (webui.mobile) {
-            $('>header .nextalk-user img', $html).hide();
-        }
         $('>header .nextalk-close-iframe', $html).hide();
-        if (!webui.iframe) {
-            $('>header .nextalk-close-iframe', $html).hide();
-        }
         $('>header .nextalk-close-iframe', $html).on('click', function() {
             if (webui.onClickCloseIframe) {
                 webui.onClickCloseIframe();
             }
         });
+        $('>header .nextalk-call-phone', $html).hide();
+        var currUser = webim.client.getCurrUser();
+        if (webui.mobile) {
+            $('>header .nextalk-return', $html).show();
+            if (currUser.type == webim.userType.GENERAL) {
+                webim.webApi.agent(_this.objId, function(res, err) {
+                    if (res) {
+                        $('>header .nextalk-call-phone', $html).show()
+                        .on('click', function() { webui.phonePage.show(res.tel_400) });
+                        $('.nextalk-call-phone span', $html)
+                        .css({'color': 'green', 'font-size': '26px'});
+                    }
+                });
+            }
+        }
 
         $('footer .mzen-btn', $html).on('click', function() {
             _this.submit();

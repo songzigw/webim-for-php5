@@ -158,6 +158,37 @@ if (!nextalk.webui) {
         };
         _this.loginUI.init();
 
+        _this.phonePage = {
+            HTML1 : '<div class="nextalk-page nextalk-screen-full nextalk-page-phone"></div>',
+            HTML2 : '<div class="nextalk-page nextalk-page-phone2 mzen-flex-col mzen-flex-center">\
+                <p>接通后需要手机拨打分机号：</p><strong style="color:red;">{{phoneNum}}</strong>\
+                <a class="mzen-btn mzen-btn-danger" href="tel:400-850-3637">现在拨打</a></div>',
+            init : function() {
+                var _ui = this;
+                _ui.$html1 = $(_ui.HTML1).hide();
+                _ui.$html2 = $(_ui.HTML2).hide();
+                _ui._handler();
+                _ui.$html1.appendTo(_this.$body);
+                _ui.$html2.appendTo(_this.$body);
+            },
+            show : function(num) {
+                this.$html1.show();
+                this.$html2.find('strong').text(num);
+                this.$html2.show();
+            },
+            hide : function() {
+                this.$html1.hide();
+                this.$html2.hide();
+            },
+            _handler : function() {
+                var _ui = this;
+                _ui.$html1.click(function() {
+                    _ui.hide();
+                });
+            }
+        };
+        _this.phonePage.init();
+
         _this.main = new Simple();
         _this.$body.append(_this.main.$html);
         _this.main.resizable();

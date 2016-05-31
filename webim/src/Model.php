@@ -142,7 +142,8 @@ class Model {
                 'show' => 'unavailable',
                 'status' => '#',
                 'avatar' => '/images/agentphoto/'.$agent->face,
-                'type' => 'agent'
+                'type' => 'agent',
+                'tel_400' => $agent->tel_400
         );
     }
     

@@ -898,6 +898,12 @@ EOF;
         $this->okReply();
     }
 
+    public function agent() {
+        $uid = $this->input('uid');
+        $agent = $this->model->getAgentByUid($uid);
+        $this->jsonReply($agent);
+    }
+    
 	private function input($name, $default = null) {
 		if( isset( $_POST[$name] ) ) return $_POST[$name];
 		if( isset( $_GET[$name] ) ) return $_GET[$name]; 

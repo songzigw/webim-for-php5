@@ -76,7 +76,8 @@
         agents_random : "index.php?action=agents_random",
         house : "index.php?action=house",
         house_fav : "index.php?action=get_user_favorite",
-        disguise : "index.php?action=disguise"
+        disguise : "index.php?action=disguise",
+        agent : "index.php?action=agent"
     };
     WebAPI.route = function(ob) {
         var options = ob;
@@ -175,6 +176,9 @@
         },
         disguise : function(params, callback) {
             this._ajax("disguise", params, callback);
+        },
+        agent : function(uid, callback) {
+            this._ajax("agent", {uid : uid}, callback);
         }
     };
     extend(WebAPI.prototype, methods);
