@@ -165,7 +165,7 @@ if (!nextalk.webui) {
             }
         });
     };
-    Simple.prototype.setCurrName = function() {
+    Simple.prototype.setTitleName = function() {
         var u = webim.client.getCurrUser();
         //this.$title.text(u.nick);
     };

@@ -337,7 +337,7 @@ if (!nextalk.webui) {
                 this.onLoginWin();
             }
             var _this = this;
-            _this.main.setCurrName();
+            _this.main.setTitleName();
             _this.loginTask.stop();
             _this.loginUI.hide();
             var currUser = webim.client.getCurrUser();
@@ -375,12 +375,10 @@ if (!nextalk.webui) {
             }
             var main = _this.main;
             main.showConnected();
-            main.setCurrName();
+            main.setTitleName();
             main.avatar();
             // 加载最近会话列表
-            webim.convMessage.list(function(convs) {
-                main.loadRecently(convs);
-            });
+            main.loadRecently(data);
             // 加载联系人列表
             main.loadBuddies();
             // 触发状态事件
