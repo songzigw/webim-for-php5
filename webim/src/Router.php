@@ -622,6 +622,8 @@ EOF;
                 if ($a) {
                     $a->type = 'chat';
                     $a->name = $a->nick;
+                    $a->body_type = $body_type;
+                    $a->body = $body;
                     $agents[] = $a;
                 }
             }

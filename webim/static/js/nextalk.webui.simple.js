@@ -300,7 +300,8 @@ if (!nextalk.webui) {
     Simple.prototype.loadRecently = function(convs) {
         var _this = this, $items = _this.$items.empty();
         
-        if (convs && convs.length > 0) {
+        if ((!webui.chatObjs || webui.chatObjs.length == 0)
+                && convs && convs.length > 0) {
             for (var i = 0; i < convs.length; i++) {
                 $items.append(_this.itemHTML(convs[i]));
             }

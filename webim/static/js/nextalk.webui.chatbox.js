@@ -271,19 +271,28 @@ if (!nextalk.webui) {
                 }
             }
 
-            // 发送默认消息
             if (webui.chatObj
                     && webui.chatObj.id == _this.objId
+                    && webui.chatObj.body_type
                     && webui.chatObj.body) {
-                if (!webui.chatObj.body_type) {
-                    //_this.sendMsg(webui.chatObj.body);
-                } else {
-                    var body = {
+                var body = {
                         type : webui.chatObj.body_type,
                         body : webui.chatObj.body
                     };
-                    //_this.sendMsg(webim.JSON.stringify(body));
-                    _this.houseHTML(body);
+                _this.houseHTML(body);
+            } else {
+                for (var i = 0; i < webui.chatObjs.length; i++) {
+                    var co = webui.chatObjs[i];
+                    if (co.id == _this.objId
+                            && co.body_type
+                            && co.body) {
+                        var body = {
+                                type : co.body_type,
+                                body : co.body
+                            };
+                        _this.houseHTML(body);
+                        break;
+                    }
                 }
             }
         });
