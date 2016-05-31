@@ -255,36 +255,36 @@ if (!nextalk.webui) {
                       'invisible', 'chat', 'unavailable'],
 
             start : function() {
-                window.clearInterval(this._interval);
-                
-                var $avatar = $('a', main.$currUser);
-                var colors = this.colors;
-                var num = colors.length;
-                for (var k = 0; k < num; k++) {
-                    $avatar.removeClass(colors[k]);
-                }
-                
-                var i = 0;
-                this._interval = window.setInterval(function() {
-                    for (var k = 0; k < num; k++) {
-                        $avatar.removeClass(colors[k]);
-                    }
-                    $avatar.addClass(colors[i]);
-                    i++;
-                    if (i == num) {
-                        i = 0;
-                    }
-                }, 500);
+//                window.clearInterval(this._interval);
+//                
+//                var $avatar = $('a', main.$currUser);
+//                var colors = this.colors;
+//                var num = colors.length;
+//                for (var k = 0; k < num; k++) {
+//                    $avatar.removeClass(colors[k]);
+//                }
+//                
+//                var i = 0;
+//                this._interval = window.setInterval(function() {
+//                    for (var k = 0; k < num; k++) {
+//                        $avatar.removeClass(colors[k]);
+//                    }
+//                    $avatar.addClass(colors[i]);
+//                    i++;
+//                    if (i == num) {
+//                        i = 0;
+//                    }
+//                }, 500);
             },
 
             stop : function() {
-                window.clearInterval(this._interval);
-                
-                var $avatar = $('a', main.$currUser);
-                var colors = this.colors;
-                for (var k = 0; k < colors.length; k++) {
-                    $avatar.removeClass(colors[k]);
-                }
+//                window.clearInterval(this._interval);
+//                
+//                var $avatar = $('a', main.$currUser);
+//                var colors = this.colors;
+//                for (var k = 0; k < colors.length; k++) {
+//                    $avatar.removeClass(colors[k]);
+//                }
             }
         };
         // 启动现场状态切换动画

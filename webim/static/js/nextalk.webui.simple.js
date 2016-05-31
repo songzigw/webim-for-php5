@@ -133,6 +133,7 @@ if (!nextalk.webui) {
         });
 
         if (!webui.mobile) {
+            _this.$header.css('background', 'white');
             _this.$html.addClass('mzen-border-r');
             _this.$conversations.addClass('nextalk-separator-del');
         }
@@ -155,7 +156,7 @@ if (!nextalk.webui) {
         }
 
         webui.showTask.stop();
-        $('a', _this.$currUser).addClass(show);
+        //$('a', _this.$currUser).addClass(show);
         
         $('ul li', _this.$currUser).each(function(i, el) {
             var $el = $(el);
