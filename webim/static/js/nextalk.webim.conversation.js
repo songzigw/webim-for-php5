@@ -37,6 +37,7 @@
      */
     var Conversation = function(msg) {
         var _this = this;
+
         _this.type = msg.type;
         // 当前主体ID
         _this.currUid = null;
@@ -46,6 +47,7 @@
         _this.objId = null;
         _this.objName = null;
         _this.objAvatar = null;
+        _this.objShow = webim.show.UNAVAILABLE;
         // 最近一次会话时间
         _this.timestamp = msg.timestamp;
         // 最近一次会话方向
@@ -59,7 +61,12 @@
         _this.message = msg;
         // 会话历史记录
         _this.record = [];
-    }
+
+        _this.bind('presence', function(ev, show) {
+            _this.objShow = show;
+        });
+    };
+    webim.ClassEvent.on(Conversation);
     // 私聊
     Conversation.CHAT   = 'chat';
     // 群组聊天
@@ -77,7 +84,7 @@
             nick      : {type : 'string', requisite : true},
             avatar    : {type : 'string', requisite : false},
             to        : {type : 'string', requisite : true},
-            to_name   : {type : 'string', requisite : true},
+            to_name   : {type : 'string', requisite : false},
             to_avatar : {type : 'string', requisite : false},
             body      : {type : 'string', requisite : true},
             timestamp : {type : 'number', requisite : true},
@@ -209,6 +216,8 @@
                 _this.notCount++;
                 webim.convMessage.unreadTotal++;
             }
+        } else {
+            msg.offline = 1;
         }
         _this.message = msg;
         _this.record[_this.record.length] = msg;
@@ -289,6 +298,18 @@
                 if (conv.notCount > 0) {
                     conv.notCount--;
                     webim.convMessage.unreadTotal--;
+                }
+            }
+        },
+        
+        onPresences : function(presences) {
+            for (var key in this[webim.Conversation.CHAT]) {
+                var conv = this[webim.Conversation.CHAT][key];
+                for (var i = 0; i < presences.length; i++) {
+                    var presence = presences[i];
+                    if (presence.from == conv.objId) {
+                        conv.trigger('presence', [ presence.show ]);
+                    }
                 }
             }
         },

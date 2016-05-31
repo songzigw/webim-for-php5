@@ -581,14 +581,14 @@ if (!nextalk.webui) {
     ChatBox.prototype.showOnline = function() {
         var _this = this;
         window.clearTimeout(_this.showTipsTask);
-        _this.msgTips.show('对方当前在线...', 'mzen-tips-success');
+        _this.msgTips.show('对方在线...', 'mzen-tips-success');
         _this.showTipsTask = setTimeout(function() {
             _this.hideTips();
         }, 2000);
     };
     ChatBox.prototype.showUnline = function() {
         window.clearTimeout(this.showTipsTask);
-        this.msgTips.show('对方已经离线...', 'mzen-tips-danger');
+        this.msgTips.show('对方离线...', 'mzen-tips-danger');
     };
     ChatBox.prototype.hideTips = function() {
         this.msgTips.hide();

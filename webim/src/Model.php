@@ -194,6 +194,7 @@ class Model {
             ->select('conver.oavatar', 'oavatar')
             ->join('ecs_agent', array('agent.user_id', '=', 'conver.uid'), 'agent')
             ->where('agent.customer_id', $uid)
+            ->orderByDesc('conver.updated')
             ->findArray();
             $convObjArr = array_map(array($this, '_toObj'), $convArray);
         }

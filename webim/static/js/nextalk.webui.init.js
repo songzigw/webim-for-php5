@@ -384,9 +384,9 @@ if (!nextalk.webui) {
             // 加载联系人列表
             main.loadBuddies();
             // 触发状态事件
-            if (_this.onChatlinks) {
-                _this.onChatlinks(webim.client.presences);
-            }
+            //if (_this.onChatlinks) {
+            //    _this.onChatlinks(webim.client.presences);
+            //}
         },
         _onDisconnected : function(ev, data) {
             var _this = this, main = _this.main;

@@ -150,7 +150,7 @@ if (!nextalk.webui) {
         if (client.connStatus == webim.connStatus.CONNECTED) {
             var u = client.getCurrUser();
             $('img', _this.$currUser).attr('src', u.avatar);
-            $('img', _this.$currUser).attr('alt', u.nick);
+            //$('img', _this.$currUser).attr('alt', u.nick);
             $('a', _this.$currUser).attr('title', u.nick);
         }
 

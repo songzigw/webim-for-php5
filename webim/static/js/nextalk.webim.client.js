@@ -227,7 +227,8 @@
         // 聊天热线，多个ID逗号","分割
         chatlinkIds : null,
         // 消息提示音
-        playSound : true
+        playSound : true,
+        receive : true
     };
     /** 登入动画延时 */
     Client.LOGIN_DELAY = 0;
@@ -322,6 +323,18 @@
                 }
                 _this._show(webim.status.get("s"));
                 _this.connStatusListener.onConnected(ev, data);
+                setTimeout(function() {
+                    if (_this.presences) {
+                        var ps = [];
+                        for (var k in _this.presences) {
+                            ps.push({from : k, show : _this.presences[k]});
+                        }
+                        _this.trigger("presences", [ ps ]);
+                    }
+                    if (_this.messages) {
+                        _this.trigger("messages", [ _this.messages ]);
+                    }
+                }, 5000);
             }
         });
         // 断开连接
@@ -346,6 +359,9 @@
         // 接收消息
         _this.bind("messages", function(ev, data) {
             console.log("messages: " + JSON.stringify(data));
+            if(!_this.options.receive) {
+                return;
+            }
             var cu = _this.getCurrUser();
             for (var i = 0; i < data.length; i++) {
                 var msg = data[i];
@@ -354,7 +370,8 @@
                 msg.timestamp = Number(msg.timestamp);
                 msg.read = false;
                 // 如果是自己发送出去的
-                if (msg.from == cu.id || _this.getAgent(msg.from)) {
+                var agent = _this.getAgent(msg.from);
+                if (msg.from == cu.id || agent) {
                     direction = webim.msgDirection.SEND;
                     msg.direction = direction;
                     msg.read = true;
@@ -371,7 +388,7 @@
         // 现场变更
         _this.bind("presences", function(ev, data) {
             console.log("presences: " + JSON.stringify(data));
-            _this.presences = data;
+            webim.convMessage.onPresences(data);
             _this.receiveMsgListener.onPresences(ev, data);
         });
     };
@@ -666,12 +683,16 @@
                 window.setTimeout(function() {
                     if (ret) {
                         if (ret.success) {
+                            if (!ret.user.avatar) {
+                                //ret.user.avatar = ;
+                            }
                             _this._serverTime(ret.server_time);
                             _this._connection(ret.connection);
                             _this._currUser(ret.user);
                             _this._buddies(ret.buddies);
                             _this._rooms(ret.rooms);
                             _this.presences = ret.presences;
+                            _this.messages = ret.new_messages;
                             // 如果是幕后用户，就查询出他所有被被监管对象
                             _this.agents = ret.user.agents;
                             if (!_this.agents) {

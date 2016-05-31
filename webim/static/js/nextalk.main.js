@@ -211,7 +211,8 @@ if (!window.nextalk) {
             apiPath : _this.apiPath,
             chatlinkIds : _this.chatlinkIds,
             channelType : _this.channelType,
-            playSound : false
+            playSound : false,
+            receive : false
         });
         nextalk.webim.client.setConnStatusListener({
             onConnected : function(ev, data) {

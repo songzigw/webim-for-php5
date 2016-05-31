@@ -315,7 +315,7 @@ EOF;
                 }
             }
 
-			$this->model->offlineReaded($uid);
+			//$this->model->offlineReaded($uid);
 
             if($show) $this->user->show = $show;
 
@@ -428,9 +428,9 @@ EOF;
 				"timestamp" => $timestamp,
 			));
 		}
-		if($send == 1){
+		//if($send == 1){
 			$this->client->message($from, $to, $nick, $body, $type, $style, $timestamp, $avatar, $to_name, $to_avatar);
-		}
+		//}
         //Error Reply
         //$this->jsonReply(array('status' => 'error', 'message' => $body));
 		$this->okReply();
@@ -891,6 +891,9 @@ EOF;
                     'oavatar' => $this->input('avatar')
             );
             $this->model->insertConversations($conv);
+        }
+        if ($this->input('type') == 'chat' && $this->input('direction') == 'receive') {
+            $this->model->offlineReaded($this->input('uid'));
         }
         $this->okReply();
     }
