@@ -98,11 +98,11 @@ if (!nextalk.webui) {
                         </div></div>\
                     </div>';
     Simple.CONVERSATION = '<li class="mzen-list-view-cell mzen-img mzen-tap-active mzen-up-hover">\
-                                <img class="mzen-img-object mzen-pull-left" src="">\
+                                <img class="mzen-img-object mzen-pull-left" src="{{objAvatar}}">\
                                 <div class="mzen-img-body">\
-                                    <p class="mzen-ellipsis-1">???</p>\
+                                    <p class="mzen-ellipsis-1">{{objName}}</p>\
                                 </div>\
-                                <span class="mzen-badge mzen-badge-danger mzen-pull-right">???</span>\
+                                <span class="mzen-badge mzen-badge-danger mzen-pull-right">0</span>\
                              </li>';
     Simple.prototype.handler = function() {
         var _this = this;
@@ -190,7 +190,14 @@ if (!nextalk.webui) {
                          requisite : false}
         });
 
-        var $item = webui.$(Simple.CONVERSATION);
+        var currUser = webim.client.getCurrUser();
+        var $item = webui.$(webui.completion(Simple.CONVERSATION, conv));
+        if (currUser.id != conv.currUid) {
+            $item.addClass('nextalk-disguiser');
+            $item.find('.mzen-img-body')
+            .append('<p class="mzen-ellipsis-1 agent">'
+                    + conv.currNick + '</p>');
+        }
         $item.attr('data-toggle', conv.type);
         $item.attr('data-currUid', conv.currUid);
         $item.attr('data-currNick', conv.currNick);
@@ -198,9 +205,7 @@ if (!nextalk.webui) {
         $item.attr('data-objId', conv.objId);
         $item.attr('data-objName', conv.objName);
         $item.attr('data-objAvatar', conv.objAvatar);
-        
-        $('img', $item).attr('src', conv.objAvatar);
-        $('p', $item).text(conv.objName);
+
         if (conv.notCount && conv.notCount != 0) {
             $('span', $item).text(conv.notCount);
         } else {

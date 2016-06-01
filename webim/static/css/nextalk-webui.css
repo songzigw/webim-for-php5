@@ -607,3 +607,10 @@ footer.mzen-nav >ul.mzen-bar-tab > li > .mzen-badge {
 	background-color: white;
 	z-index: 15;
 }
+
+.chatbox .nextalk-disguiser {
+	line-height: 19px;
+}
+.chatbox .nextalk-disguiser .agent {
+    color: #ccc;
+}
