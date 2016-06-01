@@ -209,7 +209,7 @@ if (!nextalk.webui) {
         }
 
         if (_this.objShow != webim.show.UNAVAILABLE) {
-            //_this.showOnline();
+            _this.showOnline();
         } else {
             _this.showUnline();
         }
@@ -601,10 +601,10 @@ if (!nextalk.webui) {
     ChatBox.prototype.showOnline = function() {
         var _this = this;
         window.clearTimeout(_this.showTipsTask);
-        _this.msgTips.show('对方在线...', 'mzen-tips-success');
-        _this.showTipsTask = setTimeout(function() {
+        //_this.msgTips.show('对方在线...', 'mzen-tips-success');
+        //_this.showTipsTask = setTimeout(function() {
             _this.hideTips();
-        }, 2000);
+        //}, 900);
     };
     ChatBox.prototype.showUnline = function() {
         window.clearTimeout(this.showTipsTask);
