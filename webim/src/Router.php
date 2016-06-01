@@ -293,7 +293,7 @@ EOF;
 			//histories for active buddies and rooms
 			foreach($activeBuddyIds as $id) {
                 if( isset($rtBuddies[$id]) ) {
-                    $rtBuddies[$id]->history = $this->model->histories($uid, $id, "chat" );
+                    //$rtBuddies[$id]->history = $this->model->histories($uid, $id, "chat" );
                 }
 			}
             if( !$IMC['show_unavailable'] ) {
@@ -310,7 +310,7 @@ EOF;
                 }
                 foreach($activeRoomIds as $id){
                     if( isset($rtRooms[$id]) ) {
-                        $rtRooms[$id]->history = $this->model->histories($uid, $id, "grpchat" );
+                        //$rtRooms[$id]->history = $this->model->histories($uid, $id, "grpchat" );
                     }
                 }
             }

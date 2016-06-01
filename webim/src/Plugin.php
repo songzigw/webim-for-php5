@@ -114,8 +114,8 @@ class Plugin {
 	 */
 	public function buddies($uid) {
         //TODO: DEMO Code
-        return array_map( array($this, '_buddy'), range(1, 10) );
-//        return array();
+//        return array_map( array($this, '_buddy'), range(1, 10) );
+        return array();
 	}
 
 	/*
@@ -129,7 +129,6 @@ class Plugin {
 	 */
 	public function buddiesByIds($uid, $ids) {
         return array_map( array($this, '_buddy'), $ids );
-//	    return array();
 	}
 
     /**
@@ -138,12 +137,12 @@ class Plugin {
     private function _buddy($id) {
         return (object) array(
             'id' => $id,
-            'nick' => 'user'.$id,
-            'group' => 'friend',
-            'presence' => 'offline',
-            'show' => 'unavailable',
-            'status' => '#',
-            'avatar' => WEBIM_IMAGE('head_a.jpg')
+            //'nick' => 'user'.$id,
+            //'group' => 'friend',
+            //'presence' => 'offline',
+            //'show' => 'unavailable',
+            //'status' => '#',
+            //'avatar' => WEBIM_IMAGE('head_a.jpg')
         );
     }
 
@@ -176,8 +175,8 @@ class Plugin {
 			'blocked' => false,
             'temporary' => false
 		);
-//		return array( $room );	
-		return array();
+		return array( $room );	
+//		return array();
 	}
 
 	/*
@@ -203,8 +202,8 @@ class Plugin {
                 );
             }
         }
-//		return $rooms;
-        return array();
+		return $rooms;
+//        return array();
 	}
 
     /**
