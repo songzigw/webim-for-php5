@@ -53,6 +53,13 @@ if (!nextalk.webui) {
             objId     : {type : 'string', requisite : true},
             objName   : {type : 'string', requisite : true},
             objAvatar : {type : 'string', requisite : false},
+            objShow   : {type : [webim.show.AVAILABLE,
+                                 webim.show.DND,
+                                 webim.show.AWAY,
+                                 webim.show.INVISIBLE,
+                                 webim.show.CHAT,
+                                 webim.show.UNAVAILABLE],
+                         requisite : true},
             body      : {type : 'string', requisite : false},
             timestamp : {type : 'number', requisite : false},
             direction : {type : [webim.msgDirection.SEND,
@@ -68,6 +75,7 @@ if (!nextalk.webui) {
         _this.objId = conv.objId;
         _this.objName = conv.objName;
         _this.objAvatar = conv.objAvatar;
+        _this.objShow = conv.objShow;
         _this.focus = false;
         _this.times = 0;
 
@@ -191,7 +199,7 @@ if (!nextalk.webui) {
         var height = $innerContent.height();
         $content.animate({scrollTop : height}, 50);
     };
-    ChatBox.prototype.show = function(show) {
+    ChatBox.prototype.show = function() {
         var _this = this;
         _this.$html.show();
         _this.focus = true;
@@ -199,13 +207,11 @@ if (!nextalk.webui) {
         if (webui.onChatboxOpen) {
             webui.onChatboxOpen();
         }
-        
-        if (show) {
-            if (show != webim.show.UNAVAILABLE) {
-                _this.showOnline();
-            } else {
-                _this.showUnline();
-            }
+
+        if (_this.objShow != webim.show.UNAVAILABLE) {
+            //_this.showOnline();
+        } else {
+            _this.showUnline();
         }
 
         _this.resizable();
@@ -608,6 +614,7 @@ if (!nextalk.webui) {
         this.msgTips.hide();
     };
     ChatBox.prototype._onPresence = function(show) {
+        this.objShow = show;
         if (show != webim.show.UNAVAILABLE) {
             this.showOnline();
         } else {

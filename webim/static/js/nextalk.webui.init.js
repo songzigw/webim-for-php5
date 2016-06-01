@@ -70,9 +70,27 @@ if (!nextalk.webui) {
             _this.iframe = options.iframe;
         }
         if (options.chatObj) {
+            if (options.chatlinkIds) {
+                options.chatlinkIds += ',' + options.chatObj.id;
+            } else {
+                options.chatlinkIds = options.chatObj.id;
+            }
             _this.chatObj = options.chatObj;
         }
         if (options.chatObjs) {
+            if (options.chatlinkIds) {
+                for (var i = 0; i < options.chatObjs.length; i++) {
+                    options.chatlinkIds += ',' + options.chatObjs[i].id;
+                }
+            } else {
+                for (var i = 0; i < options.chatObjs.length; i++) {
+                    if (i == 0) {
+                        options.chatlinkIds = options.chatObjs[i].id;
+                    } else {
+                        options.chatlinkIds += ',' + options.chatObjs[i].id;
+                    }
+                }
+            }
             _this.chatObjs = options.chatObjs;
         }
 
