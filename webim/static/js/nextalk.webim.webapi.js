@@ -77,7 +77,8 @@
         house : "index.php?action=house",
         house_fav : "index.php?action=get_user_favorite",
         disguise : "index.php?action=disguise",
-        agent : "index.php?action=agent"
+        agent : "index.php?action=agent",
+        presences : "index.php?action=presences"
     };
     WebAPI.route = function(ob) {
         var options = ob;
@@ -179,6 +180,9 @@
         },
         agent : function(uid, callback) {
             this._ajax("agent", {uid : uid}, callback);
+        },
+        presences : function(params, callback) {
+            this._ajax("presences", params, callback);
         }
     };
     extend(WebAPI.prototype, methods);

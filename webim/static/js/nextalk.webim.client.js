@@ -136,6 +136,8 @@
 
     /** 聊天用户类型 */
     webim.userType = {
+        // 伪装者
+        //DISGUISER  : 'disguiser',
         // 幕后用户
         BACKSTAGE  : 'backstage',
         // 坐席用户
@@ -322,8 +324,11 @@
                     webim.status.set("s", webim.show.AVAILALE);
                 }
                 _this._show(webim.status.get("s"));
-                webim.convMessage.list(function(convs) {
+                webim.convMessage.list(function(convs, presences) {
                     _this.connStatusListener.onConnected(ev, convs);
+                    if (_this.messages) {
+                        _this.trigger("messages", [ _this.messages ]);
+                    }
                     if (_this.presences) {
                         var ps = [];
                         for (var k in _this.presences) {
@@ -331,8 +336,12 @@
                         }
                         _this.trigger("presences", [ ps ]);
                     }
-                    if (_this.messages) {
-                        _this.trigger("messages", [ _this.messages ]);
+                    if (presences) {
+                        var ps = [];
+                        for (var k in presences) {
+                            ps.push({from : k, show : presences[k]});
+                        }
+                        _this.trigger("presences", [ ps ]);
                     }
                 });
             }

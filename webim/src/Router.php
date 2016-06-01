@@ -861,8 +861,19 @@ EOF;
     public function conversations() {
         $uid = $this->user->id;
         $type = $this->user->type;
-        $convs = $this->model->queryConversations($uid, $type);
-        $this->jsonReply($convs);
+        $convs = $this->model->query_convs($uid, $type);
+        $uids = array();
+        foreach($convs as $conv) {
+            if ($conv->type == 'chat') {
+                $uids[] = $conv->oid;
+            }
+        }
+        $presences = (object)$this->client->presences($uids);
+        $data = (object) array(
+                'presences' => $presences,
+                'convs'     => $convs
+        );
+        $this->jsonReply($data);
     }
     
     public function get_user_favorite() {
@@ -881,7 +892,7 @@ EOF;
                 'oname' => $this->input('oname'),
                 'oavatar' => $this->input('oavatar')
         );
-        $this->model->insertConversations($conv);
+        $this->model->insert_conv($conv);
         if ($this->input('type') == 'chat' && $this->input('direction') == 'send') {
             $conv = array(
                     'uid' => $this->input('oid'),
@@ -892,7 +903,7 @@ EOF;
                     'oname' => $this->input('nick'),
                     'oavatar' => $this->input('avatar')
             );
-            $this->model->insertConversations($conv);
+            $this->model->insert_conv($conv);
         }
         if ($this->input('type') == 'chat' && $this->input('direction') == 'receive') {
             $this->model->offlineReaded($this->input('uid'));
@@ -943,8 +954,16 @@ EOF;
         return $buddy->id;
     }
     
+    public function presences() {
+        $uids = $this->idsArray($this->input('uids', ''));
+        $presences = (object)$this->client->presences($uids);
+        $this->jsonReply($presences);
+    }
+    
     public function test() {
-        
+        $uids = $this->idsArray($this->input('uids', ''));
+        $presences = (object)$this->client->presences($uids);
+        $this->jsonReply($presences);
     }
 
 }

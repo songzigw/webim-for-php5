@@ -147,7 +147,7 @@ class Model {
         );
     }
     
-    public function insertConversations($conversation) {
+    public function insert_conv($conversation) {
         $tConvs = $this->T('conversations');
         $conv = $tConvs->where('uid', $conversation['uid'])
                         ->where('oid', $conversation['oid'])
@@ -173,7 +173,7 @@ class Model {
         $row->save();
     }
     
-    public function queryConversations($uid, $type) {
+    public function query_convs($uid, $type) {
         if ($type != 'backstage') {
             $query = $this->T('conversations')
             ->where('uid', $uid)

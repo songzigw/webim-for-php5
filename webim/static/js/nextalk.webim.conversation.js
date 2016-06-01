@@ -65,6 +65,26 @@
         _this.bind('presence', function(ev, show) {
             _this.objShow = show;
         });
+        
+        if (_this.type != Conversation.CHAT) {
+            return;
+        }
+        var client = webim.client;
+        webim.webApi.presences({
+                ticket : client.getConnection().ticket,
+                uids   : _this.objId
+        }, function(presences, err) {
+            if (presences) {
+                if (presences[_this.objId]) {
+                    _this.objShow = presences[_this.objId];
+                }
+                var ps = [];
+                for (var k in presences) {
+                    ps.push({from : k, show : presences[k]});
+                }
+                client.trigger("presences", [ ps ]);
+            }
+        });
     };
     webim.ClassEvent.on(Conversation);
     // 私聊
@@ -98,7 +118,8 @@
             type      : msg.type,
             timestamp : msg.timestamp,
             direction : msg.direction,
-            body      : msg.body
+            body      : msg.body,
+            objShow   : webim.show.UNAVAILABLE
         }, currUser = webim.client.getCurrUser();
         if (currUser.type != webim.userType.BACKSTAGE) {
             conv.currUid = currUser.id;
@@ -112,9 +133,9 @@
             }
 
             switch (msg.type) {
-                case webim.Conversation.NOTICE:
+                case Conversation.NOTICE:
                     // 通知消息方向都应该是收取
-                    conv.objId = webim.Conversation.NOTICE;
+                    conv.objId = Conversation.NOTICE;
                     conv.objName = webim.name.NOTICE;
                     conv.objAvatar = webim.imgs.NOTICE;
                     msg.nick = conv.objName;
@@ -122,7 +143,7 @@
                     msg.to_name = conv.currNick;
                     msg.to_avatar = conv.currAvatar;
                     break;
-                case webim.Conversation.ROOM:
+                case Conversation.ROOM:
                     if (!msg.avatar) {
                         msg.avatar = webim.imgs.HEAD;
                     }
@@ -140,7 +161,7 @@
                         msg.to_avatar = conv.objAvatar;
                     }
                     break;
-                case webim.Conversation.CHAT:
+                case Conversation.CHAT:
                     if (msg.direction == webim.msgDirection.SEND) {
                         if (!msg.nick) {
                             msg.nick = conv.currNick;
@@ -174,7 +195,7 @@
                     break;
             }
         } else {
-            if (msg.type != webim.Conversation.CHAT) {
+            if (msg.type != Conversation.CHAT) {
                 throw new Error('Supervisor message type error.');
             }
             if (msg.direction == webim.msgDirection.SEND) {
@@ -303,8 +324,8 @@
         },
         
         onPresences : function(presences) {
-            for (var key in this[webim.Conversation.CHAT]) {
-                var conv = this[webim.Conversation.CHAT][key];
+            for (var key in this[Conversation.CHAT]) {
+                var conv = this[Conversation.CHAT][key];
                 for (var i = 0; i < presences.length; i++) {
                     var presence = presences[i];
                     if (presence.from == conv.objId) {
@@ -324,9 +345,10 @@
             webApi.conv_list(params, function(ret, err) {
                 var convs = [];
                 if (ret) {
+                    var convList = ret.convs;
                     var cUser = webim.client.getCurrUser();
-                    for (var i = 0; i < ret.length; i++) {
-                        var c = ret[i];
+                    for (var i = 0; i < convList.length; i++) {
+                        var c = convList[i];
                         var agent = webim.client.getAgent(c.uid);
                         var msg = {
                             type      : c.type,
@@ -354,7 +376,7 @@
                         convs.push(Conversation.parser(msg));
                     }
                 }
-                callback(convs);
+                callback(convs, ret.presences);
             });
         }
     };

@@ -614,3 +614,9 @@ footer.mzen-nav >ul.mzen-bar-tab > li > .mzen-badge {
 .chatbox .nextalk-disguiser .agent {
     color: #ccc;
 }
+
+img.nextalk-unavailable {
+  filter: progid:DXImageTransform.Microsoft.BasicImage(grayscale=1);
+  filter: gray;
+  -webkit-filter: grayscale(100%);
+}

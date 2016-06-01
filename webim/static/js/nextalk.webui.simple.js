@@ -97,13 +97,14 @@ if (!nextalk.webui) {
                         <ul class="mzen-list-view"></ul>\
                         </div></div>\
                     </div>';
-    Simple.CONVERSATION = '<li class="mzen-list-view-cell mzen-img mzen-tap-active mzen-up-hover">\
-                                <img class="mzen-img-object mzen-pull-left" src="{{objAvatar}}">\
-                                <div class="mzen-img-body">\
-                                    <p class="mzen-ellipsis-1">{{objName}}</p>\
-                                </div>\
-                                <span class="mzen-badge mzen-badge-danger mzen-pull-right">0</span>\
-                             </li>';
+    Simple.CONVERSATION = '\
+        <li class="mzen-list-view-cell mzen-img mzen-tap-active mzen-up-hover">\
+            <img class="mzen-img-object mzen-pull-left nextalk-unavailable" src="{{objAvatar}}">\
+            <div class="mzen-img-body">\
+                <p class="mzen-ellipsis-1">{{objName}}</p>\
+            </div>\
+            <span class="mzen-badge mzen-badge-danger mzen-pull-right">0</span>\
+        </li>';
     Simple.prototype.handler = function() {
         var _this = this;
 
@@ -183,6 +184,13 @@ if (!nextalk.webui) {
             objId     : {type : 'string', requisite : true},
             objName   : {type : 'string', requisite : true},
             objAvatar : {type : 'string', requisite : false},
+            objShow   : {type : [webim.show.AVAILABLE,
+                                 webim.show.DND,
+                                 webim.show.AWAY,
+                                 webim.show.INVISIBLE,
+                                 webim.show.CHAT,
+                                 webim.show.UNAVAILABLE],
+                         requisite : true},
             body      : {type : 'string', requisite : false},
             timestamp : {type : 'number', requisite : false},
             direction : {type : [webim.msgDirection.SEND,
@@ -205,7 +213,12 @@ if (!nextalk.webui) {
         $item.attr('data-objId', conv.objId);
         $item.attr('data-objName', conv.objName);
         $item.attr('data-objAvatar', conv.objAvatar);
+        $item.attr('data-objShow', conv.objShow);
 
+        if (conv.objShow != webim.show.UNAVAILABLE) {
+            $item.find('.mzen-img-object')
+            .removeClass('nextalk-unavailable');
+        }
         if (conv.notCount && conv.notCount != 0) {
             $('span', $item).text(conv.notCount);
         } else {
@@ -257,7 +270,8 @@ if (!nextalk.webui) {
                     currAvatar : $this.attr('data-currAvatar'),
                     objId : $this.attr('data-objId'),
                     objName : $this.attr('data-objName'),
-                    objAvatar : $this.attr('data-objAvatar')
+                    objAvatar : $this.attr('data-objAvatar'),
+                    objShow : $this.attr('data-objShow')
                 };
                 webui.openChatBox(conv);
             });
@@ -325,6 +339,7 @@ if (!nextalk.webui) {
                     objId : chatObj.id,
                     objName : chatObj.name,
                     objAvatar : chatObj.avatar,
+                    objShow : webim.show.UNAVAILABLE,
                     body : '开始聊天'
                 }));
             }
@@ -340,6 +355,7 @@ if (!nextalk.webui) {
                     objId : chatObj.id,
                     objName : chatObj.name,
                     objAvatar : chatObj.avatar,
+                    objShow : webim.show.UNAVAILABLE,
                     body : '开始聊天'
                 };
             _this.itemHTML(conv).prependTo($items);
@@ -361,6 +377,7 @@ if (!nextalk.webui) {
                             objId : chatObj.user_id,
                             objName : chatObj.name,
                             objAvatar : '/images/agentphoto/' + chatObj.face,
+                            objShow : webim.show.UNAVAILABLE,
                             body : '开始聊天'
                         }).prependTo($items);
                     }
@@ -410,6 +427,13 @@ if (!nextalk.webui) {
                 var presence = presences[i];
                 if (presence.from == $el.attr('data-objId')) {
                     $el.attr('data-objShow', presence.show);
+                    if (presence.show != webim.show.UNAVAILABLE) {
+                        $el.find('.mzen-img-object')
+                        .removeClass('nextalk-unavailable');
+                    } else {
+                        $el.find('.mzen-img-object')
+                        .addClass('nextalk-unavailable');
+                    }
                     //break;
                 }
             }
