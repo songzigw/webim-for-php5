@@ -231,7 +231,9 @@
             msg.showTimestamp = true;
         }
 
+        var objShow = _this.objShow;
         extend(_this, Conversation.parser(msg));
+        _this.objShow = objShow;
         if (msg.direction == webim.msgDirection.RECEIVE) {
             if (typeof msg.read === 'boolean' && !msg.read) {
                 _this.notCount++;
