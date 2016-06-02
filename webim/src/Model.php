@@ -107,7 +107,7 @@ class Model {
                 'presence' => 'offline',
                 'show' => 'unavailable',
                 'status' => '#',
-                'avatar' => $user->home_phne,
+                'avatar' => $user->user_face,
                 'type' => $type,
                 'agents' => $agentObjArr
             );

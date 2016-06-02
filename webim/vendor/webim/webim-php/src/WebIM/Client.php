@@ -124,6 +124,27 @@ class Client {
         );
 	}
     
+	public function online2($uid) {
+	    $data = array_merge($this->reqdata(), array(
+	            'name'=> $uid,
+	            'nick'=> 'Agent'.$uid,
+	            'show' => 'available'
+	    ));
+	    $data['ticket'] = null;
+	    $response = $this->request('presences/online', $data, 'POST');
+	    $connection = array(
+	            "ticket" => $response->ticket,
+	            "domain" => $this->domain,
+	            "server" => $response->jsonpd,
+	            "jsonpd" => $response->jsonpd,
+	    );
+	    //if websocket
+	    if(isset($response->websocket)) $connection['websocket'] = $response->websocket;
+	    //if mqttd
+	    if(isset($response->mqttd)) $connection['mqttd'] = $response->mqttd;
+	    return (object)$connection;
+	}
+	
 	/**
 	 * Offline
 	 *

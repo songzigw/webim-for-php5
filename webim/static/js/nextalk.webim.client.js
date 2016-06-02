@@ -572,6 +572,7 @@
         // 给管道注册事件监听器
         _this.channel.onConnected = function(ev, data) {
             _this.trigger("connected", [ data ]);
+            _this._onlineAgent();
         };
         _this.channel.onDisconnected = function(ev, data) {
             _this.trigger("disconnected", [ data ]);
@@ -588,9 +589,46 @@
         _this.channel.connect();
     };
 
+    Client.prototype._onlineAgent = function() {
+        var _this = this, options = _this.options;
+        var currUser = _this.getCurrUser();
+
+        if (currUser.type != webim.userType.BACKSTAGE
+                || !_this.agents) {
+            return;
+        }
+        for (var i = 0; i < _this.agents.length; i++) {
+            var agt = _this.agents[i];
+            var conn = agt.connection;
+            if (!conn) {
+                continue;
+            }
+            // 创建通信管道
+            var ops = extend({type: options.channelType}, conn);
+            _this['channel_' + agt.id] = new Channel(ops);
+            // 发起管道连接
+            _this['channel_' + agt.id].connect();
+        }
+    };
+    Client.prototype._offlineAgent = function() {
+        var _this = this, options = _this.options;
+        var currUser = _this.getCurrUser();
+
+        if (!_this.agents) {
+            return;
+        }
+        for (var i = 0; i < _this.agents.length; i++) {
+            var agt = _this.agents[i];
+            if (_this['channel_' + agt.id]) {
+                _this['channel_' + agt.id].disconnect();
+            }
+        }
+    };
+
     Client.prototype._disconnectServer = function() {
         var _this = this;
         _this.channel.disconnect();
+        _this._offlineAgent();
     };
 
     Client.prototype.handle = function(data) {
@@ -707,7 +745,7 @@
                             _this.messages = ret.new_messages;
                             // 如果是幕后用户，就查询出他所有被被监管对象
                             _this.agents = ret.user.agents;
-                            if (!_this.agents) {
+                            if (!_this.agents || !_this.agents.length) {
                                 _this.agents = [];
                             } else {
                                 var auids = '';
