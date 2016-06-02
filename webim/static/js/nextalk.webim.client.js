@@ -190,7 +190,8 @@
             GROUP      : _this.resPath + 'imgs/group.gif',
             NOTICE     : _this.resPath + 'imgs/message_notice.png',
             LOGO_INDEX : _this.resPath + 'imgs/logo.png',
-            LOGO_MIN   : _this.resPath + 'imgs/webim.72x72.png'
+            LOGO_MIN   : _this.resPath + 'imgs/webim.72x72.png',
+            HEAD_DIS   : _this.resPath + 'imgs/head_dis.png'
         };
 
         window.setInterval(function() {
@@ -300,6 +301,8 @@
             console.log("login.win: " + JSON.stringify(data));
             _this.loginTimes++;
             _this.loginStatusListener.onLoginWin(ev, data);
+            // 登入成功，开始连接
+            _this._connectServer();
         });
         _this.bind("login.fail", function(ev, data) {
             console.log("login.fail: " + JSON.stringify(data));
@@ -554,10 +557,7 @@
             params.chatlink_ids = options.chatlinkIds;
         }
         // 连接前请先登入成功
-        _this.login(params, function() {
-            // 登入成功，开始连接
-            _this._connectServer();
-        });
+        _this.login(params);
     }
 
     Client.prototype._connectServer = function() {
@@ -661,7 +661,7 @@
     };
 
     extend(Client.prototype, {
-        login : function(params, callback) {
+        login : function(params) {
             var _this = this, status = webim.status;
 
             var buddy_ids = [], room_ids = [], tabs = status
@@ -697,6 +697,9 @@
                             }
                             _this._serverTime(ret.server_time);
                             _this._connection(ret.connection);
+                            if (!ret.user.avatar) {
+                                ret.user.avatar = webim.imgs.HEAD_DIS;
+                            }
                             _this._currUser(ret.user);
                             _this._buddies(ret.buddies);
                             _this._rooms(ret.rooms);
@@ -722,9 +725,6 @@
                             }
                             // 触发登入成功事件
                             _this.trigger("login.win", [ ret ]);
-                            if (typeof callback == "function") {
-                                callback();
-                            }
                         } else {
                             // 触发登入失败事件
                             _this.trigger("login.fail", [ ret.error_msg ]);
