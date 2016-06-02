@@ -126,6 +126,7 @@ class Client {
     
 	public function online2($uid) {
 	    $data = array_merge($this->reqdata(), array(
+	            'rooms'=> 'room',
 	            'name'=> $uid,
 	            'nick'=> 'Agent'.$uid,
 	            'show' => 'available'

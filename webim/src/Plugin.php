@@ -176,7 +176,6 @@ class Plugin {
             'temporary' => false
 		);
 		return array( $room );	
-//		return array();
 	}
 
 	/*
@@ -203,7 +202,6 @@ class Plugin {
             }
         }
 		return $rooms;
-//        return array();
 	}
 
     /**
