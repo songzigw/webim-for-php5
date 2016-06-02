@@ -320,8 +320,8 @@ EOF;
             if($show) $this->user->show = $show;
             if ($this->user->type == 'backstage' && $this->user->agents) {
                 foreach ($this->user->agents as $agt) {
-                    //$connection = $this->client->online2($agt->id);
-                    //$agt->connection = $connection;
+                    $connection = $this->client->online2($agt->id);
+                    $agt->connection = $connection;
                 }
             }
 

@@ -606,6 +606,19 @@
             // 创建通信管道
             var ops = extend({type: options.channelType}, conn);
             _this['channel_' + agt.id] = new Channel(ops);
+            // 给管道注册事件监听器
+            _this['channel_' + agt.id].onConnected = function(ev, data) {
+                console.log("onConnected: " + JSON.stringify(data));
+            };
+            _this['channel_' + agt.id].onDisconnected = function(ev, data) {
+                console.log("onDisconnected: " + JSON.stringify(data));
+            }
+            _this['channel_' + agt.id].onError = function(ev, data) {
+                console.log("onError: " + JSON.stringify(data));
+            };
+            _this['channel_' + agt.id].onMessage = function(ev, data) {
+                console.log("onMessage: " + JSON.stringify(data));
+            };
             // 发起管道连接
             _this['channel_' + agt.id].connect();
         }

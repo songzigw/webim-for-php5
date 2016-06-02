@@ -130,7 +130,7 @@ class Client {
 	            'nick'=> 'Agent'.$uid,
 	            'show' => 'available'
 	    ));
-	    $data['ticket'] = null;
+	    $data['ticket'] = '';
 	    $response = $this->request('presences/online', $data, 'POST');
 	    $connection = array(
 	            "ticket" => $response->ticket,
