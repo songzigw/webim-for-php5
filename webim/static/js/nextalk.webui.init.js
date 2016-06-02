@@ -459,6 +459,8 @@ if (!nextalk.webui) {
                     if (msg.direction == webim.msgDirection.SEND) {
                         chatBox.sendHTML(msg);
                     } else {
+                        chatBox.objName = conv.objName;
+                        chatBox.objAvatar = conv.objAvatar;
                         chatBox.receiveHTML(msg);
                     }
                     if (chatBox.focus == true) {
