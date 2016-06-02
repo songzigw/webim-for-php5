@@ -247,7 +247,10 @@ if (!nextalk.webui) {
             }
             _this.$conversations.height(wh - hh);
         } else {
-            $html.css('width', '100%');
+            $html.css({
+                'width' : '100%',
+                'min-height' : wh+'px'
+            });
             _this.$conversations.css({
                 'padding-top' : hh+'px'});
         }
