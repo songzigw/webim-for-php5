@@ -167,7 +167,8 @@
                            requisite : false},
             isJsonp     : {type : 'boolean', requisite : false},
             chatlinkIds : {type : 'string', requisite : false},
-            playSound   : {type : 'boolean', requisite : false}
+            playSound   : {type : 'boolean', requisite : false},
+            receive     : {type : 'boolean', requisite : false}
         });
 
         var _this = this;

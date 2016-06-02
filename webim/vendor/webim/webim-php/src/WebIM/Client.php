@@ -236,11 +236,11 @@ class Client {
 		return $this->request('messages', $data, 'POST');
 	}
 
-	public function disguiser($agentUids) {
+	public function disguise($agentUids) {
 	    $data = array_merge($this->reqdata(), array(
 	            'agentuids' => $agentUids,
 	    ));
-	    return $this->request('disguiser', $data, 'POST');
+	    return $this->request('disguise', $data, 'POST');
 	}
 	
 	/**
