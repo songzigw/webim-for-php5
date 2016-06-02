@@ -144,6 +144,7 @@ if (!nextalk.webui) {
             });
         } else {
             _this.$html.addClass('nextalk-mobile');
+            _this.$html.css('background', 'white');
         }
         _this.$items.empty();
     };
