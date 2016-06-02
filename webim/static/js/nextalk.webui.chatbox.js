@@ -91,6 +91,7 @@ if (!nextalk.webui) {
         $input.on('focus', function(ev) {
             _this.emot.hide();
             _this.resizable();
+            _this.toBottom();
         });
         _this.emot.callback = function(emot) {
             $input.val($input.val() + emot);
