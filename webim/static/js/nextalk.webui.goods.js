@@ -55,7 +55,7 @@ if (!nextalk.webui) {
         var wh = $w.height();
         var ww = $w.width();
 
-        var hh = $('header', $html).height();
+        var hh = $('header', $html).outerHeight();
         var $content = $('#nextalk_content_goods', $html);
         $content.height(wh - hh);
 
@@ -66,11 +66,19 @@ if (!nextalk.webui) {
                 $html.width(ww - $main.width());
             }
         } else {
-            $html.css('width', '100%');
+            $html.css({
+                'width' : '100%'
+            });
+            $content.css({
+                'margin-top' : hh+'px'});
         }
     };
     Goods.prototype.handleHTML = function() {
         var _this = this;
+        if (webui.mobile) {
+            _this.$html.addClass('nextalk-mobile');
+        }
+        _this.$content.css('overflow', 'auto');
         $('.mzen-pull-left', _this.$header)
                 .click(function() {
                     _this.close();

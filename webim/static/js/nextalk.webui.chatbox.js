@@ -181,7 +181,6 @@ if (!nextalk.webui) {
         var fh = $('footer', $html).outerHeight();
         var $content = $('#nextalk_content_chatbox', $html);
         $content.height(wh - hh - fh);
-
         if (!mobile) {
             if (ww <= 320) {
                 $html.css('width', '100%');
@@ -189,7 +188,11 @@ if (!nextalk.webui) {
                 $html.width(ww - $main.width());
             }
         } else {
-            $html.css('width', '100%');
+            $html.css({
+                'width' : '100%'
+            });
+            $content.css({
+                'margin-top' : hh+'px'});
         }
     };
     ChatBox.prototype.toBottom = function() {
@@ -494,8 +497,6 @@ if (!nextalk.webui) {
         $html.attr('data-objName', _this.objName);
         $html.attr('data-objAvatar', _this.objAvatar);
         $('header>.mzen-title', $html).text(_this.objName);
-        var $content = $('#nextalk_content_chatbox', $html);
-        $content.css('overflow', 'auto');
 
         // 设置在线状态和头像
         $('>header .nextalk-return', $html).hide().click(function() {
@@ -512,6 +513,7 @@ if (!nextalk.webui) {
         $('>header .nextalk-call-phone', $html).hide();
         var currUser = webim.client.getCurrUser();
         if (webui.mobile) {
+            $html.addClass('nextalk-mobile');
             $('>header .nextalk-return', $html).show();
             if (currUser.type == webim.userType.GENERAL) {
                 webim.webApi.agent(_this.objId, function(res, err) {
@@ -524,6 +526,8 @@ if (!nextalk.webui) {
                 });
             }
         }
+        var $content = $('#nextalk_content_chatbox', $html);
+        $content.css('overflow', 'auto');
 
         $('footer .mzen-btn', $html).on('click', function() {
             _this.submit();

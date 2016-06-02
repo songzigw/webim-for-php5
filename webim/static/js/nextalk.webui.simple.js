@@ -52,7 +52,8 @@ if (!nextalk.webui) {
                 _this.$conversations).hide();
         _this.msgTips = new MsgTips();
         _this.msgTips.$html.removeClass('nextalk-msg-tips');
-        _this.$conversations.prepend(_this.msgTips.$html);
+        $('>.nextalk-wrap', _this.$conversations)
+                    .prepend(_this.msgTips.$html);
         //_this.$html.append(_this.msgTips.$html);
         _this.handler();
         
@@ -137,12 +138,14 @@ if (!nextalk.webui) {
             _this.$header.css('background', 'white');
             _this.$html.addClass('mzen-border-r');
             _this.$conversations.addClass('nextalk-separator-del');
+            _this.$conversations.css({
+                'overflow' : 'auto',
+                'background' : 'white'
+            });
+        } else {
+            _this.$html.addClass('nextalk-mobile');
         }
         _this.$items.empty();
-        _this.$conversations.css({
-            'overflow' : 'auto',
-            'background' : 'white'
-        });
     };
     Simple.prototype.avatar = function() {
         var _this = this;
@@ -236,8 +239,6 @@ if (!nextalk.webui) {
         var ww = $w.width();
 
         var hh = _this.$header.outerHeight();
-        _this.$conversations.height(wh - hh);
-
         if (!mobile) {
             if (ww <= 320) {
                 $html.css('width', '100%');
@@ -247,6 +248,8 @@ if (!nextalk.webui) {
             _this.$conversations.height(wh - hh);
         } else {
             $html.css('width', '100%');
+            _this.$conversations.css({
+                'padding-top' : hh+'px'});
         }
     };
     Simple.prototype.itemsClick = function($items) {

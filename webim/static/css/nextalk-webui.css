@@ -112,8 +112,14 @@ html, body {
 
 /*------------------------------------*/
 
+.nextalk-mobile header,
+.nextalk-mobile footer {
+	position: fixed;
+	z-index: 3;
+}
+
 footer .mzen-form {
-	background-color: inherit;
+	background: inherit;
 }
 
 .nextalk-form.mzen-input-row {
@@ -583,7 +589,7 @@ footer.mzen-nav >ul.mzen-bar-tab > li > .mzen-badge {
 .nextalk-chatbox-footer {
 	position: absolute;
 	bottom: 0;
-	background-color: inherit;
+	background: inherit;
 }
 
 .nextalk-chatbox-active {
@@ -616,7 +622,7 @@ footer.mzen-nav >ul.mzen-bar-tab > li > .mzen-badge {
 }
 
 img.nextalk-unavailable {
-  filter: progid:DXImageTransform.Microsoft.BasicImage(grayscale=1);
+  /*filter: progid:DXImageTransform.Microsoft.BasicImage(grayscale=1);
   filter: gray;
-  -webkit-filter: grayscale(100%);
+  -webkit-filter: grayscale(100%);*/
 }
