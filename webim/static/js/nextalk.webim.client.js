@@ -658,6 +658,7 @@
 
     Client.prototype._disconnectServer = function() {
         var _this = this;
+        _this.reconnectTask.stop();
         _this.channel.disconnect();
         _this._offlineAgent();
     };
