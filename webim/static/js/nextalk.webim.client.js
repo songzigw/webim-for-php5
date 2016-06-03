@@ -348,6 +348,7 @@
                         _this.trigger("presences", [ ps ]);
                     }
                 });
+                _this.reconnectTask.start();
             }
         });
         // 断开连接
@@ -515,10 +516,30 @@
      * 定义或开启部分定时任务
      */
     Client.prototype._initTimerTask = function() {
-        //var _this = this;
+        var _this = this;
         // 设置网络是否可用实时检测
         // ???
         //_this.trigger("network.unavailable", [ data ]);
+        
+        // 自动重连接任务
+        _this.reconnectTask = {
+            _task : null,
+
+            start : function() {
+                var _t = this;
+                _t.stop();
+                _t._task = window.setInterval(function() {
+                    if (_this.connStatus == webim.connStatus.DISCONNECTED) {
+                        _t.stop();
+                        _this.connectServer();
+                    }
+                }, 1000);
+            },
+
+            stop : function() {
+                window.clearInterval(this._task);
+            }
+        };
     };
 
     /**
