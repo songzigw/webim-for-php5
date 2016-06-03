@@ -22,6 +22,7 @@
     -webkit-transition: all 0.3s ease-in-out 0.1s;
     box-shadow: 0px 0px 8px 3px rgba(0,0,0,0.2);
     background: #f0f1f4;
+    z-index: 999;
 }
 
 .nextalk-main .nextalk-btn {
@@ -75,6 +76,7 @@
 	background-color: #f9f9f9;
 	border: 1px solid #ccc;
 	border-bottom: 0;
+	z-index: 9999999;
 }
 
 .nextalk-iframe div {

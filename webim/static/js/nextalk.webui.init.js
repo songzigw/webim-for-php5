@@ -110,6 +110,7 @@ if (!nextalk.webui) {
                 $('a', _ui.$html).on('click', function() {
                     if (webui.onClickCloseIframe) {
                         webui.onClickCloseIframe();
+                        webui._chatBoxs.hideAll();
                     }
                 });
                 _ui.$html.appendTo(_this.$body);
