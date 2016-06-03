@@ -44,7 +44,7 @@ if (!nextalk.webui) {
         <a><img class="mzen-img-object mzen-pull-left" src="{{goods_img}}">\
         <div class="mzen-img-body">房源信息\
             <p class="mzen-ellipsis-3">{{goods_name}}</p>\
-            <p><button class="mzen-btn mzen-btn-danger">发送房源</button></p>\
+            <p><button class="mzen-btn mzen-btn-danger" data-goodsid="{{goods_id}}">发送房源</button></p>\
         </div></a></li>';
     Goods.prototype.resizable = function() {
         var _this = this, $html = _this.$html;
@@ -91,6 +91,7 @@ if (!nextalk.webui) {
                             h.goods_img = 'http://images.qiaoju360.com/' + h.goods_img;
                             var $house = $(webui.completion(Goods.ITEM, h));
                             $('button.mzen-btn', $house).on('click', function() {
+                                var goodsId = $(this).attr('data-goodsid');
                                 if (_this.conv) {
                                     var conv = _this.conv;
                                     var key = {
@@ -100,7 +101,7 @@ if (!nextalk.webui) {
                                     var chatBox = webui._chatBoxs.get(conv.type, key);
                                     chatBox.sendMsg(webim.JSON.stringify({
                                         type : '1',
-                                        body : h.goods_id
+                                        body : goodsId
                                     }));
                                 }
                                 _this.close();

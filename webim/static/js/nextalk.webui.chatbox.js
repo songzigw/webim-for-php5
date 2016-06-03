@@ -91,9 +91,6 @@ if (!nextalk.webui) {
         $input.on('focus', function(ev) {
             _this.emot.hide();
             _this.resizable();
-            //window.setTimeout(function() {
-                //_this.toBottom();
-            //}, 700);
         });
         _this.emot.callback = function(emot) {
             $input.val($input.val() + emot);
@@ -710,6 +707,7 @@ if (!nextalk.webui) {
             _this._chatBoxs.set(conv.type, key, chatBox);
         }
         webui.main.selectActive(conv.type, conv.currUid, conv.objId);
+        webui.goods.close();
         chatBox.show();
     };
 
