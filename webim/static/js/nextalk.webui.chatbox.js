@@ -92,7 +92,7 @@ if (!nextalk.webui) {
             _this.emot.hide();
             _this.resizable();
             //window.setTimeout(function() {
-                _this.toBottom();
+                //_this.toBottom();
             //}, 700);
         });
         _this.emot.callback = function(emot) {
@@ -196,6 +196,7 @@ if (!nextalk.webui) {
             });
             $content.css({
                 'margin-top' : hh+'px'});
+            _this.toBottom();
         }
     };
     ChatBox.prototype.toBottom = function() {
