@@ -286,13 +286,16 @@ if (!nextalk.webui) {
     };
     Simple.prototype.loadItem = function(type, currUid, objId) {
         var _this = this, $items = _this.$items;
+        var key = {currUid : currUid, objId   : objId};
 
         _this.removeItem(type, currUid, objId);
-        var conv = webim.convMessage.get(type,
-                                {currUid : currUid,
-                                 objId : objId});
+        var conv = webim.convMessage.get(type, key);
         _this.itemHTML(conv).prependTo($items);
-        _this.selectActive(type, currUid, objId);
+
+        var chatBox = webui._chatBoxs.get(conv.type, key);
+        if (chatBox && chatBox.focus) {
+            _this.selectActive(type, currUid, objId);
+        }
 
         // 设置底部的未读数据
         _this.showUnreadTotal();

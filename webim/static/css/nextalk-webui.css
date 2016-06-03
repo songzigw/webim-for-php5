@@ -10,6 +10,15 @@ html, body {
     background-repeat: no-repeat;*/
 }
 
+.mzen-badge-danger {
+	color: #e74c3c;
+	padding: 0;
+	margin: 0;
+	font-size: 0;
+	width: 8px;
+	height: 8px;
+}
+
 .mzen-list-view:after {
 	border-top: 0;
 }

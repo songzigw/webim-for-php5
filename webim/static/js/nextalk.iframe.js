@@ -103,7 +103,7 @@ if (!window.nextalk) {
             
         };
         _this.config.onClickCloseIframe = function() {
-            iframe.$('#nextalk_unread', document).hide();
+            //iframe.$('#nextalk_unread', document).hide();
             var nkMain = iframe.$('#nextalk_main', document);
             var nkIframe = iframe.$('#nextalk_iframe', document);
             nkIframe.hide();
