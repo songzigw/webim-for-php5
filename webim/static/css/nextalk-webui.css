@@ -163,13 +163,14 @@ footer .mzen-form {
     cursor: text;
     border: 1px solid #3498db;
     border-radius: 4px;
+    width: 99%;
 }
 
 .mzen-form > .nextalk-chatbox-menu {
 	margin: 3px 10px 0px 10px;
 }
 .mzen-form > .nextalk-chatbox-menu .mzen-iconfont {
-	font-size: 22px;
+	font-size: 24px;
     margin-left: 5px;
 	margin-right: 5px;
 	cursor: pointer;

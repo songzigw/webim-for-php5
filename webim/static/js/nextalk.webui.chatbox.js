@@ -564,6 +564,7 @@ if (!nextalk.webui) {
             maxFiles: 5,
             maxFilesize: 10,
             acceptedFiles: "image/*",
+            //forceFallback: true,
             addedfile: function(file) {
                 window.file = file;
                 var data = {
