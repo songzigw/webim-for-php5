@@ -381,7 +381,7 @@ if (!nextalk.webui) {
                                         a = '/house.php?id=' + ret.goods_id;
                                     }
                                     var html = '<a href="' + a + '" target="_blank">\
-                                        <div><img width="80%"\
+                                        <div><img width="'+ (_this.$html.width()/2) +'"\
                                         src="http://images.qiaoju360.com/'+ ret.goods_img +'"/>\
                                         <p>'+ ret.goods_name +'</p></div></a>';
                                     $body.html(html);
@@ -391,7 +391,7 @@ if (!nextalk.webui) {
                                 _this.toBottom();
                             });
                 } else if (data.type == 2) {
-                    $body.html('<img width="80%" src="'+data.body+'"/>');
+                    $body.html('<img width="'+ (_this.$html.width()/2) +'" src="'+data.body+'"/>');
                 }
             } catch (e) {
                 $body.html(Emot.trans(msg.body));
@@ -440,7 +440,7 @@ if (!nextalk.webui) {
                                         a = '/house.php?id=' + ret.goods_id;
                                     }
                                     var html = '<a href="' + a + '" target="_blank">\
-                                        <div><img width="80%"\
+                                        <div><img width="'+ (_this.$html.width()/2) +'"\
                                         src="http://images.qiaoju360.com/'+ ret.goods_img +'"/>\
                                         <p>'+ ret.goods_name +'</p></div><a>';
                                     $body.html(html);
@@ -450,7 +450,7 @@ if (!nextalk.webui) {
                                 _this.toBottom();
                             });
                 } else if (data.type == 2) {
-                    $body.html('<img width="80%" src="'+data.body+'"/>');
+                    $body.html('<img width="'+ (_this.$html.width()/2) +'" src="'+data.body+'"/>');
                 }
             } catch (e) {
                 $body.html(Emot.trans(msg.body));
