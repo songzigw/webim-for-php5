@@ -151,7 +151,7 @@ if (!nextalk.webui) {
                       </div>';
     ChatBox.SEND = '<p class="mzen-text-center"><span class="time">???</span></p>\
                       <div class="mzen-chat-sender">\
-                        <div class="mzen-chat-sender-avatar"><img src=""></div>\
+                        <div class="mzen-chat-sender-avatar"><img src="" class="nextalk-avatar"/></div>\
                         <!--<div style="padding-right:60px;text-align:right;" class="nick">???</div>-->\
                         <div class="mzen-chat-sender-cont">\
                             <div class="mzen-chat-right-triangle"></div>\
@@ -160,7 +160,7 @@ if (!nextalk.webui) {
                       </div>';
     ChatBox.RECEIVE = '<p class="mzen-text-center"><span class="time">???</span></p>\
                          <div class="mzen-chat-receiver">\
-                            <div class="mzen-chat-receiver-avatar"><img src=""></div>\
+                            <div class="mzen-chat-receiver-avatar"><img src="" class="nextalk-avatar"/></div>\
                             <!--<div style="padding-left:60px;text-align:left;" class="nick">???</div>-->\
                             <div class="mzen-chat-receiver-cont">\
                                 <div class="mzen-chat-left-triangle"></div>\
@@ -359,7 +359,7 @@ if (!nextalk.webui) {
             $($receive[0]).hide();
         }
         $receive.find('.nick').text(msg.nick);
-        $receive.find('img').attr('src', msg.avatar);
+        $receive.find('img.nextalk-avatar').attr('src', msg.avatar);
         if (isUrl(msg.body)) {
             $receive.find('.body').html('<a href="'+msg.body+'" target="_blank">'+msg.body+'</a>');
         } else {
@@ -379,7 +379,8 @@ if (!nextalk.webui) {
                                     if (!m) {
                                         a = '/house.php?id=' + ret.goods_id;
                                     }
-                                    var html = '<a href="' + a + '" target="_blank"><div><img width="90%"\
+                                    var html = '<a href="' + a + '" target="_blank">\
+                                        <div><img width="80%"\
                                         src="http://images.qiaoju360.com/'+ ret.goods_img +'"/>\
                                         <p>'+ ret.goods_name +'</p></div></a>';
                                     $receive.find('.body').html(html);
@@ -389,7 +390,7 @@ if (!nextalk.webui) {
                                 _this.toBottom();
                             });
                 } else if (data.type == 2) {
-                    $receive.find('.body').html('<img width="90%" src="'+data.body+'"/>');
+                    $receive.find('.body').html('<img width="80%" src="'+data.body+'"/>');
                 }
             } catch (e) {
                 $receive.find('.body').html(Emot.trans(msg.body));
@@ -416,7 +417,7 @@ if (!nextalk.webui) {
             $($send[0]).hide();
         }
         $send.find('.nick').text(msg.nick);
-        $send.find('img').attr('src', msg.avatar);
+        $send.find('img.nextalk-avatar').attr('src', msg.avatar);
         if (isUrl(msg.body)) {
             $send.find('.body').html('<a href="'+msg.body+'" target="_blank">'+msg.body+'</a>');
         } else {
@@ -436,7 +437,8 @@ if (!nextalk.webui) {
                                     if (!m) {
                                         a = '/house.php?id=' + ret.goods_id;
                                     }
-                                    var html = '<a href="' + a + '" target="_blank"><div><img width="90%"\
+                                    var html = '<a href="' + a + '" target="_blank">\
+                                        <div><img width="80%"\
                                         src="http://images.qiaoju360.com/'+ ret.goods_img +'"/>\
                                         <p>'+ ret.goods_name +'</p></div><a>';
                                     $send.find('.body').html(html);
@@ -446,7 +448,7 @@ if (!nextalk.webui) {
                                 _this.toBottom();
                             });
                 } else if (data.type == 2) {
-                    $send.find('.body').html('<img width="90%" src="'+data.body+'"/>');
+                    $send.find('.body').html('<img width="80%" src="'+data.body+'"/>');
                 }
             } catch (e) {
                 $send.find('.body').html(Emot.trans(msg.body));

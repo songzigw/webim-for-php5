@@ -1984,9 +1984,10 @@ input.mzen-counter-input {
 /*聊天 会话*/
 .mzen-chat-receiver{
     clear:both;
+    height: 100%;
 }
 .mzen-chat-receiver p {
-	font-size: 12px;
+	font-size: 14px;
 }
 .mzen-chat-receiver .mzen-chat-receiver-avatar{
     float: left;
@@ -2021,10 +2022,11 @@ input.mzen-counter-input {
 }
 .mzen-chat-sender{
     clear:both;
+    height: 100%;
 }
 .mzen-chat-sender p {
 	color: #fff;
-	font-size: 12px;
+	font-size: 14px;
 }
 .mzen-chat-sender .mzen-chat-sender-avatar{
     float: right;

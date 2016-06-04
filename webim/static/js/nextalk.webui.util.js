@@ -19,11 +19,6 @@ if (!nextalk.webui) {
         $('img[data-toggle=head]', $h).each(function() {
             $(this).attr('src', webim.imgs.HEAD);
         });
-        $('img', $h).each(function(i, el) {
-            $(el).error(function() {
-                $(this).attr('src', webim.imgs.HEAD);
-            });
-        });
         return $h;
     };
 
