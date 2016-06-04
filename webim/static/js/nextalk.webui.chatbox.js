@@ -360,8 +360,9 @@ if (!nextalk.webui) {
         }
         $receive.find('.nick').text(msg.nick);
         $receive.find('img.nextalk-avatar').attr('src', msg.avatar);
+        var $body = $receive.find('.body');
         if (isUrl(msg.body)) {
-            $receive.find('.body').html('<a href="'+msg.body+'" target="_blank">'+msg.body+'</a>');
+            $body.html('<a href="'+msg.body+'" target="_blank">'+msg.body+'</a>');
         } else {
             try {
                 var data = webim.JSON.parse(msg.body);
@@ -369,7 +370,7 @@ if (!nextalk.webui) {
                     throw new Error();
                 }
                 if (data.type == 1) {
-                    $receive.find('.body').html("正在加载中...");
+                    $body.html("正在加载中...");
                     webim.webApi.house(
                             {id : data.body},
                             function(ret, err) {
@@ -383,17 +384,17 @@ if (!nextalk.webui) {
                                         <div><img width="80%"\
                                         src="http://images.qiaoju360.com/'+ ret.goods_img +'"/>\
                                         <p>'+ ret.goods_name +'</p></div></a>';
-                                    $receive.find('.body').html(html);
+                                    $body.html(html);
                                 } else {
-                                    $receive.find('.body').html("加载失败...");
+                                    $body.html("加载失败...");
                                 }
                                 _this.toBottom();
                             });
                 } else if (data.type == 2) {
-                    $receive.find('.body').html('<img width="80%" src="'+data.body+'"/>');
+                    $body.html('<img width="80%" src="'+data.body+'"/>');
                 }
             } catch (e) {
-                $receive.find('.body').html(Emot.trans(msg.body));
+                $body.html(Emot.trans(msg.body));
             }
         }
         _this.$bBody.append($receive);
@@ -418,8 +419,9 @@ if (!nextalk.webui) {
         }
         $send.find('.nick').text(msg.nick);
         $send.find('img.nextalk-avatar').attr('src', msg.avatar);
+        var $body = $send.find('.body');
         if (isUrl(msg.body)) {
-            $send.find('.body').html('<a href="'+msg.body+'" target="_blank">'+msg.body+'</a>');
+            $body.html('<a href="'+msg.body+'" target="_blank">'+msg.body+'</a>');
         } else {
             try {
                 var data = webim.JSON.parse(msg.body);
@@ -427,7 +429,7 @@ if (!nextalk.webui) {
                     throw new Error();
                 }
                 if (data.type == 1) {
-                    $send.find('.body').html("正在加载中...");
+                    $body.html("正在加载中...");
                     webim.webApi.house(
                             {id : data.body},
                             function(ret, err) {
@@ -441,17 +443,17 @@ if (!nextalk.webui) {
                                         <div><img width="80%"\
                                         src="http://images.qiaoju360.com/'+ ret.goods_img +'"/>\
                                         <p>'+ ret.goods_name +'</p></div><a>';
-                                    $send.find('.body').html(html);
+                                    $body.html(html);
                                 } else {
-                                    $send.find('.body').html("加载失败...");
+                                    $body.html("加载失败...");
                                 }
                                 _this.toBottom();
                             });
                 } else if (data.type == 2) {
-                    $send.find('.body').html('<img width="80%" src="'+data.body+'"/>');
+                    $body.html('<img width="80%" src="'+data.body+'"/>');
                 }
             } catch (e) {
-                $send.find('.body').html(Emot.trans(msg.body));
+                $body.html(Emot.trans(msg.body));
             }
         }
         _this.$bBody.append($send);

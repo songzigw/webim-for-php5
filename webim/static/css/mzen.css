@@ -929,7 +929,6 @@ input[type="time"] {
     margin: 0;
     display: table-cell;
     position: relative;
-    float: left;
     width: 100%;
     border:none;
     border-radius: 0;
@@ -1984,7 +1983,6 @@ input.mzen-counter-input {
 /*聊天 会话*/
 .mzen-chat-receiver{
     clear:both;
-    height: 100%;
 }
 .mzen-chat-receiver p {
 	font-size: 14px;
@@ -2022,7 +2020,6 @@ input.mzen-counter-input {
 }
 .mzen-chat-sender{
     clear:both;
-    height: 100%;
 }
 .mzen-chat-sender p {
 	color: #fff;
