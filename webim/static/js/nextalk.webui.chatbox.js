@@ -146,6 +146,7 @@ if (!nextalk.webui) {
                             </div>\
         <p class="nextalk-chatbox-menu"><i class="mzen-iconfont mzen-icon-emoji"></i><i class="mzen-iconfont mzen-icon-pic"></i><i class="mzen-iconfont mzen-icon-home"></i></p>\
                             </form>\
+        <input type="file" accept="image/*" name="file" style="opacity: 0; filter: alpha(opacity = 0); display: none;" class="file_upload"/>\
                         </footer>\
                         <!-- 聊天输入筐END -->\
                       </div>';
@@ -558,44 +559,98 @@ if (!nextalk.webui) {
         } else {
             $('footer .mzen-icon-home', $html).remove();
         }
-        $('footer .mzen-icon-pic', $html).dropzone({
-            url: webim.apiPath + "upload-file.php",
-            paramName: 'file',
-            maxFiles: 5,
-            maxFilesize: 10,
-            acceptedFiles: "image/*",
-            //forceFallback: true,
-            addedfile: function(file) {
-                window.file = file;
-                var data = {
-                        type : 2,
-                        body : webim.resPath + 'imgs/loading_more.gif',
-                };
-                var msg = _this.message(webim.JSON.stringify(data));
-                file.sendHtml = _this.sendHTML(msg);
-            },
-            
-            uploadprogress: function(file, progress, bytesSent) {
-                
-            },
-            
-            success: function(file, ret) {
-                if (ret && ret.success) {
-                    var data = {
-                            type : 2,
-                            body : ret.path,
-                    };
-                    var msg = _this.message(webim.JSON.stringify(data));
-                    webim.client.sendMessage(msg);
-                    // 处理会话列表
-                    webui.main.loadItem(msg.type, _this.currUid, msg.to);
-                    file.sendHtml.find('.body img').attr('src', ret.path);
-                }
-            },
-            
-            error: function(file) {
-                file.sendHtml.find('.body').html("图片发送失败");
+//        $('footer .mzen-icon-pic', $html).dropzone({
+//            url: webim.apiPath + "upload-file.php",
+//            paramName: 'file',
+//            maxFiles: 5,
+//            maxFilesize: 10,
+//            acceptedFiles: "image/*",
+//            //forceFallback: true,
+//            addedfile: function(file) {
+//                window.file = file;
+//                var data = {
+//                        type : 2,
+//                        body : webim.resPath + 'imgs/loading_more.gif',
+//                };
+//                var msg = _this.message(webim.JSON.stringify(data));
+//                file.sendHtml = _this.sendHTML(msg);
+//            },
+//            
+//            uploadprogress: function(file, progress, bytesSent) {
+//                
+//            },
+//            
+//            success: function(file, ret) {
+//                if (ret && ret.success) {
+//                    var data = {
+//                            type : 2,
+//                            body : ret.path,
+//                    };
+//                    var msg = _this.message(webim.JSON.stringify(data));
+//                    webim.client.sendMessage(msg);
+//                    // 处理会话列表
+//                    webui.main.loadItem(msg.type, _this.currUid, msg.to);
+//                    file.sendHtml.find('.body img').attr('src', ret.path);
+//                }
+//            },
+//            
+//            error: function(file) {
+//                file.sendHtml.find('.body').html("图片发送失败");
+//            }
+//        });
+
+        $('footer .mzen-icon-pic', $html).on('click', function() {
+            if (!window.FormData) {
+                alert('抱歉，您的浏览器不支持图片上传！');
+                return;
             }
+            $('footer input[type="file"]', $html).click();
+        });
+        $('footer input[type="file"]', $html).on('change', function() {
+            var $inputFile = $(this);
+            if (!($inputFile.val())) {
+                return;
+            }
+
+            var data = {
+                type : 2,
+                body : webim.resPath + 'imgs/loading_more.gif'
+            };
+            var msg = _this.message(webim.JSON.stringify(data));
+            var $sendHtml = _this.sendHTML(msg);
+
+            var fData = new FormData();
+            $.each($inputFile[0].files, function(i, file) {
+                fData.append('file', file);
+            });
+            $.ajax({
+                url : webim.apiPath + 'upload-file.php',
+                type : 'POST',
+                data : fData,
+                cache : false,
+                contentType : false,
+                processData : false,
+                success : function(ret) {
+                    $inputFile.val('');
+                    if (ret.success) {
+                        var data = {
+                            type : 2,
+                            body : ret.path
+                        };
+                        var msg = _this.message(webim.JSON.stringify(data));
+                        webim.client.sendMessage(msg);
+                        $sendHtml.find('.body img').attr('src', ret.path);
+                        // 处理会话列表
+                        webui.main.loadItem(_this.type, _this.currUid, _this.objId);
+                    } else {
+                        $sendHtml.find('.body').html("图片发送失败");
+                    }
+                },
+                error : function() {
+                    $inputFile.val('');
+                    $sendHtml.find('.body').html("图片发送失败");
+                }
+            });
         });
     };
     ChatBox.prototype.submit = function() {

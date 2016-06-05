@@ -12,9 +12,10 @@ $rsp = $upload_handler->get_response ();
 $file = $rsp ['file'];
 
 $data = array (
-        'success' => true 
+        'success' => false 
 );
 foreach ( $file as $f ) {
+    $data ['success'] = true;
     $data ['path'] = $f->url;
 }
 
