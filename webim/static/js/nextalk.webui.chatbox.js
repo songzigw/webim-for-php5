@@ -643,7 +643,7 @@ if (!nextalk.webui) {
                         // 处理会话列表
                         webui.main.loadItem(_this.type, _this.currUid, _this.objId);
                     } else {
-                        $sendHtml.find('.body').html("图片发送失败");
+                        $sendHtml.find('.body').html('Fail:' + ret.error);
                     }
                 },
                 error : function() {
