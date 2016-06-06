@@ -351,6 +351,14 @@ EOF;
 		$this->okReply();
 	}
 
+	public function message_read() {
+	    $type = $this->input('type');
+	    $to = $this->input('to');
+	    $from = $this->input('from');
+	    $this->model->markReaded($type, $to, $from);
+	    $this->okReply();
+	}
+
     /**
      * Browser Refresh, may be called
      */
@@ -910,9 +918,6 @@ EOF;
                     'oavatar' => $this->input('avatar')
             );
             $this->model->insert_conv($conv);
-        }
-        if ($this->input('type') == 'chat' && $this->input('direction') == 'receive') {
-            $this->model->offlineReaded($this->input('uid'));
         }
         $this->okReply();
     }

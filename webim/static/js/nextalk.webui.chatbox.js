@@ -237,8 +237,7 @@ if (!nextalk.webui) {
                     && $el.attr('data-currUid') == _this.currUid
                     && $el.attr('data-objId') == _this.objId) {
                 if (conv && conv.notCount > 0) {
-                    $el.find('span.mzen-badge-danger').text(
-                            conv.notCount);
+                    $el.find('span.mzen-badge-danger').text(conv.notCount);
                 } else {
                     $el.find('span.mzen-badge-danger').remove();
                 }
@@ -255,8 +254,7 @@ if (!nextalk.webui) {
         }
 
         // 历史数据库中查询
-        var history = webim.history;
-        history.load({type : _this.type,
+        webim.history.load({type : _this.type,
                       currUid : _this.currUid,
                       objId : _this.objId}, function(msgs) {
             if (msgs.length == 0) {

@@ -274,6 +274,16 @@ class Model {
 	public function offlineReaded($uid) {
         $this->T('histories')->where('to', $uid)->where('send', 0)->findResultSet()->set('send', 1)->save();
 	}
+	
+	public function markReaded($type, $to, $from) {
+	    $this->T('histories')
+	    ->where('type', $type)
+	    ->where('to', $to)
+	    ->where('from', $from)
+	    ->where('send', 0)
+	    ->findResultSet()
+	    ->set('send', 1)->save();
+	}
 
     /**
      * User setting

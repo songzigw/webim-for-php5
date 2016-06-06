@@ -329,10 +329,10 @@
                 }
                 _this._show(webim.status.get("s"));
                 webim.convMessage.list(function(convs, presences) {
-                    _this.connStatusListener.onConnected(ev, convs);
                     if (_this.messages) {
                         _this.trigger("messages", [ _this.messages ]);
                     }
+                    _this.connStatusListener.onConnected(ev, convs);
                     if (_this.presences) {
                         var ps = [];
                         for (var k in _this.presences) {
@@ -358,6 +358,7 @@
                 _this.connStatus = webim.connStatus.DISCONNECTED;
                 _this._show(webim.show.UNAVAILABLE);
                 _this.connStatusListener.onDisconnected(ev, data);
+                webim.convMessage.clear();
             }
         });
         // 网络不可用
@@ -367,6 +368,7 @@
                 _this.connStatus = webim.connStatus.NETWORK_UNAVAILABLE;
                 _this._show(webim.show.UNAVAILABLE);
                 _this.connStatusListener.onNetworkUnavailable(ev, data);
+                webim.convMessage.clear();
             }
         });
 

@@ -78,7 +78,8 @@
         house_fav : "index.php?action=get_user_favorite",
         disguise : "index.php?action=disguise",
         agent : "index.php?action=agent",
-        presences : "index.php?action=presences"
+        presences : "index.php?action=presences",
+        message_read : "index.php?action=message_read"
     };
     WebAPI.route = function(ob) {
         var options = ob;
@@ -183,6 +184,13 @@
         },
         presences : function(params, callback) {
             this._ajax("presences", params, callback);
+        },
+        message_read : function(type, currUid, objId) {
+            this._ajax("message_read", {
+                type : type,
+                to : currUid,
+                from : objId
+            }, null);
         }
     };
     extend(WebAPI.prototype, methods);

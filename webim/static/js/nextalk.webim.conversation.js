@@ -261,16 +261,18 @@
      * 获取所有的往来会话，将未读标识去掉，未读数清零
      */
     Conversation.prototype.readAll = function() {
-        var _this = this;
+        var _this = this, messages = [];
         for (var i = 0, len = _this.record.length; i < len; i++) {
             var msg = _this.record[i];
             if (typeof msg.read === 'boolean' && !msg.read) {
                 msg.read = true;
                 webim.convMessage.unreadTotal--;
+                messages.push(msg);
             }
         }
         _this.notCount = 0;
-        return _this.record;
+        webim.webApi.message_read(_this.type, _this.currUid, _this.objId);
+        return messages;
     };
 
     /** 会话消息存储 */
@@ -305,26 +307,46 @@
             key = _this._key(key.currUid, key.objId);
             _this[type][key] = value;
         },
-        
+
         _key : function(currUid, objId) {
             return [currUid, objId].join('_');
         },
-        
+
         read : function(msg) {
             var _this = this;
             if (typeof msg.read === 'boolean' && !msg.read) {
                 msg.read = true;
                 var cData = Conversation.parser(msg);
                 var conv = _this.get(cData.type, {
-                        currUid : cData.currUid,
-                        objId : cData.objId});
+                            currUid : cData.currUid,
+                            objId : cData.objId});
                 if (conv.notCount > 0) {
                     conv.notCount--;
                     webim.convMessage.unreadTotal--;
                 }
+                webim.webApi.message_read(conv.type, conv.currUid, conv.objId);
             }
         },
-        
+
+        clear : function() {
+            for (var key in this[Conversation.NOTICE]) {
+                var conv = this[Conversation.NOTICE][key];
+                conv.record = [];
+                conv.notCount = 0;
+            }
+            for (var key in this[Conversation.ROOM]) {
+                var conv = this[Conversation.ROOM][key];
+                conv.record = [];
+                conv.notCount = 0;
+            }
+            for (var key in this[Conversation.CHAT]) {
+                var conv = this[Conversation.CHAT][key];
+                conv.record = [];
+                conv.notCount = 0;
+            }
+            this.unreadTotal = 0;
+        },
+
         onPresences : function(presences) {
             for (var key in this[Conversation.CHAT]) {
                 var conv = this[Conversation.CHAT][key];
@@ -336,7 +358,7 @@
                 }
             }
         },
-        
+
         list : function(callback) {
             var client = webim.client,
                 webApi = webim.webApi;
