@@ -213,8 +213,14 @@
                 conv.objName = msg.nick;
                 conv.objAvatar = msg.avatar;
                 conv.currUid = msg.to;
-                conv.currNick = msg.to_name;
-                conv.currAvatar = msg.to_avatar;
+                if (msg.to_name) {
+                    conv.currNick = msg.to_name;
+                    conv.currAvatar = msg.to_avatar;
+                } else {
+                    var agent = webim.client.getAgent(msg.to);
+                    conv.currNick = agent.nick;
+                    conv.currAvatar = agent.avatar;
+                }
             }
         }
         return conv;
