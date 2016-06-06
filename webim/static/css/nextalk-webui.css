@@ -157,8 +157,17 @@ footer .mzen-form {
     width: 99%;
 }
 
+.nextalk-mobile .mzen-form > .nextalk-chatbox-menu {
+	text-align: center;
+	display: table;
+	width: 100%;
+}
+.nextalk-mobile .mzen-form > .nextalk-chatbox-menu .mzen-iconfont {
+    text-align: center;
+    display: table-cell;
+}
 .mzen-form > .nextalk-chatbox-menu {
-	margin: 3px 10px 0px 10px;
+	padding: 3px 10px 0px 10px;
 }
 .mzen-form > .nextalk-chatbox-menu .mzen-iconfont {
 	font-size: 24px;

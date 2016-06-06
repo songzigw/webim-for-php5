@@ -562,19 +562,17 @@ if (!nextalk.webui) {
             _this.submit();
             return false;
         });
-//        $('footer input', $html).on('keydown', function(ev) {
-//            if (ev.keyCode == 13) {
-//                _this.submit();
-//            }
-//        });
-
         $('footer .mzen-icon-emoji', $html).on('click', function() {
             _this.emot.toggle();
             _this.resizable();
         });
         if (webui.goods) {
             $('footer .mzen-icon-home', $html).on('click', function() {
-                webui.goods.open({type : _this.type, currUid : _this.currUid, objId : _this.objId});
+                webui.goods.open({
+                    type : _this.type,
+                    currUid : _this.currUid,
+                    objId : _this.objId
+                });
             });
         } else {
             $('footer .mzen-icon-home', $html).remove();
