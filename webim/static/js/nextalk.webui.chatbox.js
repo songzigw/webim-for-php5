@@ -253,55 +253,69 @@ if (!nextalk.webui) {
             return;
         }
 
-        // 历史数据库中查询
-        webim.history.load({type : _this.type,
-                      currUid : _this.currUid,
-                      objId : _this.objId}, function(msgs) {
-            if (msgs.length == 0) {
-                for (var i = 0, len = record.length; i < len; i++) {
-                    var msg = record[i];
-                    if (msg.direction == webim.msgDirection.SEND) {
-                        _this.sendHTML(msg);
-                    } else {
-                        _this.receiveHTML(msg);
-                    }
-                }
+        // 先加载内存中的消息
+        for (var i = 0, len = record.length; i < len; i++) {
+            var msg = record[i];
+            if (msg.direction == webim.msgDirection.SEND) {
+                _this.sendHTML(msg);
             } else {
-                for (var i = 0, len = msgs.length; i < len; i++) {
-                    var msg = msgs[i];
-                    if (msg.direction == webim.msgDirection.SEND) {
-                        _this.sendHTML(msg);
-                    } else {
-                        if (!msg.avatar) {
-                            msg.avatar = _this.objAvatar;
-                        }
-                        _this.receiveHTML(msg);
-                    }
+                _this.receiveHTML(msg);
+            }
+            if (i == 0) {
+                _this.before = msg.timestamp;
+            }
+        }
+
+        if (webui.chatObj && webui.chatObj.id == _this.objId
+                && webui.chatObj.body_type && webui.chatObj.body) {
+            var body = {
+                type : webui.chatObj.body_type,
+                body : webui.chatObj.body
+            };
+            _this.houseHTML(body);
+        } else {
+            for (var i = 0; i < webui.chatObjs.length; i++) {
+                var co = webui.chatObjs[i];
+                if (co.id == _this.objId && co.body_type && co.body) {
+                    var body = {
+                        type : co.body_type,
+                        body : co.body
+                    };
+                    _this.houseHTML(body);
+                    break;
                 }
             }
+        }
 
-            if (webui.chatObj
-                    && webui.chatObj.id == _this.objId
-                    && webui.chatObj.body_type
-                    && webui.chatObj.body) {
-                var body = {
-                        type : webui.chatObj.body_type,
-                        body : webui.chatObj.body
-                    };
-                _this.houseHTML(body);
-            } else {
-                for (var i = 0; i < webui.chatObjs.length; i++) {
-                    var co = webui.chatObjs[i];
-                    if (co.id == _this.objId
-                            && co.body_type
-                            && co.body) {
-                        var body = {
-                                type : co.body_type,
-                                body : co.body
-                            };
-                        _this.houseHTML(body);
-                        break;
+        // 历史数据库中查询
+        _this.history();
+    };
+    ChatBox.prototype.history = function() {
+        var _this = this;
+        if (!_this.before) {
+            _this.before = webim.currTimeMillis;
+        }
+        webim.history.load({
+            type : _this.type,
+            currUid : _this.currUid,
+            objId : _this.objId,
+            before : _this.before
+        }, function(msgs) {
+            if (!msgs || msgs.length <= 0) {
+                return;
+            }
+            for (var len = msgs.length; len > 0; len--) {
+                var msg = msgs[len - 1];
+                if (msg.direction == webim.msgDirection.SEND) {
+                    _this.sendHTML(msg, true);
+                } else {
+                    if (!msg.avatar) {
+                        msg.avatar = _this.objAvatar;
                     }
+                    _this.receiveHTML(msg, true);
+                }
+                if (len == 1) {
+                    _this.before = msg.timestamp;
                 }
             }
         });
@@ -340,7 +354,7 @@ if (!nextalk.webui) {
             webui.onChatboxClose();
         }
     };
-    ChatBox.prototype.receiveHTML = function(msg) {
+    ChatBox.prototype.receiveHTML = function(msg, history) {
         var _this = this;
         var $receive = webui.$(ChatBox.RECEIVE);
         var time = new webim.Date();
@@ -396,10 +410,14 @@ if (!nextalk.webui) {
                 $body.html(Emot.trans(msg.body));
             }
         }
-        _this.$bBody.append($receive);
+        if (!history) {
+            _this.$bBody.append($receive);
+        } else {
+            _this.$bBody.prepend($receive);
+        }
         _this.toBottom();
     };
-    ChatBox.prototype.sendHTML = function(msg) {
+    ChatBox.prototype.sendHTML = function(msg, history) {
         var _this = this;
         var $send = webui.$(ChatBox.SEND);
         var time = new webim.Date();
@@ -455,7 +473,11 @@ if (!nextalk.webui) {
                 $body.html(Emot.trans(msg.body));
             }
         }
-        _this.$bBody.append($send);
+        if (!history) {
+            _this.$bBody.append($send);
+        } else {
+            _this.$bBody.prepend($send);
+        }
         _this.toBottom();
         return $send;
     };

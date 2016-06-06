@@ -460,8 +460,8 @@ if (!nextalk.webui) {
                     } else {
                         chatBox.objName = conv.objName;
                         chatBox.objAvatar = conv.objAvatar;
+                        chatBox.receiveHTML(msg);
                         if (chatBox.focus == true) {
-                            chatBox.receiveHTML(msg);
                             // 设置为已读
                             webim.convMessage.read(msg);
                         }

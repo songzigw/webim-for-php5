@@ -54,7 +54,6 @@ if (!nextalk.webui) {
         _this.msgTips.$html.removeClass('nextalk-msg-tips');
         $('>.nextalk-wrap', _this.$conversations)
                     .prepend(_this.msgTips.$html);
-        //_this.$html.append(_this.msgTips.$html);
         _this.handler();
         
         _this.bind('presences', function(ev, data) {
@@ -303,16 +302,18 @@ if (!nextalk.webui) {
     };
     Simple.prototype.removeItem = function(type, currUid, objId) {
         var _this = this, $items = _this.$items;
+        var $remove;
         $('>li', $items).each(function(i, el) {
             var $el = $(el);
             if ($el.attr('data-toggle') == type
                     && $el.attr('data-currUid') == currUid
                     && $el.attr('data-objId') == objId) {
-                $el.remove();
+                $remove = $el.remove();
                 // break
                 return false;
             }
         });
+        return $remove;
     };
     Simple.prototype.selectActive = function(type, currUid, objId) {
         var _this = this, $items = _this.$items;
@@ -327,21 +328,27 @@ if (!nextalk.webui) {
         });
     };
     Simple.prototype.loadRecently = function(convs) {
-        var _this = this, $items = _this.$items.empty();
-        
-        if ((!webui.chatObjs || webui.chatObjs.length == 0)
-                && convs && convs.length > 0) {
+        var _this = this, //$items = _this.$items.empty();
+        $items = _this.$items;
+
+        if (convs && convs.length > 0) {
             for (var i = 0; i < convs.length; i++) {
-                $items.append(_this.itemHTML(convs[i]));
+                var conv = convs[i];
+                var $rem = _this.removeItem(conv.type, conv.currUid, conv.objId);
+                if ($rem) {
+                    if ($('span', $rem).text()) {
+                        conv.notCount = Number($('span', $rem).text());
+                    }
+                }
+                $items.append(_this.itemHTML(conv));
             }
         }
 
         var currUser = webim.client.getCurrUser();
         if (webui.chatObjs) {
-            for (var i = 0; i < webui.chatObjs.length; i++) {
-                var chatObj = webui.chatObjs[i];
-                _this.removeItem(chatObj.type, currUser.id, chatObj.id);
-                $items.append(_this.itemHTML({
+            for (var len = webui.chatObjs.length; len > 0; len--) {
+                var chatObj = webui.chatObjs[len - 1];
+                var conv = {
                     type : chatObj.type,
                     currUid : currUser.id,
                     currNick : currUser.nick,
@@ -350,25 +357,39 @@ if (!nextalk.webui) {
                     objName : chatObj.name,
                     objAvatar : chatObj.avatar,
                     objShow : webim.show.UNAVAILABLE,
-                    body : '开始聊天'
-                }));
+                    body : '开始聊天',
+                    notCount : 0
+                };
+                var $rem = _this.removeItem(chatObj.type, currUser.id, chatObj.id);
+                if ($rem) {
+                    if ($('span', $rem).text()) {
+                        conv.notCount = Number($('span', $rem).text());
+                    }
+                }
+                $items.prepend(_this.itemHTML(conv));
             }
         }
         if (webui.chatObj) {
             var chatObj = webui.chatObj;
-            _this.removeItem(chatObj.type, currUser.id, chatObj.id);
             var conv = {
-                    type : chatObj.type,
-                    currUid : currUser.id,
-                    currNick : currUser.nick,
-                    currAvatar : currUser.avatar,
-                    objId : chatObj.id,
-                    objName : chatObj.name,
-                    objAvatar : chatObj.avatar,
-                    objShow : webim.show.UNAVAILABLE,
-                    body : '开始聊天'
-                };
-            _this.itemHTML(conv).prependTo($items);
+                type : chatObj.type,
+                currUid : currUser.id,
+                currNick : currUser.nick,
+                currAvatar : currUser.avatar,
+                objId : chatObj.id,
+                objName : chatObj.name,
+                objAvatar : chatObj.avatar,
+                objShow : webim.show.UNAVAILABLE,
+                body : '开始聊天',
+                notCount : 0
+            };
+            var $rem = _this.removeItem(chatObj.type, currUser.id, chatObj.id);
+            if ($rem) {
+                if ($('span', $rem).text()) {
+                    conv.notCount = Number($('span', $rem).text());
+                }
+            }
+            $items.prepend(_this.itemHTML(conv));
             if (webim.client.connectedTimes == 1) {
                 webui.openChatBox(conv);
             }

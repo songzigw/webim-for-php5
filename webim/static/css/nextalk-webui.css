@@ -10,15 +10,6 @@ html, body {
     background-repeat: no-repeat;*/
 }
 
-.mzen-badge-danger {
-	color: #e74c3c;
-	padding: 0;
-	margin: 0;
-	font-size: 0;
-	width: 8px;
-	height: 8px;
-}
-
 .mzen-list-view:after {
 	border-top: 0;
 }
@@ -306,7 +297,6 @@ footer .mzen-form {
 
 .nextalk-scroll {
     overflow: hidden;
-    /*margin-top: 1px;*/
     position: relative;
 }
 
@@ -317,10 +307,13 @@ footer .mzen-form {
 	min-height: 45px;
     line-height: 45px;
     padding-left: 10px;
-    padding-right: 10px;
+    padding-right: 13px;
     font-size: 16px;
     font-weight: 400;
     z-index: 18;
+}
+.nextalk-btn-close a {
+	color: #333;
 }
 
 .mzen-bar-nav .nextalk-logo,

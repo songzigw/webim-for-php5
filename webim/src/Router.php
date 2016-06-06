@@ -240,7 +240,8 @@ EOF;
 		$activeBuddyIds = $this->idsArray( $this->input('buddy_ids') );
 
 		//active buddy who send a offline message.
-		$offlineMessages = $this->model->offlineHistories($uid);
+		$type = $this->user->type;
+		$offlineMessages = $this->model->offlineHistories($uid, $type);
 		foreach($offlineMessages as $msg) {
 			if(!in_array($msg->from, $activeBuddyIds)) {
 				$activeBuddyIds[] = $msg->from;
@@ -484,7 +485,8 @@ EOF;
         $uid = $this->input('currUid');
 		$with = $this->input('objId');
 		$type = $this->input('type');
-		$histories = $this->model->histories($uid, $with, $type);
+		$before = $this->input('before');
+		$histories = $this->model->histories($uid, $with, $type, $before);
 		$this->jsonReply($histories);
 	}
 

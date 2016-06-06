@@ -198,14 +198,8 @@
                 },
                 load : function(conv, callback) {
                     var self = this;
-
-                    var params = {
-                        ticket  : webim.client.getConnection().ticket,
-                        type    : conv.type,
-                        currUid : conv.currUid,
-                        objId   : conv.objId
-                    };
-                    webim.webApi.history(params, function(ret, err) {
+                    conv.ticket = webim.client.getConnection().ticket;
+                    webim.webApi.history(conv, function(ret, err) {
                         var currUser = webim.client.getCurrUser();
                         var lastTime;
                         var messages = [];

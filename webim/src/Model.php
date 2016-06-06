@@ -210,10 +210,13 @@ class Model {
      * @params 'chat'|'grpchat' $type history type
      * @params integer $limit result limit
      */
-    public function histories($uid, $with, $type = 'chat',  $limit = 30) {
+    public function histories($uid, $with, $type = 'chat', $before,  $limit = 30) {
+        if (!$before) {
+            $before = microtime(true) * 1000;
+        }
         if( $type === 'chat') {
             $query = $this->T('histories')->where('type', 'chat')
-                ->whereRaw("(`to`= ? AND `from`= ? AND `fromdel` != 1) OR (`send` = 1 AND `from`= ? AND `to`= ? AND `todel` != 1)", array($with, $uid, $with, $uid))
+                ->whereRaw("((`to`= ? AND `from`= ? AND `fromdel` != 1) OR (`send` = 1 AND `from`= ? AND `to`= ? AND `todel` != 1)) AND `timestamp`<?", array($with, $uid, $with, $uid, $before))
                 ->orderByDesc('timestamp')->limit($limit);
         } else {
             $query = $this->T('histories')->where('type', 'grpchat')
@@ -230,9 +233,27 @@ class Model {
      * @params string $uid current uid
      * @params integer $limit result limit
      */
-	public function offlineHistories($uid, $limit = 50) {
-        $query = $this->T('histories')->where('to', $uid)->whereNotEqual('send', 1)
-            ->orderByDesc('timestamp')->limit($limit);
+	public function offlineHistories($uid, $type, $limit = 150) {
+	    if ($type != 'backstage') {
+	        $query = $this->T('histories')->where('to', $uid)->whereNotEqual('send', 1)
+	           ->orderByDesc('timestamp')->limit($limit);
+	    } else {
+	        $query = $this->T2('webim_histories')
+	        ->tableAlias('history')
+// 	        ->select('history.id', 'id')
+// 	        ->select('history.uid', 'uid')
+// 	        ->select('history.oid', 'oid')
+// 	        ->select('history.body', 'body')
+// 	        ->select('history.created', 'created')
+// 	        ->select('history.updated', 'updated')
+// 	        ->select('history.type', 'type')
+// 	        ->select('history.direction', 'direction')
+// 	        ->select('history.oname', 'oname')
+// 	        ->select('history.oavatar', 'oavatar')
+	        ->join('ecs_agent', array('agent.user_id', '=', 'history.to'), 'agent')
+	        ->where('agent.customer_id', $uid)->whereNotEqual('history.send', 1)
+	        ->orderByDesc('history.timestamp')->limit($limit);
+	    }
         return array_reverse( array_map( array($this, '_toObj'), $query->findArray() ) );
 	}
 
