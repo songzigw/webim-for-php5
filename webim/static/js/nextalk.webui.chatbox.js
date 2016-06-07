@@ -410,6 +410,7 @@ if (!nextalk.webui) {
                 $body.html(Emot.trans(msg.body));
             }
         }
+        $('img', $receive).on('load', function() { _this.toBottom() });
         if (!history) {
             _this.$bBody.append($receive);
         } else {
@@ -473,6 +474,7 @@ if (!nextalk.webui) {
                 $body.html(Emot.trans(msg.body));
             }
         }
+        $('img', $send).on('load', function() { _this.toBottom() });
         if (!history) {
             _this.$bBody.append($send);
         } else {
