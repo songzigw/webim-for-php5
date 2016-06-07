@@ -149,8 +149,8 @@ if (!nextalk.webui) {
                             id="nextalk_page_login">\
                             <div class="mzen-content mzen-flex-col mzen-flex-center">\
                             <img alt="logo" src="{{logo}}"/>\
-                            <p>正在登入中...</p>\
-                            <button class="mzen-btn mzen-btn-danger">重新登入</button>\
+                            <p>正在连接中...</p>\
+                            <button class="mzen-btn mzen-btn-danger">重新连接</button>\
                             </div>\
                     </div>',
             init : function() {
@@ -269,7 +269,7 @@ if (!nextalk.webui) {
             _this.showTask.stop();
         };
 
-        // 正在登入的动画效果
+        // 正在连接的动画效果
         _this.loginTask = {
             _interval : null,
 
@@ -277,7 +277,7 @@ if (!nextalk.webui) {
                 window.clearInterval(this._interval);
 
                 var $p = _this.loginUI.$p;
-                var tit = '正在登入中...';
+                var tit = '正在连接中...';
                 var point = '...';
                 $p.text(tit);
 
@@ -404,9 +404,9 @@ if (!nextalk.webui) {
         _onLoginFail : function(ev, data) {
             var _this = this, main = _this.main;
             _this.stopAllTask();
-            _this.loginUI.$p.text('登入失败');
+            _this.loginUI.$p.text('连接失败');
             _this.loginUI.show();
-            // 界面上出现重新登入按钮
+            // 界面上出现重新连接按钮
             _this.loginUI.$btn.show();
         },
         _onConnecting : function(ev, data) {
