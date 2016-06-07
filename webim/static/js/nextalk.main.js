@@ -52,6 +52,9 @@ if (!window.nextalk) {
                 this[key] = ops[key];
             }
         }
+        if (this.hidden) {
+            this.iframe = false;
+        }
     };
     // 依赖包是否加载完成
     main.depFlag = false;
