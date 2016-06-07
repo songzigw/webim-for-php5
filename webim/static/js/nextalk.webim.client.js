@@ -104,7 +104,9 @@
         // 连接成功
         CONNECTED           :  1,
         // 断开连接
-        DISCONNECTED        :  2
+        DISCONNECTED        :  2,
+        // 正在登入中
+        LOGIN               :  3
     };
 
     /** 消息方向 */
@@ -296,7 +298,10 @@
         // 正在登入中
         _this.bind("login", function(ev, data) {
             console.log("login: " + JSON.stringify(data));
-            _this.loginStatusListener.onLogin(ev, data);
+            if (_this.connStatus != webim.connStatus.LOGIN) {
+                _this.connStatus = webim.connStatus.LOGIN;
+                _this.loginStatusListener.onLogin(ev, data);
+            }
         });
         _this.bind("login.win", function(ev, data) {
             console.log("login.win: " + JSON.stringify(data));
@@ -307,6 +312,7 @@
         });
         _this.bind("login.fail", function(ev, data) {
             console.log("login.fail: " + JSON.stringify(data));
+            _this.connStatus = webim.connStatus.DISCONNECTED;
             _this.loginStatusListener.onLoginFail(ev, data);
         });
 
@@ -570,6 +576,9 @@
      */
     Client.prototype.connectServer = function() {
         var _this = this, options = _this.options;
+        if (_this.connStatus == webim.connStatus.LOGIN) {
+            return;
+        }
         // 如果服务器已经连上
         if (_this.connStatus == webim.connStatus.CONNECTED ||
                 _this.connStatus == webim.connStatus.CONNECTING) {
@@ -588,6 +597,11 @@
         var _this = this, options = _this.options;
         var conn = _this.getConnection();
 
+        // 如果服务器已经连上
+        if (_this.connStatus == webim.connStatus.CONNECTED ||
+                _this.connStatus == webim.connStatus.CONNECTING) {
+            return;
+        }
         _this.trigger("connecting", [ _this._dataAccess ]);
         // 创建通信管道
         var ops = extend({type: options.channelType}, conn);
