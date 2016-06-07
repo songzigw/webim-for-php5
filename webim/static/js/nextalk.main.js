@@ -44,12 +44,16 @@ if (!window.nextalk) {
         onChatlinks : null,
         onUnread : null,
         onLoginWin : null,
-        channelType : 'WEBSOCKET'
+        channelType : 'WEBSOCKET',
+        playSound : false,
+        receive : false
     };
     main.setConfig = function(ops) {
         if (ops) {
             for (var key in ops) {
-                this[key] = ops[key];
+                if (ops[key]) {
+                    this[key] = ops[key];
+                }
             }
         }
         if (this.hidden) {
@@ -142,6 +146,8 @@ if (!window.nextalk) {
     };
     main._loadDepHidden = function() {
         var _this = this;
+        document.write('<link rel="stylesheet" type="text/css" href="'
+                + _this.resPath + 'css/nextalk-iframe.css?' + v + '" />');
         document.write('<script type="text/javascript" src="' + _this.resPath
                 + 'js/nextalk.webim.util.js?' + v + '"></script>');
         document.write('<script type="text/javascript" src="' + _this.resPath
@@ -214,15 +220,15 @@ if (!window.nextalk) {
             apiPath : _this.apiPath,
             chatlinkIds : _this.chatlinkIds,
             channelType : _this.channelType,
-            playSound : false,
-            receive : false
+            playSound : _this.playSound,
+            receive : _this.receive
         });
         nextalk.webim.client.setConnStatusListener({
             onConnected : function(ev, data) {
-                if (_this.onChatlinks) {
-                    var c = nextalk.webim.client;
-                    _this.onChatlinks(c.presences);
-                }
+//                if (_this.onChatlinks) {
+//                    var c = nextalk.webim.client;
+//                    _this.onChatlinks(c.presences);
+//                }
             }
         });
         nextalk.webim.client.setReceiveMsgListener({
@@ -234,6 +240,12 @@ if (!window.nextalk) {
                         presences[presence.from] = presence.show;
                     }
                     _this.onChatlinks(presences);
+                }
+            },
+            onMessages : function(ev, data) {
+                var unread = nextalk.webim.convMessage.unreadTotal;
+                if (_this.onUnread) {
+                    _this.onUnread(unread);
                 }
             }
         });

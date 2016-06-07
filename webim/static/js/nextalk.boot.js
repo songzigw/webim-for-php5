@@ -81,10 +81,12 @@ nextalk.main.setConfig({
     // 简易版本
     simple : _IMC.simple,
     hidden : _IMC.hidden,
-    mobile : _IMC.mobile
+    mobile : _IMC.mobile,
+    playSound : _IMC.playSound,
+    receive : _IMC.receive
 });
 if (_IMC.channelType) {
-    nextalk.main.channelType = _IMC.channelType
+    nextalk.main.channelType = _IMC.channelType;
 }
 if (_IMC.chatObj) {
     nextalk.main.chatObj = _IMC.chatObj;
@@ -93,6 +95,20 @@ if (_IMC.chatObj) {
 if (_IMC.chatObjs) {
     nextalk.main.chatObjs = _IMC.chatObjs;
 }
+nextalk.main.onUnread = function(unread) {
+    var elements = getElementsByToggle('nextalk-bubble');
+    if (elements && elements.length > 0) {
+        for (var i = 0; i < elements.length; i++) {
+            var el = elements[i];
+            if (unread == 0) {
+                el.style.display = 'none';
+            } else {
+                el.innerText = unread;
+                el.style.display = 'block';
+            }
+        }
+    }
+};
 
 // 给聊天按钮设置单击事件
 // 注意传递参数 uid nick avatar

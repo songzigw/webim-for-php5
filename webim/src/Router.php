@@ -188,6 +188,16 @@ class Router {
 		} else {
 		    $scriptVar['mobile'] = true;
 		}
+		if ($this->input('play_sound', 'false') == 'false') {
+		    $scriptVar['playSound'] = false;
+		} else {
+		    $scriptVar['playSound'] = true;
+		}
+		if ($this->input('receive', 'false') == 'false') {
+		    $scriptVar['receive'] = false;
+		} else {
+		    $scriptVar['receive'] = true;
+		}
 		// channelType[XHR_POLLING,WEBSOCKET]
 		$scriptVar['channelType'] = 'WEBSOCKET';
 
