@@ -375,7 +375,15 @@ if (!nextalk.webui) {
         $receive.find('.nick').text(msg.nick);
         $receive.find('img.nextalk-avatar')
             .attr('src', msg.avatar)
-            .attr('title', msg.nick);
+            .attr('title', msg.nick).on('click', function() {
+                if (!_this.agentId) {
+                    return;
+                }
+                var currUser = webim.client.getCurrUser();
+                if (currUser.type == webim.userType.GENERAL) {
+                    window.location.href = '/mobile/broker.php?id=' + _this.agentId;
+                }
+            });
         var $body = $receive.find('.body');
         if (isUrl(msg.body)) {
             $body.html('<a href="'+msg.body+'" target="_blank">'+msg.body+'</a>');
@@ -441,7 +449,15 @@ if (!nextalk.webui) {
         $send.find('.nick').text(msg.nick);
         $send.find('img.nextalk-avatar')
             .attr('src', msg.avatar)
-            .attr('title', msg.nick);
+            .attr('title', msg.nick).on('click', function() {
+                if (!_this.agentId) {
+                    return;
+                }
+                var currUser = webim.client.getCurrUser();
+                if (currUser.type != webim.userType.GENERAL) {
+                    window.location.href = '/mobile/broker.php?id=' + _this.agentId;
+                }
+            });
         var $body = $send.find('.body');
         if (isUrl(msg.body)) {
             $body.html('<a href="'+msg.body+'" target="_blank">'+msg.body+'</a>');
@@ -555,6 +571,13 @@ if (!nextalk.webui) {
                         .on('click', function() { webui.phonePage.show(res.tel_400) });
                         $('.nextalk-call-phone span', $html)
                         .css({'color': 'green', 'font-size': '26px'});
+                        _this.agentId = res.agent_id;
+                    }
+                });
+            } else {
+                webim.webApi.agent(_this.currUid, function(res, err) {
+                    if (res) {
+                        _this.agentId = res.agent_id;
                     }
                 });
             }

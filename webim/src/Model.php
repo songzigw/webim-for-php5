@@ -143,7 +143,8 @@ class Model {
                 'status' => '#',
                 'avatar' => '/images/agentphoto/'.$agent->face,
                 'type' => 'agent',
-                'tel_400' => $agent->tel_400
+                'tel_400' => $agent->tel_400,
+                'agent_id' => $agent->agent_id
         );
     }
     
