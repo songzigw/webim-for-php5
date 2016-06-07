@@ -267,18 +267,17 @@
      * 获取所有的往来会话，将未读标识去掉，未读数清零
      */
     Conversation.prototype.readAll = function() {
-        var _this = this, messages = [];
+        var _this = this;
         for (var i = 0, len = _this.record.length; i < len; i++) {
             var msg = _this.record[i];
             if (typeof msg.read === 'boolean' && !msg.read) {
                 msg.read = true;
                 webim.convMessage.unreadTotal--;
-                messages.push(msg);
             }
         }
         _this.notCount = 0;
         webim.webApi.message_read(_this.type, _this.currUid, _this.objId);
-        return messages;
+        return _this.record;
     };
 
     /** 会话消息存储 */

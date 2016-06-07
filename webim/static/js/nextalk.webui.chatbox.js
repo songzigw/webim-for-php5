@@ -119,9 +119,9 @@ if (!nextalk.webui) {
                             id="nextalk_page_chatbox" style="display: none;">\
                         <!--头部集合 BEGIN-->\
                         <header class="mzen-bar mzen-bar-nav mzen-bar-white">\
-                            <a class="mzen-pull-left nextalk-return">\
+                            <a class="mzen-pull-left mzen-tap-active mzen-up-hover nextalk-return">\
                             <span class="mzen-iconfont mzen-icon-left"></span></a>\
-                            <div class="mzen-pull-left mzen-tap-active nextalk-user">\
+                            <div class="mzen-pull-left mzen-tap-active mzen-up-hover nextalk-user">\
                             <a class="mzen-img">\
                             <img class="mzen-img-object" src="" data-toggle="head">\
                             </a>\
@@ -254,6 +254,7 @@ if (!nextalk.webui) {
         }
 
         // 先加载内存中的消息
+        _this.$bBody.empty();
         for (var i = 0, len = record.length; i < len; i++) {
             var msg = record[i];
             if (msg.direction == webim.msgDirection.SEND) {
@@ -372,7 +373,9 @@ if (!nextalk.webui) {
             $($receive[0]).hide();
         }
         $receive.find('.nick').text(msg.nick);
-        $receive.find('img.nextalk-avatar').attr('src', msg.avatar);
+        $receive.find('img.nextalk-avatar')
+            .attr('src', msg.avatar)
+            .attr('title', msg.nick);
         var $body = $receive.find('.body');
         if (isUrl(msg.body)) {
             $body.html('<a href="'+msg.body+'" target="_blank">'+msg.body+'</a>');
@@ -436,7 +439,9 @@ if (!nextalk.webui) {
             $($send[0]).hide();
         }
         $send.find('.nick').text(msg.nick);
-        $send.find('img.nextalk-avatar').attr('src', msg.avatar);
+        $send.find('img.nextalk-avatar')
+            .attr('src', msg.avatar)
+            .attr('title', msg.nick);
         var $body = $send.find('.body');
         if (isUrl(msg.body)) {
             $body.html('<a href="'+msg.body+'" target="_blank">'+msg.body+'</a>');
@@ -753,7 +758,28 @@ if (!nextalk.webui) {
                 this[webim.Conversation.CHAT][key].hide();
             }
         },
-        
+
+        clear : function() {
+            for (var key in this[webim.Conversation.NOTICE]) {
+                var cBox = this[webim.Conversation.NOTICE][key];
+                cBox.hide();
+                cBox.times = 0;
+                cBox.before = null;
+            }
+            for (var key in this[webim.Conversation.ROOM]) {
+                var cBox = this[webim.Conversation.ROOM][key];
+                cBox.hide();
+                cBox.times = 0;
+                cBox.before = null;
+            }
+            for (var key in this[webim.Conversation.CHAT]) {
+                var cBox = this[webim.Conversation.CHAT][key];
+                cBox.hide();
+                cBox.times = 0;
+                cBox.before = null;
+            }
+        },
+
         onPresences : function(presences) {
             for (var key in this[webim.Conversation.CHAT]) {
                 var box = this[webim.Conversation.CHAT][key];

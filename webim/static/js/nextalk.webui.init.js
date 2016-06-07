@@ -370,14 +370,7 @@ if (!nextalk.webui) {
     $.extend(webui, {
         _onLogin : function(ev, data) {
             var _this = this;
-            var main = _this.main;
-            main.hideTips();
-
-            if (webim.client.loginTimes > 0) {
-                main.showConnecting();
-                return;
-            }
-
+            _this.main.hideTips();
             _this.loginTask.start();
             _this.loginUI.$btn.hide();
             _this.loginUI.show();
@@ -439,12 +432,14 @@ if (!nextalk.webui) {
             main.showDisconnected();
             _this.stopAllTask();
             main.avatar();
+            _this._chatBoxs.clear();
         },
         _onNetworkUnavailable : function(ev, data) {
             var _this = this, main = _this.main;
             main.showNetwork();
             _this.stopAllTask();
             main.avatar();
+            _this._chatBoxs.clear();
         },
         _onMessages : function(ev, data) {
             var _this = this, chatBoxs = _this._chatBoxs;

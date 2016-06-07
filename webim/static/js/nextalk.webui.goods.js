@@ -31,7 +31,7 @@ if (!nextalk.webui) {
     Goods.HTML = '<div class="nextalk-page nextalk-screen-right" id="nextalk_page_goods">\
         <!--头部集合 BEGIN-->\
         <header class="mzen-bar mzen-bar-nav mzen-bar-white">\
-            <a class="mzen-pull-left">\
+            <a class="mzen-pull-left mzen-tap-active mzen-up-hover">\
             <span class="mzen-iconfont mzen-icon-left"></span></a>\
             <div class="mzen-title">房源收藏</div>\
         </header>\
