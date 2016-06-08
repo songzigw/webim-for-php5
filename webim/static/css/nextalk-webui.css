@@ -148,7 +148,7 @@ footer .mzen-form {
 
 .nextalk-form.mzen-input-row .mzen-input {
     padding: 0px;
-    background-color: white;
+    background-color: inherit;
 }
 .nextalk-form.mzen-input-row .mzen-input .textarea {
     white-space: pre-wrap;
@@ -156,12 +156,13 @@ footer .mzen-form {
     box-sizing: border-box;
     font-size: 14px;
     padding: 8px 10px 8px 10px;
-    margin: 0 0px 0 0;
+    margin: 0 0 0 0;
     resize: none;
     cursor: text;
     border: 1px solid #3498db;
     border-radius: 4px;
     width: 99%;
+    height: 50px;
 }
 
 .nextalk-mobile .mzen-form > .nextalk-chatbox-menu {
@@ -589,12 +590,9 @@ footer.mzen-nav >ul.mzen-bar-tab > li > .mzen-badge {
     height: auto;
 }
 .nextalk-chatbox .mzen-list-view-cell {
-    padding: 0;
+    padding: 12px 15px;
     line-height: normal;
     vertical-align: middle;
-}
-.nextalk-chatbox .mzen-list-view-cell a {
-    padding: 12px 15px;
 }
 
 .nextalk-chatbox-house .mzen-list-view-cell:after {
