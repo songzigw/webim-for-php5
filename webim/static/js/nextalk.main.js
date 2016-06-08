@@ -17,7 +17,7 @@ if (!window.nextalk) {
 
     "use strict";
 
-    var v = '1.0.2';
+    var v = '1.0.3';
     var main = {
         // 通信令牌 暂时不用
         // ticket : 'ticket',

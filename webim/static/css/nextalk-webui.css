@@ -567,7 +567,6 @@ footer.mzen-nav >ul.mzen-bar-tab > li > .mzen-badge {
 .chatbox .mzen-list-view .mzen-img-object {
     width: 38px;
     height: 38px;
-    border-radius: 3px;
     background-color: #cfcfcf;
 }
 .chatbox .mzen-list-view-cell {
@@ -623,9 +622,6 @@ footer.mzen-nav >ul.mzen-bar-tab > li > .mzen-badge {
 
 .chatbox .nextalk-disguiser {
 	line-height: 19px;
-}
-.chatbox .nextalk-disguiser .agent {
-    color: #333;
 }
 
 img.nextalk-unavailable {

@@ -101,7 +101,7 @@ if (!nextalk.webui) {
         <li class="mzen-list-view-cell mzen-img mzen-tap-active mzen-up-hover">\
             <img class="mzen-img-object mzen-pull-left nextalk-unavailable" src="{{objAvatar}}">\
             <div class="mzen-img-body">\
-                <p class="mzen-ellipsis-1">{{objName}}</p>\
+                <p class="mzen-ellipsis-1" style="color:#333;">{{objName}}</p>\
             </div>\
             <span class="mzen-badge mzen-badge-danger mzen-pull-right">0</span>\
         </li>';
@@ -206,7 +206,7 @@ if (!nextalk.webui) {
         if (currUser.id != conv.currUid) {
             $item.addClass('nextalk-disguiser');
             $item.find('.mzen-img-body')
-            .append('<p class="mzen-ellipsis-1 agent">'
+            .append('<p class="mzen-ellipsis-1">'
                     + conv.currNick + '</p>');
         }
         $item.attr('data-toggle', conv.type);
