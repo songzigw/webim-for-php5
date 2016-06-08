@@ -141,7 +141,7 @@ if (!nextalk.webui) {
                             <form class="mzen-form" method="get" action="">\
                             <div class="nextalk-form mzen-input-row">\
                                 <div class="mzen-input">\
-                                <input type="text" placeholder="输入消息内容..."/>\
+                                <textarea class="textarea" maxlength="140" placeholder="输入消息内容..."></textarea>\
                                 </div><span class="mzen-input-addon mzen-btn mzen-btn-info">发送</span>\
                             </div>\
         <p class="nextalk-chatbox-menu"><i class="mzen-iconfont mzen-icon-emoji"></i><i class="mzen-iconfont mzen-icon-pic"></i><i class="mzen-iconfont mzen-icon-home"></i></p>\
@@ -592,6 +592,11 @@ if (!nextalk.webui) {
             _this.submit();
             return false;
         });
+        $('.mzen-form textarea', $html).on('keydown', function(ev) {
+            if (ev.keyCode == 13) {
+                _this.submit();
+            }
+        });
         $('footer .mzen-icon-emoji', $html).on('click', function() {
             _this.emot.toggle();
             _this.resizable();
@@ -703,7 +708,7 @@ if (!nextalk.webui) {
     };
     ChatBox.prototype.submit = function() {
         var _this = this;
-        var $input = $('.mzen-form input', _this.$html);
+        var $input = $('.mzen-form textarea', _this.$html);
         if ($.trim($input.val()) != '') {
             _this.sendMsg($input.val());
         }

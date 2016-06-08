@@ -150,7 +150,7 @@ footer .mzen-form {
     padding: 0px;
     background-color: white;
 }
-.nextalk-form.mzen-input-row .mzen-input input {
+.nextalk-form.mzen-input-row .mzen-input .textarea {
     white-space: pre-wrap;
     word-wrap: break-word;
     box-sizing: border-box;
