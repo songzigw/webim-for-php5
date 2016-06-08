@@ -12,7 +12,7 @@
 
     var console    = webim.console,
         idsArray   = webim.idsArray,
-        timestamp  = webim.timestamp,
+        nowMillis  = webim.nowMillis,
         isFunction = webim.isFunction,
         isArray    = webim.isArray,
         isObject   = webim.isObject,

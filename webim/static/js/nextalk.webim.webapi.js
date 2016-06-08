@@ -12,7 +12,7 @@
 
     var console    = webim.console,
         idsArray   = webim.idsArray,
-        timestamp  = webim.timestamp,
+        nowMillis  = webim.nowMillis,
         isFunction = webim.isFunction,
         isArray    = webim.isArray,
         isObject   = webim.isObject,
@@ -116,7 +116,7 @@
         var info = {
             type : options.method,
             url : options.apiPath + WebAPI.route(apiId),
-            data : extend(data, {'_' : timestamp()}),
+            data : extend(data, {'_' : webim.nowMillis()}),
             dataType : options.dataType,
             cache : options.cache,
             context : options.context,

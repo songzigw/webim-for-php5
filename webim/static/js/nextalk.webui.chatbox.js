@@ -16,7 +16,7 @@ if (!nextalk.webui) {
 
     var console    = webim.console,
         idsArray   = webim.idsArray,
-        timestamp  = webim.timestamp,
+        nowMillis  = webim.nowMillis,
         isFunction = webim.isFunction,
         isArray    = webim.isArray,
         isObject   = webim.isObject,
@@ -294,7 +294,7 @@ if (!nextalk.webui) {
     ChatBox.prototype.history = function() {
         var _this = this;
         if (!_this.before) {
-            _this.before = webim.currTimeMillis;
+            _this.before = webim.nowMillis();
         }
         webim.history.load({
             type : _this.type,
@@ -528,7 +528,7 @@ if (!nextalk.webui) {
             to_name   : _this.objName,
             to_avatar : _this.objAvatar,
             body      : body,
-            timestamp : webim.currTimeMillis
+            timestamp : webim.nowMillis()
         };
         return msg;
     }

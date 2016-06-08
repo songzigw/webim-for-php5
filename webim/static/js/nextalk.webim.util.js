@@ -110,7 +110,7 @@ if (!nextalk.webim) {
                 }
             })();
 
-    var timestamp = function() {
+    var nowMillis = function() {
         return (new Date).getTime();
     };
 
@@ -1227,7 +1227,7 @@ if (!nextalk.webim) {
     extend(webim, {
         console    : console,
         idsArray   : idsArray,
-        timestamp  : timestamp,
+        nowMillis  : nowMillis,
         isFunction : isFunction,
         isArray    : isArray,
         isObject   : isObject,

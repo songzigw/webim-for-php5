@@ -12,7 +12,7 @@
 
     var console    = webim.console,
         idsArray   = webim.idsArray,
-        timestamp  = webim.timestamp,
+        nowMillis  = webim.nowMillis,
         isFunction = webim.isFunction,
         isArray    = webim.isArray,
         isObject   = webim.isObject,
@@ -157,7 +157,6 @@
     webim.status = null;
     webim.history = null;
     webim.client = null;
-    webim.currTimeMillis = null;
 
     webim.init = function(options) {
         // 入参验证
@@ -196,12 +195,6 @@
             LOGO_MIN   : _this.resPath + 'imgs/webim.72x72.png',
             HEAD_DIS   : _this.resPath + 'imgs/head_dis.png'
         };
-
-        window.setInterval(function() {
-            if (webim.currTimeMillis) {
-                webim.currTimeMillis += 1000;
-            }
-        }, 1000);
     };
 
     var Client = function(options) {
@@ -447,7 +440,6 @@
 
         _serverTime : function(time) {
             this.serverTime = Number(time);
-            webim.currTimeMillis = Number(time);
         },
 
         _connection : function(connInfo) {

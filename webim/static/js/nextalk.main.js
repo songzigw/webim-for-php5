@@ -17,7 +17,7 @@ if (!window.nextalk) {
 
     "use strict";
 
-    var v = '1.0.3';
+    nextalk.v = '1.0.5';
     var main = {
         // 通信令牌 暂时不用
         // ticket : 'ticket',
@@ -59,6 +59,9 @@ if (!window.nextalk) {
         if (this.hidden) {
             this.iframe = false;
         }
+        if (this.version) {
+            nextalk.v = this.version;
+        }
     };
     // 依赖包是否加载完成
     main.depFlag = false;
@@ -81,41 +84,41 @@ if (!window.nextalk) {
     main._loadDepMail = function() {
         var _this = this;
         document.write('<link rel="stylesheet" type="text/css" href="'
-                + _this.resPath + 'css/mzen.css?' + v + '" />');
+                + _this.resPath + 'css/mzen.css?v=' + nextalk.v + '" />');
         document.write('<link rel="stylesheet" type="text/css" href="'
-                + _this.resPath + 'css/glyphicons.css?' + v + '" />');
+                + _this.resPath + 'css/glyphicons.css?v=' + nextalk.v + '" />');
         document.write('<link rel="stylesheet" type="text/css" href="'
-                + _this.resPath + 'css/nextalk-webui.css?' + v + '" />');
+                + _this.resPath + 'css/nextalk-webui.css?v=' + nextalk.v + '" />');
         document.write('<script type="text/javascript" src="' + _this.resPath
-                + 'script/jquery.min.js?' + v + '"></script>');
+                + 'script/jquery.min.js?v=' + nextalk.v + '"></script>');
         document.write('<script type="text/javascript" src="' + _this.resPath
-                + 'script/dropzone.min.js?' + v + '"></script>');
+                + 'script/dropzone.min.js?v=' + nextalk.v + '"></script>');
         document.write('<script type="text/javascript" src="' + _this.resPath
-                + 'js/nextalk.webim.util.js?' + v + '"></script>');
+                + 'js/nextalk.webim.util.js?v=' + nextalk.v + '"></script>');
         document.write('<script type="text/javascript" src="' + _this.resPath
-                + 'js/nextalk.webim.channel.js?' + v + '"></script>');
+                + 'js/nextalk.webim.channel.js?v=' + nextalk.v + '"></script>');
         document.write('<script type="text/javascript" src="' + _this.resPath
-                + 'js/nextalk.webim.webapi.js?' + v + '"></script>');
+                + 'js/nextalk.webim.webapi.js?v=' + nextalk.v + '"></script>');
         document.write('<script type="text/javascript" src="' + _this.resPath
-                + 'js/nextalk.webim.model.js?' + v + '"></script>');
+                + 'js/nextalk.webim.model.js?v=' + nextalk.v + '"></script>');
         document.write('<script type="text/javascript" src="' + _this.resPath
-                + 'js/nextalk.webim.conversation.js?' + v + '"></script>');
+                + 'js/nextalk.webim.conversation.js?v=' + nextalk.v + '"></script>');
         document.write('<script type="text/javascript" src="' + _this.resPath
-                + 'js/nextalk.webim.client.js?' + v + '"></script>');
+                + 'js/nextalk.webim.client.js?v=' + nextalk.v + '"></script>');
         document.write('<script type="text/javascript" src="' + _this.resPath
-                + 'js/nextalk.webui.util.js?' + v + '"></script>');
+                + 'js/nextalk.webui.util.js?v=' + nextalk.v + '"></script>');
         document.write('<script type="text/javascript" src="' + _this.resPath
-                + 'js/nextalk.webui.emot.js?' + v + '"></script>');
+                + 'js/nextalk.webui.emot.js?v=' + nextalk.v + '"></script>');
         document.write('<script type="text/javascript" src="' + _this.resPath
-                + 'js/nextalk.webui.msgtips.js?' + v + '"></script>');
+                + 'js/nextalk.webui.msgtips.js?v=' + nextalk.v + '"></script>');
         document.write('<script type="text/javascript" src="' + _this.resPath
-                + 'js/nextalk.webui.chatbox.js?' + v + '"></script>');
+                + 'js/nextalk.webui.chatbox.js?v=' + nextalk.v + '"></script>');
         document.write('<script type="text/javascript" src="' + _this.resPath
-                + 'js/nextalk.webui.simple.js?' + v + '"></script>');
+                + 'js/nextalk.webui.simple.js?v=' + nextalk.v + '"></script>');
         document.write('<script type="text/javascript" src="' + _this.resPath
-                + 'js/nextalk.webui.goods.js?' + v + '"></script>');
+                + 'js/nextalk.webui.goods.js?v=' + nextalk.v + '"></script>');
         document.write('<script type="text/javascript" src="' + _this.resPath
-                + 'js/nextalk.webui.init.js?' + v + '"></script>');
+                + 'js/nextalk.webui.init.js?v=' + nextalk.v + '"></script>');
         var task = window.setInterval(function() {
             if (!window.$) {
                 return;
@@ -133,9 +136,9 @@ if (!window.nextalk) {
     main._loadDepIframe = function() {
         var _this = this;
         document.write('<link rel="stylesheet" type="text/css" href="'
-                + _this.resPath + 'css/nextalk-iframe.css?' + v + '" />');
+                + _this.resPath + 'css/nextalk-iframe.css?v=' + nextalk.v + '" />');
         document.write('<script type="text/javascript" src="' + _this.resPath
-                + 'js/nextalk.iframe.js?' + v + '"></script>');
+                + 'js/nextalk.iframe.js?v=' + nextalk.v + '"></script>');
         var task = window.setInterval(function() {
             if (!nextalk.iframe) {
                 return;
@@ -146,20 +149,18 @@ if (!window.nextalk) {
     };
     main._loadDepHidden = function() {
         var _this = this;
-        document.write('<link rel="stylesheet" type="text/css" href="'
-                + _this.resPath + 'css/nextalk-iframe.css?' + v + '" />');
         document.write('<script type="text/javascript" src="' + _this.resPath
-                + 'js/nextalk.webim.util.js?' + v + '"></script>');
+                + 'js/nextalk.webim.util.js?v=' + nextalk.v + '"></script>');
         document.write('<script type="text/javascript" src="' + _this.resPath
-                + 'js/nextalk.webim.channel.js?' + v + '"></script>');
+                + 'js/nextalk.webim.channel.js?v=' + nextalk.v + '"></script>');
         document.write('<script type="text/javascript" src="' + _this.resPath
-                + 'js/nextalk.webim.webapi.js?' + v + '"></script>');
+                + 'js/nextalk.webim.webapi.js?v=' + nextalk.v + '"></script>');
         document.write('<script type="text/javascript" src="' + _this.resPath
-                + 'js/nextalk.webim.model.js?' + v + '"></script>');
+                + 'js/nextalk.webim.model.js?v=' + nextalk.v + '"></script>');
         document.write('<script type="text/javascript" src="' + _this.resPath
-                + 'js/nextalk.webim.conversation.js?' + v + '"></script>');
+                + 'js/nextalk.webim.conversation.js?v=' + nextalk.v + '"></script>');
         document.write('<script type="text/javascript" src="' + _this.resPath
-                + 'js/nextalk.webim.client.js?' + v + '"></script>');
+                + 'js/nextalk.webim.client.js?v=' + nextalk.v + '"></script>');
         var task = window.setInterval(function() {
             if (!nextalk.webim || !nextalk.webim.load) {
                 return;
@@ -253,7 +254,7 @@ if (!window.nextalk) {
     };
     main._goIframe = function() {
         var _this = this;
-        main.openChatBoxUI = nextalk.iframe.openChatBoxUI;
+        _this.openChatBoxUI = nextalk.iframe.openChatBoxUI;
         nextalk.iframe.config = {
             // 引入资源文件的根路径
             resPath : _this.resPath,
@@ -269,7 +270,8 @@ if (!window.nextalk) {
             route : _this.route,
             chatlinkIds : _this.chatlinkIds,
             onChatlinks : _this.onChatlinks,
-            channelType : _this.channelType
+            channelType : _this.channelType,
+            version : _this.version
         };
         nextalk.iframe.go();
         //delete nextalk.main;

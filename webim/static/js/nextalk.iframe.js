@@ -47,50 +47,46 @@ if (!window.nextalk) {
         var ifrHTML = '<div class="nextalk-iframe" id="nextalk_iframe" '
                 + 'style="width:'+ this.panel.width + 'px;height:' + this.panel.height + 'px;">'
                 + '<div style="width:100%;height:' + (this.panel.height) + 'px;">'
-                + '<iframe src="' + this.config.resPath
-                + 'html/iframe.html" name="nextalk_iframe" frameborder="no" scrolling="no"/>'
+                + '<iframe src="' + this.config.resPath + 'html/iframe.html?v='
+                + nextalk.v +'" name="nextalk_iframe" frameborder="no" scrolling="no"/>'
                 + '</div></div>';
         return ifrHTML;
     };
 
-    function slideUp($el, offset) {
+    iframe.slideUp = function($el, offset) {
         $el.css({
             bottom : offset + 'px'
         });
         $el.show();
-        var timerTask = window.setTimeout(function() {
+        window.setTimeout(function() {
             $el.css({
                 bottom : '0px'
             });
-            window.clearTimeout(timerTask);
         }, 5);
-    }
-    function toggleHTML() {
-        iframe.$('#nextalk_unread', document).hide();
-        var nkMain = iframe.$('#nextalk_main', document);
-        var nkIframe = iframe.$('#nextalk_iframe', document);
+    };
+
+    iframe.toggleHTML = function() {
+        var _this = this;
+        _this.$unread = iframe.$('#nextalk_unread', document).hide();
+        _this.$nkMain = iframe.$('#nextalk_main', document);
+        this.$nkIframe = iframe.$('#nextalk_iframe', document);
 
         var nkMainHeight = -42;
-        var nkIframeHeight = -(iframe.panel.height);
-        slideUp(nkMain, nkMainHeight);
+        _this.slideUp(this.$nkMain, nkMainHeight);
 
-        nkMain.find('a').click(function() {
-            nkMain.hide();
-            slideUp(nkIframe, nkIframeHeight);
+        _this.$nkMain.find('a').click(function() {
+            _this.$nkMain.hide();
+            _this.slideUp(_this.$nkIframe, -(_this.panel.height));
         });
-        nkIframe.find('a').click(function() {
-            nkIframe.hide();
-            slideUp(nkMain, nkMainHeight);
-        });
-    }
+    }; 
 
     iframe.go = function() {
         var _this = this;
         _this.config.onUnread = function(total) {
             if (total > 0) {
-                _this.$('#nextalk_unread', document).show().text(total);
+                _this.$unread.show().text(total);
             } else {
-                _this.$('#nextalk_unread', document).hide().text(total);
+                _this.$unread.hide().text(total);
             }
         };
         _this.config.onLoginWin = function() {
@@ -103,24 +99,21 @@ if (!window.nextalk) {
             
         };
         _this.config.onClickCloseIframe = function() {
-            //iframe.$('#nextalk_unread', document).hide();
-            var nkMain = iframe.$('#nextalk_main', document);
-            var nkIframe = iframe.$('#nextalk_iframe', document);
-            nkIframe.hide();
-            slideUp(nkMain, -42);
+            _this.$nkIframe.hide();
+            _this.slideUp(_this.$nkMain, -42);
         };
-        
+
         var div = document.createElement('div');
         div.innerHTML = this._getBtnHTML() + this._getIfrHTML();
         var body = document.getElementsByTagName('body')[0];
         body.appendChild(div);
-        
+
         var task = window.setInterval(function() {
             var ifw = window['nextalk_iframe'].window;
             if (ifw && ifw.$) {
                 window.clearInterval(task);
                 _this.$ = ifw.$;
-                toggleHTML();
+                _this.toggleHTML();
             }
         }, 200);
     };
