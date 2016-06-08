@@ -59,8 +59,6 @@
 .nextalk-iframe {
 	display: none;
 	position: fixed;
-	bottom: 0px;
-	right: 8px;
 	border-radius: 3px 3px 3px 3px;
 	overflow: hidden;
 	/*box-shadow: rgba(0, 0, 0, 0.0980392) 0px 0px 5px 2px;*/

@@ -69,14 +69,28 @@ if (!window.nextalk) {
         var _this = this;
         _this.$unread = iframe.$('#nextalk_unread', document).hide();
         _this.$nkMain = iframe.$('#nextalk_main', document);
-        this.$nkIframe = iframe.$('#nextalk_iframe', document);
+        _this.$nkIframe = iframe.$('#nextalk_iframe', document);
 
         var nkMainHeight = -42;
         _this.slideUp(this.$nkMain, nkMainHeight);
 
         _this.$nkMain.find('a').click(function() {
             _this.$nkMain.hide();
-            _this.slideUp(_this.$nkIframe, -(_this.panel.height));
+            //_this.slideUp(_this.$nkIframe, -(_this.panel.height));
+            // 居中
+            _this.$nkIframe.css({
+                left : iframe.$(window).width() + 'px',
+                top : iframe.$(window).height() + 'px'
+            });
+            _this.$nkIframe.show();
+            window.setTimeout(function() {
+                var l = (iframe.$(window).width() - _this.panel.width)/2;
+                var t = (iframe.$(window).height() - _this.panel.height)/2;
+                _this.$nkIframe.css({
+                    'left' : l + 'px',
+                    'top' : t + 'px'
+                });
+            }, 5);
         });
     }; 
 
