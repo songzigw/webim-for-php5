@@ -627,6 +627,11 @@ EOF;
     }
 
     public function mobile() {
+        $user = $this->plugin->user();
+        if (!$user) {
+            echo '<script type="text/javascript">window.location="/mobile/user.php"</script>';
+            return;
+        }
         $webim_path = WEBIM_PATH();
         $uid = $this->input('uid');
         $body_type = $this->input('body_type');
