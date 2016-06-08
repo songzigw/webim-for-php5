@@ -115,7 +115,7 @@ if (!nextalk.webui) {
     webim.ClassEvent.on(ChatBox);
 
     // 聊天盒子模板
-    ChatBox.HTML = '<div class="nextalk-page nextalk-screen-right"\
+    ChatBox.HTML = '<div class="nextalk-page nextalk-screen-right nextalk-chatbox"\
                             id="nextalk_page_chatbox" style="display: none;">\
                         <!--头部集合 BEGIN-->\
                         <header class="mzen-bar mzen-bar-nav mzen-bar-white">\
@@ -322,7 +322,7 @@ if (!nextalk.webui) {
         });
     };
     ChatBox.HOUSE = '\
-        <ul class="mzen-list-view chatbox-house">\
+        <ul class="mzen-list-view nextalk-chatbox-house">\
         <li class="mzen-list-view-cell mzen-img">\
         <a><img class="mzen-img-object mzen-pull-left" src="{{goods_img}}">\
         <div class="mzen-img-body">房源信息\

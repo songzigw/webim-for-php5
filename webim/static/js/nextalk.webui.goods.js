@@ -28,7 +28,7 @@ if (!nextalk.webui) {
             _this.resizable();
         });
     };
-    Goods.HTML = '<div class="nextalk-page nextalk-screen-right" id="nextalk_page_goods">\
+    Goods.HTML = '<div class="nextalk-page nextalk-screen-right nextalk-chatbox" id="nextalk_page_goods">\
         <!--头部集合 BEGIN-->\
         <header class="mzen-bar mzen-bar-nav mzen-bar-white">\
             <a class="mzen-pull-left mzen-tap-active mzen-up-hover">\

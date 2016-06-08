@@ -61,7 +61,7 @@ if (!nextalk.webui) {
         });
     };
     webim.ClassEvent.on(Simple);
-    Simple.HTML = '<div class="nextalk-page chatbox" id="nextalk_page_main">\
+    Simple.HTML = '<div class="nextalk-page" id="nextalk_page_main">\
                         <header class="mzen-bar mzen-bar-nav mzen-bar-white">\
                                 <div class="mzen-pull-left nextalk-user mzen-tap-active">\
                                 <a class="mzen-img">\

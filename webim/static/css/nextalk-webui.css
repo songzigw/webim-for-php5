@@ -39,9 +39,16 @@ html, body {
 }
 
 .mzen-list-view .mzen-img-object {
-    width: 100px;
-    height: auto;
+    width: 38px;
+    height: 38px;
     border-radius: 3px;
+    background-color: #cfcfcf;
+}
+
+.mzen-list-view-cell {
+    padding: 6px 10px;
+    line-height: 38px;
+    vertical-align: middle;
 }
 
 .mzen-img-body {
@@ -564,17 +571,6 @@ footer.mzen-nav >ul.mzen-bar-tab > li > .mzen-badge {
           transform: translateY(-50%);
 }
 
-.chatbox .mzen-list-view .mzen-img-object {
-    width: 38px;
-    height: 38px;
-    background-color: #cfcfcf;
-}
-.chatbox .mzen-list-view-cell {
-	padding: 6px 10px;
-	line-height: 38px;
-	vertical-align: middle;
-	cursor: pointer;
-}
 .nextalk-separator-del .mzen-list-view:after {
     border-bottom: 0px;
     border-top: 0px;
@@ -588,7 +584,20 @@ footer.mzen-nav >ul.mzen-bar-tab > li > .mzen-badge {
     border-top: 0px;
 }
 
-.chatbox-house .mzen-list-view-cell:after {
+.nextalk-chatbox .mzen-list-view .mzen-img-object {
+    width: 100px;
+    height: auto;
+}
+.nextalk-chatbox .mzen-list-view-cell {
+    padding: 0;
+    line-height: normal;
+    vertical-align: middle;
+}
+.nextalk-chatbox .mzen-list-view-cell a {
+    padding: 12px 15px;
+}
+
+.nextalk-chatbox-house .mzen-list-view-cell:after {
 	border-bottom: 0;
 }
 
@@ -620,7 +629,7 @@ footer.mzen-nav >ul.mzen-bar-tab > li > .mzen-badge {
 	z-index: 15;
 }
 
-.chatbox .nextalk-disguiser {
+.nextalk-disguiser {
 	line-height: 19px;
 }
 
