@@ -407,6 +407,7 @@ if (!nextalk.webui) {
         _onConnecting : function(ev, data) {
             var _this = this, main = _this.main;
             main.showConnecting();
+            _this._onLogin();
         },
         _onConnected : function(ev, data) {
             var _this = this;
@@ -415,19 +416,17 @@ if (!nextalk.webui) {
                 _this.chatObj = null;
                 _this.chatObjs = [];
             }
-            _this.goods = new webui.Goods();
-            var main = _this.main;
-            main.showConnected();
-            main.setTitleName();
-            main.avatar();
+            if (!_this.goods) {
+                _this.goods = new webui.Goods();
+            }
+            _this._chatBoxs.onConnected();
+            _this.main.showConnected();
+            _this.main.avatar();
             // 加载最近会话列表
-            main.loadRecently(data);
+            _this.main.loadRecently(data);
             // 加载联系人列表
-            main.loadBuddies();
-            // 触发状态事件
-            //if (_this.onChatlinks) {
-            //    _this.onChatlinks(webim.client.presences);
-            //}
+            _this.main.loadBuddies();
+            _this._onLoginWin();
         },
         _onDisconnected : function(ev, data) {
             var _this = this, main = _this.main;
@@ -435,6 +434,7 @@ if (!nextalk.webui) {
             _this.stopAllTask();
             main.avatar();
             _this._chatBoxs.clear();
+            _this._onLoginFail();
         },
         _onNetworkUnavailable : function(ev, data) {
             var _this = this, main = _this.main;
@@ -442,6 +442,7 @@ if (!nextalk.webui) {
             _this.stopAllTask();
             main.avatar();
             _this._chatBoxs.clear();
+            _this._onLoginFail();
         },
         _onMessages : function(ev, data) {
             var _this = this, chatBoxs = _this._chatBoxs;

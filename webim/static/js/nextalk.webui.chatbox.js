@@ -792,21 +792,39 @@ if (!nextalk.webui) {
         clear : function() {
             for (var key in this[webim.Conversation.NOTICE]) {
                 var cBox = this[webim.Conversation.NOTICE][key];
-                cBox.hide();
                 cBox.times = 0;
                 cBox.before = null;
             }
             for (var key in this[webim.Conversation.ROOM]) {
                 var cBox = this[webim.Conversation.ROOM][key];
-                cBox.hide();
                 cBox.times = 0;
                 cBox.before = null;
             }
             for (var key in this[webim.Conversation.CHAT]) {
                 var cBox = this[webim.Conversation.CHAT][key];
-                cBox.hide();
                 cBox.times = 0;
                 cBox.before = null;
+            }
+        },
+
+        onConnected : function() {
+            for (var key in this[webim.Conversation.NOTICE]) {
+                var cBox = this[webim.Conversation.NOTICE][key];
+                if (cBox.focus) {
+                    cBox.show();
+                }
+            }
+            for (var key in this[webim.Conversation.ROOM]) {
+                var cBox = this[webim.Conversation.ROOM][key];
+                if (cBox.focus) {
+                    cBox.show();
+                }
+            }
+            for (var key in this[webim.Conversation.CHAT]) {
+                var cBox = this[webim.Conversation.CHAT][key];
+                if (cBox.focus) {
+                    cBox.show();
+                }
             }
         },
 
