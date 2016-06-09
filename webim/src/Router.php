@@ -204,7 +204,9 @@ class Router {
 		foreach($fields as $f) { $scriptVar[$f] = $IMC[$f];	}
 
 		header("Content-type: application/javascript");
-		header("Cache-Control: no-cache");
+		//header("Cache-Control: no-cache");
+		header("Cache-Control: public");
+		header("Pragma: cache");
 		echo 'if (!window._IMC) { window._IMC = {} }';
 		echo "var _TEMP = " . json_encode($scriptVar) . ";";
 		echo 'for (var key in _TEMP) { _IMC[key] = _TEMP[key] }' . PHP_EOL;
@@ -660,6 +662,8 @@ EOF;
             }
         }
 		header('Content-Type',	'text/html; charset=utf-8');
+		header("Cache-Control: public");
+		header("Pragma: cache");
         echo '<!DOCTYPE html>';
         echo '<html>';
         echo '<head>';
