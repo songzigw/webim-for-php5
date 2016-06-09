@@ -86,6 +86,12 @@ if (!window.nextalk) {
             window.setTimeout(function() {
                 var l = (iframe.$(window).width() - _this.panel.width)/2;
                 var t = (iframe.$(window).height() - _this.panel.height)/2;
+                if (l <= 0) {
+                    l = 1;
+                }
+                if (t <= 0) {
+                    t = 1;
+                }
                 _this.$nkIframe.css({
                     'left' : l + 'px',
                     'top' : t + 'px'

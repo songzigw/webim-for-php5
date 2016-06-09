@@ -87,7 +87,7 @@ if (!nextalk.webui) {
         _this.$html.append(_this.msgTips.$html);
 
         _this.emot = new Emot();
-        var $input = $('footer .nextalk-form input', $html);
+        var $input = $('.mzen-form .textarea', $html);
         $input.on('focus', function(ev) {
             _this.emot.hide();
             _this.resizable();
@@ -592,8 +592,10 @@ if (!nextalk.webui) {
             _this.submit();
             return false;
         });
-        $('.mzen-form textarea', $html).on('keydown', function(ev) {
+        $('.mzen-form .textarea', $html).on('keydown', function(ev) {
             if (ev.keyCode == 13) {
+                ev.preventDefault();
+                ev.returnValue = false;
                 _this.submit();
             }
         });
@@ -708,7 +710,7 @@ if (!nextalk.webui) {
     };
     ChatBox.prototype.submit = function() {
         var _this = this;
-        var $input = $('.mzen-form textarea', _this.$html);
+        var $input = $('.mzen-form .textarea', _this.$html);
         if ($.trim($input.val()) != '') {
             _this.sendMsg($input.val());
         }

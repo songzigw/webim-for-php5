@@ -329,8 +329,8 @@ footer .mzen-form {
     font-weight: 400;
     z-index: 18;
 }
-.nextalk-btn-close a {
-	color: #333;
+.nextalk-btn-close span {
+	cursor: pointer;
 }
 
 .mzen-bar-nav .nextalk-logo,

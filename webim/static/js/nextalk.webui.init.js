@@ -100,14 +100,14 @@ if (!nextalk.webui) {
         // 界面元素根节点body
         _this.$body = $('body');
         _this.$btnClose = {
-             HTML : '\
+            HTML : '\
                  <div class="nextalk-btn-close">\
-                 <a href="#"><span class="mzen-iconfont mzen-icon-close"></span></a>\
+                 <span class="mzen-iconfont mzen-icon-close"></span>\
                  </div>',
             init : function() {
                 var _ui = this;
                 _ui.$html = $(_ui.HTML);
-                $('a', _ui.$html).on('click', function() {
+                $('span', _ui.$html).on('click', function() {
                     if (webui.onClickCloseIframe) {
                         webui.onClickCloseIframe();
                         webui._chatBoxs.hideAll();
@@ -117,7 +117,9 @@ if (!nextalk.webui) {
             }
         };
         if (webui.iframe) {
-            _this.$btnClose.init();
+            window.setTimeout(function() {
+                _this.$btnClose.init();
+            }, 2000);
         }
 
         _this.welcomeUI = {
