@@ -72,7 +72,7 @@
         // upload files
         upload : "static/images/upload.php",
         conv_list : "index.php?action=conversations",
-        conv_new : "index.php?action=conv_new",
+        //conv_new : "index.php?action=conv_new",
         agents_random : "index.php?action=agents_random",
         house : "index.php?action=house",
         house_fav : "index.php?action=get_user_favorite",
@@ -161,9 +161,9 @@
             this._ajax("conv_list", params, callback);
         },
 
-        conv_new : function(params, callback) {
-            this._ajax("conv_new", params, callback);
-        },
+//        conv_new : function(params, callback) {
+//            this._ajax("conv_new", params, callback);
+//        },
 
         history : function(params, callback) {
             this._ajax("history", params, callback);

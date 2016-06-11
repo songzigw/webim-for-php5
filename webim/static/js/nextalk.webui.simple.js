@@ -337,7 +337,7 @@ if (!nextalk.webui) {
     };
     Simple.prototype.loadItem = function(type, currUid, objId) {
         var _this = this, $items = _this.$items;
-        var key = {currUid : currUid, objId   : objId};
+        var key = {currUid : currUid, objId : objId};
 
         _this.removeItem(type, currUid, objId);
         var conv = webim.convMessage.get(type, key);

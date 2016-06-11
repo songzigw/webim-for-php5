@@ -460,6 +460,28 @@ EOF;
 		//}
         //Error Reply
         //$this->jsonReply(array('status' => 'error', 'message' => $body));
+		$conv = array(
+		        'uid' => $from,
+		        'oid' => $to,
+		        'body' => $body,
+		        'type' => $type,
+		        'direction' => 'send',
+		        'oname' => $to_name,
+		        'oavatar' => $to_avatar
+		);
+		$this->model->insert_conv($conv);
+		if ($type == 'chat') {
+		    $conv = array(
+		            'uid' => $to,
+		            'oid' => $from,
+		            'body' => $body,
+		            'type' => 'chat',
+		            'direction' => 'receive',
+		            'oname' => $nick,
+		            'oavatar' => $avatar
+		    );
+		    $this->model->insert_conv($conv);
+		}
 		$this->okReply();
 	}
 	
@@ -916,32 +938,32 @@ EOF;
         $convs = $this->model->get_user_favorite($uid);
         $this->jsonReply($convs);
     }
-    public function conv_new() {
-        // $uid = $this->user->id;
-        $conv = array(
-                'uid' => $this->input('uid'),
-                'oid' => $this->input('oid'),
-                'body' => $this->input('body'),
-                'type' => $this->input('type'),
-                'direction' => $this->input('direction'),
-                'oname' => $this->input('oname'),
-                'oavatar' => $this->input('oavatar')
-        );
-        $this->model->insert_conv($conv);
-        if ($this->input('type') == 'chat' && $this->input('direction') == 'send') {
-            $conv = array(
-                    'uid' => $this->input('oid'),
-                    'oid' => $this->input('uid'),
-                    'body' => $this->input('body'),
-                    'type' => 'chat',
-                    'direction' => 'receive',
-                    'oname' => $this->input('nick'),
-                    'oavatar' => $this->input('avatar')
-            );
-            $this->model->insert_conv($conv);
-        }
-        $this->okReply();
-    }
+//     public function conv_new() {
+//         // $uid = $this->user->id;
+//         $conv = array(
+//                 'uid' => $this->input('uid'),
+//                 'oid' => $this->input('oid'),
+//                 'body' => $this->input('body'),
+//                 'type' => $this->input('type'),
+//                 'direction' => $this->input('direction'),
+//                 'oname' => $this->input('oname'),
+//                 'oavatar' => $this->input('oavatar')
+//         );
+//         $this->model->insert_conv($conv);
+//         if ($this->input('type') == 'chat' && $this->input('direction') == 'send') {
+//             $conv = array(
+//                     'uid' => $this->input('oid'),
+//                     'oid' => $this->input('uid'),
+//                     'body' => $this->input('body'),
+//                     'type' => 'chat',
+//                     'direction' => 'receive',
+//                     'oname' => $this->input('nick'),
+//                     'oavatar' => $this->input('avatar')
+//             );
+//             $this->model->insert_conv($conv);
+//         }
+//         $this->okReply();
+//     }
     public function conv_del() {
         // $uid = $this->user->id;
         $uid = $this->input('uid');

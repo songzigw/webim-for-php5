@@ -251,17 +251,17 @@
         _this.message = msg;
         _this.record[_this.record.length] = msg;
 
-        webim.webApi.conv_new({
-            type : _this.type,
-            uid : _this.currUid,
-            nick : _this.currNick,
-            avatar : _this.currAvatar,
-            oid : _this.objId,
-            oname : _this.objName,
-            oavatar : _this.objAvatar,
-            body : msg.body,
-            direction : msg.direction
-        });
+//        webim.webApi.conv_new({
+//            type : _this.type,
+//            uid : _this.currUid,
+//            nick : _this.currNick,
+//            avatar : _this.currAvatar,
+//            oid : _this.objId,
+//            oname : _this.objName,
+//            oavatar : _this.objAvatar,
+//            body : msg.body,
+//            direction : msg.direction
+//        });
     };
     /**
      * 获取所有的往来会话，将未读标识去掉，未读数清零
