@@ -197,7 +197,7 @@ if (!nextalk.webui) {
                                  webim.show.CHAT,
                                  webim.show.UNAVAILABLE],
                          requisite : true},
-            body      : {type : 'string', requisite : false},
+            body      : {type : 'string', requisite : true},
             timestamp : {type : 'number', requisite : false},
             direction : {type : [webim.msgDirection.SEND,
                                  webim.msgDirection.RECEIVE],
@@ -215,6 +215,18 @@ if (!nextalk.webui) {
                 conv.msgTime = time.format('hh:mm:ss');
             }
         }
+        try {
+            var data = webim.JSON.parse(conv.body);
+            if (typeof data !== 'object') {
+                throw new Error();
+            }
+            if (data.type == 1) {
+                conv.body = '[房源信息]';
+            }
+            if (data.type == 2) {
+                conv.body = '[图片消息]';
+            }
+        } catch (e) {}
 
         var currUser = webim.client.getCurrUser();
         var $item = webui.$(webui.completion(Simple.CONVERSATION, conv));
