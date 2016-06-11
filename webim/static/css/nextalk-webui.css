@@ -621,9 +621,13 @@ footer.mzen-nav >ul.mzen-bar-tab > li > .mzen-badge {
 }
 
 .nextalk-disguiser {
-	line-height: 19px;
+	line-height: normal;
+}
+.nextalk-disguiser .nextalk-obj-name {
+    line-height: 19px;
 }
 .nextalk-disguiser .nextalk-curr-nick {
+	line-height: 19px;
 	display: block;
 }
 

@@ -103,8 +103,8 @@ if (!nextalk.webui) {
             <div class="mzen-img-body">\
                 <p class="mzen-ellipsis-1 nextalk-obj-name">{{objName}}</p>\
                 <em class="mzen-pull-right nextalk-msg-time">{{msgTime}}</em>\
-                <p class="mzen-ellipsis-1 nextalk-body">{{body}}</p>\
                 <p class="mzen-ellipsis-1 nextalk-curr-nick">{{currNick}}</p>\
+                <p class="mzen-ellipsis-1 nextalk-body">{{body}}</p>\
             </div>\
             <span class="mzen-badge mzen-badge-danger mzen-pull-right">0</span>\
         </li>';
@@ -232,10 +232,9 @@ if (!nextalk.webui) {
         var $item = webui.$(webui.completion(Simple.CONVERSATION, conv));
         if (currUser.id != conv.currUid) {
             $item.addClass('nextalk-disguiser');
-        } else {
-            if (webui.mobile) {
-                $item.addClass('nextalk-message');
-            }
+        }
+        if (webui.mobile) {
+            $item.addClass('nextalk-message');
         }
         $item.attr('data-toggle', conv.type);
         $item.attr('data-currUid', conv.currUid);
