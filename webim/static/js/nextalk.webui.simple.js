@@ -107,6 +107,7 @@ if (!nextalk.webui) {
                 <p class="mzen-ellipsis-1 nextalk-body">{{body}}</p>\
             </div>\
             <span class="mzen-badge mzen-badge-danger mzen-pull-right">0</span>\
+            <i class="mzen-iconfont mzen-icon-roundclosefill"></i>\
         </li>';
     Simple.prototype.handler = function() {
         var _this = this;
@@ -204,6 +205,7 @@ if (!nextalk.webui) {
                          requisite : false}
         });
 
+        var _this = this;
         if (!conv.msgTime) {
             if (!conv.timestamp) {
                 conv.timestamp = webim.nowMillis();
@@ -235,6 +237,13 @@ if (!nextalk.webui) {
         }
         if (webui.mobile) {
             $item.addClass('nextalk-message');
+        } else {
+            $item.on('mouseover', function() {
+                $('i.mzen-icon-roundclosefill', $item).show();
+            });
+            $item.on('mouseout', function() {
+                $('i.mzen-icon-roundclosefill', $item).hide();
+            });
         }
         $item.attr('data-toggle', conv.type);
         $item.attr('data-currUid', conv.currUid);
@@ -254,6 +263,21 @@ if (!nextalk.webui) {
         } else {
             $('span', $item).remove();
         }
+        $('i.mzen-icon-roundclosefill', $item).on('click', function(ev) {
+            var e = window.event || ev;
+            if (e.stopPropagation) {
+                e.stopPropagation();
+            } else {
+                e.cancelBubble = true;
+            }
+            _this.removeItem(conv.type, conv.currUid, conv.objId);
+            var cBox = webui._chatBoxs.get(conv.type,
+                    {currUid : conv.currUid, objId : conv.objId});
+            if (cBox) {
+                cBox.hide();
+            }
+            webim.webApi.conv_del(conv.currUid, conv.objId);
+        });
         this.$items.show();
         return $item;
     };

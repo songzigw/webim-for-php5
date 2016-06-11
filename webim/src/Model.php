@@ -173,6 +173,9 @@ class Model {
             ->setExpr('updated', 'NOW()');
         $row->save();
     }
+    public function del_conv($uid, $oid) {
+        $this->T('conversations')->where('uid', $uid)->where('oid', $oid)->deleteMany();
+    }
     
     public function query_convs($uid, $type) {
         if ($type != 'backstage') {

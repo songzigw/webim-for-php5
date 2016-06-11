@@ -942,6 +942,13 @@ EOF;
         }
         $this->okReply();
     }
+    public function conv_del() {
+        // $uid = $this->user->id;
+        $uid = $this->input('uid');
+        $oid = $this->input('oid');
+        $this->model->del_conv($uid, $oid);
+        $this->okReply();
+    }
 
     public function agent() {
         $uid = $this->input('uid');

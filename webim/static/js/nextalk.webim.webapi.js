@@ -79,7 +79,8 @@
         disguise : "index.php?action=disguise",
         agent : "index.php?action=agent",
         presences : "index.php?action=presences",
-        message_read : "index.php?action=message_read"
+        message_read : "index.php?action=message_read",
+        conv_del : "index.php?action=conv_del"
     };
     WebAPI.route = function(ob) {
         var options = ob;
@@ -190,6 +191,12 @@
                 type : type,
                 to : currUid,
                 from : objId
+            }, null);
+        },
+        conv_del : function(currUid, objId) {
+            this._ajax("conv_del", {
+                uid : currUid,
+                oid : objId
             }, null);
         }
     };

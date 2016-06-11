@@ -46,7 +46,7 @@ html, body {
 }
 
 .mzen-list-view-cell {
-    padding: 6px 10px;
+    padding: 6px 15px;
     line-height: 38px;
     vertical-align: middle;
 }
@@ -602,6 +602,18 @@ footer.mzen-nav >ul.mzen-bar-tab > li > .mzen-badge {
 	z-index: 15;
 }
 
+.mzen-list-view i.mzen-icon-roundclosefill {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
+    color: #333;
+    display: none;
+}
+.mzen-list-view i.mzen-icon-roundclosefill:hover {
+	color: #E5574D;
+}
 .nextalk-obj-name {
 	color: #333;
 }
