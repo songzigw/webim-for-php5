@@ -101,7 +101,10 @@ if (!nextalk.webui) {
         <li class="mzen-list-view-cell mzen-img mzen-tap-active mzen-up-hover">\
             <img class="mzen-img-object mzen-pull-left nextalk-unavailable" src="{{objAvatar}}">\
             <div class="mzen-img-body">\
-                <p class="mzen-ellipsis-1" style="color:#333;">{{objName}}</p>\
+                <p class="mzen-ellipsis-1 nextalk-obj-name">{{objName}}</p>\
+                <em class="mzen-pull-right nextalk-msg-time">{{msgTime}}</em>\
+                <p class="mzen-ellipsis-1 nextalk-body">{{body}}</p>\
+                <p class="mzen-ellipsis-1 nextalk-curr-nick">{{currNick}}</p>\
             </div>\
             <span class="mzen-badge mzen-badge-danger mzen-pull-right">0</span>\
         </li>';
@@ -133,14 +136,14 @@ if (!nextalk.webui) {
             });
         });
 
+        _this.$conversations.css({
+            'overflow' : 'auto',
+            'background' : 'white'
+        });
         if (!webui.mobile) {
             _this.$header.css('background', 'white');
             _this.$html.addClass('mzen-border-r');
             _this.$conversations.addClass('nextalk-separator-del');
-            _this.$conversations.css({
-                'overflow' : 'auto',
-                'background' : 'white'
-            });
         } else {
             _this.$html.addClass('nextalk-mobile');
             _this.$html.css('background', 'white');
@@ -201,13 +204,26 @@ if (!nextalk.webui) {
                          requisite : false}
         });
 
+        if (!conv.msgTime) {
+            if (!conv.timestamp) {
+                conv.timestamp = webim.nowMillis();
+            }
+            var time = new webim.Date(conv.timestamp);
+            if (time.getDate() != (new webim.Date()).getDate()) {
+                conv.msgTime = time.format('yyyy-MM-dd');
+            } else {
+                conv.msgTime = time.format('hh:mm:ss');
+            }
+        }
+
         var currUser = webim.client.getCurrUser();
         var $item = webui.$(webui.completion(Simple.CONVERSATION, conv));
         if (currUser.id != conv.currUid) {
             $item.addClass('nextalk-disguiser');
-            $item.find('.mzen-img-body')
-            .append('<p class="mzen-ellipsis-1">'
-                    + conv.currNick + '</p>');
+        } else {
+            if (webui.mobile) {
+                $item.addClass('nextalk-message');
+            }
         }
         $item.attr('data-toggle', conv.type);
         $item.attr('data-currUid', conv.currUid);
@@ -248,11 +264,12 @@ if (!nextalk.webui) {
             _this.$conversations.height(wh - hh);
         } else {
             $html.css({
-                'width' : '100%',
-                'min-height' : wh+'px'
+                'width' : '100%'
             });
             _this.$conversations.css({
-                'padding-top' : hh+'px'});
+                'padding-top' : hh + 'px'
+            });
+            _this.$conversations.height(wh - hh);
         }
     };
     Simple.prototype.itemsClick = function($items) {
@@ -365,6 +382,12 @@ if (!nextalk.webui) {
                     if ($('span', $rem).text()) {
                         conv.notCount = Number($('span', $rem).text());
                     }
+                    if ($('.nextalk-msg-time', $rem).text()) {
+                        conv.msgTime = $('.nextalk-msg-time', $rem).text();
+                    }
+                    if ($('.nextalk-body', $rem).text()) {
+                        conv.body = $('.nextalk-body', $rem).text();
+                    }
                 }
                 $items.prepend(_this.itemHTML(conv));
             }
@@ -387,6 +410,12 @@ if (!nextalk.webui) {
             if ($rem) {
                 if ($('span', $rem).text()) {
                     conv.notCount = Number($('span', $rem).text());
+                }
+                if ($('.nextalk-msg-time', $rem).text()) {
+                    conv.msgTime = $('.nextalk-msg-time', $rem).text();
+                }
+                if ($('.nextalk-body', $rem).text()) {
+                    conv.body = $('.nextalk-body', $rem).text();
                 }
             }
             $items.prepend(_this.itemHTML(conv));

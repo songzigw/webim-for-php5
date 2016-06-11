@@ -155,14 +155,18 @@ footer .mzen-form {
     word-wrap: break-word;
     box-sizing: border-box;
     font-size: 14px;
-    padding: 8px 10px 8px 10px;
+    padding: 6px 10px 0px 10px;
     margin: 0 0 0 0;
-    resize: none;
     cursor: text;
     border: 1px solid #3498db;
     border-radius: 4px;
     width: 99%;
-    height: 50px;
+    height: 36px;
+    resize: none;
+    overflow: hidden;
+    float: left;
+    line-height: 1.5;
+    vertical-align: middle;
 }
 
 .nextalk-mobile .mzen-form > .nextalk-chatbox-menu {
@@ -534,35 +538,6 @@ footer .mzen-form {
     background-size: 100%;
 }
 
-.message .font-line-height {
-    line-height: 49px;
-}
-
-.message .mzen-list-view-cell > a {
-    padding: 0;
-    margin: 0;
-}
-
-.message .mzen-img-body {
-    height: 49px;
-}
-
-.message .msg-time {
-    font-size: 9px;
-    line-height: normal;
-    color: #8f8f94;
-    padding-right: 3px;
-}
-
-.message .mzen-list-view-cell {
-    padding: 7px 7px;
-}
-
-.message .mzen-list-view-cell > a.mzen-arrow-right > .mzen-badge,
-.message .mzen-list-view-cell > div.mzen-arrow-right > .mzen-badge {
-    right: 18px;
-}
-
 footer.mzen-nav >ul.mzen-bar-tab > li > .mzen-badge {
     position: absolute;
     top: 25%;
@@ -627,8 +602,54 @@ footer.mzen-nav >ul.mzen-bar-tab > li > .mzen-badge {
 	z-index: 15;
 }
 
+.nextalk-obj-name {
+	color: #333;
+}
+.nextalk-msg-time {
+    display: none;
+    line-height: 24px;
+    font-size: 12px;
+    color: #8f8f94;
+    padding-right: 3px;
+}
+.nextalk-body {
+    display: none;
+    line-height: 24px;
+}
+.nextalk-curr-nick {
+    display: none;
+}
+
 .nextalk-disguiser {
 	line-height: 19px;
+}
+.nextalk-disguiser .nextalk-curr-nick {
+	display: block;
+}
+
+.nextalk-message {
+	line-height: normal;
+}
+.nextalk-message > .mzen-badge,
+.nextalk-message > a > .mzen-badge {
+    top: 70%;
+    -webkit-transform: translateY(-70%);
+    transform: translateY(-70%);
+}
+.nextalk-message .mzen-img-object {
+	width: 50px;
+    height: 50px;
+}
+.nextalk-message .nextalk-obj-name {
+    width: 120px;
+    line-height: 24px;
+    display: inline-block;
+}
+.nextalk-message .nextalk-msg-time {
+    display: inline-block;
+}
+.nextalk-message .nextalk-body {
+    display: block;
 }
 
 img.nextalk-unavailable {
