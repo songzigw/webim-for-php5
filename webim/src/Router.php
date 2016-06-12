@@ -921,6 +921,7 @@ EOF;
         $convs = $this->model->query_convs($uid, $type);
         $uids = array();
         foreach($convs as $conv) {
+            $conv->updated = strtotime($conv->updated) * 1000;
             if ($conv->type == 'chat') {
                 $uids[] = $conv->oid;
             }

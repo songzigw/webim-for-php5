@@ -386,8 +386,8 @@
                             to_name   : c.oname,
                             to_avatar : c.oavatar,
                             body      : c.body,
-                            //timestamp : new Date(c.updated).getTime(),
-                            timestamp : new Date().getTime(),
+                            timestamp : Number(c.updated),
+                            //timestamp : new Date().getTime(),
                             // 方便编程假设所有会话消息方向为发送
                             // 可能与实际不符，但这种假设，无影响
                             direction : webim.msgDirection.SEND
