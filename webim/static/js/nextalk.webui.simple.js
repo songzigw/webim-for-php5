@@ -232,6 +232,7 @@ if (!nextalk.webui) {
 
         var currUser = webim.client.getCurrUser();
         var $item = webui.$(webui.completion(Simple.CONVERSATION, conv));
+        conv.msgTime = null;
         if (currUser.id != conv.currUid) {
             $item.addClass('nextalk-disguiser');
         }
