@@ -243,8 +243,12 @@
             ws.onopen = function(ev) {
                 _this.trigger("connected", [ ev.data ]);
                 ws.send("subscribe " + ops.domain + " " + ops.ticket);
+                _this.timertask = window.setInterval(function() {
+                    ws.send('heartbeat');
+                }, 3 * 60000);
             };
             ws.onclose = function(ev) {
+                window.clearInterval(_this.timertask);
                 _this.trigger('disconnected', [ ev.data ]);
             };
             ws.onmessage = function(ev) {
@@ -259,6 +263,7 @@
                 _this.trigger('message', [ data ]);
             };
             ws.onerror = function(ev) {
+                window.clearInterval(_this.timertask);
                 _this.trigger("error", [ ev ]);
             };
             return ws;
