@@ -415,6 +415,13 @@ if (!nextalk.webui) {
                     body : '开始聊天',
                     notCount : 0
                 };
+                for (var i = 0; i < convs.length; i++) {
+                    if (currUser.id == convs[i].currUid
+                            && chatObj.id == convs[i].objId) {
+                        conv = convs[i];
+                        break;
+                    }
+                }
                 var $rem = _this.removeItem(chatObj.type, currUser.id, chatObj.id);
                 if ($rem) {
                     if ($('span', $rem).text()) {
