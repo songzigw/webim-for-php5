@@ -46,6 +46,7 @@ if (!nextalk.webui) {
     webui.iframe = false;
     webui.chatObj = null;
     webui.chatObjs = [];
+    webui.loadHisConv = true;
     webui.init = function(options) {
         // 入参验证
         validate(options, {
@@ -92,6 +93,9 @@ if (!nextalk.webui) {
                 }
             }
             _this.chatObjs = options.chatObjs;
+        }
+        if (options.loadHisConv === false) {
+            _this.loadHisConv = false;
         }
 
         // 初始化webim

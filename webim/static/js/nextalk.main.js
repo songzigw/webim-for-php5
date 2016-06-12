@@ -46,12 +46,13 @@ if (!window.nextalk) {
         onLoginWin : null,
         channelType : 'WEBSOCKET',
         playSound : false,
-        receive : false
+        receive : false,
+        loadHisConv : true
     };
     main.setConfig = function(ops) {
         if (ops) {
             for (var key in ops) {
-                if (ops[key]) {
+                if (ops[key] !== undefined) {
                     this[key] = ops[key];
                 }
             }
@@ -203,7 +204,8 @@ if (!window.nextalk) {
             chatObj : _this.chatObj,
             chatObjs : _this.chatObjs,
             chatlinkIds : _this.chatlinkIds,
-            channelType : _this.channelType
+            channelType : _this.channelType,
+            loadHisConv : _this.loadHisConv
         });
         nextalk.webui.onChatlinks = _this.onChatlinks;
         nextalk.webui.onUnread = _this.onUnread;

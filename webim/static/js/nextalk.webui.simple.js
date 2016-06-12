@@ -239,7 +239,9 @@ if (!nextalk.webui) {
             $item.addClass('nextalk-message');
         } else {
             $item.on('mouseover', function() {
-                $('i.mzen-icon-close', $item).css('visibility', 'visible');
+                if (!$('span', $item).text()) {
+                    $('i.mzen-icon-close', $item).css('visibility', 'visible');
+                }
             });
             $item.on('mouseout', function() {
                 $('i.mzen-icon-close', $item).css('visibility', 'hidden');
@@ -383,7 +385,7 @@ if (!nextalk.webui) {
         var _this = this, //$items = _this.$items.empty();
         $items = _this.$items;
 
-        if (convs && convs.length > 0) {
+        if (webui.loadHisConv && convs && convs.length > 0) {
             for (var i = 0; i < convs.length; i++) {
                 var conv = convs[i];
                 var $rem = _this.removeItem(conv.type, conv.currUid, conv.objId);

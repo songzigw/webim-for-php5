@@ -697,6 +697,9 @@ EOF;
         echo '<body>';
         echo '        <script type="text/javascript">';
         echo '        var _IMC = {};';
+        if ($this->input('his_conv')) {
+            echo '_IMC.his_conv = '.$this->input('his_conv').';';
+        }
         if ($buddy) {
             echo '        _IMC.chatObj = {';
             echo '            type : "chat",';
