@@ -602,17 +602,25 @@ footer.mzen-nav >ul.mzen-bar-tab > li > .mzen-badge {
 	z-index: 15;
 }
 
-.mzen-list-view i.mzen-icon-roundclosefill {
+#nextalk_conversations .mzen-list-view i.mzen-icon-close {
     position: absolute;
     top: 50%;
-    right: 10px;
+    left: -1px;
     -webkit-transform: translateY(-50%);
     transform: translateY(-50%);
-    color: #333;
-    display: none;
+    color: #8f8f8f;
+    font-size: 9px;
+    line-height: 15px;
+    text-align: center;
+    vertical-align: middle;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    visibility: hidden;
 }
-.mzen-list-view i.mzen-icon-roundclosefill:hover {
-	color: #E5574D;
+#nextalk_conversations .mzen-list-view i.mzen-icon-close:hover {
+	color: white;
+	background: #8f8f8f;
 }
 .nextalk-obj-name {
 	color: #333;

@@ -107,7 +107,7 @@ if (!nextalk.webui) {
                 <p class="mzen-ellipsis-1 nextalk-body">{{body}}</p>\
             </div>\
             <span class="mzen-badge mzen-badge-danger mzen-pull-right">0</span>\
-            <i class="mzen-iconfont mzen-icon-roundclosefill"></i>\
+            <i class="mzen-iconfont mzen-icon-close"></i>\
         </li>';
     Simple.prototype.handler = function() {
         var _this = this;
@@ -239,10 +239,10 @@ if (!nextalk.webui) {
             $item.addClass('nextalk-message');
         } else {
             $item.on('mouseover', function() {
-                $('i.mzen-icon-roundclosefill', $item).show();
+                $('i.mzen-icon-close', $item).css('visibility', 'visible');
             });
             $item.on('mouseout', function() {
-                $('i.mzen-icon-roundclosefill', $item).hide();
+                $('i.mzen-icon-close', $item).css('visibility', 'hidden');
             });
         }
         $item.attr('data-toggle', conv.type);
@@ -263,7 +263,7 @@ if (!nextalk.webui) {
         } else {
             $('span', $item).remove();
         }
-        $('i.mzen-icon-roundclosefill', $item).on('click', function(ev) {
+        $('i.mzen-icon-close', $item).on('click', function(ev) {
             var e = window.event || ev;
             if (e.stopPropagation) {
                 e.stopPropagation();
