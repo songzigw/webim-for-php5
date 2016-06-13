@@ -151,22 +151,23 @@ footer .mzen-form {
     background-color: inherit;
 }
 .nextalk-form.mzen-input-row .mzen-input .textarea {
-    white-space: pre-wrap;
-    word-wrap: break-word;
-    box-sizing: border-box;
-    font-size: 14px;
-    line-height: 1;
-    width: 99%;
-    height: 36px;
-    padding: 10px;
-    margin: 0 0 0 0;
-    cursor: text;
-    border: 1px solid #3498db;
-    border-radius: 4px;
-    resize: none;
-    overflow: hidden;
-    float: left;
-    vertical-align: middle;
+	white-space: pre-wrap;
+	word-wrap: break-word;
+	font-size: 14px;
+	line-height: 1;
+	width: 99%;
+	min-height: 36px;
+	padding: 10px;
+	margin: 0 0 0 0;
+	cursor: text;
+	border: 1px solid #3498db;
+	border-radius: 4px;
+	resize: none;
+	overflow: hidden;
+	-webkit-appearance: none;
+	-webkit-user-select: text;
+	background-color: #fff;
+	outline: none;
 }
 
 .nextalk-mobile .mzen-form > .nextalk-chatbox-menu {

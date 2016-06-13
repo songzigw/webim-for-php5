@@ -88,19 +88,15 @@ if (!nextalk.webui) {
 
         _this.emot = new Emot();
         var $input = $('.mzen-form .textarea', $html);
-        $input.on('change', function() {
-            if ($(this).val() == '') {
-                $(this).css('height', '36px');
-            } else {
-                $(this).css('height', (this.scrollHeight+2)+'px');
-            }
-        });
+        _this.$input = $input;
         $input.on('focus', function(ev) {
             _this.emot.hide();
             _this.resizable();
         });
         _this.emot.callback = function(emot) {
-            $input.val($input.val() + emot);
+            if ($input.text().length <= 140) {
+                $input.text($input.text() + emot);
+            }
             _this.resizable();
         };
         $('footer .mzen-form', $html)
@@ -148,7 +144,7 @@ if (!nextalk.webui) {
                             <form class="mzen-form" method="get" action="">\
                             <div class="nextalk-form mzen-input-row">\
                                 <div class="mzen-input">\
-                                <textarea class="textarea" maxlength="140" placeholder="输入消息内容..."></textarea>\
+                                <div class="textarea" contenteditable="true" placeholder="输入消息内容..."></div>\
                                 </div><span class="mzen-input-addon mzen-btn mzen-btn-info">发送</span>\
                             </div>\
         <p class="nextalk-chatbox-menu"><i class="mzen-iconfont mzen-icon-emoji"></i><i class="mzen-iconfont mzen-icon-pic"></i><i class="mzen-iconfont mzen-icon-home"></i></p>\
@@ -203,6 +199,9 @@ if (!nextalk.webui) {
                 'margin-top' : hh+'px'});
             _this.toBottom();
         }
+
+        var cbWidth = $html.width() - 20;
+        _this.$input.outerWidth(cbWidth - 55);
     };
     ChatBox.prototype.toBottom = function() {
         var $html = this.$html;
@@ -596,19 +595,29 @@ if (!nextalk.webui) {
             _this.submit();
         });
         $('footer form.mzen-form', $html).on('submit', function() {
-            _this.submit();
             return false;
         });
-        $('.mzen-form .textarea', $html).on('keydown', function(ev) {
-            if ($(this).val() == '') {
-                $(this).css('height', '36px');
-            } else {
-                $(this).css('height', (this.scrollHeight+2)+'px');
+        _this.$input.on('keyup', function(ev) {
+            _this.resizable();
+        });
+        _this.$input.on('keydown', function(ev) {
+            var e = window.event || ev;
+            if (e.keyCode == 8
+                    || e.keyCode == 37
+                    || e.keyCode == 38
+                    || e.keyCode == 39
+                    || e.keyCode == 40) {
+                return;
             }
-            if (ev.keyCode == 13) {
-                ev.preventDefault();
-                ev.returnValue = false;
+            if (e.keyCode == 13) {
+                e.preventDefault();
+                e.returnValue = false;
                 _this.submit();
+                return;
+            }
+            if ($(this).text().length >= 140) {
+                e.preventDefault();
+                e.returnValue = false;
             }
         });
         $('footer .mzen-icon-emoji', $html).on('click', function() {
@@ -721,13 +730,11 @@ if (!nextalk.webui) {
         });
     };
     ChatBox.prototype.submit = function() {
-        var _this = this;
-        var $input = $('.mzen-form .textarea', _this.$html);
-        if ($.trim($input.val()) != '') {
-            _this.sendMsg($input.val());
+        var _this = this, $input = _this.$input;
+        if ($.trim($input.text()) != '') {
+            _this.sendMsg($input.text());
         }
-        $input.val('');
-        $input.css('height', '36px');
+        $input.text('');
         $input.focus();
     };
     ChatBox.prototype.showTipsTask = undefined;
