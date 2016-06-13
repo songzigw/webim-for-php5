@@ -89,10 +89,10 @@ if (!nextalk.webui) {
         _this.emot = new Emot();
         var $input = $('.mzen-form .textarea', $html);
         $input.on('change', function() {
-            if ($input.val() == '') {
-                $input.height(34);
+            if ($(this).val() == '') {
+                $(this).css('height', '36px');
             } else {
-                $input.height(this.scrollHeight - 6);
+                $(this).css('height', (this.scrollHeight+2)+'px');
             }
         });
         $input.on('focus', function(ev) {
@@ -601,9 +601,9 @@ if (!nextalk.webui) {
         });
         $('.mzen-form .textarea', $html).on('keydown', function(ev) {
             if ($(this).val() == '') {
-                $(this).height(34);
+                $(this).css('height', '36px');
             } else {
-                $(this).height(this.scrollHeight - 6);
+                $(this).css('height', (this.scrollHeight+2)+'px');
             }
             if (ev.keyCode == 13) {
                 ev.preventDefault();
@@ -727,7 +727,7 @@ if (!nextalk.webui) {
             _this.sendMsg($input.val());
         }
         $input.val('');
-        $input.height(34);
+        $input.css('height', '36px');
         $input.focus();
     };
     ChatBox.prototype.showTipsTask = undefined;

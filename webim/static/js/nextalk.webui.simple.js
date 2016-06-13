@@ -412,7 +412,7 @@ if (!nextalk.webui) {
                     objName : chatObj.name,
                     objAvatar : chatObj.avatar,
                     objShow : webim.show.UNAVAILABLE,
-                    body : '开始聊天',
+                    body : ' ',
                     notCount : 0
                 };
                 for (var i = 0; i < convs.length; i++) {
@@ -448,9 +448,16 @@ if (!nextalk.webui) {
                 objName : chatObj.name,
                 objAvatar : chatObj.avatar,
                 objShow : webim.show.UNAVAILABLE,
-                body : '开始聊天',
+                body : ' ',
                 notCount : 0
             };
+            for (var i = 0; i < convs.length; i++) {
+                if (currUser.id == convs[i].currUid
+                        && chatObj.id == convs[i].objId) {
+                    conv = convs[i];
+                    break;
+                }
+            }
             var $rem = _this.removeItem(chatObj.type, currUser.id, chatObj.id);
             if ($rem) {
                 if ($('span', $rem).text()) {
@@ -474,7 +481,7 @@ if (!nextalk.webui) {
                 if (ret) {
                     for (var i = 0; i < ret.length; i++) {
                         var chatObj = ret[i];
-                        _this.itemHTML({
+                        var conv = {
                             type : webim.Conversation.CHAT,
                             currUid : currUser.id,
                             currNick : currUser.nick,
@@ -483,8 +490,16 @@ if (!nextalk.webui) {
                             objName : chatObj.name,
                             objAvatar : '/images/agentphoto/' + chatObj.face,
                             objShow : webim.show.UNAVAILABLE,
-                            body : '开始聊天'
-                        }).prependTo($items);
+                            body : ' '
+                        };
+                        for (var j = 0; j < convs.length; j++) {
+                            if (currUser.id == convs[j].currUid
+                                    && chatObj.user_id == convs[j].objId) {
+                                conv = convs[j];
+                                break;
+                            }
+                        }
+                        _this.itemHTML(conv).prependTo($items);
                     }
                     _this.itemsClick();
                 }

@@ -155,17 +155,17 @@ footer .mzen-form {
     word-wrap: break-word;
     box-sizing: border-box;
     font-size: 14px;
-    padding: 6px 10px 0px 10px;
+    line-height: 1;
+    width: 99%;
+    height: 36px;
+    padding: 10px;
     margin: 0 0 0 0;
     cursor: text;
     border: 1px solid #3498db;
     border-radius: 4px;
-    width: 99%;
-    height: 36px;
     resize: none;
     overflow: hidden;
     float: left;
-    line-height: 1.5;
     vertical-align: middle;
 }
 
