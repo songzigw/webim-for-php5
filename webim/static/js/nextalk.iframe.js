@@ -74,6 +74,10 @@ if (!window.nextalk) {
         var nkMainHeight = -42;
         _this.slideUp(this.$nkMain, nkMainHeight);
 
+        _this.openIframe();
+    };
+    iframe.openIframe = function() {
+        var _this = this;
         _this.$nkMain.find('a').click(function() {
             _this.$nkMain.hide();
             //_this.slideUp(_this.$nkIframe, -(_this.panel.height));
@@ -98,7 +102,7 @@ if (!window.nextalk) {
                 });
             }, 5);
         });
-    }; 
+    };
 
     iframe.go = function() {
         var _this = this;
@@ -146,6 +150,7 @@ if (!window.nextalk) {
         }
         var ifw = window['nextalk_iframe'].window;
         if (ifw || ifw.nextalk) {
+            _this.openIframe();
             ifw.nextalk.webui.openChatBox({
                 type : 'chat',
                 objId : id,
