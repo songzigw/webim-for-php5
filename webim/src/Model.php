@@ -122,7 +122,8 @@ class Model {
                 'status' => '#',
                 'avatar' => '/images/agentphoto/'.$agent->face,
                 'type' => 'agent',
-                'agents' => $agentObjArr
+                'agents' => $agentObjArr,
+                'customer_id' => $agent->customer_id
             );
     }
     

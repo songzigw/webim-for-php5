@@ -418,7 +418,6 @@ EOF;
      * Send Message
      */
 	public function message() {
-
         global $IMC;
 		$type = $this->input("type");
 		$from = $this->input('from');
@@ -455,8 +454,12 @@ EOF;
 				"timestamp" => $timestamp,
 			));
 		}
+		$to_other = null;
+		if ($this->user->type == 'agent') {
+		    $to_other = $this->user->customer_id;
+		}
 		//if($send == 1){
-			$this->client->message($from, $to, $nick, $body, $type, $style, $timestamp, $avatar, $to_name, $to_avatar);
+			$this->client->message($from, $to, $nick, $body, $type, $style, $timestamp, $avatar, $to_name, $to_avatar, $to_other);
 		//}
         //Error Reply
         //$this->jsonReply(array('status' => 'error', 'message' => $body));

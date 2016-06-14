@@ -219,7 +219,7 @@ class Client {
 	 * @return 'ok'
 	 *
 	 */
-	public function message($from, $to, $nick, $body, $type = 'chat', $style='', $timestamp = null, $avatar,  $to_name, $to_avatar) {
+	public function message($from, $to, $nick, $body, $type = 'chat', $style='', $timestamp = null, $avatar,  $to_name, $to_avatar, $to_other) {
         if(!$timestamp) $timestamp = microtime(true) * 1000;
 		$data = array_merge($this->reqdata(), array(
 			'nick' => $nick,
@@ -230,9 +230,10 @@ class Client {
 			'type' => $type,
 			'body' => $body,
 			'style' => $style,
-			'timestamp' => $timestamp,
+			'timestamp' => $timestamp
 		));
         if($from) $data['from'] = $from;
+        if($to_other) $data['to_other'] = $to_other;
 		return $this->request('messages', $data, 'POST');
 	}
 
