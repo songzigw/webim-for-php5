@@ -122,6 +122,8 @@ if (chatBtns && chatBtns.length > 0) {
         var id = btn.getAttribute('data-id');
         var name = btn.getAttribute('data-name');
         var avatar = btn.getAttribute('data-avatar');
+        var bodytype = btn.getAttribute('data-bodytype');
+        var body = btn.getAttribute('data-body');
         if (!id) {
             continue;
         }
@@ -129,7 +131,9 @@ if (chatBtns && chatBtns.length > 0) {
             type : 'chat',
             id : id,
             name : name,
-            avatar : avatar
+            avatar : avatar,
+            body_type : bodytype,
+            body : body
         };
         if (n == 0) {
             nextalk.main.chatlinkIds = id;
@@ -146,15 +150,13 @@ if (chatBtns && chatBtns.length > 0) {
             var name = this.getAttribute('data-name');
             var avatar = this.getAttribute('data-avatar');
             var win = this.getAttribute('data-win');
-            var bodytype = this.getAttribute('data-bodytype');
-            var body = this.getAttribute('data-body');
+            var show = this.getAttribute('data-show');
             var chatObj = {
                 type : 'chat',
                 id : id,
                 name : name,
                 avatar : avatar,
-                body_type : bodytype,
-                body : body
+                show : show
             };
             if (win == 'win') {
                 openChatBoxWin(chatObj);
@@ -169,6 +171,7 @@ if (chatBtns && chatBtns.length > 0) {
                 var btn = chatBtns[i];
                 for (var key in data) {
                     if (btn.getAttribute('data-id') == key) {
+                        btn.setAttribute('data-show', data[key]);
                         if (data[key] != 'unavailable') {
                             // 在线
                             btn.style.background = 'red';

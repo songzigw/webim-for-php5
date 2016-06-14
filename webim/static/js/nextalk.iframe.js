@@ -74,34 +74,34 @@ if (!window.nextalk) {
         var nkMainHeight = -42;
         _this.slideUp(this.$nkMain, nkMainHeight);
 
-        _this.openIframe();
+        _this.$nkMain.find('a').click(function() {
+            _this.openIframe();
+        });
     };
     iframe.openIframe = function() {
         var _this = this;
-        _this.$nkMain.find('a').click(function() {
-            _this.$nkMain.hide();
-            //_this.slideUp(_this.$nkIframe, -(_this.panel.height));
-            // 居中
-            _this.$nkIframe.css({
-                left : iframe.$(window).width() + 'px',
-                top : iframe.$(window).height() + 'px'
-            });
-            _this.$nkIframe.show();
-            window.setTimeout(function() {
-                var l = (iframe.$(window).width() - _this.panel.width)/2;
-                var t = (iframe.$(window).height() - _this.panel.height)/2;
-                if (l <= 0) {
-                    l = 1;
-                }
-                if (t <= 0) {
-                    t = 1;
-                }
-                _this.$nkIframe.css({
-                    'left' : l + 'px',
-                    'top' : t + 'px'
-                });
-            }, 5);
+        _this.$nkMain.hide();
+        //_this.slideUp(_this.$nkIframe, -(_this.panel.height));
+        // 居中
+        _this.$nkIframe.css({
+            left : iframe.$(window).width() + 'px',
+            top : iframe.$(window).height() + 'px'
         });
+        _this.$nkIframe.show();
+        window.setTimeout(function() {
+            var l = (iframe.$(window).width() - _this.panel.width)/2;
+            var t = (iframe.$(window).height() - _this.panel.height)/2;
+            if (l <= 0) {
+                l = 1;
+            }
+            if (t <= 0) {
+                t = 1;
+            }
+            _this.$nkIframe.css({
+                'left' : l + 'px',
+                'top' : t + 'px'
+            });
+        }, 5);
     };
 
     iframe.go = function() {
@@ -155,7 +155,8 @@ if (!window.nextalk) {
                 type : 'chat',
                 objId : id,
                 objName : name,
-                objAvatar : avatar
+                objAvatar : avatar,
+                objShow : chatObj.show
             });
         }
     };
