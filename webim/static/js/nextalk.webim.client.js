@@ -568,6 +568,7 @@
      */
     Client.prototype.connectServer = function() {
         var _this = this, options = _this.options;
+        // 如果正在登入中
         if (_this.connStatus == webim.connStatus.LOGIN) {
             return;
         }
