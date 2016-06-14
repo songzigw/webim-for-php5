@@ -383,18 +383,18 @@ if (!nextalk.webui) {
         });
     };
     Simple.prototype.loadRecently = function(convs) {
-        var _this = this, //$items = _this.$items.empty();
-        $items = _this.$items;
+        var _this = this, $items = _this.$items.empty();
+        //$items = _this.$items;
 
         if (webui.loadHisConv && convs && convs.length > 0) {
             for (var i = 0; i < convs.length; i++) {
                 var conv = convs[i];
-                var $rem = _this.removeItem(conv.type, conv.currUid, conv.objId);
-                if ($rem) {
-                    if ($('span', $rem).text()) {
-                        conv.notCount = Number($('span', $rem).text());
-                    }
-                }
+                //var $rem = _this.removeItem(conv.type, conv.currUid, conv.objId);
+                //if ($rem) {
+                //    if ($('span', $rem).text()) {
+                //        conv.notCount = Number($('span', $rem).text());
+                //    }
+                //}
                 $items.append(_this.itemHTML(conv));
             }
         }

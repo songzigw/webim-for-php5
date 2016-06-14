@@ -328,10 +328,10 @@
                 }
                 _this._show(webim.status.get("s"));
                 webim.convMessage.list(function(convs, presences) {
+                    _this.connStatusListener.onConnected(ev, convs);
                     if (_this.messages) {
                         _this.trigger("messages", [ _this.messages ]);
                     }
-                    _this.connStatusListener.onConnected(ev, convs);
                     if (_this.presences) {
                         var ps = [];
                         for (var k in _this.presences) {
