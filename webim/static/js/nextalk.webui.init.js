@@ -106,11 +106,11 @@ if (!nextalk.webui) {
         _this.$btnClose = {
             HTML : '\
                  <div class="nextalk-btn-close">\
-                 <span class="mzen-iconfont mzen-icon-close"></span>\
+                 <span class="mzen-iconfont"><em style="font-style: normal;font-family: arial;">X</em></span>\
                  </div>',
             init : function() {
                 var _ui = this;
-                _ui.$html = $(_ui.HTML);
+                _ui.$html = $(_ui.HTML).hide();
                 $('span', _ui.$html).on('click', function() {
                     if (webui.onClickCloseIframe) {
                         webui.onClickCloseIframe();
@@ -120,9 +120,10 @@ if (!nextalk.webui) {
                 _ui.$html.appendTo(_this.$body);
             }
         };
+        _this.$btnClose.init();
         if (webui.iframe) {
             window.setTimeout(function() {
-                _this.$btnClose.init();
+                _this.$btnClose.$html.show();
             }, 2000);
         }
 
