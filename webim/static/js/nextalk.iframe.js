@@ -150,7 +150,7 @@ if (!window.nextalk) {
         }
         var ifw = window['nextalk_iframe'].window;
         if (ifw || ifw.nextalk) {
-            _this.openIframe();
+            iframe.openIframe();
             ifw.nextalk.webui.openChatBox({
                 type : 'chat',
                 objId : id,
