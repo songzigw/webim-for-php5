@@ -112,6 +112,7 @@ if (!window.nextalk) {
             } else {
                 _this.$unread.hide().text(total);
             }
+            nextalk.main.onUnread(total);
         };
         _this.config.onLoginWin = function() {
             
