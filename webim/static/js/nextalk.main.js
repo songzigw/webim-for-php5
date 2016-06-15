@@ -217,6 +217,35 @@ if (!window.nextalk) {
     };
     main._goHidden = function() {
         var _this = this;
+        var isCookie = function() {
+            var currUser = nextalk.webim.client.getCurrUser();
+            if (currUser.visitor && nextalk.webim.cookie('_webim_visitor_id')) {
+                if (nextalk.webim.cookie('ECS[user_id]')) {
+                    return false;
+                }
+                return true;
+            }
+            if (!currUser.visitor && nextalk.webim.cookie('ECS[user_id]')) {
+                return true;
+            }
+            return false;
+        };
+        var cookieTask = {
+            _task : null,
+            start : function() {
+                var _t = this;
+                _t.stop();
+                this._task = window.setInterval(function() {
+                    if (!isCookie()) {
+                        _t.stop();
+                        nextalk.webim.client.offline(function(){});
+                    }
+                }, 1000);
+            },
+            stop : function() {
+                window.clearInterval(this._task);
+            }
+        };
         nextalk.webim.WebAPI.route(_this.route);
         nextalk.webim.init({
             resPath : _this.resPath,
@@ -234,8 +263,10 @@ if (!window.nextalk) {
                 
             },
             onLoginFail : function(ev, data) {
+                cookieTask.stop();
                 if (nextalk.webim.client.connStatus == nextalk.webim.connStatus.DISCONNECTED
-                        && nextalk.webim.client.connectedTimes > 0) {
+                        && nextalk.webim.client.connectedTimes > 0
+                        && isCookie()) {
                     nextalk.webim.client.connectServer();
                 }
             }
@@ -245,16 +276,18 @@ if (!window.nextalk) {
                 
             },
             onConnected : function(ev, data) {
-                
+                cookieTask.start();
             },
             onDisconnected : function(ev, data) {
+                cookieTask.stop();
                 if (nextalk.webim.client.connStatus == nextalk.webim.connStatus.DISCONNECTED
-                        && nextalk.webim.client.connectedTimes > 0) {
+                        && nextalk.webim.client.connectedTimes > 0
+                        && isCookie()) {
                     nextalk.webim.client.connectServer();
                 }
             },
             onNetworkUnavailable : function(ev, data) {
-                
+                cookieTask.stop();
             }
         });
         nextalk.webim.client.setReceiveMsgListener({
