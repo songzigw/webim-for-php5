@@ -110,7 +110,7 @@ if (!nextalk.webui) {
                  </div>',
             init : function() {
                 var _ui = this;
-                _ui.$html = $(_ui.HTML).hide();
+                _ui.$html = $(_ui.HTML);
                 $('span', _ui.$html).on('click', function() {
                     if (webui.onClickCloseIframe) {
                         webui.onClickCloseIframe();
@@ -120,11 +120,8 @@ if (!nextalk.webui) {
                 _ui.$html.appendTo(_this.$body);
             }
         };
-        _this.$btnClose.init();
         if (webui.iframe) {
-            window.setTimeout(function() {
-                _this.$btnClose.$html.show();
-            }, 2000);
+            _this.$btnClose.init();
         }
 
         _this.welcomeUI = {
@@ -370,6 +367,9 @@ if (!nextalk.webui) {
         _this.isCookie = function() {
             var currUser = webim.client.getCurrUser();
             if (currUser.visitor && nextalk.webim.cookie('_webim_visitor_id')) {
+                if (nextalk.webim.cookie('ECS[user_id]')) {
+                    return false;
+                }
                 return true;
             }
             if (!currUser.visitor && nextalk.webim.cookie('ECS[user_id]')) {
@@ -418,6 +418,9 @@ if (!nextalk.webui) {
                 this.onLoginWin();
             }
             var _this = this;
+            if (webim.client.isNewUser) {
+                _this._chatBoxs.clear(true);
+            }
             _this.main.setTitleName();
             _this.loginTask.stop();
             _this.loginUI.hide();
@@ -447,9 +450,6 @@ if (!nextalk.webui) {
         },
         _onConnected : function(ev, data) {
             var _this = this;
-            if (webim.client.isNewUser) {
-                _this._chatBoxs.clear(true);
-            }
             var u = webim.client.getCurrUser();
             if (u.type != webim.userType.GENERAL) {
                 _this.chatObj = null;
