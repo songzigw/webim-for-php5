@@ -591,7 +591,9 @@
             _this.trigger("disconnected", [ data ]);
         }
         _this.channel.onError = function(ev, data) {
-            
+            console.log("on.error: " + JSON.stringify(data));
+            _this.channel.disconnect();
+            _this.trigger("disconnected", [ data ]);
         };
         _this.channel.onMessage = function(ev, data) {
             _this.handle(data);
