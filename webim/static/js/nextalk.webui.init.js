@@ -274,6 +274,7 @@ if (!nextalk.webui) {
         _this.stopAllTask = function() {
             _this.loginTask.stop();
             _this.showTask.stop();
+            _this.cookieTask.stop();
         };
 
         // 正在连接的动画效果
@@ -346,6 +347,36 @@ if (!nextalk.webui) {
         };
         // 启动现场状态切换动画
         _this.showTask.start();
+
+        _this.cookieTask = {
+            _interval : null,
+
+            start : function() {
+                var _t = this;
+                _t.stop();
+                this._interval = window.setInterval(function() {
+                    if (!_this.isCookie()) {
+                        _t.stop();
+                        webim.client.offline(function() {});
+                    }
+                }, 1000);
+            },
+
+            stop : function() {
+                window.clearInterval(this._interval);
+            }
+        };
+
+        _this.isCookie = function() {
+            var currUser = webim.client.getCurrUser();
+            if (currUser.visitor && nextalk.webim.cookie('_webim_visitor_id')) {
+                return true;
+            }
+            if (!currUser.visitor && nextalk.webim.cookie('ECS[user_id]')) {
+                return true;
+            }
+            return false;
+        };
     };
 
     webui._initListeners = function() {
@@ -416,6 +447,9 @@ if (!nextalk.webui) {
         },
         _onConnected : function(ev, data) {
             var _this = this;
+            if (webim.client.isNewUser) {
+                _this._chatBoxs.clear(true);
+            }
             var u = webim.client.getCurrUser();
             if (u.type != webim.userType.GENERAL) {
                 _this.chatObj = null;
@@ -432,6 +466,8 @@ if (!nextalk.webui) {
             // 加载联系人列表
             _this.main.loadBuddies();
             _this._onLoginWin();
+            // 判断cookie里面是否在线
+            _this.cookieTask.start();
         },
         _onDisconnected : function(ev, data) {
             var _this = this, main = _this.main;
@@ -440,6 +476,12 @@ if (!nextalk.webui) {
             main.avatar();
             _this._chatBoxs.clear();
             _this._onLoginFail();
+            // 断开了发起重新链接
+            if (webim.client.connStatus == webim.connStatus.DISCONNECTED
+                    && webim.client.connectedTimes > 0
+                    && _this.isCookie()) {
+                _this._connectServer();
+            }
         },
         _onNetworkUnavailable : function(ev, data) {
             var _this = this, main = _this.main;

@@ -347,7 +347,6 @@
                         _this.trigger("presences", [ ps ]);
                     }
                 });
-                _this.reconnectTask.start();
             }
         });
         // 断开连接
@@ -521,25 +520,6 @@
         // ???
         //_this.trigger("network.unavailable", [ data ]);
         
-        // 自动重连接任务
-        _this.reconnectTask = {
-            _task : null,
-
-            start : function() {
-                var _t = this;
-                _t.stop();
-                _t._task = window.setInterval(function() {
-                    if (_this.connStatus == webim.connStatus.DISCONNECTED) {
-                        _t.stop();
-                        _this.connectServer();
-                    }
-                }, 1000);
-            },
-
-            stop : function() {
-                window.clearInterval(this._task);
-            }
-        };
     };
 
     /**
@@ -610,6 +590,7 @@
         }
         _this.channel.onError = function(ev, data) {
             // 可能是网络不可用，或者其他原因???
+            //_this._disconnectServer();
             _this.trigger("network.unavailable", [ data ]);
         };
         _this.channel.onMessage = function(ev, data) {
@@ -667,7 +648,6 @@
 
     Client.prototype._disconnectServer = function() {
         var _this = this;
-        _this.reconnectTask.stop();
         _this.channel.disconnect();
         _this._offlineAgent();
     };
@@ -729,14 +709,11 @@
             ticket : connection.ticket
         };
         webim.webApi.offline(params, function(ret, err) {
-            if (ret == "ok") {
-                // 断开连接
-                _this._disconnectServer();
-                callback();
-            } else {
-                callback();
-            }
+            if (ret == "ok") { }
         });
+        // 断开连接
+        _this._disconnectServer();
+        callback();
     };
 
     extend(Client.prototype, {
@@ -771,13 +748,15 @@
                 window.setTimeout(function() {
                     if (ret) {
                         if (ret.success) {
-                            if (!ret.user.avatar) {
-                                //ret.user.avatar = ;
-                            }
                             _this._serverTime(ret.server_time);
                             _this._connection(ret.connection);
                             if (!ret.user.avatar) {
                                 ret.user.avatar = webim.imgs.HEAD_DIS;
+                            }
+                            if (!_this.currUser || _this.currUser.id != ret.user.id) {
+                                _this.isNewUser = true;
+                            } else {
+                                _this.isNewUser = false;
                             }
                             _this._currUser(ret.user);
                             _this._buddies(ret.buddies);

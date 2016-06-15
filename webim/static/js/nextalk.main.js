@@ -226,12 +226,35 @@ if (!window.nextalk) {
             playSound : _this.playSound,
             receive : _this.receive
         });
+        nextalk.webim.client.setLoginStatusListener({
+            onLogin : function(ev, data) {
+                
+            },
+            onLoginWin : function(ev, data) {
+                
+            },
+            onLoginFail : function(ev, data) {
+                if (nextalk.webim.client.connStatus == nextalk.webim.connStatus.DISCONNECTED
+                        && nextalk.webim.client.connectedTimes > 0) {
+                    nextalk.webim.client.connectServer();
+                }
+            }
+        });
         nextalk.webim.client.setConnStatusListener({
+            onConnecting : function(ev, data) {
+                
+            },
             onConnected : function(ev, data) {
-//                if (_this.onChatlinks) {
-//                    var c = nextalk.webim.client;
-//                    _this.onChatlinks(c.presences);
-//                }
+                
+            },
+            onDisconnected : function(ev, data) {
+                if (nextalk.webim.client.connStatus == nextalk.webim.connStatus.DISCONNECTED
+                        && nextalk.webim.client.connectedTimes > 0) {
+                    nextalk.webim.client.connectServer();
+                }
+            },
+            onNetworkUnavailable : function(ev, data) {
+                
             }
         });
         nextalk.webim.client.setReceiveMsgListener({

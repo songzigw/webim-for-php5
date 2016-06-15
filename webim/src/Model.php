@@ -109,7 +109,8 @@ class Model {
                 'status' => '#',
                 'avatar' => $user->user_face,
                 'type' => $type,
-                'agents' => $agentObjArr
+                'agents' => $agentObjArr,
+                'visitor' => false
             );
         }
         
@@ -123,7 +124,8 @@ class Model {
                 'avatar' => '/images/agentphoto/'.$agent->face,
                 'type' => 'agent',
                 'agents' => $agentObjArr,
-                'customer_id' => $agent->customer_id
+                'customer_id' => $agent->customer_id,
+                'visitor' => false
             );
     }
     
@@ -550,6 +552,7 @@ class Model {
             'url' => "#",
             'status' => "",
             'type' => 'general',
+            'visitor' => true
         );
     }
     
@@ -577,6 +580,7 @@ class Model {
                 "avatar" => WEBIM_IMAGE('visitor.png'),
                 "status" => $status,
                 'type' => 'general',
+                'visitor' => true
             );
         }
         return $visitors;
