@@ -97,8 +97,6 @@
 
     /** 连接状态 */
     webim.connStatus = {
-        // 网络不可用
-        NETWORK_UNAVAILABLE : -1,
         // 连接中
         CONNECTING          :  0,
         // 连接成功
@@ -107,6 +105,13 @@
         DISCONNECTED        :  2,
         // 正在登入中
         LOGIN               :  3
+    };
+    /** 网络状态 */
+    webim.network = {
+        // 不可用
+        UNAVAILABLE : 0,
+        // 可用
+        AVAILABLE   : 1
     };
 
     /** 消息方向 */
@@ -206,6 +211,7 @@
         _this.loginTimes = 0;
         // 客户端连接成功次数
         _this.connectedTimes = 0;
+        _this.network = webim.network.AVAILABLE;
 
         // 初始化
         _this._init();
@@ -279,7 +285,7 @@
              onConnecting : function(ev, data) {},
              onConnected : function(ev, data) {},
              onDisconnected : function(ev, data) {},
-             onNetworkUnavailable : function(ev, data) {}
+             onNetworkChange : function(ev, data) {}
         };
         // 消息接收监听器
         _this.receiveMsgListener = {
@@ -359,15 +365,11 @@
                 webim.convMessage.clear();
             }
         });
-        // 网络不可用
-        _this.bind("network.unavailable", function(ev, data) {
-            console.log("network.unavailable: " + JSON.stringify(data));
-            if (_this.connStatus != webim.connStatus.NETWORK_UNAVAILABLE) {
-                _this.connStatus = webim.connStatus.NETWORK_UNAVAILABLE;
-                _this._show(webim.show.UNAVAILABLE);
-                _this.connStatusListener.onNetworkUnavailable(ev, data);
-                webim.convMessage.clear();
-            }
+        // 网络状态改变
+        _this.bind("network.change", function(ev, data) {
+            console.log("network.change: " + JSON.stringify(data));
+            _this.network = data;
+            _this.connStatusListener.onNetworkChange(ev, data);
         });
 
         // 接收消息
@@ -518,7 +520,7 @@
         var _this = this;
         // 设置网络是否可用实时检测
         // ???
-        //_this.trigger("network.unavailable", [ data ]);
+        //_this.trigger("network.change", [ data ]);
         
     };
 
@@ -589,9 +591,7 @@
             _this.trigger("disconnected", [ data ]);
         }
         _this.channel.onError = function(ev, data) {
-            // 可能是网络不可用，或者其他原因???
-            //_this._disconnectServer();
-            _this.trigger("network.unavailable", [ data ]);
+            
         };
         _this.channel.onMessage = function(ev, data) {
             _this.handle(data);
@@ -789,7 +789,6 @@
                         }
                     } else {
                         // 触发登入失败事件
-                        // 可能是网络不可用，或者其他原因???
                         _this.trigger("login.fail", [ err ]);
                     }
                 }, Client.LOGIN_DELAY);

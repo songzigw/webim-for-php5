@@ -244,8 +244,8 @@ if (!nextalk.webui) {
             onDisconnected : function(ev, data) {
                 _this._onDisconnected(ev, data);
             },
-            onNetworkUnavailable : function(ev, data) {
-                _this._onNetworkUnavailable(ev, data);
+            onNetworkChange : function(ev, data) {
+                _this._onNetworkChange(ev, data);
             }
         });
         webim.client.setReceiveMsgListener({
@@ -346,12 +346,12 @@ if (!nextalk.webui) {
         _this.showTask.start();
 
         _this.cookieTask = {
-            _interval : null,
+            _task : null,
 
             start : function() {
                 var _t = this;
                 _t.stop();
-                this._interval = window.setInterval(function() {
+                this._task = window.setInterval(function() {
                     if (!_this.isCookie()) {
                         _t.stop();
                         webim.client.offline(function() {});
@@ -360,19 +360,22 @@ if (!nextalk.webui) {
             },
 
             stop : function() {
-                window.clearInterval(this._interval);
+                window.clearInterval(this._task);
             }
         };
 
         _this.isCookie = function() {
             var currUser = webim.client.getCurrUser();
-            if (currUser.visitor && nextalk.webim.cookie('_webim_visitor_id')) {
-                if (nextalk.webim.cookie('ECS[user_id]')) {
+            if (!currUser || currUser.visitor == undefined) {
+                return false;
+            }
+            if (currUser.visitor && webim.cookie('_webim_visitor_id')) {
+                if (webim.cookie('ECS[user_id]')) {
                     return false;
                 }
                 return true;
             }
-            if (!currUser.visitor && nextalk.webim.cookie('ECS[user_id]')) {
+            if (!currUser.visitor && webim.cookie('ECS[user_id]')) {
                 return true;
             }
             return false;
@@ -477,19 +480,23 @@ if (!nextalk.webui) {
             _this._chatBoxs.clear();
             _this._onLoginFail();
             // 断开了发起重新链接
-            if (webim.client.connStatus == webim.connStatus.DISCONNECTED
+            if (webim.client.network == webim.network.AVAILABLE;
                     && webim.client.connectedTimes > 0
                     && _this.isCookie()) {
                 _this._connectServer();
             }
         },
-        _onNetworkUnavailable : function(ev, data) {
-            var _this = this, main = _this.main;
-            main.showNetwork();
-            _this.stopAllTask();
-            main.avatar();
-            _this._chatBoxs.clear();
-            _this._onLoginFail();
+        _onNetworkChange : function(ev, data) {
+            var _this = this;
+            if (data == webim.network.UNAVAILABLE) {
+                _this.main.showNetwork();
+            } else if (data == webim.network.AVAILABLE) {
+                if (webim.client.connStatus == webim.connStatus.DISCONNECTED
+                        && webim.client.connectedTimes > 0
+                        && _this.isCookie()) {
+                    _this._connectServer();
+                }
+            }
         },
         _onMessages : function(ev, data) {
             var _this = this, chatBoxs = _this._chatBoxs;

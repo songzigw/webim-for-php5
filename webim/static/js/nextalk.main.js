@@ -219,6 +219,9 @@ if (!window.nextalk) {
         var _this = this;
         var isCookie = function() {
             var currUser = nextalk.webim.client.getCurrUser();
+            if (!currUser || currUser.visitor == undefined) {
+                return false;
+            }
             if (currUser.visitor && nextalk.webim.cookie('_webim_visitor_id')) {
                 if (nextalk.webim.cookie('ECS[user_id]')) {
                     return false;
@@ -264,7 +267,7 @@ if (!window.nextalk) {
             },
             onLoginFail : function(ev, data) {
                 cookieTask.stop();
-                if (nextalk.webim.client.connStatus == nextalk.webim.connStatus.DISCONNECTED
+                if (nextalk.webim.client.network == nextalk.webim.network.AVAILABLE
                         && nextalk.webim.client.connectedTimes > 0
                         && isCookie()) {
                     nextalk.webim.client.connectServer();
@@ -280,14 +283,20 @@ if (!window.nextalk) {
             },
             onDisconnected : function(ev, data) {
                 cookieTask.stop();
-                if (nextalk.webim.client.connStatus == nextalk.webim.connStatus.DISCONNECTED
+                if (nextalk.webim.client.network == nextalk.webim.network.AVAILABLE
                         && nextalk.webim.client.connectedTimes > 0
                         && isCookie()) {
                     nextalk.webim.client.connectServer();
                 }
             },
-            onNetworkUnavailable : function(ev, data) {
-                cookieTask.stop();
+            onNetworkChange : function(ev, data) {
+                if (data == nextalk.webim.network.AVAILABLE) {
+                    if (nextalk.webim.client.connStatus == nextalk.webim.connStatus.DISCONNECTED
+                            && nextalk.webim.client.connectedTimes > 0
+                            && isCookie()) {
+                        nextalk.webim.client.connectServer();
+                    }
+                }
             }
         });
         nextalk.webim.client.setReceiveMsgListener({

@@ -323,7 +323,7 @@ footer .mzen-form {
 }
 
 .nextalk-btn-close {
-	position: fixed;
+	position: absolute;
 	top: 0;
 	right: 0;
 	min-height: 45px;
