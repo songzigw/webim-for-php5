@@ -589,11 +589,11 @@
         };
         _this.channel.onDisconnected = function(ev, data) {
             _this.trigger("disconnected", [ data ]);
-        }
+        };
         _this.channel.onError = function(ev, data) {
             console.log("on.error: " + JSON.stringify(data));
-            _this._disconnectServer();
-            _this.trigger("disconnected", [ data ]);
+            //_this._disconnectServer();
+            //_this.trigger("disconnected", [ data ]);
         };
         _this.channel.onMessage = function(ev, data) {
             _this.handle(data);
@@ -624,7 +624,7 @@
             _this['channel_' + agt.id].onConnected = function(ev, data) {
             };
             _this['channel_' + agt.id].onDisconnected = function(ev, data) {
-            }
+            };
             _this['channel_' + agt.id].onError = function(ev, data) {
             };
             _this['channel_' + agt.id].onMessage = function(ev, data) {
