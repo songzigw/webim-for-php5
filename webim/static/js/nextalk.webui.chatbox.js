@@ -426,7 +426,7 @@ if (!nextalk.webui) {
                 } else if (data.type == 2) {
                     var img = $('<img width="'+ (_this.$html.width()/2) +'" src="'+data.body+'"/>');
                     img.on('click', function() {
-                        webui.imagePage.show(data.body);
+                        webui.imagePage.show($(this).attr('src'));
                     });
                     $body.html(img);
                 }
@@ -504,7 +504,7 @@ if (!nextalk.webui) {
                 } else if (data.type == 2) {
                     var img = $('<img width="'+ (_this.$html.width()/2) +'" src="'+data.body+'"/>');
                     img.on('click', function() {
-                        webui.imagePage.show(data.body);
+                        webui.imagePage.show($(this).attr('src'));
                     });
                     $body.html(img);
                 }
