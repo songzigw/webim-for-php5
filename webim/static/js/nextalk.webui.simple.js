@@ -384,17 +384,10 @@ if (!nextalk.webui) {
     };
     Simple.prototype.loadRecently = function(convs) {
         var _this = this, $items = _this.$items.empty();
-        //$items = _this.$items;
 
         if (webui.loadHisConv && convs && convs.length > 0) {
             for (var i = 0; i < convs.length; i++) {
                 var conv = convs[i];
-                //var $rem = _this.removeItem(conv.type, conv.currUid, conv.objId);
-                //if ($rem) {
-                //    if ($('span', $rem).text()) {
-                //        conv.notCount = Number($('span', $rem).text());
-                //    }
-                //}
                 $items.append(_this.itemHTML(conv));
             }
         }
@@ -479,6 +472,7 @@ if (!nextalk.webui) {
                 && currUser.type == webim.userType.GENERAL) {
             webim.webApi.agents_random(null, function(ret, err) {
                 if (ret) {
+                    var uids = '';
                     for (var i = 0; i < ret.length; i++) {
                         var chatObj = ret[i];
                         var conv = {
@@ -499,8 +493,37 @@ if (!nextalk.webui) {
                                 break;
                             }
                         }
+                        var $rem = _this.removeItem(chatObj.type, currUser.id, chatObj.user_id);
+                        if ($rem) {
+                            if ($('span', $rem).text()) {
+                                conv.notCount = Number($('span', $rem).text());
+                            }
+                            if ($('.nextalk-msg-time', $rem).text()) {
+                                conv.msgTime = $('.nextalk-msg-time', $rem).text();
+                            }
+                            if ($('.nextalk-body', $rem).text()) {
+                                conv.body = $('.nextalk-body', $rem).text();
+                            }
+                        }
                         _this.itemHTML(conv).prependTo($items);
+                        if (i == 0) {
+                            uids = chatObj.user_id;
+                        } else {
+                            uids += ',' + chatObj.user_id;
+                        }
                     }
+                    webim.webApi.presences({
+                        ticket : webim.client.getConnection().ticket,
+                        uids   : uids
+                    }, function(presences, err) {
+                        if (presences) {
+                            var ps = [];
+                            for (var k in presences) {
+                                ps.push({from : k, show : presences[k]});
+                            }
+                            webim.client.trigger("presences", [ ps ]);
+                        }
+                    });
                     _this.itemsClick();
                 }
             });
