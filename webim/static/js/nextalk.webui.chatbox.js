@@ -212,6 +212,9 @@ if (!nextalk.webui) {
     };
     ChatBox.prototype.show = function() {
         var _this = this;
+        webui.main.selectActive(_this.type,
+                _this.currUid, _this.objId);
+        webui.goods.close();
         _this.$html.show();
         _this.focus = true;
         _this.times++;
@@ -889,8 +892,6 @@ if (!nextalk.webui) {
             chatBox = new ChatBox(conv);
             _this._chatBoxs.set(conv.type, key, chatBox);
         }
-        webui.main.selectActive(conv.type, conv.currUid, conv.objId);
-        webui.goods.close();
         chatBox.show();
     };
 

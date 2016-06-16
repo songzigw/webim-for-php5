@@ -461,13 +461,13 @@ if (!nextalk.webui) {
             if (!_this.goods) {
                 _this.goods = new webui.Goods();
             }
-            _this._chatBoxs.onConnected();
             _this.main.showConnected();
             _this.main.avatar();
             // 加载最近会话列表
             _this.main.loadRecently(data);
             // 加载联系人列表
             _this.main.loadBuddies();
+            _this._chatBoxs.onConnected();
             _this._onLoginWin();
             // 判断cookie里面是否在线
             _this.cookieTask.start();
