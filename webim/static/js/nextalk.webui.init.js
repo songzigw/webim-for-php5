@@ -480,7 +480,7 @@ if (!nextalk.webui) {
             _this._chatBoxs.clear();
             _this._onLoginFail();
             // 断开了发起重新链接
-            if (webim.client.network == webim.network.AVAILABLE;
+            if (webim.client.network == webim.network.AVAILABLE
                     && webim.client.connectedTimes > 0
                     && _this.isCookie()) {
                 _this._connectServer();
