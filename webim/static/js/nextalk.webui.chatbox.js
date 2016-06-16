@@ -718,6 +718,13 @@ if (!nextalk.webui) {
                         };
                         var msg = _this.message(webim.JSON.stringify(data));
                         webim.client.sendMessage(msg);
+                        var time = new webim.Date(msg.timestamp);
+                        $sendHtml.find('.time').text(time.format('hh:mm:ss'));
+                        if (msg.showTimestamp) {
+                            $($sendHtml[0]).show();
+                        } else {
+                            $($sendHtml[0]).hide();
+                        }
                         $sendHtml.find('.body img').attr('src', ret.path);
                         // 处理会话列表
                         webui.main.loadItem(_this.type, _this.currUid, _this.objId);
