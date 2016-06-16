@@ -181,6 +181,44 @@ if (!nextalk.webui) {
         };
         _this.loginUI.init();
 
+        _this.imagePage = {
+            HTML : '\
+                <div class="nextalk-page nextalk-screen-full mzen-flex-col mzen-flex-center"\
+                style="background:#2c2e2f;"><img src=""/></div>',
+
+            init : function() {
+                var _ui = this;
+                _ui.$html = $(_ui.HTML).hide();
+                _ui._handler();
+                _ui.$html.appendTo(_this.$body);
+            },
+            show : function(src) {
+                $('img', this.$html)
+                .attr('src', src);
+                this.$html.show();
+            },
+            hide : function() {
+                this.$html.hide();
+            },
+            _handler : function() {
+                var _ui = this;
+                $('img', _ui.$html).on('load', function() {
+                    var w = _ui.$html.width();
+                    var h = _ui.$html.height();
+                    var $img = $(this);
+                    if ($img.width() > $img.height()) {
+                        $img.width(w);
+                    } else {
+                        $img.height(h);
+                    }
+                });
+                _ui.$html.click(function() {
+                    _ui.hide();
+                });
+            }
+        };
+        _this.imagePage.init();
+
         _this.phonePage = {
             HTML1 : '<div class="nextalk-page nextalk-screen-full nextalk-page-phone"></div>',
             HTML2 : '<div class="nextalk-page nextalk-page-phone2 mzen-flex-col mzen-flex-center">\

@@ -424,7 +424,11 @@ if (!nextalk.webui) {
                                 _this.toBottom();
                             });
                 } else if (data.type == 2) {
-                    $body.html('<img width="'+ (_this.$html.width()/2) +'" src="'+data.body+'"/>');
+                    var img = $('<img width="'+ (_this.$html.width()/2) +'" src="'+data.body+'"/>');
+                    img.on('click', function() {
+                        webui.imagePage.show(data.body);
+                    });
+                    $body.html(img);
                 }
             } catch (e) {
                 $body.html(Emot.trans(msg.body));
@@ -498,7 +502,11 @@ if (!nextalk.webui) {
                                 _this.toBottom();
                             });
                 } else if (data.type == 2) {
-                    $body.html('<img width="'+ (_this.$html.width()/2) +'" src="'+data.body+'"/>');
+                    var img = $('<img width="'+ (_this.$html.width()/2) +'" src="'+data.body+'"/>');
+                    img.on('click', function() {
+                        webui.imagePage.show(data.body);
+                    });
+                    $body.html(img);
                 }
             } catch (e) {
                 $body.html(Emot.trans(msg.body));
