@@ -9,7 +9,11 @@ $upload_handler = new UploadHandler ( array (
         'print_response' => false,
         'max_file_size' => 5 * 1024 * 1024,
         'accept_file_types' => '/\.(gif|jpe?g|png)$/i',
-        'image_versions' => array()
+        'image_versions' => array(
+                '' => array(
+                        'auto_orient' => true
+                )
+        )
 ) );
 $rsp = $upload_handler->get_response ();
 $file = $rsp ['file'];

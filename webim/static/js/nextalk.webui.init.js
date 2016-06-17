@@ -106,15 +106,15 @@ if (!nextalk.webui) {
         _this.$btnClose = {
             HTML : '\
                  <div class="nextalk-btn-close">\
-                 <span class="mzen-iconfont"><em style="font-style: normal;font-family: arial;">X</em></span>\
+                 <span class="mzen-iconfont mzen-icon-close"></span>\
                  </div>',
             init : function() {
                 var _ui = this;
                 _ui.$html = $(_ui.HTML);
                 $('span', _ui.$html).on('click', function() {
                     if (webui.onClickCloseIframe) {
-                        webui.onClickCloseIframe();
-                        webui._chatBoxs.hideAll();
+                        webui.onClickCloseIframe(
+                            webui._chatBoxs.hideAll());
                     }
                 });
                 _ui.$html.appendTo(_this.$body);
@@ -183,7 +183,7 @@ if (!nextalk.webui) {
 
         _this.imagePage = {
             HTML : '\
-                <div class="nextalk-page nextalk-screen-full mzen-flex-col mzen-flex-center"\
+                <div class="nextalk-page nextalk-screen-full"\
                 style="background:#2c2e2f;"><img src=""/></div>',
 
             init : function() {
@@ -193,25 +193,33 @@ if (!nextalk.webui) {
                 _ui.$html.appendTo(_this.$body);
             },
             show : function(src) {
-                $('img', this.$html)
-                .attr('src', src);
-                this.$html.show();
+                var _ui = this;
+                _ui.$html.empty();
+                var $img = $('<img src="' + src + '" />');
+                $img.on('load', function() {
+                    var w = _ui.$html.outerWidth();
+                    var h = _ui.$html.outerHeight();
+                    if ($img.width() > w || $img.height() > h) {
+                        _ui.$html.css('padding-top', '0px');
+                        if ($img.width() > $img.height()) {
+                            $img.width(w);
+                        } else {
+                            $img.height(h);
+                        }
+                    }
+                    if ($img.height() < h) {
+                        _ui.$html.css('padding-top', (h-$img.height())/2 + 'px');
+                    }
+                });
+                _ui.$html.css('text-align', 'center');
+                _ui.$html.html($img);
+                _ui.$html.show();
             },
             hide : function() {
                 this.$html.hide();
             },
             _handler : function() {
                 var _ui = this;
-                $('img', _ui.$html).on('load', function() {
-                    var w = _ui.$html.width();
-                    var h = _ui.$html.height();
-                    var $img = $(this);
-                    if ($img.width() > $img.height()) {
-                        $img.width(w);
-                    } else {
-                        $img.height(h);
-                    }
-                });
                 _ui.$html.click(function() {
                     _ui.hide();
                 });
@@ -547,6 +555,10 @@ if (!nextalk.webui) {
                 if (chatBox) {
                     if (msg.direction == webim.msgDirection.SEND) {
                         chatBox.sendHTML(msg);
+                        if (chatBox.focus == true) {
+                            // 设置为已读
+                            webim.convMessage.read(msg);
+                        }
                     } else {
                         chatBox.objName = conv.objName;
                         chatBox.objAvatar = conv.objAvatar;

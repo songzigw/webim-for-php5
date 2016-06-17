@@ -240,11 +240,13 @@
         var objShow = _this.objShow;
         extend(_this, Conversation.parser(msg));
         _this.objShow = objShow;
+        if (typeof msg.read === 'boolean' && !msg.read) {
+            _this.notCount++;
+            webim.convMessage.unreadTotal++;
+        }
         if (msg.direction == webim.msgDirection.RECEIVE) {
-            if (typeof msg.read === 'boolean' && !msg.read) {
-                _this.notCount++;
-                webim.convMessage.unreadTotal++;
-            }
+            // 为了接收自己发出的消息
+            // 设置未读这里的代码移出
         } else {
             msg.offline = 1;
         }

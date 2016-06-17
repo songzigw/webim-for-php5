@@ -390,7 +390,7 @@
                 if (msg.from == cu.id || agent) {
                     direction = webim.msgDirection.SEND;
                     msg.direction = direction;
-                    msg.read = true;
+                    //msg.read = true;
                 }
                 _this._saveMsg(msg);
             }

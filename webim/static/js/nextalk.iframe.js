@@ -102,6 +102,9 @@ if (!window.nextalk) {
                 'top' : t + 'px'
             });
         }, 5);
+        if (_this.boxShow) {
+            _this.boxShow.show();
+        }
     };
 
     iframe.go = function() {
@@ -123,7 +126,8 @@ if (!window.nextalk) {
         _this.config.onChatboxClose = function() {
             
         };
-        _this.config.onClickCloseIframe = function() {
+        _this.config.onClickCloseIframe = function(boxShow) {
+            _this.boxShow = boxShow;
             _this.$nkIframe.hide();
             _this.slideUp(_this.$nkMain, -42);
         };

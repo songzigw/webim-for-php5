@@ -371,7 +371,7 @@ if (!nextalk.webui) {
         time.setTime(msg.timestamp);
         var tStr = null;
         if (time.getDate() != (new webim.Date()).getDate()) {
-            tStr = time.format('yyyy-MM-dd');
+            tStr = time.format('MM-dd hh:mm');
         } else {
             tStr = time.format('hh:mm:ss');
         }
@@ -410,13 +410,17 @@ if (!nextalk.webui) {
                                 if (ret) {
                                     var m = webui.mobile;
                                     var a = '/mobile/house.php?id=' + ret.goods_id;
-                                    if (!m) {
-                                        a = '/house.php?id=' + ret.goods_id;
-                                    }
-                                    var html = '<a href="' + a + '" target="_blank">\
+                                    var html = '<a href="' + a + '">\
                                         <div><img width="'+ (_this.$html.width()/2) +'"\
                                         src="http://images.qiaoju360.com/'+ ret.goods_img +'"/>\
                                         <p>'+ ret.goods_name +'</p></div></a>';
+                                    if (!m) {
+                                        a = '/house.php?id=' + ret.goods_id;
+                                        var html = '<a href="' + a + '" target="_blank">\
+                                            <div><img width="'+ (_this.$html.width()/2) +'"\
+                                            src="http://images.qiaoju360.com/'+ ret.goods_img +'"/>\
+                                            <p>'+ ret.goods_name +'</p></div></a>';
+                                    }
                                     $body.html(html);
                                 } else {
                                     $body.html("加载失败...");
@@ -449,7 +453,7 @@ if (!nextalk.webui) {
         time.setTime(msg.timestamp);
         var tStr = null;
         if (time.getDate() != (new webim.Date()).getDate()) {
-            tStr = time.format('yyyy-MM-dd');
+            tStr = time.format('MM-dd hh:mm');
         } else {
             tStr = time.format('hh:mm:ss');
         }
@@ -816,15 +820,29 @@ if (!nextalk.webui) {
         },
 
         hideAll : function() {
+            var cbox = null;
             for (var key in this[webim.Conversation.NOTICE]) {
-                this[webim.Conversation.NOTICE][key].hide();
+                var cBox = this[webim.Conversation.NOTICE][key];
+                if (cBox.focus) {
+                    cbox = cBox;
+                }
+                cBox.hide();
             }
             for (var key in this[webim.Conversation.ROOM]) {
-                this[webim.Conversation.ROOM][key].hide();
+                var cBox = this[webim.Conversation.ROOM][key];
+                if (cBox.focus) {
+                    cbox = cBox;
+                }
+                cBox.hide();
             }
             for (var key in this[webim.Conversation.CHAT]) {
-                this[webim.Conversation.CHAT][key].hide();
+                var cBox = this[webim.Conversation.CHAT][key];
+                if (cBox.focus) {
+                    cbox = cBox;
+                }
+                cBox.hide();
             }
+            return cbox;
         },
 
         clear : function(hide) {

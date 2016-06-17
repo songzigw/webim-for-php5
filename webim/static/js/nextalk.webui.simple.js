@@ -212,7 +212,7 @@ if (!nextalk.webui) {
             }
             var time = new webim.Date(conv.timestamp);
             if (time.getDate() != (new webim.Date()).getDate()) {
-                conv.msgTime = time.format('yyyy-MM-dd');
+                conv.msgTime = time.format('MM-dd hh:mm');
             } else {
                 conv.msgTime = time.format('hh:mm:ss');
             }
