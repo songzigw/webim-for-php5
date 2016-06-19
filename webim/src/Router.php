@@ -666,12 +666,8 @@ EOF;
         $uids = $this->idsArray($this->input('uids', ''));
         $type = $this->user->type;
         $buddy = null;
-        if ($uid != null && $type == 'general') {
+        if ($uid != null) {
             $buddy = $this->plugin->getUserById($uid);
-            if(!$buddy) {
-                header("HTTP/1.0 404 Not Found");
-                exit("User Not Found");
-            }
         }
         $agents = array();
         if ($type == 'general') {
@@ -714,6 +710,7 @@ EOF;
             echo '        };';
         }
         echo '        _IMC.chatObjs = ' . json_encode($agents) . ';';
+        echo '        _IMC.obj_suit = "' . $this->input('obj_suit') . '";';
         echo '        </script>';
         echo '<script type="text/javascript" src="'.$webim_path.'index.php?action=boot&iframe=false&mobile=true"></script>';
         echo '</body>';

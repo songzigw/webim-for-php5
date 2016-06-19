@@ -47,6 +47,7 @@ if (!nextalk.webui) {
     webui.chatObj = null;
     webui.chatObjs = [];
     webui.loadHisConv = true;
+    webui.objSuit = webim.userType.GENERAL;
     webui.init = function(options) {
         // 入参验证
         validate(options, {
@@ -96,6 +97,9 @@ if (!nextalk.webui) {
         }
         if (options.loadHisConv === false) {
             _this.loadHisConv = false;
+        }
+        if (options.objSuit) {
+            _this.objSuit = options.objSuit;
         }
 
         // 初始化webim
@@ -467,7 +471,7 @@ if (!nextalk.webui) {
                 this.onLoginWin();
             }
             var _this = this;
-            if (webim.client.isNewUser) {
+            if (webim.client.isNewUser && data != 'conn') {
                 _this._chatBoxs.clear(true);
             }
             _this.main.setTitleName();
@@ -500,8 +504,11 @@ if (!nextalk.webui) {
         _onConnected : function(ev, data) {
             var _this = this;
             var u = webim.client.getCurrUser();
-            if (u.type != webim.userType.GENERAL) {
+            if (_this.objSuit != 'all'
+                && u.type != _this.objSuit) {
                 _this.chatObj = null;
+            }
+            if (u.type != webim.userType.GENERAL) {
                 _this.chatObjs = [];
             }
             if (!_this.goods) {
@@ -514,7 +521,7 @@ if (!nextalk.webui) {
             // 加载联系人列表
             _this.main.loadBuddies();
             _this._chatBoxs.onConnected();
-            _this._onLoginWin();
+            _this._onLoginWin(null, 'conn');
             // 判断cookie里面是否在线
             _this.cookieTask.start();
         },

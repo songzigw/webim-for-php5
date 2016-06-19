@@ -390,7 +390,7 @@ if (!nextalk.webui) {
                 }
                 var currUser = webim.client.getCurrUser();
                 if (currUser.type == webim.userType.GENERAL) {
-                    window.location.href = '/mobile/broker.php?id=' + _this.agentId;
+                    window.location.href = '/mobile/broker.php?id=' + _this.agentId + '&uid=' + _this.objId + '&obj_suit=all';
                 }
             });
         var $body = $receive.find('.body');
@@ -409,14 +409,14 @@ if (!nextalk.webui) {
                             function(ret, err) {
                                 if (ret) {
                                     var m = webui.mobile;
-                                    var a = '/mobile/house.php?id=' + ret.goods_id;
+                                    var a = '/mobile/house.php?id=' + ret.goods_id + '&uid=' + _this.objId + '&obj_suit=all';
                                     var html = '<a href="' + a + '">\
                                         <div><img width="'+ (_this.$html.width()/2) +'"\
                                         src="http://images.qiaoju360.com/'+ ret.goods_img +'"/>\
                                         <p>'+ ret.goods_name +'</p></div></a>';
                                     if (!m) {
-                                        a = '/house.php?id=' + ret.goods_id;
-                                        var html = '<a href="' + a + '" target="_blank">\
+                                        a = '/house.php?id=' + ret.goods_id + '&uid=' + _this.objId + '&obj_suit=all';
+                                        html = '<a href="' + a + '" target="_blank">\
                                             <div><img width="'+ (_this.$html.width()/2) +'"\
                                             src="http://images.qiaoju360.com/'+ ret.goods_img +'"/>\
                                             <p>'+ ret.goods_name +'</p></div></a>';
@@ -472,7 +472,7 @@ if (!nextalk.webui) {
                 }
                 var currUser = webim.client.getCurrUser();
                 if (currUser.type != webim.userType.GENERAL) {
-                    window.location.href = '/mobile/broker.php?id=' + _this.agentId;
+                    window.location.href = '/mobile/broker.php?id=' + _this.agentId + '&uid=' + _this.objId + '&obj_suit=all';
                 }
             });
         var $body = $send.find('.body');

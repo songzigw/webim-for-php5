@@ -85,7 +85,8 @@ nextalk.main.setConfig({
     playSound : _IMC.playSound,
     receive : _IMC.receive,
     version : _IMC.version,
-    loadHisConv : _IMC.his_conv
+    loadHisConv : _IMC.his_conv,
+    objSuit : _IMC.obj_suit
 });
 if (_IMC.channelType) {
     nextalk.main.channelType = _IMC.channelType;

@@ -205,7 +205,8 @@ if (!window.nextalk) {
             chatObjs : _this.chatObjs,
             chatlinkIds : _this.chatlinkIds,
             channelType : _this.channelType,
-            loadHisConv : _this.loadHisConv
+            loadHisConv : _this.loadHisConv,
+            objSuit     : _this.objSuit
         });
         nextalk.webui.onChatlinks = _this.onChatlinks;
         nextalk.webui.onUnread = _this.onUnread;

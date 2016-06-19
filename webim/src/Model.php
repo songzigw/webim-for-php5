@@ -99,6 +99,9 @@ class Model {
         $agent = $this->T2('ecs_agent')
                     ->where('user_id', $uid)
                     ->findOne();
+        if (!$user->user_face) {
+            $user->user_face = '/webim/static/imgs/head_dis.png';
+        }
         if (!$agent) {
             return (object) array(
                 'id' => $user->user_id,

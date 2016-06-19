@@ -464,7 +464,7 @@ if (!nextalk.webui) {
                 }
             }
             $items.prepend(_this.itemHTML(conv));
-            if (webim.client.connectedTimes == 1) {
+            if (webim.client.connectedTimes <= 1) {
                 webui.openChatBox(conv);
             }
         }
