@@ -429,7 +429,7 @@ if (!nextalk.webui) {
                                         src="http://images.qiaoju360.com/'+ ret.goods_img +'"/>\
                                         <p>'+ ret.goods_name +'</p></div></a>';
                                     if (!m) {
-                                        a = '/house.php?id=' + ret.goods_id + '&uid=' + _this.objId + '&obj_suit=all';
+                                        a = '/house.php?id=' + ret.goods_id;
                                         html = '<a href="' + a + '" target="_blank">\
                                             <div><img width="'+ (_this.$html.width()/2) +'"\
                                             src="http://images.qiaoju360.com/'+ ret.goods_img +'"/>\
@@ -505,14 +505,18 @@ if (!nextalk.webui) {
                             function(ret, err) {
                                 if (ret) {
                                     var m = webui.mobile;
-                                    var a = '/mobile/house.php?id=' + ret.goods_id;
-                                    if (!m) {
-                                        a = '/house.php?id=' + ret.goods_id;
-                                    }
-                                    var html = '<a href="' + a + '" target="_blank">\
+                                    var a = '/mobile/house.php?id=' + ret.goods_id + '&uid=' + _this.objId + '&obj_suit=all';
+                                    var html = '<a href="' + a + '">\
                                         <div><img width="'+ (_this.$html.width()/2) +'"\
                                         src="http://images.qiaoju360.com/'+ ret.goods_img +'"/>\
-                                        <p>'+ ret.goods_name +'</p></div><a>';
+                                        <p>'+ ret.goods_name +'</p></div></a>';
+                                    if (!m) {
+                                        a = '/house.php?id=' + ret.goods_id;
+                                        html = '<a href="' + a + '" target="_blank">\
+                                            <div><img width="'+ (_this.$html.width()/2) +'"\
+                                            src="http://images.qiaoju360.com/'+ ret.goods_img +'"/>\
+                                            <p>'+ ret.goods_name +'</p></div></a>';
+                                    }
                                     $body.html(html);
                                 } else {
                                     $body.html("加载失败...");
