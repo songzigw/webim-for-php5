@@ -212,6 +212,11 @@ if (!nextalk.webui) {
             $content.css({
                 'margin-top' : hh+'px'});
             _this.toBottom();
+            
+            if (_this.$bBody.outerHeight()
+                    >= $content.height()) {
+                _this.$bBody.css('bottom', 'auto');
+            }
         }
 
         var cbWidth = $html.width() - 20;
