@@ -86,12 +86,29 @@ if (!nextalk.webui) {
         _this.msgTips = new MsgTips();
         _this.$html.append(_this.msgTips.$html);
 
+        _this.$bBody = $('.nextalk-wrap', $html);
+        _this.$bBody.empty();
+
+        var $content = $('#nextalk_content_chatbox', $html);
         _this.emot = new Emot();
         var $input = $('.mzen-form .textarea', $html);
         _this.$input = $input;
         $input.on('focus', function(ev) {
             _this.emot.hide();
             _this.resizable();
+            if (webui.mobile) {
+                if (_this.$bBody.outerHeight()
+                        < $content.height()) {
+                    _this.$bBody.css('bottom', '0');
+                } else {
+                    _this.$bBody.css('bottom', 'auto');
+                }
+            }
+        });
+        $input.on('blur', function(ev) {
+            if (webui.mobile) {
+                _this.$bBody.css('bottom', 'auto');
+            }
         });
         _this.emot.callback = function(emot) {
             if ($input.text().length <= 140) {
@@ -101,9 +118,6 @@ if (!nextalk.webui) {
         };
         $('footer .mzen-form', $html)
                 .append(_this.emot.$html);
-
-        _this.$bBody = $('.nextalk-wrap', $html);
-        _this.$bBody.empty();
 
         _this.handleHTML();
         $html.appendTo($body);
