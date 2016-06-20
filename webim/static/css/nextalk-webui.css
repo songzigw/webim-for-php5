@@ -561,6 +561,12 @@ footer.mzen-nav >ul.mzen-bar-tab > li > .mzen-badge {
     border-top: 0px;
 }
 
+.nextalk-chatbox .nextalk-wrap {
+    padding: 0.313em 10px;
+    margin: 10px 0 0 0;
+    position: absolute;
+    width: 100%;
+}
 .nextalk-chatbox .mzen-list-view .mzen-img-object {
     width: 100px;
     height: auto;
