@@ -661,6 +661,7 @@ EOF;
         }
         $webim_path = WEBIM_PATH();
         $uid = $this->input('uid');
+        $currUid = $this->input('curr_uid');
         $body_type = $this->input('body_type');
         $body = $this->input('body');
         $uids = $this->idsArray($this->input('uids', ''));
@@ -705,6 +706,7 @@ EOF;
             echo '            id : "'. $buddy->id .'",';
             echo '            name : "'. $buddy->nick .'",';
             echo '            avatar : "'. $buddy->avatar .'",';
+            echo '            currUid : "'. $currUid .'",';
             echo '            body_type : "'. $body_type .'",';
             echo '            body : "'. $body .'"';
             echo '        };';

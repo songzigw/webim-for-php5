@@ -409,7 +409,7 @@ if (!nextalk.webui) {
                 }
                 var currUser = webim.client.getCurrUser();
                 if (currUser.type == webim.userType.GENERAL) {
-                    window.location.href = '/mobile/broker.php?id=' + _this.agentId + '&uid=' + _this.objId + '&obj_suit=all';
+                    window.location.href = '/mobile/broker.php?id=' + _this.agentId + '&uid=' + _this.objId + '&obj_suit=all&curr_uid=' + _this.currUid;
                 }
             });
         var $body = $receive.find('.body');
@@ -428,7 +428,7 @@ if (!nextalk.webui) {
                             function(ret, err) {
                                 if (ret) {
                                     var m = webui.mobile;
-                                    var a = '/mobile/house.php?id=' + ret.goods_id + '&uid=' + _this.objId + '&obj_suit=all';
+                                    var a = '/mobile/house.php?id=' + ret.goods_id + '&uid=' + _this.objId + '&obj_suit=all&curr_uid=' + _this.currUid;
                                     var html = '<a href="' + a + '">\
                                         <div><img width="'+ (_this.$html.width()/2) +'"\
                                         src="http://images.qiaoju360.com/'+ ret.goods_img +'"/>\
@@ -491,7 +491,7 @@ if (!nextalk.webui) {
                 }
                 var currUser = webim.client.getCurrUser();
                 if (currUser.type != webim.userType.GENERAL) {
-                    window.location.href = '/mobile/broker.php?id=' + _this.agentId + '&uid=' + _this.objId + '&obj_suit=all';
+                    window.location.href = '/mobile/broker.php?id=' + _this.agentId + '&uid=' + _this.objId + '&obj_suit=all&curr_uid=' + _this.currUid;
                 }
             });
         var $body = $send.find('.body');
@@ -510,7 +510,7 @@ if (!nextalk.webui) {
                             function(ret, err) {
                                 if (ret) {
                                     var m = webui.mobile;
-                                    var a = '/mobile/house.php?id=' + ret.goods_id + '&uid=' + _this.objId + '&obj_suit=all';
+                                    var a = '/mobile/house.php?id=' + ret.goods_id + '&uid=' + _this.objId + '&obj_suit=all&curr_uid=' + _this.currUid;
                                     var html = '<a href="' + a + '">\
                                         <div><img width="'+ (_this.$html.width()/2) +'"\
                                         src="http://images.qiaoju360.com/'+ ret.goods_img +'"/>\

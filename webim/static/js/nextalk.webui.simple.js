@@ -409,13 +409,13 @@ if (!nextalk.webui) {
                     notCount : 0
                 };
                 for (var i = 0; i < convs.length; i++) {
-                    if (currUser.id == convs[i].currUid
-                            && chatObj.id == convs[i].objId) {
+                    if (conv.currUid == convs[i].currUid
+                            && conv.ObjId == convs[i].objId) {
                         conv = convs[i];
                         break;
                     }
                 }
-                var $rem = _this.removeItem(chatObj.type, currUser.id, chatObj.id);
+                var $rem = _this.removeItem(chatObj.type, conv.currUid, chatObj.id);
                 if ($rem) {
                     if ($('span', $rem).text()) {
                         conv.notCount = Number($('span', $rem).text());
@@ -444,14 +444,22 @@ if (!nextalk.webui) {
                 body : ' ',
                 notCount : 0
             };
+            if (chatObj.currUid) {
+                var agent = webim.client.getAgent(chatObj.currUid);
+                if (agent) {
+                    conv.currUid = agent.id;
+                    conv.currNick = agent.nick;
+                    conv.currAvatar = agent.avatar;
+                }
+            }
             for (var i = 0; i < convs.length; i++) {
-                if (currUser.id == convs[i].currUid
-                        && chatObj.id == convs[i].objId) {
+                if (conv.currUid == convs[i].currUid
+                        && conv.objId == convs[i].objId) {
                     conv = convs[i];
                     break;
                 }
             }
-            var $rem = _this.removeItem(chatObj.type, currUser.id, chatObj.id);
+            var $rem = _this.removeItem(chatObj.type, conv.currUid, chatObj.id);
             if ($rem) {
                 if ($('span', $rem).text()) {
                     conv.notCount = Number($('span', $rem).text());
