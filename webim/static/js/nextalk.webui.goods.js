@@ -83,9 +83,15 @@ if (!nextalk.webui) {
                 .click(function() {
                     _this.close();
                 });
+    };
+    Goods.prototype.open = function(conv) {
+        var _this = this;
+        _this.conv = conv;
+        _this.$html.css('z-index', '7');
         webim.webApi.house_fav(
                 function(ret, err) {
                     if (ret) {
+                        _this.$items.empty();
                         for (var i = 0; i < ret.length; i++) {
                             var h = ret[i];
                             h.goods_img = 'http://images.qiaoju360.com/' + h.goods_img;
@@ -113,11 +119,6 @@ if (!nextalk.webui) {
                         }
                     }
                 });
-    };
-    Goods.prototype.open = function(conv) {
-        var _this = this;
-        _this.conv = conv;
-        _this.$html.css('z-index', '7');
         _this.$html.show();
         _this.resizable();
     };
