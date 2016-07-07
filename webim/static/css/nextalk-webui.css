@@ -324,15 +324,12 @@ footer .mzen-form {
 
 .nextalk-btn-close {
 	position: absolute;
-	top: 16px;
+	top: 12px;
 	right: 18px;
-	height: 18px;
-	width: 18px;
-    border: 1px solid #333;
-    border-radius: 50%;
+	height: 24px;
+	width: 24px;
     z-index: 18;
     text-align: center;
-    padding-top: -2px;
     /* min-height: 45px;
     line-height: 45px;
     padding-left: 10px;
@@ -343,6 +340,10 @@ footer .mzen-form {
     cursor: pointer;
     display: block;
     line-height: 18px;
+    height: 24px;
+    width: 24px;
+    background-image: url("../imgs/minmize.png");
+    background-repeat: no-repeat;
 }
 
 .mzen-bar-nav .nextalk-logo,
