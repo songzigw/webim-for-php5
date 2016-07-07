@@ -133,8 +133,10 @@ if (!window.nextalk) {
                     left : iframe.$(window).width() + 'px',
                     top : iframe.$(window).height() + 'px'
                 });
-                //_this.$nkIframe.hide();
-                _this.slideUp(_this.$nkMain, -42);
+                window.setTimeout(function() {
+                    //_this.$nkIframe.hide();
+                    _this.slideUp(_this.$nkMain, -42);
+                }, 8);
             }, 5);
         };
 
