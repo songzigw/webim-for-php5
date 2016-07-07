@@ -128,8 +128,14 @@ if (!window.nextalk) {
         };
         _this.config.onClickCloseIframe = function(boxShow) {
             _this.boxShow = boxShow;
-            _this.$nkIframe.hide();
-            _this.slideUp(_this.$nkMain, -42);
+            window.setTimeout(function() {
+                _this.$nkIframe.css({
+                    left : iframe.$(window).width() + 'px',
+                    top : iframe.$(window).height() + 'px'
+                });
+                //_this.$nkIframe.hide();
+                _this.slideUp(_this.$nkMain, -42);
+            }, 5);
         };
 
         var div = document.createElement('div');

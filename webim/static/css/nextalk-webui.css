@@ -324,18 +324,25 @@ footer .mzen-form {
 
 .nextalk-btn-close {
 	position: absolute;
-	top: 0;
-	right: 0;
-	min-height: 45px;
+	top: 16px;
+	right: 18px;
+	height: 18px;
+	width: 18px;
+    border: 1px solid #333;
+    border-radius: 50%;
+    z-index: 18;
+    text-align: center;
+    padding-top: -2px;
+    /* min-height: 45px;
     line-height: 45px;
     padding-left: 10px;
-    padding-right: 13px;
-    font-size: 16px;
-    font-weight: 400;
-    z-index: 18;
+    padding-right: 13px;*/
 }
 .nextalk-btn-close span {
-	cursor: pointer;
+	font-weight: 400;
+    cursor: pointer;
+    display: block;
+    line-height: 18px;
 }
 
 .mzen-bar-nav .nextalk-logo,

@@ -110,7 +110,7 @@ if (!nextalk.webui) {
         _this.$btnClose = {
             HTML : '\
                  <div class="nextalk-btn-close">\
-                 <span class="mzen-iconfont mzen-icon-close"></span>\
+                 <span class="mzen-iconfont">-</span>\
                  </div>',
             init : function() {
                 var _ui = this;
