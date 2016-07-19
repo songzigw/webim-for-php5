@@ -121,8 +121,104 @@ if (!nextalk.webui) {
                 "text" : "[shout]"
             } ];
     Emot.ICON2 = [ {
+                "image" : "emoji/smiles_01_01.png",
+                "text" : "[128516]"
+            }, {
+                "image" : "emoji/smiles_01_02.png",
+                "text" : "[128522]"
+            }, {
+                "image" : "emoji/smiles_01_03.png",
+                "text" : "[128515]"
+            }, {
+                "image" : "emoji/smiles_01_04.png",
+                "text" : "[9786]"
+            }, {
+                "image" : "emoji/smiles_01_05.png",
+                "text" : "[128521]"
+            }, {
+                "image" : "emoji/smiles_01_06.png",
+                "text" : "[128525]"
+            }, {
+                "image" : "emoji/smiles_01_07.png",
+                "text" : "[128536]"
+            }, {
+                "image" : "emoji/smiles_01_08.png",
+                "text" : "[128538]"
+            }, {
+                "image" : "emoji/smiles_01_09.png",
+                "text" : "[128563]"
+            }, {
+                "image" : "emoji/smiles_01_10.png",
+                "text" : "[128524]"
+            }, {
+                "image" : "emoji/smiles_01_11.png",
+                "text" : "[128513]"
+            }, {
+                "image" : "emoji/smiles_02_01.png",
+                "text" : "[128540]"
+            }, {
+                "image" : "emoji/smiles_02_02.png",
+                "text" : "[128541]"
+            }, {
+                "image" : "emoji/smiles_02_03.png",
+                "text" : "[128530]"
+            }, {
+                "image" : "emoji/smiles_02_04.png",
+                "text" : "[128527]"
+            }, {
+                "image" : "emoji/smiles_02_05.png",
+                "text" : "[128531]"
+            }, {
+                "image" : "emoji/smiles_02_06.png",
+                "text" : "[128532]"
+            }, {
+                "image" : "emoji/smiles_02_07.png",
+                "text" : "[128542]"
+            }, {
+                "image" : "emoji/smiles_02_08.png",
+                "text" : "[128534]"
+            }, {
+                "image" : "emoji/smiles_02_09.png",
+                "text" : "[128549]"
+            }, {
+                "image" : "emoji/smiles_02_10.png",
+                "text" : "[128560]"
+            }, {
+                "image" : "emoji/smiles_02_11.png",
+                "text" : "[128552]"
+            }, {
+                "image" : "emoji/smiles_03_01.png",
+                "text" : "[128547]"
+            }, {
+                "image" : "emoji/smiles_03_02.png",
+                "text" : "[128546]"
+            }, {
+                "image" : "emoji/smiles_03_03.png",
+                "text" : "[128557]"
+            }, {
+                "image" : "emoji/smiles_03_04.png",
+                "text" : "[128514]"
+            }, {
+                "image" : "emoji/smiles_03_05.png",
+                "text" : "[128562]"
+            }, {
+                "image" : "emoji/smiles_03_06.png",
+                "text" : "[128561]"
+            }, {
+                "image" : "emoji/smiles_03_07.png",
+                "text" : "[128544]"
+            }, {
+                "image" : "emoji/smiles_03_08.png",
+                "text" : "[128545]"
+            }, {
+                "image" : "emoji/smiles_03_09.png",
+                "text" : "[128554]"
+            }, {
                 "image" : "emoji/smiles_03_10.png",
-                "text" : "[128567];"
+                "text" : "[128567]"
+            }, {
+                "image" : "emoji/smiles_03_11.png",
+                "text" : "[128127]"
             } ];
     Emot.trans = function(body) {
         var path = webim.resPath;;
