@@ -452,6 +452,8 @@ if (!nextalk.webui) {
                         webui.imagePage.show($(this).attr('src'));
                     });
                     $body.html(img);
+                } else {
+                    $body.html(Emot.trans(msg.body));
                 }
             } catch (e) {
                 $body.html(Emot.trans(msg.body));
@@ -534,6 +536,8 @@ if (!nextalk.webui) {
                         webui.imagePage.show($(this).attr('src'));
                     });
                     $body.html(img);
+                } else {
+                    $body.html(Emot.trans(msg.body));
                 }
             } catch (e) {
                 $body.html(Emot.trans(msg.body));
