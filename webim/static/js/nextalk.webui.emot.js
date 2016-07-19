@@ -240,6 +240,10 @@ if (!nextalk.webui) {
                         + icon.image + '" />';
                 }
             }
+            var num = match.substring(1, match.length-1);
+            if (!isNaN(num)) {
+                return '&#' + num + ';';
+            }
             return match;
         });
         return str;
