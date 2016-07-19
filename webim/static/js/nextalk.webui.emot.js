@@ -120,12 +120,24 @@ if (!nextalk.webui) {
                 "title" : "shout",
                 "text" : "[shout]"
             } ];
+    Emot.ICON2 = [ {
+                "image" : "emoji/smiles_03_10.png",
+                "text" : "[128567];"
+            } ];
     Emot.trans = function(body) {
         var path = webim.resPath;;
         var reg = /\[(.*?)\]/gm;
         var str = body.replace(reg, function(match) {
             for (var i = 0; i < Emot.ICON.length; i++) {
                 var icon = Emot.ICON[i];
+                if (icon.text === match) {
+                    return '<img width="24" height="24" ' 
+                        + 'src="' + path + 'imgs/emot/'
+                        + icon.image + '" />';
+                }
+            }
+            for (var i = 0; i < Emot.ICON2.length; i++) {
+                var icon = Emot.ICON2[i];
                 if (icon.text === match) {
                     return '<img width="24" height="24" ' 
                         + 'src="' + path + 'imgs/emot/'
