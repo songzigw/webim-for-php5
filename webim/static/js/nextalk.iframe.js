@@ -130,8 +130,8 @@ if (!window.nextalk) {
             _this.boxShow = boxShow;
             window.setTimeout(function() {
                 _this.$nkIframe.css({
-                    left : iframe.$(window).width() + 'px',
-                    top : iframe.$(window).height() + 'px'
+                    left : '100%',
+                    top : '100%'
                 });
                 window.setTimeout(function() {
                     //_this.$nkIframe.hide();
