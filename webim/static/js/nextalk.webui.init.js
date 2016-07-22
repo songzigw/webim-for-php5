@@ -560,6 +560,9 @@ if (!nextalk.webui) {
                                           {currUid : conv.currUid,
                                            objId   : conv.objId});
                 if (chatBox) {
+                    if (!chatBox.before) {
+                        chatBox.before = msg.timestamp
+                    }
                     if (msg.direction == webim.msgDirection.SEND) {
                         chatBox.sendHTML(msg);
                         if (chatBox.focus == true) {

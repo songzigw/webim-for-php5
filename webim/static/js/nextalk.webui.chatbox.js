@@ -316,8 +316,9 @@ if (!nextalk.webui) {
             }
         }
 
+        // 等待300毫秒
         // 历史数据库中查询
-        _this.history();
+        setTimeout(function() {_this.history()}, 300);
     };
     ChatBox.prototype.history = function() {
         var _this = this;
