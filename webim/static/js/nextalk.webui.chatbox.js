@@ -616,11 +616,17 @@ if (!nextalk.webui) {
             if (currUser.type == webim.userType.GENERAL) {
                 webim.webApi.agent(_this.objId, function(res, err) {
                     if (res) {
+                        _this.agentId = res.agent_id;
+                        
+                        $('>header .nextalk-user', $html).show()
+                        .on('click', function() {
+                            window.location.href = '/mobile/broker.php?id=' + _this.agentId + '&uid=' + _this.objId + '&obj_suit=all&curr_uid=' + _this.currUid;
+                        });
+                        
                         $('>header .nextalk-call-phone', $html).show()
                         .on('click', function() { webui.phonePage.show(res.tel_400) });
                         $('.nextalk-call-phone span', $html)
                         .css({'color': 'green', 'font-size': '26px'});
-                        _this.agentId = res.agent_id;
                     }
                 });
             } else {
