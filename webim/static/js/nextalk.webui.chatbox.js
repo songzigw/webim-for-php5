@@ -143,7 +143,7 @@ if (!nextalk.webui) {
                             <img class="mzen-img-object" src="" data-toggle="head">\
                             </a>\
                             </div>\
-                            <div class="mzen-title">???</div>\
+                            <div class="mzen-title"><img src="" style="height:30px;width:30px;border-radius:50%;vertical-align:middle;margin-right:10px;"/><span>???<span></div>\
                             <a class="mzen-pull-right nextalk-close-iframe" href="#">\
                             <span class="mzen-iconfont mzen-icon-close"></span></a>\
                             <a class="mzen-pull-right nextalk-call-phone" href="#">\
@@ -594,7 +594,9 @@ if (!nextalk.webui) {
         $html.attr('data-objId', _this.objId);
         $html.attr('data-objName', _this.objName);
         $html.attr('data-objAvatar', _this.objAvatar);
-        $('header>.mzen-title', $html).text(_this.objName);
+        $('header>.mzen-title>span', $html).text(_this.objName);
+        $('header>.mzen-title>img', $html).attr('src', _this.objAvatar);
+        $('header>.mzen-title>img', $html).hide();
 
         // 设置在线状态和头像
         $('>header .nextalk-return', $html).hide().click(function() {
@@ -618,8 +620,14 @@ if (!nextalk.webui) {
                     if (res) {
                         _this.agentId = res.agent_id;
                         
-                        $('>header .nextalk-user', $html).show()
-                        .on('click', function() {
+                        //$('>header .nextalk-user', $html).show()
+                        //.on('click', function() {
+                        //    window.location.href = '/mobile/broker.php?id=' + _this.agentId + '&uid=' + _this.objId + '&obj_suit=all&curr_uid=' + _this.currUid;
+                        //});
+                        $('header>.mzen-title>span', $html).on('click', function() {
+                            window.location.href = '/mobile/broker.php?id=' + _this.agentId + '&uid=' + _this.objId + '&obj_suit=all&curr_uid=' + _this.currUid;
+                        });
+                        $('header>.mzen-title>img', $html).show().on('click', function() {
                             window.location.href = '/mobile/broker.php?id=' + _this.agentId + '&uid=' + _this.objId + '&obj_suit=all&curr_uid=' + _this.currUid;
                         });
                         
